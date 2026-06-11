@@ -1284,6 +1284,9 @@
     <footer>
         <p>&copy; 2026 Smart Farm Engineering Lab. All rights reserved.</p>
         <p>Built for zero-cost static hosting. Designed by Inwoovation &bull; <a href="mailto:vmffkxhs2362@gmail.com">Contact Support</a></p>
+        <p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.5; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;">
+            <!-- Rendered dynamically -->
+        </p>
     </footer>
 </div>
 
@@ -1337,7 +1340,8 @@
             pipeRecommendationTitle: "DN 배관 추천",
             pipeRecommendationDesc: "계산된 유량 기준, 배관 내 유속을 안전 범위(0.5 ~ 1.0 m/s) 내로 유지하기 위해 <strong>{dn}</strong> 규격의 배관을 권장합니다. 밸브 제어성 확보(제어 권한 25% 마진 확보)를 위해 상용 표준 규격인 <strong>Kvs {kvsMargin}</strong> 규격의 밸브를 선택하는 것을 강력히 추천합니다.",
             fertStatusPill: "조제 준비 완료",
-            fertExplanation: "원액탱크 {tankVolume}L에 비료 <strong>{mass} kg</strong>을 용해하십시오. 원액 주입기가 1:{dilution} 비율로 흡입하여 공급할 때, 재배동 Emitter에서 정확히 {targetPpm} ppm 농도로 양액이 공급됩니다."
+            fertExplanation: "원액탱크 {tankVolume}L에 비료 <strong>{mass} kg</strong>을 용해하십시오. 원액 주입기가 1:{dilution} 비율로 흡입하여 공급할 때, 재배동 Emitter에서 정확히 {targetPpm} ppm 농도로 양액이 공급됩니다.",
+            disclaimer: "<strong>면책 조항 (Disclaimer):</strong> 본 계산기가 제공하는 수치는 시뮬레이션 및 교육적 참고 자료입니다. Inwoovation은 본 도구의 사용으로 인해 발생하는 농작물 피해, 설비 오작동 또는 유압 설계 오류 등에 대해 어떠한 법적 책임도 지지 않습니다. 상업용 온실에 실제로 적용하기 전에 반드시 계산 결과를 재검증하고 현장 전문가의 검토를 받으십시오."
         },
         en: {
             headerTitle: "Smart Farm Engineering Lab",
@@ -1381,7 +1385,8 @@
             pipeRecommendationTitle: "DN Size & Pipe Recommendation",
             pipeRecommendationDesc: "Based on water flow, a <strong>{dn}</strong> pipe is recommended to keep water velocity within the safe 0.5 to 1.0 m/s range. To maintain control authority (with 25% authority margin), it is highly recommended to select a standard commercial valve with <strong>Kvs {kvsMargin}</strong>.",
             fertStatusPill: "Ready to Dissolve",
-            fertExplanation: "Dissolve exactly <strong>{mass} kg</strong> of fertilizer into the {tankVolume}L stock tank. When your injector draws at a 1:{dilution} ratio, the irrigation emitter delivers a precise {targetPpm} ppm of the target nutrient."
+            fertExplanation: "Dissolve exactly <strong>{mass} kg</strong> of fertilizer into the {tankVolume}L stock tank. When your injector draws at a 1:{dilution} ratio, the irrigation emitter delivers a precise {targetPpm} ppm of the target nutrient.",
+            disclaimer: "<strong>Disclaimer:</strong> The calculations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these calculators. Always double-check calculations and consult certified professionals before applying changes to commercial greenhouses."
         }
     };
 
@@ -1466,6 +1471,7 @@
         // Translate Last Updated Badge & Feedback FAB
         document.getElementById('header-badge').innerText = lang === 'ko' ? '최종 업데이트: 2026년 6월' : 'Last Updated: June 2026';
         document.getElementById('lbl-feedback-text').innerText = lang === 'ko' ? '피드백 보내기' : 'Give Feedback';
+        document.getElementById('footer-disclaimer').innerHTML = i18n[lang].disclaimer;
 
         applyFertPreset();
         applyVpdPreset();
