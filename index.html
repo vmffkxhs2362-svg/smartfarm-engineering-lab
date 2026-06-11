@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgTech Precision Calculator | VPD, Mixing Valve & Fertigation</title>
+    <meta name="description" content="Free premium online calculator for Vapor Pressure Deficit (VPD), Greenhouse Mixing Valve Sizing, and Fertigation Stock Tank Dilution. Built for smart farm engineers and growers.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SEO JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AgTech Precision Calculator",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "browserRequirements": "Requires HTML5, Javascript, CSS3",
+      "softwareVersion": "2.0",
+      "description": "High-precision online engineering calculation suite for greenhouse climate and hydraulics, including Leaf Vapor Pressure Deficit, Heating Mixing Valve Sizing (Kv), and Fertigation Stock Tank Mixing Solver.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: rgba(13, 20, 38, 0.6);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --primary: #10b981; /* Emerald Green */
+            --primary-glow: rgba(16, 185, 129, 0.35);
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.35);
+            --text-light: #f3f4f6;
+            --text-gray: #9ca3af;
+            --text-dark: #0f172a;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+            color: var(--text-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Header UI */
+        header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.04em;
+        }
+
+        header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            font-weight: 400;
+            max-width: 600px;
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            display: flex;
+            gap: 0.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-card);
+            padding: 0.2rem;
+            border-radius: 8px;
+            width: max-content;
+            margin-bottom: 1.5rem;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-light);
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: var(--text-dark);
+        }
+
+        /* Tabs System */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap; /* Prevent wrapping on mobile */
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-card);
+            padding: 0.4rem;
+            border-radius: 100px;
+            width: max-content;
+            margin: 0 auto;
+            max-width: 100%;
+            overflow-x: auto; /* Just in case */
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            padding: 0.8rem 1.8rem;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-light);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
+            color: var(--text-dark);
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Responsive Text Spans */
+        .desktop-text {
+            display: inline;
+        }
+
+        .mobile-text {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem 0.8rem;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            header p {
+                font-size: 0.95rem;
+            }
+            .desktop-text {
+                display: none;
+            }
+            .mobile-text {
+                display: inline;
+            }
+            .tab-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+            .calc-wrapper {
+                padding: 1.5rem 1.2rem !important;
+                border-radius: 20px;
+                gap: 1.8rem !important;
+            }
+            .result-panel {
+                padding: 1.5rem !important;
+            }
+            .big-number {
+                font-size: 2.8rem !important;
+            }
+            .promo-banner {
+                padding: 1.5rem !important;
+                border-radius: 18px;
+            }
+        }
+
+        /* Main Section Card */
+        .calc-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 28px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: none;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calc-wrapper.active {
+            display: grid;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .calc-wrapper {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+                gap: 2.5rem;
+            }
+        }
+
+        /* Form & Inputs styling */
+        .panel-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .panel-title::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 1.5rem;
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .input-header label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-gray);
+        }
+
+        .input-control-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-control-wrapper input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-card);
+            padding: 1rem 1.2rem;
+            border-radius: 14px;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .input-control-wrapper input:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .input-control-wrapper .suffix {
+            position: absolute;
+            right: 1.2rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        /* Toggle Switches */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-card);
+            padding: 0.3rem;
+            border-radius: 8px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--text-light);
+            color: var(--bg-dark);
+        }
+
+        /* Segmented Control Button Filters */
+        .segmented-control {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.4rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-card);
+            margin-bottom: 2rem;
+        }
+
+        .segment-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-gray);
+            padding: 0.7rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .segment-btn:hover {
+            color: var(--text-light);
+        }
+
+        .segment-btn.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--primary);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Result Panel UI */
+        .result-panel {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .result-header {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+        }
+
+        .big-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--text-light) 30%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.2));
+            transition: all 0.3s ease;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .status-pill.optimal {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .status-pill.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
+        }
+
+        .status-pill.danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);
+        }
+
+        .result-desc {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+            max-width: 320px;
+        }
+
+        /* SVG Dynamic Gauges */
+        .gauge-svg-wrapper {
+            position: relative;
+            width: 200px;
+            height: 110px;
+            margin-bottom: 1rem;
+        }
+
+        .gauge-meter {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+        }
+
+        .gauge-bg {
+            stroke: rgba(255, 255, 255, 0.05);
+        }
+
+        .gauge-fill {
+            stroke: url(#cyan-green-grad);
+            stroke-dasharray: 283; /* Half circumference is ~283 */
+            stroke-dashoffset: 283; /* Initially empty */
+            transition: stroke-dashoffset 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gauge-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            height: 80px;
+            background: var(--text-light);
+            border-radius: 10px;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(-90deg); /* Range: -90deg (0) to 90deg (2.0) */
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        .gauge-center-dot {
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            background: var(--text-light);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.4);
+        }
+
+        /* Dynamic Cards for Valve Recommendations */
+        .info-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-card);
+            border-radius: 14px;
+            padding: 1.2rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .info-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-card p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        /* Promotional/Traffic Conversion Funnel Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border-card);
+            border-radius: 24px;
+            padding: 2.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-left: 5px solid var(--primary);
+        }
+
+        .promo-text h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+        }
+
+        .promo-text p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            max-width: 600px;
+        }
+
+        .promo-actions {
+            display: flex;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .promo-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%);
+            color: var(--text-dark);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .promo-btn:hover {
+            box-shadow: 0 15px 25px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .promo-btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-card);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .promo-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--text-gray);
+        }
+
+        @media (max-width: 900px) {
+            .promo-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+            .promo-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+            .promo-btn, .promo-btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* AdSpace placeholders */
+        .ad-space-placeholder {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px dashed var(--border-card);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* Footer styling */
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255,255,255,0.25);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--primary);
+        }
+
+        /* Select styling */
+        .input-control-wrapper select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-card);
+            padding: 1rem 1.2rem;
+            border-radius: 14px;
+            color: var(--text-light);
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .input-control-wrapper select:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .select-arrow-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-arrow-wrapper::after {
+            content: '▼';
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        /* Accordion Collapsible */
+        .accordion {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header {
+            padding: 1rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--cyan);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .accordion-header:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .accordion-header .icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.open .accordion-header .icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 1.2rem;
+        }
+
+        .accordion.open .accordion-body {
+            max-height: 600px;
+            padding: 1rem 1.2rem;
+            border-top: 1px solid var(--border-card);
+        }
+
+        .estimator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .estimator-grid .input-group {
+            margin-bottom: 0.8rem;
+        }
+
+        @media (max-width: 480px) {
+            .estimator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .estimator-btn {
+            background: var(--cyan);
+            color: var(--text-dark);
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .estimator-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Tank badges */
+        .tank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: 0.8rem;
+        }
+
+        .tank-a {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .tank-b {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .tank-ab {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Floating Feedback FAB */
+        .feedback-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(13, 20, 38, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--primary);
+            color: var(--text-light);
+            padding: 0.8rem 1.3rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 25px var(--primary-glow);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .feedback-fab:hover {
+            transform: translateY(-3px) scale(1.03);
+            border-color: var(--cyan);
+            box-shadow: 0 12px 30px var(--cyan-glow);
+        }
+
+        @media (max-width: 768px) {
+            .feedback-fab {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                padding: 0.7rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div id="header-badge" class="badge">Last Updated: June 2026</div>
+        <div class="lang-switch">
+            <button id="lang-ko" class="lang-btn" onclick="changeLanguage('ko')">KO</button>
+            <button id="lang-en" class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+        </div>
+        <h1 id="header-title">스마트팜 엔지니어링 랩</h1>
+        <p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <button id="btn-tab-vpd" class="tab-btn active" onclick="switchTab('vpd')">
+            <span class="desktop-text">포차 계산기 (VPD)</span>
+            <span class="mobile-text">VPD</span>
+        </button>
+        <button id="btn-tab-valve" class="tab-btn" onclick="switchTab('valve')">
+            <span class="desktop-text">난방 혼합 밸브</span>
+            <span class="mobile-text">혼합 밸브</span>
+        </button>
+        <button id="btn-tab-fert" class="tab-btn" onclick="switchTab('fert')">
+            <span class="desktop-text">원액 희석 계산기 (양액)</span>
+            <span class="mobile-text">양액 희석</span>
+        </button>
+    </div>
+
+    <!-- VPD SECTION -->
+    <div id="section-vpd" class="calc-wrapper active">
+        <div class="form-panel">
+            <h2 class="panel-title">환경 데이터 입력</h2>
+            
+            <div class="segmented-control">
+                <button id="stage-seedling" class="segment-btn active" onclick="setVpdStage('seedling')">육묘/삽목기</button>
+                <button id="stage-veg" class="segment-btn" onclick="setVpdStage('veg')">영양생장기</button>
+                <button id="stage-flower" class="segment-btn" onclick="setVpdStage('flower')">개화/착과기</button>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="vpd-preset" id="lbl-vpd-preset">광원 및 환경 프리셋</label>
+                </div>
+                <div class="input-control-wrapper select-arrow-wrapper">
+                    <select id="vpd-preset" onchange="applyVpdPreset()">
+                        <option value="custom" selected>직접 입력 (Custom)</option>
+                        <option value="led">LED 조명 온실 (엽온 편차 +1.0°C)</option>
+                        <option value="hps">고압나트륨등(HPS) 온실 (엽온 편차 -2.0°C)</option>
+                        <option value="sunlight">자연광 낮 (엽온 편차 -1.5°C)</option>
+                        <option value="night">야간/암기 (엽온 편차 0.0°C)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="temp-air">대기 온도</label>
+                    <div class="toggle-container">
+                        <button id="temp-unit-c" class="toggle-btn active" onclick="switchTempUnit('C')">°C</button>
+                        <button id="temp-unit-f" class="toggle-btn" onclick="switchTempUnit('F')">°F</button>
+                    </div>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="temp-air" value="25.0" step="0.1" oninput="calculateVpdEngine()">
+                    <span id="temp-air-unit" class="suffix">°C</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="rh-air">상대 습도</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="rh-air" value="65" min="10" max="98" step="1" oninput="calculateVpdEngine()">
+                    <span class="suffix">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="offset-leaf">엽온 편차 (대기 대비)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="offset-leaf" value="-2.0" step="0.1" oninput="calculateVpdEngine()">
+                    <span id="offset-leaf-unit" class="suffix">°C</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header">엽면 포차 (Leaf-to-Air VPD)</div>
+            
+            <!-- Dynamic Gauge SVG -->
+            <div class="gauge-svg-wrapper">
+                <svg width="200" height="110" viewBox="0 0 200 110">
+                    <defs>
+                        <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#ef4444" /> <!-- Red (dry) -->
+                            <stop offset="40%" stop-color="#f59e0b" /> <!-- Yellow -->
+                            <stop offset="60%" stop-color="#10b981" /> <!-- Green (opt) -->
+                            <stop offset="85%" stop-color="#06b6d4" /> <!-- Cyan -->
+                            <stop offset="100%" stop-color="#ef4444" /> <!-- Red (wet) -->
+                        </linearGradient>
+                    </defs>
+                    <!-- Arc (Radius 90, Center 100,100) -->
+                    <path class="gauge-meter gauge-bg" d="M 10 100 A 90 90 0 0 1 190 100" />
+                    <path id="gauge-fill-arc" class="gauge-meter gauge-fill" d="M 10 100 A 90 90 0 0 1 190 100" />
+                </svg>
+                <div id="gauge-hand" class="gauge-indicator"></div>
+                <div class="gauge-center-dot"></div>
+            </div>
+
+            <div id="vpd-value" class="big-number">0.75</div>
+            <div id="vpd-status-pill" class="status-pill optimal">최적 VPD</div>
+            
+            <p id="vpd-explanation" class="result-desc">현재 생육 단계에 완벽한 기후 조건입니다.</p>
+            
+            <div class="info-card">
+                <h4>원예 과학 팁</h4>
+                <p id="vpd-tip">적절한 엽면 VPD를 유지하는 것은 식물의 정상적인 증산 작용과 칼슘 흡수를 촉진하여 배꼽썩음병 등의 생리장해를 예방하는 데 필수적입니다.</p>
+            </div>
+            
+            <div id="vpd-actions-card" class="info-card" style="border-left: 4px solid var(--primary);">
+                <h4 id="lbl-vpd-actions-title">실시간 환경 제어 지침</h4>
+                <ul id="vpd-actions-list" style="list-style-type: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEATING VALVE SECTION -->
+    <div id="section-valve" class="calc-wrapper">
+        <div class="form-panel">
+            <h2 class="panel-title">배관 유압 프로파일</h2>
+            
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="heat-power">총 열부하 / 난방부하</label>
+                    <div class="toggle-container">
+                        <button id="power-unit-kw" class="toggle-btn active" onclick="switchPowerUnit('kW')">kW</button>
+                        <button id="power-unit-btu" class="toggle-btn" onclick="switchPowerUnit('BTU')">BTU/h</button>
+                    </div>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="heat-power" value="120" step="1" oninput="calculateValveEngine()">
+                    <span id="power-suffix" class="suffix">kW</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="valve-dt">설계 온도 강하 (ΔT)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="valve-dt" value="20" step="0.5" oninput="calculateValveEngine()">
+                    <span id="dt-suffix" class="suffix">°C</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="valve-dp">목표 밸브 압력 강하 (ΔPv)</label>
+                    <div class="toggle-container">
+                        <button id="press-unit-kpa" class="toggle-btn active" onclick="switchPressUnit('kPa')">kPa</button>
+                        <button id="press-unit-bar" class="toggle-btn" onclick="switchPressUnit('bar')">bar</button>
+                    </div>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="valve-dp" value="10.0" step="0.5" oninput="calculateValveEngine()">
+                    <span id="press-suffix" class="suffix">kPa</span>
+                </div>
+            </div>
+
+            <!-- Heat Load Estimator Accordion -->
+            <div id="heat-estimator-accordion" class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion('heat-estimator-accordion')">
+                    <span id="lbl-estimator-title">온실 난방부하 간이 계산기</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <div class="estimator-grid">
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="est-area" id="lbl-est-area">온실 바닥 면적</label>
+                            </div>
+                            <div class="input-control-wrapper">
+                                <input type="number" id="est-area" value="1000" step="50" oninput="runEstimatorEngine()">
+                                <span class="suffix">m²</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="est-cover" id="lbl-est-cover">피복재 종류</label>
+                            </div>
+                            <div class="input-control-wrapper select-arrow-wrapper">
+                                <select id="est-cover" onchange="runEstimatorEngine()">
+                                    <option value="6.0" selected id="opt-cover-single">단동 비닐 (U=6.0)</option>
+                                    <option value="3.5" id="opt-cover-double">이중 비닐 (U=3.5)</option>
+                                    <option value="5.5" id="opt-cover-glass">유리 온실 (U=5.5)</option>
+                                    <option value="2.8" id="opt-cover-pc">PC판 온실 (U=2.8)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="est-temp-in" id="lbl-est-temp-in">희망 실내 온도</label>
+                            </div>
+                            <div class="input-control-wrapper">
+                                <input type="number" id="est-temp-in" value="15" step="1" oninput="runEstimatorEngine()">
+                                <span class="suffix">°C</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="est-temp-out" id="lbl-est-temp-out">설계 최저 외기온</label>
+                            </div>
+                            <div class="input-control-wrapper">
+                                <input type="number" id="est-temp-out" value="-10" step="1" oninput="runEstimatorEngine()">
+                                <span class="suffix">°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="input-header">
+                            <span id="lbl-est-result">추정 난방부하 결과</span>
+                            <span id="est-result-value" style="font-weight: 800; color: var(--cyan); font-size: 1.1rem;">131 kW</span>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="estimator-btn" onclick="applyEstimatedLoad()" id="btn-apply-est">추정부하 입력창에 적용하기</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header">필요 밸브 용량 계수 (Kv)</div>
+            <div id="valve-value" class="big-number">16.3</div>
+            <div id="valve-status-pill" class="status-pill optimal">사이징 계산 완료</div>
+            
+            <p id="valve-explanation" class="result-desc">유량 계산 중...</p>
+            
+            <div id="pipe-suggestion-card" class="info-card">
+                <h4>DN 배관 추천</h4>
+                <p>배관 추천 계산 중...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FERTIGATION SECTION -->
+    <div id="section-fert" class="calc-wrapper">
+        <div class="form-panel">
+            <h2 class="panel-title">원액탱크 매개변수</h2>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="fert-preset" id="lbl-fert-preset">비료 종류 프리셋</label>
+                    <span id="fert-tank-badge" class="tank-badge tank-ab" style="display: none;">Tank A/B</span>
+                </div>
+                <div class="input-control-wrapper select-arrow-wrapper">
+                    <select id="fert-preset" onchange="applyFertPreset()">
+                        <option value="custom" selected>직접 입력 (Custom)</option>
+                        <option value="calcium_nitrate">질산칼슘 (Calcium Nitrate - N 15.5%)</option>
+                        <option value="potassium_nitrate">질산칼륨 (Potassium Nitrate - N 13.0%)</option>
+                        <option value="mkp">제일인산칼륨 (MKP - P 22.7%)</option>
+                        <option value="potassium_sulfate">황산칼륨 (Potassium Sulfate - K 41.5%)</option>
+                        <option value="magnesium_sulfate">황산마그네슘 (Magnesium Sulfate - Mg 9.8%)</option>
+                        <option value="ammonium_sulfate">황산암모늄 (Ammonium Sulfate - N 21.0%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="fert-target">목표 원소 농도</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="fert-target" value="150" step="5" oninput="calculateFertEngine()">
+                    <span class="suffix">ppm (mg/L)</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="fert-vol">원액탱크 용량</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="fert-vol" value="1000" step="50" oninput="calculateFertEngine()">
+                    <span class="suffix">Liters</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="fert-ratio">희석 주입 비율 (1:X)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="fert-ratio" value="100" step="10" oninput="calculateFertEngine()">
+                    <span class="suffix">Ratio</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="fert-purity">비료 내 원소 순도(함량)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="fert-purity" value="15.5" step="0.1" oninput="calculateFertEngine()">
+                    <span class="suffix">% Purity</span>
+                </div>
+            </div>
+            
+            <!-- Bicarbonate Neutralizer Accordion -->
+            <div id="acid-estimator-accordion" class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion('acid-estimator-accordion')">
+                    <span id="lbl-acid-title">원수 중탄산(pH) 중화 계산기</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <div class="estimator-grid">
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="acid-raw" id="lbl-acid-raw">원수 중탄산 (HCO₃⁻)</label>
+                            </div>
+                            <div class="input-control-wrapper">
+                                <input type="number" id="acid-raw" value="120" step="5" oninput="runAcidEngine()">
+                                <span class="suffix">ppm</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="acid-target" id="lbl-acid-target">목표 중탄산 농도</label>
+                            </div>
+                            <div class="input-control-wrapper">
+                                <input type="number" id="acid-target" value="50" step="5" oninput="runAcidEngine()">
+                                <span class="suffix">ppm</span>
+                            </div>
+                        </div>
+                        <div class="input-group" style="grid-column: span 2;">
+                            <div class="input-header">
+                                <label for="acid-select" id="lbl-acid-select">사용할 강산 종류</label>
+                            </div>
+                            <div class="input-control-wrapper select-arrow-wrapper">
+                                <select id="acid-select" onchange="runAcidEngine()">
+                                    <option value="nitric" selected id="opt-acid-nitric">질산 60% (HNO₃ 13.0 M)</option>
+                                    <option value="phosphoric" id="opt-acid-phosphoric">인산 85% (H₃PO₄ 14.6 M)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="input-header">
+                            <span id="lbl-acid-result">산 필요 투입량</span>
+                            <span id="acid-result-value" style="font-weight: 800; color: var(--cyan); font-size: 1.1rem;">0.0 L</span>
+                        </div>
+                    </div>
+                    
+                    <p id="acid-explanation" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.8rem; line-height: 1.5; border-top: 1px solid var(--border-card); padding-top: 0.8rem;">
+                        원액탱크에 투입해야 하는 강산의 양입니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header">비료 필요량</div>
+            <div id="fert-value" class="big-number">96.8</div>
+            <div id="fert-status-pill" class="status-pill optimal">조제 준비 완료</div>
+            
+            <p id="fert-explanation" class="result-desc">비료 용해량 계산 중...</p>
+            
+            <div class="info-card">
+                <h4>원액탱크 안전 수칙</h4>
+                <p>칼슘계 비료와 인산/황산계 비료는 화학적 침전 및 노즐 막힘을 방지하기 위해 반드시 A통과 B통으로 나누어 조제해야 합니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adspace Placeholder -->
+    <div class="ad-space-placeholder">
+        Sponsored Link - Google AdSense Placement Space
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Smart Farm Engineering Lab. All rights reserved.</p>
+        <p>Built for zero-cost static hosting. Designed by Inwoovation &bull; <a href="mailto:vmffkxhs2362@gmail.com">Contact Support</a></p>
+    </footer>
+</div>
+
+<!-- Floating Feedback Button (FAB) -->
+<a id="btn-feedback" href="https://forms.gle/SC3ehhA4r6sPEZxV7" onclick="handleFeedbackClick(event)" target="_blank" class="feedback-fab">
+    <span class="icon">💡</span>
+    <span id="lbl-feedback-text" class="text">Give Feedback</span>
+</a>
+
+<script>
+    const i18n = {
+        ko: {
+            headerTitle: "스마트팜 엔지니어링 랩",
+            headerDesc: "현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.",
+            tabVpdDeskt: "포차 계산기 (VPD)",
+            tabVpdMobil: "VPD",
+            tabValveDeskt: "난방 혼합 밸브",
+            tabValveMobil: "혼합 밸브",
+            tabFertDeskt: "원액 희석 계산기 (양액)",
+            tabFertMobil: "양액 희석",
+            vpdTitle: "환경 데이터 입력",
+            stageSeedling: "육묘/삽목기",
+            stageVeg: "영양생장기",
+            stageFlower: "개화/착과기",
+            lblAirTemp: "대기 온도",
+            lblRhAir: "상대 습도",
+            lblOffsetLeaf: "엽온 편차 (대기 대비)",
+            resVpdHeader: "엽면 포차 (Leaf-to-Air VPD)",
+            tipTitle: "원예 과학 팁",
+            valveTitle: "배관 유압 프로파일",
+            lblHeatPower: "총 열부하 / 난방부하",
+            lblValveDt: "설계 온도 강하 (ΔT)",
+            lblValveDp: "목표 밸브 압력 강하 (ΔPv)",
+            resValveHeader: "필요 밸브 용량 계수 (Kv)",
+            fertTitle: "원액탱크 매개변수",
+            lblFertTarget: "목표 원소 농도",
+            lblFertVol: "원액탱크 용량",
+            lblFertRatio: "희석 주입 비율 (1:X)",
+            lblFertPurity: "비료 내 원소 순도(함량)",
+            resFertHeader: "비료 필요량",
+            fertSafetyTitle: "원액탱크 안전 수칙",
+            fertSafetyDesc: "칼슘계 비료와 인산/황산계 비료는 화학적 침전 및 노즐 막힘을 방지하기 위해 반드시 A통과 B통으로 나누어 조제해야 합니다.",
+            vpdTipSeedling: "육묘 및 삽목기에는 식물이 뿌리를 내리기 전에 탈수되는 것을 방지하기 위해 낮은 VPD(0.4~0.8 kPa)를 유지하는 것이 좋습니다.",
+            vpdTipVeg: "영양생장기에는 적절한 기공 개폐와 건강한 세포 확장을 보장하기 위해 중간 수준의 VPD(0.8~1.1 kPa)가 요구됩니다.",
+            vpdTipFlower: "개화기 및 결실기에는 효율적인 양분(칼슘 등) 흡수를 촉진하고 과실 부패를 방지하기 위해 비교적 높은 VPD(1.1~1.5 kPa)를 유지합니다.",
+            vpdExplanationLow: "최적 범위({minOpt}-{maxOpt} kPa)보다 낮습니다. 증산이 정체되어 칼슘 결핍(팁번) 및 곰팡이 발생 위험이 높습니다.",
+            vpdExplanationOpt: "현재 생육 단계에 완벽한 기후 조건({minOpt}-{maxOpt} kPa)입니다. 광합성 효율이 최대화됩니다.",
+            vpdExplanationHigh: "최적 범위({minOpt}-{maxOpt} kPa)보다 높습니다. 건조한 상태로, 식물이 수분 손실을 막기 위해 기공을 닫아 광합성이 저해될 수 있습니다.",
+            valveStatusPill: "사이징 계산 완료",
+            valveExplanation: "순환 유량 <strong>{flowRate} m³/h</strong>에 대해 밸브 Kv 계수 <strong>{kv}</strong> 규격이 필요합니다.",
+            pipeRecommendationTitle: "DN 배관 추천",
+            pipeRecommendationDesc: "계산된 유량 기준, 배관 내 유속을 안전 범위(0.5 ~ 1.0 m/s) 내로 유지하기 위해 <strong>{dn}</strong> 규격의 배관을 권장합니다. 밸브 제어성 확보(제어 권한 25% 마진 확보)를 위해 상용 표준 규격인 <strong>Kvs {kvsMargin}</strong> 규격의 밸브를 선택하는 것을 강력히 추천합니다.",
+            fertStatusPill: "조제 준비 완료",
+            fertExplanation: "원액탱크 {tankVolume}L에 비료 <strong>{mass} kg</strong>을 용해하십시오. 원액 주입기가 1:{dilution} 비율로 흡입하여 공급할 때, 재배동 Emitter에서 정확히 {targetPpm} ppm 농도로 양액이 공급됩니다."
+        },
+        en: {
+            headerTitle: "Smart Farm Engineering Lab",
+            headerDesc: "High-precision online calculator suite designed for modern greenhouse designers, growers, and agricultural engineers.",
+            tabVpdDeskt: "Vapor Pressure Deficit (VPD)",
+            tabVpdMobil: "VPD",
+            tabValveDeskt: "Heating Mixing Valve",
+            tabValveMobil: "Mixing Valve",
+            tabFertDeskt: "Stock Tank Fertigation",
+            tabFertMobil: "Fertigation",
+            vpdTitle: "Environmental Data",
+            stageSeedling: "Seedling/Clone",
+            stageVeg: "Vegetative",
+            stageFlower: "Flower/Fruit",
+            lblAirTemp: "Air Temperature",
+            lblRhAir: "Relative Humidity",
+            lblOffsetLeaf: "Leaf Temp Offset (vs. Air)",
+            resVpdHeader: "Leaf-to-Air VPD",
+            tipTitle: "Horticulture Tip",
+            valveTitle: "Hydraulic Profile",
+            lblHeatPower: "Heat Demand / Heat Load",
+            lblValveDt: "Design Temp Drop (ΔT)",
+            lblValveDp: "Target Valve Pressure Drop (ΔPv)",
+            resValveHeader: "Required Valve Coefficient",
+            fertTitle: "Stock Tank Parameter",
+            lblFertTarget: "Target Element Concentration",
+            lblFertVol: "Stock Tank Volume",
+            lblFertRatio: "Dilution Injection Ratio (1:X)",
+            lblFertPurity: "Element Purity in Fertilizer",
+            resFertHeader: "Fertilizer Mass Required",
+            fertSafetyTitle: "Stock Tank Safety Rule",
+            fertSafetyDesc: "Calcium Nitrate and Phosphate/Sulfate-based fertilizers must be separated into tank A and B to prevent chemical precipitation and clogging.",
+            vpdTipSeedling: "During propagation and seedling stage, a lower VPD (0.4-0.8 kPa) prevents soft cells from dehydrating before roots fully develop.",
+            vpdTipVeg: "Vegetative stage demands a moderate VPD (0.8-1.1 kPa) to ensure ideal stomatal conductance and healthy cell expansion.",
+            vpdTipFlower: "In flowering or fruiting stages, high VPD (1.1-1.5 kPa) pulls calcium and other structural minerals efficiently into the blooms to prevent bud rot.",
+            vpdExplanationLow: "Below optimal range ({minOpt}-{maxOpt} kPa). Evaporation is stagnant. Plants are at high risk of calcium deficiency (tipburn) and fungal outbreaks.",
+            vpdExplanationOpt: "Perfect climate envelope for your stage ({minOpt}-{maxOpt} kPa). Photosynthetic assimilation rate is maximized.",
+            vpdExplanationHigh: "Above optimal range ({minOpt}-{maxOpt} kPa). High evaporation rate. Stomata will close to prevent dehydration, stunting photosynthesis.",
+            valveStatusPill: "Ready for Sizing",
+            valveExplanation: "For a flow rate of <strong>{flowRate} m³/h</strong>, a mixing valve with Kv <strong>{kv}</strong> is required.",
+            pipeRecommendationTitle: "DN Size & Pipe Recommendation",
+            pipeRecommendationDesc: "Based on water flow, a <strong>{dn}</strong> pipe is recommended to keep water velocity within the safe 0.5 to 1.0 m/s range. To maintain control authority (with 25% authority margin), it is highly recommended to select a standard commercial valve with <strong>Kvs {kvsMargin}</strong>.",
+            fertStatusPill: "Ready to Dissolve",
+            fertExplanation: "Dissolve exactly <strong>{mass} kg</strong> of fertilizer into the {tankVolume}L stock tank. When your injector draws at a 1:{dilution} ratio, the irrigation emitter delivers a precise {targetPpm} ppm of the target nutrient."
+        }
+    };
+
+    let currentLang = 'ko';
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`lang-${lang}`).classList.add('active');
+        document.getElementById('header-title').innerText = i18n[lang].headerTitle;
+        document.getElementById('header-desc').innerText = i18n[lang].headerDesc;
+        const vpdTab = document.getElementById('btn-tab-vpd');
+        vpdTab.querySelector('.desktop-text').innerText = i18n[lang].tabVpdDeskt;
+        vpdTab.querySelector('.mobile-text').innerText = i18n[lang].tabVpdMobil;
+        const valveTab = document.getElementById('btn-tab-valve');
+        valveTab.querySelector('.desktop-text').innerText = i18n[lang].tabValveDeskt;
+        valveTab.querySelector('.mobile-text').innerText = i18n[lang].tabValveMobil;
+        const fertTab = document.getElementById('btn-tab-fert');
+        fertTab.querySelector('.desktop-text').innerText = i18n[lang].tabFertDeskt;
+        fertTab.querySelector('.mobile-text').innerText = i18n[lang].tabFertMobil;
+        document.querySelector('#section-vpd .form-panel .panel-title').innerText = i18n[lang].vpdTitle;
+        document.getElementById('stage-seedling').innerText = i18n[lang].stageSeedling;
+        document.getElementById('stage-veg').innerText = i18n[lang].stageVeg;
+        document.getElementById('stage-flower').innerText = i18n[lang].stageFlower;
+        document.querySelector('label[for="temp-air"]').innerText = i18n[lang].lblAirTemp;
+        document.querySelector('label[for="rh-air"]').innerText = i18n[lang].lblRhAir;
+        document.querySelector('label[for="offset-leaf"]').innerText = i18n[lang].lblOffsetLeaf;
+        document.querySelector('#section-vpd .result-panel .result-header').innerText = i18n[lang].resVpdHeader;
+        document.querySelector('#section-vpd .result-panel .info-card h4').innerText = i18n[lang].tipTitle;
+        document.getElementById('lbl-vpd-preset').innerText = lang === 'ko' ? '광원 및 환경 프리셋' : 'Light & Env Preset';
+        const vpdPreset = document.getElementById('vpd-preset');
+        vpdPreset.options[0].text = lang === 'ko' ? '직접 입력 (Custom)' : 'Custom Input';
+        vpdPreset.options[1].text = lang === 'ko' ? 'LED 조명 온실 (엽온 편차 +1.0°C)' : 'LED Greenhouse (Offset +1.0°C)';
+        vpdPreset.options[2].text = lang === 'ko' ? '고압나트륨등(HPS) 온실 (엽온 편차 -2.0°C)' : 'HPS Greenhouse (Offset -2.0°C)';
+        vpdPreset.options[3].text = lang === 'ko' ? '자연광 낮 (엽온 편차 -1.5°C)' : 'Sunlight Day (Offset -1.5°C)';
+        vpdPreset.options[4].text = lang === 'ko' ? '야간/암기 (엽온 편차 0.0°C)' : 'Night/Dark (Offset 0.0°C)';
+        document.querySelector('#section-valve .form-panel .panel-title').innerText = i18n[lang].valveTitle;
+        document.querySelector('label[for="heat-power"]').innerText = i18n[lang].lblHeatPower;
+        document.querySelector('label[for="valve-dt"]').innerText = i18n[lang].lblValveDt;
+        document.querySelector('label[for="valve-dp"]').innerText = i18n[lang].lblValveDp;
+        document.querySelector('#section-valve .result-panel .result-header').innerText = i18n[lang].resValveHeader;
+        document.getElementById('lbl-estimator-title').innerText = lang === 'ko' ? '온실 난방부하 간이 계산기' : 'Greenhouse Heat Load Estimator';
+        document.getElementById('lbl-est-area').innerText = lang === 'ko' ? '온실 바닥 면적' : 'Greenhouse Floor Area';
+        document.getElementById('lbl-est-cover').innerText = lang === 'ko' ? '피복재 종류' : 'Cover Material Type';
+        document.getElementById('lbl-est-temp-in').innerText = lang === 'ko' ? '희망 실내 온도' : 'Target Indoor Temp';
+        document.getElementById('lbl-est-temp-out').innerText = lang === 'ko' ? '설계 최저 외기온' : 'Expected Outdoor Min';
+        document.getElementById('lbl-est-result').innerText = lang === 'ko' ? '추정 난방부하 결과' : 'Estimated Heat Load';
+        document.getElementById('btn-apply-est').innerText = lang === 'ko' ? '추정부하 입력창에 적용하기' : 'Apply to Heat Demand';
+        const estCover = document.getElementById('est-cover');
+        estCover.options[0].text = lang === 'ko' ? '단동 비닐 (U=6.0)' : 'Single Poly Film (U=6.0)';
+        estCover.options[1].text = lang === 'ko' ? '이중 비닐 (U=3.5)' : 'Double Poly Film (U=3.5)';
+        estCover.options[2].text = lang === 'ko' ? '유리 온실 (U=5.5)' : 'Glass Greenhouse (U=5.5)';
+        estCover.options[3].text = lang === 'ko' ? 'PC판 온실 (U=2.8)' : 'PC Sheet Greenhouse (U=2.8)';
+        document.querySelector('#section-fert .form-panel .panel-title').innerText = i18n[lang].fertTitle;
+        document.querySelector('label[for="fert-target"]').innerText = i18n[lang].lblFertTarget;
+        document.querySelector('label[for="fert-vol"]').innerText = i18n[lang].lblFertVol;
+        document.querySelector('label[for="fert-ratio"]').innerText = i18n[lang].lblFertRatio;
+        document.querySelector('label[for="fert-purity"]').innerText = i18n[lang].lblFertPurity;
+        document.querySelector('#section-fert .result-panel .result-header').innerText = i18n[lang].resFertHeader;
+        document.querySelector('#section-fert .result-panel .info-card h4').innerText = i18n[lang].fertSafetyTitle;
+        document.querySelector('#section-fert .result-panel .info-card p').innerText = i18n[lang].fertSafetyDesc;
+        document.getElementById('lbl-fert-preset').innerText = lang === 'ko' ? '비료 종류 프리셋' : 'Fertilizer Preset';
+        const fertPreset = document.getElementById('fert-preset');
+        fertPreset.options[0].text = lang === 'ko' ? '직접 입력 (Custom)' : 'Custom Input';
+        fertPreset.options[1].text = lang === 'ko' ? '질산칼슘 (Calcium Nitrate - N 15.5%)' : 'Calcium Nitrate (N 15.5%)';
+        fertPreset.options[2].text = lang === 'ko' ? '질산칼륨 (Potassium Nitrate - N 13.0%)' : 'Potassium Nitrate (N 13.0%)';
+        fertPreset.options[3].text = lang === 'ko' ? '제일인산칼륨 (MKP - P 22.7%)' : 'Monopotassium Phosphate (MKP - P 22.7%)';
+        fertPreset.options[4].text = lang === 'ko' ? '황산칼륨 (Potassium Sulfate - K 41.5%)' : 'Potassium Sulfate (K 41.5%)';
+        fertPreset.options[5].text = lang === 'ko' ? '황산마그네슘 (Magnesium Sulfate - Mg 9.8%)' : 'Magnesium Sulfate (Mg 9.8%)';
+        fertPreset.options[6].text = lang === 'ko' ? '황산암모늄 (Ammonium Sulfate - N 21.0%)' : 'Ammonium Sulfate (N 21.0%)';
+        
+        // Translate Acid Neutralizer
+        document.getElementById('lbl-acid-title').innerText = lang === 'ko' ? '원수 중탄산(pH) 중화 계산기' : 'Raw Bicarbonate (pH) Neutralizer';
+        document.getElementById('lbl-acid-raw').innerText = lang === 'ko' ? '원수 중탄산 (HCO₃⁻)' : 'Raw Bicarbonate (HCO₃⁻)';
+        document.getElementById('lbl-acid-target').innerText = lang === 'ko' ? '목표 중탄산 농도' : 'Target Bicarbonate';
+        document.getElementById('lbl-acid-select').innerText = lang === 'ko' ? '사용할 강산 종류' : 'Acid Type to Use';
+        document.getElementById('opt-acid-nitric').text = lang === 'ko' ? '질산 60% (HNO₃ 13.0 M)' : 'Nitric Acid 60% (HNO₃ 13.0 M)';
+        document.getElementById('opt-acid-phosphoric').text = lang === 'ko' ? '인산 85% (H₃PO₄ 14.6 M)' : 'Phosphoric Acid 85% (H₃PO₄ 14.6 M)';
+        document.getElementById('lbl-acid-result').innerText = lang === 'ko' ? '산 필요 투입량' : 'Acid Vol Required';
+        document.getElementById('lbl-vpd-actions-title').innerText = lang === 'ko' ? '실시간 환경 제어 지침' : 'Live Climate Action Guide';
+
+        // Translate Last Updated Badge & Feedback FAB
+        document.getElementById('header-badge').innerText = lang === 'ko' ? '최종 업데이트: 2026년 6월' : 'Last Updated: June 2026';
+        document.getElementById('lbl-feedback-text').innerText = lang === 'ko' ? '피드백 보내기' : 'Give Feedback';
+
+        applyFertPreset();
+        applyVpdPreset();
+        runEstimatorEngine();
+        runAcidEngine();
+    }
+    function switchTab(target) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.calc-wrapper').forEach(card => card.classList.remove('active'));
+        if (target === 'vpd') {
+            document.getElementById('btn-tab-vpd').classList.add('active');
+            document.getElementById('section-vpd').classList.add('active');
+            calculateVpdEngine();
+        } else if (target === 'valve') {
+            document.getElementById('btn-tab-valve').classList.add('active');
+            document.getElementById('section-valve').classList.add('active');
+            calculateValveEngine();
+        } else if (target === 'fert') {
+            document.getElementById('btn-tab-fert').classList.add('active');
+            document.getElementById('section-fert').classList.add('active');
+            calculateFertEngine();
+            runAcidEngine();
+        }
+    }
+    function toggleAccordion(id) {
+        const acc = document.getElementById(id);
+        acc.classList.toggle('open');
+    }
+    let currentTempUnit = 'C';
+    let currentVpdStage = 'seedling';
+    let currentPowerUnit = 'kW';
+    let currentPressUnit = 'kPa';
+    function applyVpdPreset() {
+        const preset = document.getElementById('vpd-preset').value;
+        const offsetEl = document.getElementById('offset-leaf');
+        if (preset === 'custom') {
+            offsetEl.disabled = false;
+        } else {
+            offsetEl.disabled = true;
+            if (preset === 'led') {
+                offsetEl.value = currentTempUnit === 'F' ? "1.8" : "1.0";
+            } else if (preset === 'hps') {
+                offsetEl.value = currentTempUnit === 'F' ? "-3.6" : "-2.0";
+            } else if (preset === 'sunlight') {
+                offsetEl.value = currentTempUnit === 'F' ? "-2.7" : "-1.5";
+            } else if (preset === 'night') {
+                offsetEl.value = "0.0";
+            }
+        }
+        calculateVpdEngine();
+    }
+    function switchTempUnit(unit) {
+        if (currentTempUnit === unit) return;
+        currentTempUnit = unit;
+        const cBtn = document.getElementById('temp-unit-c');
+        const fBtn = document.getElementById('temp-unit-f');
+        const tempValEl = document.getElementById('temp-air');
+        const offsetValEl = document.getElementById('offset-leaf');
+        const tempSuffix = document.getElementById('temp-air-unit');
+        const offsetSuffix = document.getElementById('offset-leaf-unit');
+        let tempVal = parseFloat(tempValEl.value);
+        let offsetVal = parseFloat(offsetValEl.value);
+        if (unit === 'F') {
+            cBtn.classList.remove('active');
+            fBtn.classList.add('active');
+            tempValEl.value = (tempVal * 1.8 + 32).toFixed(1);
+            offsetValEl.value = (offsetVal * 1.8).toFixed(1);
+            tempSuffix.innerText = '°F';
+            offsetSuffix.innerText = '°F';
+        } else {
+            cBtn.classList.add('active');
+            fBtn.classList.remove('active');
+            tempValEl.value = ((tempVal - 32) / 1.8).toFixed(1);
+            offsetValEl.value = (offsetVal / 1.8).toFixed(1);
+            tempSuffix.innerText = '°C';
+            offsetSuffix.innerText = '°C';
+        }
+        applyVpdPreset();
+    }
+    function setVpdStage(stage) {
+        currentVpdStage = stage;
+        document.querySelectorAll('.segmented-control button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`stage-${stage}`).classList.add('active');
+        calculateVpdEngine();
+    }
+    function calculateVpdEngine() {
+        let T_air = parseFloat(document.getElementById('temp-air').value);
+        let RH = parseFloat(document.getElementById('rh-air').value);
+        let dT = parseFloat(document.getElementById('offset-leaf').value);
+        if (isNaN(T_air) || isNaN(RH) || isNaN(dT)) return;
+        if (currentTempUnit === 'F') {
+            T_air = (T_air - 32) / 1.8;
+            dT = dT / 1.8;
+        }
+        const T_leaf = T_air + dT;
+        const VPsat_air = 0.61078 * Math.exp((17.27 * T_air) / (T_air + 237.3));
+        const VPsat_leaf = 0.61078 * Math.exp((17.27 * T_leaf) / (T_leaf + 237.3));
+        const VPact_air = VPsat_air * (RH / 100);
+        let vpd = VPsat_leaf - VPact_air;
+        if (vpd < 0) vpd = 0;
+        document.getElementById('vpd-value').innerText = vpd.toFixed(2) + " kPa";
+        let percent = vpd / 2.0;
+        if (percent > 1.0) percent = 1.0;
+        const angle = -90 + (percent * 180);
+        document.getElementById('gauge-hand').style.transform = `translateX(-50%) rotate(${angle}deg)`;
+        const fillOffset = 283 - (percent * 283);
+        document.getElementById('gauge-fill-arc').style.strokeDashoffset = fillOffset;
+        const statusPill = document.getElementById('vpd-status-pill');
+        const descEl = document.getElementById('vpd-explanation');
+        const tipEl = document.getElementById('vpd-tip');
+        let minOpt = 0.8;
+        let maxOpt = 1.2;
+        if (currentVpdStage === 'seedling') {
+            minOpt = 0.4;
+            maxOpt = 0.8;
+            tipEl.innerText = i18n[currentLang].vpdTipSeedling;
+        } else if (currentVpdStage === 'veg') {
+            minOpt = 0.8;
+            maxOpt = 1.1;
+            tipEl.innerText = i18n[currentLang].vpdTipVeg;
+        } else if (currentVpdStage === 'flower') {
+            minOpt = 1.1;
+            maxOpt = 1.5;
+            tipEl.innerText = i18n[currentLang].vpdTipFlower;
+        }
+        
+        const actionsCard = document.getElementById('vpd-actions-card');
+        const actionsList = document.getElementById('vpd-actions-list');
+        
+        if (vpd < minOpt) {
+            statusPill.innerText = currentLang === 'ko' ? "너무 다습 (낮은 VPD)" : "Too Humid (Low VPD)";
+            statusPill.className = "status-pill danger";
+            descEl.innerText = i18n[currentLang].vpdExplanationLow.replace('{minOpt}', minOpt).replace('{maxOpt}', maxOpt);
+            
+            actionsCard.style.borderLeft = "4px solid var(--danger)";
+            actionsList.innerHTML = currentLang === 'ko' ? 
+                `<li>⚠️ <strong>송풍팬 가동 및 환기창 개방</strong>: 온실 내부 습한 공기를 강제 배출시킵니다.</li>
+                 <li>⚠️ <strong>난방배관 가열</strong>: 온도를 소폭 올려 상대습도(RH)를 직접 낮춥니다.</li>
+                 <li>⚠️ <strong>보온커튼 일부 개방 (Gap)</strong>: 천장 상부의 건조한 공기와 swap을 유도합니다.</li>` :
+                `<li>⚠️ <strong>Ventilation</strong>: Run circulation fans and crack vents to expel moist air.</li>
+                 <li>⚠️ <strong>Heating</strong>: Slightly raise pipe temp to warm the air and lower relative humidity.</li>
+                 <li>⚠️ <strong>Thermal Screen Gap</strong>: Open screens slightly to mix with drier upper air.</li>`;
+        } else if (vpd >= minOpt && vpd <= maxOpt) {
+            statusPill.innerText = currentLang === 'ko' ? "최적 VPD" : "Optimal VPD";
+            statusPill.className = "status-pill optimal";
+            descEl.innerText = i18n[currentLang].vpdExplanationOpt.replace('{minOpt}', minOpt).replace('{maxOpt}', maxOpt);
+            
+            actionsCard.style.borderLeft = "4px solid var(--success)";
+            actionsList.innerHTML = currentLang === 'ko' ? 
+                `<li>✅ <strong>생육 활성도 최상</strong>: 광합성 및 이산화탄소 흡수, 칼슘 전류 속도가 극대화됩니다.</li>
+                 <li>✅ <strong>표준 관수 유지</strong>: 현재 누적 일사량 기준에 맞춰 정밀 관수 스케줄을 유지하십시오.</li>` :
+                `<li>✅ <strong>Optimal Climate</strong>: CO₂ assimilation, transpiration, and calcium flow are at peak performance.</li>
+                 <li>✅ <strong>Standard Irrigation</strong>: Maintain standard watering intervals based on cumulative light sum.</li>`;
+        } else {
+            statusPill.innerText = currentLang === 'ko' ? "너무 건조 (높은 VPD)" : "Too Dry (High VPD)";
+            statusPill.className = "status-pill warning";
+            descEl.innerText = i18n[currentLang].vpdExplanationHigh.replace('{minOpt}', minOpt).replace('{maxOpt}', maxOpt);
+            
+            actionsCard.style.borderLeft = "4px solid var(--warning)";
+            actionsList.innerHTML = currentLang === 'ko' ? 
+                `<li>⚠️ <strong>미스트/포그 장치 가동</strong>: 공기 중에 고압 포그를 살포해 즉각적으로 다습 환경을 만듭니다.</li>
+                 <li>⚠️ <strong>차광스크린(차광막) 전개</strong>: 강한 일사를 가려 잎 표면 온도(엽온)를 낮추고 수분 스트레스를 경감시킵니다.</li>
+                 <li>⚠️ <strong>환기량 축소</strong>: 측창 및 천창 개도를 좁혀 온실 내부 습기가 날아가는 것을 방지합니다.</li>` :
+                `<li>⚠️ <strong>Fogging/Misting</strong>: Run high-pressure mist systems to immediately supply humidity.</li>
+                 <li>⚠️ <strong>Deploy Shading</strong>: Cover with screens to decrease solar load, leaf temp, and transpiration pressure.</li>
+                 <li>⚠️ <strong>Reduce Vents</strong>: Keep vents slightly closed to prevent dry outdoor air swap.</li>`;
+        }
+    }
+    function runEstimatorEngine() {
+        const area = parseFloat(document.getElementById('est-area').value);
+        const U = parseFloat(document.getElementById('est-cover').value);
+        const tempIn = parseFloat(document.getElementById('est-temp-in').value);
+        const tempOut = parseFloat(document.getElementById('est-temp-out').value);
+        if (isNaN(area) || isNaN(U) || isNaN(tempIn) || isNaN(tempOut)) return;
+        const deltaT = tempIn - tempOut;
+        if (deltaT <= 0) {
+            document.getElementById('est-result-value').innerText = "0 kW";
+            return;
+        }
+        const qEst = (1.4 * area * U * deltaT * 1.25) / 1000;
+        document.getElementById('est-result-value').innerText = qEst.toFixed(0) + " kW";
+    }
+    function applyEstimatedLoad() {
+        const resultVal = parseFloat(document.getElementById('est-result-value').innerText);
+        const heatPowerEl = document.getElementById('heat-power');
+        if (currentPowerUnit === 'BTU') {
+            heatPowerEl.value = (resultVal * 3412.14).toFixed(0);
+        } else {
+            heatPowerEl.value = resultVal.toFixed(0);
+        }
+        calculateValveEngine();
+        heatPowerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        heatPowerEl.focus();
+        heatPowerEl.style.borderColor = 'var(--cyan)';
+        setTimeout(() => {
+            heatPowerEl.style.borderColor = '';
+        }, 1500);
+    }
+    function runAcidEngine() {
+        const rawHco3 = parseFloat(document.getElementById('acid-raw').value);
+        const targetHco3 = parseFloat(document.getElementById('acid-target').value);
+        const acidType = document.getElementById('acid-select').value;
+        const tankVol = parseFloat(document.getElementById('fert-vol').value);
+        const dilution = parseFloat(document.getElementById('fert-ratio').value);
+        
+        if (isNaN(rawHco3) || isNaN(targetHco3) || isNaN(tankVol) || isNaN(dilution)) return;
+        
+        const deltaHco3 = rawHco3 - targetHco3;
+        if (deltaHco3 <= 0) {
+            document.getElementById('acid-result-value').innerText = "0.0 mL";
+            document.getElementById('acid-explanation').innerText = currentLang === 'ko' ? "중화할 중탄산이 없습니다. 원수의 pH 버퍼 능력이 안정적입니다." : "No bicarbonate to neutralize. Water pH buffer is stable.";
+            return;
+        }
+        
+        const meqL = deltaHco3 / 61.017;
+        let acidMolarity = 13.0; // Nitric Acid 60%
+        if (acidType === 'phosphoric') {
+            acidMolarity = 14.6; // Phosphoric Acid 85%
+        }
+        
+        const totalMeq = meqL * tankVol * dilution;
+        const acidVolMl = totalMeq / acidMolarity;
+        
+        const resultValEl = document.getElementById('acid-result-value');
+        const expEl = document.getElementById('acid-explanation');
+        
+        if (acidVolMl >= 1000) {
+            resultValEl.innerText = (acidVolMl / 1000).toFixed(2) + " L";
+        } else {
+            resultValEl.innerText = acidVolMl.toFixed(0) + " mL";
+        }
+        
+        if (currentLang === 'ko') {
+            const acidName = acidType === 'nitric' ? "질산 60%" : "인산 85%";
+            expEl.innerHTML = `원수 중탄산 <strong>${rawHco3} ppm</strong>에서 <strong>${targetHco3} ppm</strong>으로 낮추기 위해 중탄산 <strong>${meqL.toFixed(2)} meq/L</strong>을 중화해야 합니다.<br>원액탱크 ${tankVol}L에 <strong>${acidName}</strong>을 <strong>${acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL"}</strong> 혼합하여 조제하십시오.<br><small style="color: var(--danger); font-weight: 600;">⚠️ 주의: 강산을 원액탱크에 넣을 때 반드시 물을 채운 뒤 산을 마지막에 천천히 저으면서 넣으십시오. (절대로 산에 물을 부으면 안 됩니다!)</small>`;
+        } else {
+            const acidName = acidType === 'nitric' ? "60% Nitric Acid" : "85% Phosphoric Acid";
+            expEl.innerHTML = `To neutralize raw bicarbonate from <strong>${rawHco3} ppm</strong> to <strong>${targetHco3} ppm</strong>, we need to neutralize <strong>${meqL.toFixed(2)} meq/L</strong> of HCO₃⁻.<br>Add <strong>${acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL"}</strong> of <strong>${acidName}</strong> to the ${tankVol}L stock tank.<br><small style="color: var(--danger); font-weight: 600;">⚠️ CAUTION: Always add acid to water, never water to acid! Add slowly while stirring.</small>`;
+        }
+    }
+    function switchPowerUnit(unit) {
+        if (currentPowerUnit === unit) return;
+        currentPowerUnit = unit;
+        const kwBtn = document.getElementById('power-unit-kw');
+        const btuBtn = document.getElementById('power-unit-btu');
+        const powerInput = document.getElementById('heat-power');
+        const powerSuffix = document.getElementById('power-suffix');
+        let val = parseFloat(powerInput.value);
+        if (unit === 'BTU') {
+            kwBtn.classList.remove('active');
+            btuBtn.classList.add('active');
+            powerInput.value = (val * 3412.14).toFixed(0);
+            powerSuffix.innerText = 'BTU/h';
+        } else {
+            kwBtn.classList.add('active');
+            btuBtn.classList.remove('active');
+            powerInput.value = (val / 3412.14).toFixed(0);
+            powerSuffix.innerText = 'kW';
+        }
+        calculateValveEngine();
+    }
+    function switchPressUnit(unit) {
+        if (currentPressUnit === unit) return;
+        currentPressUnit = unit;
+        const kpaBtn = document.getElementById('press-unit-kpa');
+        const barBtn = document.getElementById('press-unit-bar');
+        const pressInput = document.getElementById('valve-dp');
+        const pressSuffix = document.getElementById('press-suffix');
+        let val = parseFloat(pressInput.value);
+        if (unit === 'bar') {
+            kpaBtn.classList.remove('active');
+            barBtn.classList.add('active');
+            pressInput.value = (val / 100).toFixed(3);
+            pressSuffix.innerText = 'bar';
+        } else {
+            kpaBtn.classList.add('active');
+            barBtn.classList.remove('active');
+            pressInput.value = (val * 100).toFixed(1);
+            pressSuffix.innerText = 'kPa';
+        }
+        calculateValveEngine();
+    }
+    function calculateValveEngine() {
+        let Q = parseFloat(document.getElementById('heat-power').value);
+        let dT = parseFloat(document.getElementById('valve-dt').value);
+        let dPv = parseFloat(document.getElementById('valve-dp').value);
+        if (isNaN(Q) || isNaN(dT) || isNaN(dPv) || dT <= 0 || dPv <= 0) return;
+        if (currentPowerUnit === 'BTU') {
+            Q = Q / 3412.14;
+        }
+        let dPv_bar = dPv;
+        if (currentPressUnit === 'kPa') {
+            dPv_bar = dPv / 100;
+        }
+        const flowRate = (Q * 0.86) / dT;
+        const kv = flowRate / Math.sqrt(dPv_bar);
+        document.getElementById('valve-value').innerText = kv.toFixed(2);
+        const statusPill = document.getElementById('valve-status-pill');
+        statusPill.innerText = i18n[currentLang].valveStatusPill;
+        const pipeCard = document.getElementById('pipe-suggestion-card');
+        let dn = "DN15 (1/2\")";
+        if (flowRate <= 1.0) {
+            dn = "DN15 (1/2\")";
+        } else if (flowRate > 1.0 && flowRate <= 2.2) {
+            dn = "DN20 (3/4\")";
+        } else if (flowRate > 2.2 && flowRate <= 3.5) {
+            dn = "DN25 (1\")";
+        } else if (flowRate > 3.5 && flowRate <= 6.5) {
+            dn = "DN32 (1-1/4\")";
+        } else if (flowRate > 6.5 && flowRate <= 10.0) {
+            dn = "DN40 (1-1/2\")";
+        } else {
+            dn = "DN50 (2\")";
+        }
+        const expEl = document.getElementById('valve-explanation');
+        expEl.innerHTML = i18n[currentLang].valveExplanation
+            .replace('{flowRate}', flowRate.toFixed(2))
+            .replace('{kv}', kv.toFixed(2));
+            
+        // Calculate closest standard commercial Kvs (providing control authority margin)
+        const stdKvs = [0.63, 1.0, 1.6, 2.5, 4.0, 6.3, 10.0, 16.0, 25.0, 40.0, 63.0, 100.0];
+        let recommendedKvs = stdKvs[stdKvs.length - 1];
+        const targetKvs = kv * 1.25;
+        for (let i = 0; i < stdKvs.length; i++) {
+            if (stdKvs[i] >= targetKvs) {
+                recommendedKvs = stdKvs[i];
+                break;
+            }
+        }
+        
+        pipeCard.innerHTML = `
+            <h4>${i18n[currentLang].pipeRecommendationTitle}</h4>
+            <p>${i18n[currentLang].pipeRecommendationDesc
+                .replace('{dn}', dn)
+                .replace('{kv}', kv.toFixed(2))
+                .replace('{kvsMargin}', recommendedKvs.toFixed(1))}</p>
+        `;
+    }
+    const fertDb = {
+        custom: { purity: 15.5, tank: 'none' },
+        calcium_nitrate: { purity: 15.5, tank: 'A' },
+        potassium_nitrate: { purity: 13.0, tank: 'AB' },
+        mkp: { purity: 22.7, tank: 'B' },
+        potassium_sulfate: { purity: 41.5, tank: 'B' },
+        magnesium_sulfate: { purity: 9.8, tank: 'B' },
+        ammonium_sulfate: { purity: 21.0, tank: 'B' }
+    };
+    function applyFertPreset() {
+        const presetKey = document.getElementById('fert-preset').value;
+        const purityEl = document.getElementById('fert-purity');
+        const badgeEl = document.getElementById('fert-tank-badge');
+        if (presetKey === 'custom') {
+            purityEl.disabled = false;
+            badgeEl.style.display = 'none';
+        } else {
+            purityEl.disabled = true;
+            purityEl.value = fertDb[presetKey].purity;
+            const tank = fertDb[presetKey].tank;
+            badgeEl.style.display = 'inline-flex';
+            badgeEl.className = 'tank-badge';
+            if (tank === 'A') {
+                badgeEl.classList.add('tank-a');
+                badgeEl.innerText = currentLang === 'ko' ? 'A통 권장' : 'Tank A';
+            } else if (tank === 'B') {
+                badgeEl.classList.add('tank-b');
+                badgeEl.innerText = currentLang === 'ko' ? 'B통 권장' : 'Tank B';
+            } else if (tank === 'AB') {
+                badgeEl.classList.add('tank-ab');
+                badgeEl.innerText = currentLang === 'ko' ? 'A/B 가능' : 'Tank A/B';
+            }
+        }
+        calculateFertEngine();
+    }
+    function calculateFertEngine() {
+        const targetPpm = parseFloat(document.getElementById('fert-target').value);
+        const tankVolume = parseFloat(document.getElementById('fert-vol').value);
+        const dilution = parseFloat(document.getElementById('fert-ratio').value);
+        const purity = parseFloat(document.getElementById('fert-purity').value);
+        if (isNaN(targetPpm) || isNaN(tankVolume) || isNaN(dilution) || isNaN(purity) || purity <= 0) return;
+
+        // Mass (kg) = (Target PPM * Stock Tank Vol * Dilution Ratio) / (Purity % * 10,000)
+        const mass = (targetPpm * tankVolume * dilution) / (purity * 10000);
+
+        document.getElementById('fert-value').innerText = mass.toFixed(1) + " kg";
+
+        const statusPill = document.getElementById('fert-status-pill');
+        statusPill.innerText = i18n[currentLang].fertStatusPill;
+
+        const expEl = document.getElementById('fert-explanation');
+        expEl.innerHTML = i18n[currentLang].fertExplanation
+            .replace('{mass}', mass.toFixed(1))
+            .replace('{tankVolume}', tankVolume)
+            .replace('{dilution}', dilution)
+            .replace('{targetPpm}', targetPpm);
+            
+        runAcidEngine();
+    }
+
+    function handleFeedbackClick(event) {
+        const btn = document.getElementById('btn-feedback');
+        const href = btn.getAttribute('href');
+        if (href === '#' || href.includes('your-google-form-link')) {
+            event.preventDefault();
+            alert(currentLang === 'ko' ? 
+                "피드백 구글 폼 링크가 설정되지 않았습니다.\n'google_apps_script_guide.md' 안내에 따라 구글 폼을 생성한 후, 'index.html'의 1281번째 라인에 있는 href 주소를 본인의 구글 폼 링크로 교체해 주세요!" : 
+                "Feedback Google Form link is not configured yet.\nPlease create your Google Form according to 'google_apps_script_guide.md' and replace the href in 'index.html' (line 1281) with your own Form link!");
+        }
+    }
+
+    // INIT with default language (English)
+    changeLanguage('en');
+</script>
+</body>
+</html>
