@@ -563,6 +563,7 @@
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            margin-top: 0;
         }
 
         .info-card p {
@@ -921,6 +922,18 @@
             <span class="desktop-text">원액 희석 계산기 (양액)</span>
             <span class="mobile-text">양액 희석</span>
         </button>
+        <button id="btn-tab-heat-loss" class="tab-btn" onclick="switchTab('heat-loss')">
+            <span class="desktop-text">온실 열손실 계산기</span>
+            <span class="mobile-text">열손실</span>
+        </button>
+        <button id="btn-tab-roi" class="tab-btn" onclick="switchTab('roi')">
+            <span class="desktop-text">보일러 vs 히트펌프 ROI</span>
+            <span class="mobile-text">난방 ROI</span>
+        </button>
+        <button id="btn-tab-transpiration" class="tab-btn" onclick="switchTab('transpiration')">
+            <span class="desktop-text">식물 증산량 추정기 (PM)</span>
+            <span class="mobile-text">증산량 (PM)</span>
+        </button>
     </div>
 
     <!-- VPD SECTION -->
@@ -1275,6 +1288,291 @@
         </div>
     </div>
 
+    <!-- HEAT LOSS SECTION -->
+    <div id="section-heat-loss" class="calc-wrapper">
+        <div class="form-panel">
+            <h2 class="panel-title" id="lbl-heat-loss-title-ui">온실 구조 및 기후 데이터</h2>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="hl-preset" id="lbl-hl-preset">피복재 U-Value 프리셋</label>
+                </div>
+                <div class="input-control-wrapper select-arrow-wrapper">
+                    <select id="hl-preset" onchange="applyHlPreset()">
+                        <option value="custom" selected>직접 입력 (Custom)</option>
+                        <option value="single_poly">단층 비닐 (U=6.0)</option>
+                        <option value="double_poly">이중 비닐 (U=3.5)</option>
+                        <option value="glass">유리 온실 (U=5.5)</option>
+                        <option value="double_glass">복층 유리 (U=3.0)</option>
+                        <option value="pc_8">PC판 8mm (U=3.3)</option>
+                        <option value="pc_16">PC판 16mm (U=2.3)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="hl-area" id="lbl-hl-area">온실 피복 표면적 (A)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="hl-area" value="1500" step="50" oninput="calculateHeatLossEngine()">
+                    <span class="suffix">m²</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="hl-uvalue" id="lbl-hl-uvalue">피복재 열관류율 (U-value)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="hl-uvalue" value="5.5" step="0.1" oninput="calculateHeatLossEngine()">
+                    <span class="suffix">W/m²·K</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="hl-temp-in" id="lbl-hl-temp-in">희망 실내 온도 (Ti)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="hl-temp-in" value="18" step="1" oninput="calculateHeatLossEngine()">
+                    <span class="suffix">°C</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="hl-temp-out" id="lbl-hl-temp-out">최저 설계 외기온 (To)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="hl-temp-out" value="-5" step="1" oninput="calculateHeatLossEngine()">
+                    <span class="suffix">°C</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="hl-wind" id="lbl-hl-wind">외부 풍속</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="hl-wind" value="3.0" step="0.5" oninput="calculateHeatLossEngine()">
+                    <span class="suffix">m/s</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header" id="lbl-hl-result-hdr">필요 난방 용량 (Heat Loss)</div>
+            <div id="hl-value" class="big-number">0.0 kW</div>
+            <div id="hl-status-pill" class="status-pill optimal">열손실 연산 완료</div>
+            
+            <p id="hl-explanation" class="result-desc">연산 로딩 중...</p>
+            
+            <div class="info-card">
+                <h4 id="lbl-hl-tip-title">풍속 마찰 손실 반영</h4>
+                <p id="hl-tip-desc">바람이 강할수록 대류 열전달 계수가 증가하여 추가적인 외벽 열손실이 발생합니다. 본 계산기는 풍속(m/s)에 따라 최대 1.4배의 마찰 수정 계수를 적용합니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROI SECTION -->
+    <div id="section-roi" class="calc-wrapper">
+        <div class="form-panel">
+            <h2 class="panel-title" id="lbl-roi-title-ui">에너지 단가 및 설비 매개변수</h2>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-currency" id="lbl-roi-currency">기준 통화 설정</label>
+                    <div class="toggle-container">
+                        <button id="roi-curr-krw" class="toggle-btn active" onclick="switchRoiCurrency('KRW')">KRW (₩)</button>
+                        <button id="roi-curr-eur" class="toggle-btn" onclick="switchRoiCurrency('EUR')">EUR (€)</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-demand" id="lbl-roi-demand">연간 총 난방 에너지 요구량</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="roi-demand" value="150000" step="5000" oninput="calculateRoiEngine()">
+                    <span class="suffix">kWh</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-boiler-type" id="lbl-roi-boiler-type">기존 보일러 연료 종류</label>
+                </div>
+                <div class="input-control-wrapper select-arrow-wrapper">
+                    <select id="roi-boiler-type" onchange="onBoilerTypeChange()">
+                        <option value="gas" selected>도시가스 (Gas)</option>
+                        <option value="oil">난방용 등유 (Kerosene)</option>
+                        <option value="lpg">LPG</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-boiler-price" id="lbl-roi-boiler-price">기존 연료 단가</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="roi-boiler-price" value="1000" step="10" oninput="calculateRoiEngine()">
+                    <span id="roi-boiler-price-unit" class="suffix">원/m³</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-boiler-eff" id="lbl-roi-boiler-eff">보일러 열효율</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="roi-boiler-eff" value="85" step="1" min="50" max="100" oninput="calculateRoiEngine()">
+                    <span class="suffix">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-hp-cop" id="lbl-roi-hp-cop">히트펌프 평균 COP</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="roi-hp-cop" value="3.5" step="0.1" oninput="calculateRoiEngine()">
+                    <span class="suffix">COP</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-hp-price" id="lbl-roi-hp-price">농업용 전기 요금 단가</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="roi-hp-price" value="80" step="1" oninput="calculateRoiEngine()">
+                    <span id="roi-hp-price-unit" class="suffix">원/kWh</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="roi-capex" id="lbl-roi-capex">히트펌프 추가 투자 비용 (CapEx)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="roi-capex" value="15000000" step="100000" oninput="calculateRoiEngine()">
+                    <span id="roi-capex-unit" class="suffix">원</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header" id="lbl-roi-result-hdr">연간 절감액 및 회수 기간</div>
+            <div id="roi-value" class="big-number">0.0년</div>
+            <div id="roi-status-pill" class="status-pill optimal">ROI 분석 완료</div>
+            
+            <p id="roi-explanation" class="result-desc">연산 로딩 중...</p>
+            
+            <div class="info-card">
+                <h4 id="lbl-roi-tip-title">COP (성적계수) 효과</h4>
+                <p id="roi-tip-desc">히트펌프는 대기나 지열에서 열을 흡수하므로 소비하는 전기 에너지의 수 배에 달하는 열 에너지를 출력합니다. COP가 3.5인 경우 소비 전력 1kW당 3.5kW의 난방 에너지를 생산하여 비용을 혁신적으로 절감합니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRANSPIRATION SECTION -->
+    <div id="section-transpiration" class="calc-wrapper">
+        <div class="form-panel">
+            <h2 class="panel-title" id="lbl-trans-title-ui">온실 기후 및 생육 데이터</h2>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tr-crop" id="lbl-tr-crop">재배 작물 종류</label>
+                </div>
+                <div class="input-control-wrapper select-arrow-wrapper">
+                    <select id="tr-crop" onchange="applyTrCropPreset()">
+                        <option value="tomato" selected>토마토 (Tomato, rs=100 s/m)</option>
+                        <option value="pepper">파프리카 (Pepper, rs=120 s/m)</option>
+                        <option value="cucumber">오이 (Cucumber, rs=80 s/m)</option>
+                        <option value="strawberry">딸기 (Strawberry, rs=150 s/m)</option>
+                        <option value="custom">직접 입력 (Custom)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group" id="grp-tr-rs" style="display: none;">
+                <div class="input-header">
+                    <label for="tr-rs" id="lbl-tr-rs">기공 저항 (rs)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="tr-rs" value="100" step="5" oninput="calculateTranspirationEngine()">
+                    <span class="suffix">s/m</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tr-temp" id="lbl-tr-temp">온실 내부 온도</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="tr-temp" value="25.0" step="0.1" oninput="calculateTranspirationEngine()">
+                    <span class="suffix">°C</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tr-rh" id="lbl-tr-rh">온실 내부 상대습도</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="tr-rh" value="60" min="10" max="98" step="1" oninput="calculateTranspirationEngine()">
+                    <span class="suffix">%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tr-rad" id="lbl-tr-rad">온실 내부 일사량 (Rg)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="tr-rad" value="400" step="10" oninput="calculateTranspirationEngine()">
+                    <span class="suffix">W/m²</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tr-lai" id="lbl-tr-lai">엽면적지수 (LAI)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="tr-lai" value="2.5" step="0.1" oninput="calculateTranspirationEngine()">
+                    <span class="suffix">m²/m²</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tr-wind" id="lbl-tr-wind">온실 내부 풍속 (u)</label>
+                </div>
+                <div class="input-control-wrapper">
+                    <input type="number" id="tr-wind" value="0.2" step="0.05" oninput="calculateTranspirationEngine()">
+                    <span class="suffix">m/s</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header" id="lbl-trans-result-hdr">시간당 증산 속도 (ET)</div>
+            <div id="trans-value" class="big-number">0.00 L/m²·h</div>
+            <div id="trans-status-pill" class="status-pill optimal">증산량 계산 완료</div>
+            
+            <p id="trans-explanation" class="result-desc">연산 로딩 중...</p>
+            
+            <div class="info-card">
+                <h4 id="lbl-trans-tip-title">PM 수식과 작물 증산</h4>
+                <p id="hl-trans-tip-desc">Penman-Monteith(펜맨-몬테이쓰) 수식은 태양 복사 에너지(복사열 항)와 주변 공기의 VPD 및 경계층 풍속(공기역학적 항)을 종합하여 식물의 생리적 물 증산 요구량을 계산하는 국제 표준 모델입니다.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Adspace Placeholder -->
     <div class="ad-space-placeholder">
         Sponsored Link - Google AdSense Placement Space
@@ -1307,6 +1605,12 @@
             tabValveMobil: "혼합 밸브",
             tabFertDeskt: "원액 희석 계산기 (양액)",
             tabFertMobil: "양액 희석",
+            tabHeatLossDeskt: "온실 열손실 계산기",
+            tabHeatLossMobil: "열손실",
+            tabRoiDeskt: "보일러 vs 히트펌프 ROI",
+            tabRoiMobil: "난방 ROI",
+            tabTranspirationDeskt: "식물 증산량 추정기 (PM)",
+            tabTranspirationMobil: "증산량 (PM)",
             vpdTitle: "환경 데이터 입력",
             stageSeedling: "육묘/삽목기",
             stageVeg: "영양생장기",
@@ -1341,7 +1645,45 @@
             pipeRecommendationDesc: "계산된 유량 기준, 배관 내 유속을 안전 범위(0.5 ~ 1.0 m/s) 내로 유지하기 위해 <strong>{dn}</strong> 규격의 배관을 권장합니다. 밸브 제어성 확보(제어 권한 25% 마진 확보)를 위해 상용 표준 규격인 <strong>Kvs {kvsMargin}</strong> 규격의 밸브를 선택하는 것을 강력히 추천합니다.",
             fertStatusPill: "조제 준비 완료",
             fertExplanation: "원액탱크 {tankVolume}L에 비료 <strong>{mass} kg</strong>을 용해하십시오. 원액 주입기가 1:{dilution} 비율로 흡입하여 공급할 때, 재배동 Emitter에서 정확히 {targetPpm} ppm 농도로 양액이 공급됩니다.",
-            disclaimer: "<strong>면책 조항 (Disclaimer):</strong> 본 계산기가 제공하는 수치는 시뮬레이션 및 교육적 참고 자료입니다. Inwoovation은 본 도구의 사용으로 인해 발생하는 농작물 피해, 설비 오작동 또는 유압 설계 오류 등에 대해 어떠한 법적 책임도 지지 않습니다. 상업용 온실에 실제로 적용하기 전에 반드시 계산 결과를 재검증하고 현장 전문가의 검토를 받으십시오."
+            disclaimer: "<strong>면책 조항 (Disclaimer):</strong> 본 계산기가 제공하는 수치는 시뮬레이션 및 교육적 참고 자료입니다. Inwoovation은 본 도구의 사용으로 인해 발생하는 농작물 피해, 설비 오작동 또는 유압 설계 오류 등에 대해 어떠한 법적 책임도 지지 않습니다. 상업용 온실에 실제로 적용하기 전에 반드시 계산 결과를 재검증하고 현장 전문가의 검토를 받으십시오.",
+            
+            // Heat Loss
+            heatLossTitle: "온실 구조 및 기후 데이터",
+            lblEstAreaNew: "온실 피복 표면적 (A)",
+            lblUValue: "피복재 열관류율 (U-value)",
+            lblTempIn: "희망 실내 온도 (Ti)",
+            lblTempOut: "최저 설계 외기온 (To)",
+            lblWindSpeed: "외부 풍속",
+            resHeatLossHeader: "필요 난방 용량 (Heat Loss)",
+            heatLossExplanation: "외기온 <strong>{tempOut}°C</strong>, 실내온도 <strong>{tempIn}°C</strong> 조건에서 풍속 마찰 수정자 <strong>{fWind}</strong>를 적용한 온실의 총 열손실량은 <strong>{heatLoss} kW</strong> ({btuVal} BTU/h) 입니다.",
+            heatLossStatusPill: "열손실 연산 완료",
+            lblHeatLossPreset: "피복재 U-Value 프리셋",
+            
+            // ROI
+            roiTitle: "에너지 단가 및 설비 매개변수",
+            lblAnnualDemand: "연간 총 난방 에너지 요구량",
+            lblBoilerType: "기존 보일러 연료 종류",
+            lblBoilerFuelPrice: "기존 연료 단가",
+            lblBoilerEff: "보일러 열효율",
+            lblHpCop: "히트펌프 평균 COP",
+            lblHpElecPrice: "농업용 전기 요금 단가",
+            lblHpCapex: "히트펌프 추가 투자 비용 (CapEx)",
+            resRoiHeader: "연간 절감액 및 회수 기간",
+            roiExplanation: "연간 <strong>{demand} kWh</strong> 난방 공급 시, 기존 가스 보일러 대비 히트펌프는 연간 약 <strong>{savings}</strong>의 난방비를 절감합니다. 투자 회수 기간은 약 <strong>{payback}년</strong> 입니다.",
+            roiStatusPill: "ROI 분석 완료",
+            lblCurrency: "기준 통화 설정",
+            
+            // Transpiration
+            transTitle: "온실 기후 및 생육 데이터",
+            lblTransTemp: "온실 내부 온도",
+            lblTransRh: "온실 내부 상대습도",
+            lblTransRad: "온실 내부 일사량 (Rg)",
+            lblTransLai: "엽면적지수 (LAI)",
+            lblTransCrop: "재배 작물 종류",
+            lblTransWind: "온실 내부 풍속 (u)",
+            resTransHeader: "시간당 증산 속도 (ET)",
+            transExplanation: "온도 {temp}°C, 상대습도 {rh}%, 내부 일사 {rad} W/m² 환경에서 작물의 시간당 증산량은 약 <strong>{et} L/m²·hr</strong> (mm/hr) 입니다. 하루(10시간 일사 기준) <strong>{etDay} L/m²·day</strong>의 증산량이 예상됩니다.",
+            transStatusPill: "증산량 계산 완료"
         },
         en: {
             headerTitle: "Smart Farm Engineering Lab",
@@ -1352,6 +1694,12 @@
             tabValveMobil: "Mixing Valve",
             tabFertDeskt: "Stock Tank Fertigation",
             tabFertMobil: "Fertigation",
+            tabHeatLossDeskt: "Greenhouse Heat Loss",
+            tabHeatLossMobil: "Heat Loss",
+            tabRoiDeskt: "Boiler vs Heat Pump ROI",
+            tabRoiMobil: "Heating ROI",
+            tabTranspirationDeskt: "Plant Transpiration (PM)",
+            tabTranspirationMobil: "Transpiration (PM)",
             vpdTitle: "Environmental Data",
             stageSeedling: "Seedling/Clone",
             stageVeg: "Vegetative",
@@ -1386,7 +1734,45 @@
             pipeRecommendationDesc: "Based on water flow, a <strong>{dn}</strong> pipe is recommended to keep water velocity within the safe 0.5 to 1.0 m/s range. To maintain control authority (with 25% authority margin), it is highly recommended to select a standard commercial valve with <strong>Kvs {kvsMargin}</strong>.",
             fertStatusPill: "Ready to Dissolve",
             fertExplanation: "Dissolve exactly <strong>{mass} kg</strong> of fertilizer into the {tankVolume}L stock tank. When your injector draws at a 1:{dilution} ratio, the irrigation emitter delivers a precise {targetPpm} ppm of the target nutrient.",
-            disclaimer: "<strong>Disclaimer:</strong> The calculations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these calculators. Always double-check calculations and consult certified professionals before applying changes to commercial greenhouses."
+            disclaimer: "<strong>Disclaimer:</strong> The calculations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these calculators. Always double-check calculations and consult certified professionals before applying changes to commercial greenhouses.",
+            
+            // Heat Loss
+            heatLossTitle: "Structure & Climate Data",
+            lblEstAreaNew: "Cover Surface Area (A)",
+            lblUValue: "Heat Transfer Coeff (U-value)",
+            lblTempIn: "Target Indoor Temp (Ti)",
+            lblTempOut: "Design Outdoor Temp (To)",
+            lblWindSpeed: "Outdoor Wind Speed",
+            resHeatLossHeader: "Required Heating Capacity",
+            heatLossExplanation: "At outdoor <strong>{tempOut}°C</strong> and indoor <strong>{tempIn}°C</strong>, with a wind speed modifier of <strong>{fWind}</strong>, the total greenhouse heat loss is <strong>{heatLoss} kW</strong> ({btuVal} BTU/h).",
+            heatLossStatusPill: "Heat Loss Calculated",
+            lblHeatLossPreset: "Cover Material U-Value Preset",
+            
+            // ROI
+            roiTitle: "Energy Price & Equipment Specs",
+            lblAnnualDemand: "Annual Heating Demand",
+            lblBoilerType: "Existing Boiler Fuel Type",
+            lblBoilerFuelPrice: "Existing Fuel Price",
+            lblBoilerEff: "Boiler Efficiency",
+            lblHpCop: "Heat Pump Average COP",
+            lblHpElecPrice: "Agricultural Electricity Price",
+            lblHpCapex: "Additional HP Investment (CapEx)",
+            resRoiHeader: "Annual Savings & Payback",
+            roiExplanation: "For an annual heating demand of <strong>{demand} kWh</strong>, the heat pump saves approximately <strong>{savings}</strong> per year compared to the boiler. The payback period is around <strong>{payback} years</strong>.",
+            roiStatusPill: "ROI Analysis Complete",
+            lblCurrency: "Base Currency Setting",
+            
+            // Transpiration
+            transTitle: "Microclimate & Canopy Data",
+            lblTransTemp: "Greenhouse Temp",
+            lblTransRh: "Greenhouse RH",
+            lblTransRad: "Greenhouse Solar Rad (Rg)",
+            lblTransLai: "Leaf Area Index (LAI)",
+            lblTransCrop: "Cultivated Crop Type",
+            lblTransWind: "Greenhouse Wind Speed (u)",
+            resTransHeader: "Hourly Transpiration Rate (ET)",
+            transExplanation: "At {temp}°C, {rh}% RH, and {rad} W/m² internal radiation, the crop transpiration rate is approx <strong>{et} L/m²·hr</strong> (mm/hr). The predicted daily water loss (10-hr light sum) is <strong>{etDay} L/m²·day</strong>.",
+            transStatusPill: "Transpiration Calculated"
         }
     };
 
@@ -1398,6 +1784,8 @@
         document.getElementById(`lang-${lang}`).classList.add('active');
         document.getElementById('header-title').innerText = i18n[lang].headerTitle;
         document.getElementById('header-desc').innerText = i18n[lang].headerDesc;
+        
+        // Navigation Tabs translation
         const vpdTab = document.getElementById('btn-tab-vpd');
         vpdTab.querySelector('.desktop-text').innerText = i18n[lang].tabVpdDeskt;
         vpdTab.querySelector('.mobile-text').innerText = i18n[lang].tabVpdMobil;
@@ -1407,6 +1795,17 @@
         const fertTab = document.getElementById('btn-tab-fert');
         fertTab.querySelector('.desktop-text').innerText = i18n[lang].tabFertDeskt;
         fertTab.querySelector('.mobile-text').innerText = i18n[lang].tabFertMobil;
+        const hlTab = document.getElementById('btn-tab-heat-loss');
+        hlTab.querySelector('.desktop-text').innerText = i18n[lang].tabHeatLossDeskt;
+        hlTab.querySelector('.mobile-text').innerText = i18n[lang].tabHeatLossMobil;
+        const roiTab = document.getElementById('btn-tab-roi');
+        roiTab.querySelector('.desktop-text').innerText = i18n[lang].tabRoiDeskt;
+        roiTab.querySelector('.mobile-text').innerText = i18n[lang].tabRoiMobil;
+        const transTab = document.getElementById('btn-tab-transpiration');
+        transTab.querySelector('.desktop-text').innerText = i18n[lang].tabTranspirationDeskt;
+        transTab.querySelector('.mobile-text').innerText = i18n[lang].tabTranspirationMobil;
+
+        // VPD Section translation
         document.querySelector('#section-vpd .form-panel .panel-title').innerText = i18n[lang].vpdTitle;
         document.getElementById('stage-seedling').innerText = i18n[lang].stageSeedling;
         document.getElementById('stage-veg').innerText = i18n[lang].stageVeg;
@@ -1423,6 +1822,8 @@
         vpdPreset.options[2].text = lang === 'ko' ? '고압나트륨등(HPS) 온실 (엽온 편차 -2.0°C)' : 'HPS Greenhouse (Offset -2.0°C)';
         vpdPreset.options[3].text = lang === 'ko' ? '자연광 낮 (엽온 편차 -1.5°C)' : 'Sunlight Day (Offset -1.5°C)';
         vpdPreset.options[4].text = lang === 'ko' ? '야간/암기 (엽온 편차 0.0°C)' : 'Night/Dark (Offset 0.0°C)';
+
+        // Mixing Valve Section translation
         document.querySelector('#section-valve .form-panel .panel-title').innerText = i18n[lang].valveTitle;
         document.querySelector('label[for="heat-power"]').innerText = i18n[lang].lblHeatPower;
         document.querySelector('label[for="valve-dt"]').innerText = i18n[lang].lblValveDt;
@@ -1440,6 +1841,8 @@
         estCover.options[1].text = lang === 'ko' ? '이중 비닐 (U=3.5)' : 'Double Poly Film (U=3.5)';
         estCover.options[2].text = lang === 'ko' ? '유리 온실 (U=5.5)' : 'Glass Greenhouse (U=5.5)';
         estCover.options[3].text = lang === 'ko' ? 'PC판 온실 (U=2.8)' : 'PC Sheet Greenhouse (U=2.8)';
+
+        // Fertigation Section translation
         document.querySelector('#section-fert .form-panel .panel-title').innerText = i18n[lang].fertTitle;
         document.querySelector('label[for="fert-target"]').innerText = i18n[lang].lblFertTarget;
         document.querySelector('label[for="fert-vol"]').innerText = i18n[lang].lblFertVol;
@@ -1458,7 +1861,7 @@
         fertPreset.options[5].text = lang === 'ko' ? '황산마그네슘 (Magnesium Sulfate - Mg 9.8%)' : 'Magnesium Sulfate (Mg 9.8%)';
         fertPreset.options[6].text = lang === 'ko' ? '황산암모늄 (Ammonium Sulfate - N 21.0%)' : 'Ammonium Sulfate (N 21.0%)';
         
-        // Translate Acid Neutralizer
+        // Acid Neutralizer translation
         document.getElementById('lbl-acid-title').innerText = lang === 'ko' ? '원수 중탄산(pH) 중화 계산기' : 'Raw Bicarbonate (pH) Neutralizer';
         document.getElementById('lbl-acid-raw').innerText = lang === 'ko' ? '원수 중탄산 (HCO₃⁻)' : 'Raw Bicarbonate (HCO₃⁻)';
         document.getElementById('lbl-acid-target').innerText = lang === 'ko' ? '목표 중탄산 농도' : 'Target Bicarbonate';
@@ -1468,7 +1871,65 @@
         document.getElementById('lbl-acid-result').innerText = lang === 'ko' ? '산 필요 투입량' : 'Acid Vol Required';
         document.getElementById('lbl-vpd-actions-title').innerText = lang === 'ko' ? '실시간 환경 제어 지침' : 'Live Climate Action Guide';
 
-        // Translate Last Updated Badge & Feedback FAB
+        // Heat Loss translation
+        document.getElementById('lbl-heat-loss-title-ui').innerText = i18n[lang].heatLossTitle;
+        document.getElementById('lbl-hl-preset').innerText = i18n[lang].lblHeatLossPreset;
+        document.getElementById('lbl-hl-area').innerText = i18n[lang].lblEstAreaNew;
+        document.getElementById('lbl-hl-uvalue').innerText = i18n[lang].lblUValue;
+        document.getElementById('lbl-hl-temp-in').innerText = i18n[lang].lblTempIn;
+        document.getElementById('lbl-hl-temp-out').innerText = i18n[lang].lblTempOut;
+        document.getElementById('lbl-hl-wind').innerText = i18n[lang].lblWindSpeed;
+        document.getElementById('lbl-hl-result-hdr').innerText = i18n[lang].resHeatLossHeader;
+        document.getElementById('lbl-hl-tip-title').innerText = lang === 'ko' ? "풍속 마찰 손실 반영" : "Wind Friction Effects";
+        document.getElementById('hl-tip-desc').innerText = lang === 'ko' ? "바람이 강할수록 대류 열전달 계수가 증가하여 추가적인 외벽 열손실이 발생합니다. 본 계산기는 풍속(m/s)에 따라 최대 1.4배의 마찰 수정 계수를 적용합니다." : "High wind speed increases convective heat loss from the cover. This calculator applies up to a 1.4x modifier based on wind speed.";
+        document.getElementById('hl-status-pill').innerText = i18n[lang].heatLossStatusPill;
+        
+        const hlPreset = document.getElementById('hl-preset');
+        hlPreset.options[0].text = lang === 'ko' ? '직접 입력 (Custom)' : 'Custom Input';
+        hlPreset.options[1].text = lang === 'ko' ? '단층 비닐 (U=6.0)' : 'Single Poly (U=6.0)';
+        hlPreset.options[2].text = lang === 'ko' ? '이중 비닐 (U=3.5)' : 'Double Poly (U=3.5)';
+        hlPreset.options[3].text = lang === 'ko' ? '유리 온실 (U=5.5)' : 'Single Glass (U=5.5)';
+        hlPreset.options[4].text = lang === 'ko' ? '복층 유리 (U=3.0)' : 'Double Glass (U=3.0)';
+        hlPreset.options[5].text = lang === 'ko' ? 'PC판 8mm (U=3.3)' : 'PC Sheet 8mm (U=3.3)';
+        hlPreset.options[6].text = lang === 'ko' ? 'PC판 16mm (U=2.3)' : 'PC Sheet 16mm (U=2.3)';
+
+        // ROI translation
+        document.getElementById('lbl-roi-title-ui').innerText = i18n[lang].roiTitle;
+        document.getElementById('lbl-roi-currency').innerText = i18n[lang].lblCurrency;
+        document.getElementById('lbl-roi-demand').innerText = i18n[lang].lblAnnualDemand;
+        document.getElementById('lbl-roi-boiler-type').innerText = i18n[lang].lblBoilerType;
+        document.getElementById('lbl-roi-boiler-price').innerText = i18n[lang].lblBoilerFuelPrice;
+        document.getElementById('lbl-roi-boiler-eff').innerText = i18n[lang].lblBoilerEff;
+        document.getElementById('lbl-roi-hp-cop').innerText = i18n[lang].lblHpCop;
+        document.getElementById('lbl-roi-hp-price').innerText = i18n[lang].lblHpElecPrice;
+        document.getElementById('lbl-roi-capex').innerText = i18n[lang].lblHpCapex;
+        document.getElementById('lbl-roi-result-hdr').innerText = i18n[lang].resRoiHeader;
+        document.getElementById('lbl-roi-tip-title').innerText = lang === 'ko' ? "COP (성적계수) 효과" : "COP Performance Factor";
+        document.getElementById('roi-tip-desc').innerText = lang === 'ko' ? "히트펌프는 대기나 지열에서 열을 흡수하므로 소비하는 전기 에너지의 수 배에 달하는 열 에너지를 출력합니다. COP가 3.5인 경우 소비 전력 1kW당 3.5kW의 난방 에너지를 생산하여 비용을 혁신적으로 절감합니다." : "Heat pumps move heat instead of generating it, producing multiple times the energy they consume. A COP of 3.5 delivers 3.5 kW of heat per 1 kW of electrical input.";
+        document.getElementById('roi-status-pill').innerText = i18n[lang].roiStatusPill;
+        
+        // Transpiration translation
+        document.getElementById('lbl-trans-title-ui').innerText = i18n[lang].transTitle;
+        document.getElementById('lbl-tr-crop').innerText = i18n[lang].lblTransCrop;
+        document.getElementById('lbl-tr-rs').innerText = lang === 'ko' ? '기공 저항 (rs)' : 'Stomatal Resistance (rs)';
+        document.getElementById('lbl-tr-temp').innerText = i18n[lang].lblTransTemp;
+        document.getElementById('lbl-tr-rh').innerText = i18n[lang].lblTransRh;
+        document.getElementById('lbl-tr-rad').innerText = i18n[lang].lblTransRad;
+        document.getElementById('lbl-tr-lai').innerText = i18n[lang].lblTransLai;
+        document.getElementById('lbl-tr-wind').innerText = i18n[lang].lblTransWind;
+        document.getElementById('lbl-trans-result-hdr').innerText = i18n[lang].resTransHeader;
+        document.getElementById('lbl-trans-tip-title').innerText = lang === 'ko' ? "PM 수식과 작물 증산" : "Penman-Monteith Biophysics";
+        document.getElementById('hl-trans-tip-desc').innerText = lang === 'ko' ? "Penman-Monteith(펜맨-몬테이쓰) 수식은 태양 복사 에너지(복사열 항)와 주변 공기의 VPD 및 경계층 풍속(공기역학적 항)을 종합하여 식물의 생리적 물 증산 요구량을 계산하는 국제 표준 모델입니다." : "The Penman-Monteith equation is the physical standard integrating radiation energy balance and aerodynamic vapor transfer, constrained by plant stomatal resistance.";
+        document.getElementById('trans-status-pill').innerText = i18n[lang].transStatusPill;
+
+        const trCrop = document.getElementById('tr-crop');
+        trCrop.options[0].text = lang === 'ko' ? '토마토 (Tomato, rs=100 s/m)' : 'Tomato (rs=100 s/m)';
+        trCrop.options[1].text = lang === 'ko' ? '파프리카 (Pepper, rs=120 s/m)' : 'Bell Pepper (rs=120 s/m)';
+        trCrop.options[2].text = lang === 'ko' ? '오이 (Cucumber, rs=80 s/m)' : 'Cucumber (rs=80 s/m)';
+        trCrop.options[3].text = lang === 'ko' ? '딸기 (Strawberry, rs=150 s/m)' : 'Strawberry (rs=150 s/m)';
+        trCrop.options[4].text = lang === 'ko' ? '직접 입력 (Custom)' : 'Custom Input';
+
+        // General translations
         document.getElementById('header-badge').innerText = lang === 'ko' ? '최종 업데이트: 2026년 6월' : 'Last Updated: June 2026';
         document.getElementById('lbl-feedback-text').innerText = lang === 'ko' ? '피드백 보내기' : 'Give Feedback';
         document.getElementById('footer-disclaimer').innerHTML = i18n[lang].disclaimer;
@@ -1477,23 +1938,33 @@
         applyVpdPreset();
         runEstimatorEngine();
         runAcidEngine();
+        applyHlPreset();
+        applyTrCropPreset();
+        calculateHeatLossEngine();
+        calculateRoiEngine();
+        calculateTranspirationEngine();
     }
+    
     function switchTab(target) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.calc-wrapper').forEach(card => card.classList.remove('active'));
+        
+        document.getElementById(`btn-tab-${target}`).classList.add('active');
+        document.getElementById(`section-${target}`).classList.add('active');
+        
         if (target === 'vpd') {
-            document.getElementById('btn-tab-vpd').classList.add('active');
-            document.getElementById('section-vpd').classList.add('active');
             calculateVpdEngine();
         } else if (target === 'valve') {
-            document.getElementById('btn-tab-valve').classList.add('active');
-            document.getElementById('section-valve').classList.add('active');
             calculateValveEngine();
         } else if (target === 'fert') {
-            document.getElementById('btn-tab-fert').classList.add('active');
-            document.getElementById('section-fert').classList.add('active');
             calculateFertEngine();
             runAcidEngine();
+        } else if (target === 'heat-loss') {
+            calculateHeatLossEngine();
+        } else if (target === 'roi') {
+            calculateRoiEngine();
+        } else if (target === 'transpiration') {
+            calculateTranspirationEngine();
         }
     }
     function toggleAccordion(id) {
@@ -1868,6 +2339,296 @@
             .replace('{targetPpm}', targetPpm);
             
         runAcidEngine();
+    }
+
+    const hlPresetDb = {
+        custom: 5.5,
+        single_poly: 6.0,
+        double_poly: 3.5,
+        glass: 5.5,
+        double_glass: 3.0,
+        pc_8: 3.3,
+        pc_16: 2.3
+    };
+
+    function applyHlPreset() {
+        const presetKey = document.getElementById('hl-preset').value;
+        const uvalueEl = document.getElementById('hl-uvalue');
+        if (presetKey === 'custom') {
+            uvalueEl.disabled = false;
+        } else {
+            uvalueEl.disabled = true;
+            uvalueEl.value = hlPresetDb[presetKey];
+        }
+        calculateHeatLossEngine();
+    }
+
+    function calculateHeatLossEngine() {
+        const A = parseFloat(document.getElementById('hl-area').value);
+        const U = parseFloat(document.getElementById('hl-uvalue').value);
+        const tempIn = parseFloat(document.getElementById('hl-temp-in').value);
+        const tempOut = parseFloat(document.getElementById('hl-temp-out').value);
+        const wind = parseFloat(document.getElementById('hl-wind').value);
+
+        if (isNaN(A) || isNaN(U) || isNaN(tempIn) || isNaN(tempOut) || isNaN(wind)) return;
+
+        const deltaT = tempIn - tempOut;
+        if (deltaT <= 0) {
+            document.getElementById('hl-value').innerText = "0.0 kW";
+            document.getElementById('hl-explanation').innerText = currentLang === 'ko' ? "실외 온도가 실내 온도보다 높거나 같아 난방이 필요하지 않습니다." : "Outdoor temperature is higher than or equal to indoor. Heating not required.";
+            document.getElementById('hl-status-pill').className = "status-pill optimal";
+            document.getElementById('hl-status-pill').innerText = currentLang === 'ko' ? "난방 불필요" : "No Heat Needed";
+            return;
+        }
+
+        // Wind friction multiplier (simplified ASHRAE/standard engineering approach)
+        let fWind = 1.0;
+        if (wind > 10.0) fWind = 1.40;
+        else if (wind > 5.0) fWind = 1.25;
+        else if (wind > 2.0) fWind = 1.12;
+
+        // Q = U * A * dT * fWind (W) -> divided by 1000 for kW
+        const qLossKw = (U * A * deltaT * fWind) / 1000;
+        const qLossBtu = qLossKw * 3412.14;
+
+        document.getElementById('hl-value').innerText = qLossKw.toFixed(1) + " kW";
+
+        const statusPill = document.getElementById('hl-status-pill');
+        if (qLossKw < 50) {
+            statusPill.className = "status-pill optimal";
+            statusPill.innerText = currentLang === 'ko' ? "안정적 난방 수준" : "Low Heat Demand";
+        } else if (qLossKw >= 50 && qLossKw < 200) {
+            statusPill.className = "status-pill warning";
+            statusPill.innerText = currentLang === 'ko' ? "보통 난방 수준" : "Medium Heat Demand";
+        } else {
+            statusPill.className = "status-pill danger";
+            statusPill.innerText = currentLang === 'ko' ? "고난방 요구 수준" : "High Heat Demand";
+        }
+
+        const expEl = document.getElementById('hl-explanation');
+        expEl.innerHTML = i18n[currentLang].heatLossExplanation
+            .replace('{tempOut}', tempOut)
+            .replace('{tempIn}', tempIn)
+            .replace('{fWind}', fWind.toFixed(2))
+            .replace('{heatLoss}', qLossKw.toFixed(1))
+            .replace('{btuVal}', qLossBtu.toFixed(0));
+    }
+
+    let currentRoiCurrency = 'KRW';
+    
+    function switchRoiCurrency(currency) {
+        if (currentRoiCurrency === currency) return;
+        currentRoiCurrency = currency;
+        
+        const krwBtn = document.getElementById('roi-curr-krw');
+        const eurBtn = document.getElementById('roi-curr-eur');
+        const boilerPriceSuffix = document.getElementById('roi-boiler-price-unit');
+        const elecPriceSuffix = document.getElementById('roi-hp-price-unit');
+        const capexSuffix = document.getElementById('roi-capex-unit');
+        
+        const capexInput = document.getElementById('roi-capex');
+        const boilerPriceInput = document.getElementById('roi-boiler-price');
+        const hpPriceInput = document.getElementById('roi-hp-price');
+
+        if (currency === 'EUR') {
+            krwBtn.classList.remove('active');
+            eurBtn.classList.add('active');
+            
+            boilerPriceSuffix.innerText = 'EUR/kWh';
+            elecPriceSuffix.innerText = 'EUR/kWh';
+            capexSuffix.innerText = 'EUR';
+            
+            capexInput.value = "10000";
+            hpPriceInput.value = "0.15";
+            
+            onBoilerTypeChange();
+        } else {
+            krwBtn.classList.add('active');
+            eurBtn.classList.remove('active');
+            
+            boilerPriceSuffix.innerText = '원/m³';
+            elecPriceSuffix.innerText = '원/kWh';
+            capexSuffix.innerText = '원';
+            
+            capexInput.value = "15000000";
+            hpPriceInput.value = "80";
+            
+            onBoilerTypeChange();
+        }
+        calculateRoiEngine();
+    }
+
+    function onBoilerTypeChange() {
+        const type = document.getElementById('roi-boiler-type').value;
+        const priceSuffix = document.getElementById('roi-boiler-price-unit');
+        const priceInput = document.getElementById('roi-boiler-price');
+
+        if (currentRoiCurrency === 'EUR') {
+            priceSuffix.innerText = 'EUR/kWh';
+            if (type === 'gas') priceInput.value = "0.08";
+            else if (type === 'oil') priceInput.value = "0.12";
+            else if (type === 'lpg') priceInput.value = "0.15";
+        } else {
+            if (type === 'gas') {
+                priceSuffix.innerText = '원/m³';
+                priceInput.value = "1000";
+            } else if (type === 'oil') {
+                priceSuffix.innerText = '원/L';
+                priceInput.value = "1300";
+            } else if (type === 'lpg') {
+                priceSuffix.innerText = '원/kg';
+                priceInput.value = "2000";
+            }
+        }
+        calculateRoiEngine();
+    }
+
+    function calculateRoiEngine() {
+        const demand = parseFloat(document.getElementById('roi-demand').value);
+        const boilerType = document.getElementById('roi-boiler-type').value;
+        const boilerPrice = parseFloat(document.getElementById('roi-boiler-price').value);
+        const boilerEff = parseFloat(document.getElementById('roi-boiler-eff').value) / 100;
+        const hpCop = parseFloat(document.getElementById('roi-hp-cop').value);
+        const hpPrice = parseFloat(document.getElementById('roi-hp-price').value);
+        const capex = parseFloat(document.getElementById('roi-capex').value);
+
+        if (isNaN(demand) || isNaN(boilerPrice) || isNaN(boilerEff) || isNaN(hpCop) || isNaN(hpPrice) || isNaN(capex) || boilerEff <= 0 || hpCop <= 0) return;
+
+        let boilerCost = 0;
+        if (currentRoiCurrency === 'EUR') {
+            boilerCost = (demand / boilerEff) * boilerPrice;
+        } else {
+            let energyPerUnit = 10.5; // Gas
+            if (boilerType === 'oil') energyPerUnit = 10.0;
+            else if (boilerType === 'lpg') energyPerUnit = 12.8;
+
+            const unitsNeeded = demand / (energyPerUnit * boilerEff);
+            boilerCost = unitsNeeded * boilerPrice;
+        }
+
+        const elecNeeded = demand / hpCop;
+        const hpCost = elecNeeded * hpPrice;
+
+        const annualSavings = boilerCost - hpCost;
+        let paybackPeriod = 0;
+        if (annualSavings > 0) {
+            paybackPeriod = capex / annualSavings;
+        }
+
+        const valueEl = document.getElementById('roi-value');
+        const statusPill = document.getElementById('roi-status-pill');
+        const expEl = document.getElementById('roi-explanation');
+
+        if (annualSavings <= 0) {
+            valueEl.innerText = "N/A";
+            statusPill.className = "status-pill danger";
+            statusPill.innerText = currentLang === 'ko' ? "투자 부적합" : "No ROI";
+            expEl.innerHTML = currentLang === 'ko' ? 
+                `현재 단가 조건에서는 히트펌프의 전기 비용이 기존 보일러 연료비보다 커서 절감액이 발생하지 않습니다.` :
+                `Under current tariff specs, Heat Pump operating cost exceeds the existing boiler. No savings generated.`;
+            return;
+        }
+
+        valueEl.innerText = paybackPeriod.toFixed(1) + (currentLang === 'ko' ? "년" : " Yrs");
+
+        if (paybackPeriod <= 3.0) {
+            statusPill.className = "status-pill optimal";
+            statusPill.innerText = currentLang === 'ko' ? "투자 적극 추천" : "Highly Viable";
+        } else if (paybackPeriod > 3.0 && paybackPeriod <= 7.0) {
+            statusPill.className = "status-pill warning";
+            statusPill.innerText = currentLang === 'ko' ? "투자 타당성 보통" : "Moderately Viable";
+        } else {
+            statusPill.className = "status-pill danger";
+            statusPill.innerText = currentLang === 'ko' ? "투자 신중 판단" : "Long Payback";
+        }
+
+        let formattedSavings = "";
+        if (currentRoiCurrency === 'EUR') {
+            formattedSavings = "€" + annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 });
+        } else {
+            formattedSavings = "₩" + annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 });
+        }
+
+        expEl.innerHTML = i18n[currentLang].roiExplanation
+            .replace('{demand}', demand.toLocaleString())
+            .replace('{savings}', formattedSavings)
+            .replace('{payback}', paybackPeriod.toFixed(1));
+    }
+
+    const cropRsDb = {
+        tomato: 100,
+        pepper: 120,
+        cucumber: 80,
+        strawberry: 150,
+        custom: 100
+    };
+
+    function applyTrCropPreset() {
+        const crop = document.getElementById('tr-crop').value;
+        const rsGroup = document.getElementById('grp-tr-rs');
+        const rsInput = document.getElementById('tr-rs');
+        
+        if (crop === 'custom') {
+            rsGroup.style.display = 'block';
+        } else {
+            rsGroup.style.display = 'none';
+            rsInput.value = cropRsDb[crop];
+        }
+        calculateTranspirationEngine();
+    }
+
+    function calculateTranspirationEngine() {
+        const T = parseFloat(document.getElementById('tr-temp').value);
+        const RH = parseFloat(document.getElementById('tr-rh').value);
+        const Rg = parseFloat(document.getElementById('tr-rad').value);
+        const LAI = parseFloat(document.getElementById('tr-lai').value);
+        const rs = parseFloat(document.getElementById('tr-rs').value);
+        const u = parseFloat(document.getElementById('tr-wind').value);
+
+        if (isNaN(T) || isNaN(RH) || isNaN(Rg) || isNaN(LAI) || isNaN(rs) || isNaN(u) || u <= 0 || LAI <= 0) return;
+
+        const es = 0.61078 * Math.exp((17.27 * T) / (T + 237.3));
+        const Delta = (4098 * es) / Math.pow(T + 237.3, 2);
+        const gamma = 0.066;
+        const ea = es * (RH / 100);
+        const VPD = es - ea;
+        const Rn = Rg * 0.60;
+        const ra = 250 / Math.max(0.05, u);
+        const rc = rs / (0.5 * LAI); 
+        const lambda = 2.45; 
+        const rho_a = 1.2;
+        const Cp = 1.013;
+
+        const numerator = (Delta * Rn) + ((rho_a * Cp * VPD * 1000) / ra);
+        const denominator = Delta + (gamma * (1 + (rc / ra)));
+        
+        let LE = numerator / denominator;
+        if (LE < 0) LE = 0;
+
+        const etHr = (LE * 3600) / (lambda * 1000000); 
+        const etDay = etHr * 10; 
+
+        document.getElementById('trans-value').innerText = etHr.toFixed(3) + " L/m²·h";
+
+        const statusPill = document.getElementById('trans-status-pill');
+        if (etHr > 0.25) {
+            statusPill.className = "status-pill optimal";
+            statusPill.innerText = currentLang === 'ko' ? "왕성한 증산" : "High Transpiration";
+        } else if (etHr > 0.05 && etHr <= 0.25) {
+            statusPill.className = "status-pill optimal";
+            statusPill.innerText = currentLang === 'ko' ? "일반 증산" : "Normal Transpiration";
+        } else {
+            statusPill.className = "status-pill danger";
+            statusPill.innerText = currentLang === 'ko' ? "증산 정체" : "Stagnant Transpiration";
+        }
+
+        const expEl = document.getElementById('trans-explanation');
+        expEl.innerHTML = i18n[currentLang].transExplanation
+            .replace('{temp}', T.toFixed(1))
+            .replace('{rh}', RH)
+            .replace('{rad}', Rg)
+            .replace('{et}', etHr.toFixed(3))
+            .replace('{etDay}', etDay.toFixed(2));
     }
 
     function handleFeedbackClick(event) {
