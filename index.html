@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgTech Precision Calculator | VPD, Mixing Valve & Fertigation</title>
-    <meta name="description" content="Free premium online calculator for Vapor Pressure Deficit (VPD), Greenhouse Mixing Valve Sizing, and Fertigation Stock Tank Dilution. Built for smart farm engineers and growers.">
+    <title>스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator</title>
+    <meta name="description" content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요.">
     <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" />
     
     <!-- Google tag (gtag.js) -->
@@ -160,19 +160,28 @@
         }
 
         /* Tabs System */
+        .tabs-container {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+            padding: 0.5rem 1rem; /* Space for scroll alignment and card shadows */
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari/Webkit */
+        }
+
         .tabs {
             display: flex;
-            justify-content: center;
-            flex-wrap: nowrap; /* Prevent wrapping on mobile */
+            flex-wrap: nowrap; /* Prevent wrapping */
             gap: 0.5rem;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-card);
             padding: 0.4rem;
             border-radius: 100px;
             width: max-content;
-            margin: 0 auto;
-            max-width: 100%;
-            overflow-x: auto; /* Just in case */
+            margin: 0 auto; /* Centers when fits, aligns left when overflowing */
         }
 
         .tab-btn {
@@ -224,9 +233,18 @@
             .mobile-text {
                 display: inline;
             }
+            .tabs-container {
+                padding: 0.4rem 0.8rem;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+            .tabs {
+                margin: 0; /* Align to the start of the scroll container on mobile */
+            }
             .tab-btn {
                 padding: 0.6rem 1rem;
                 font-size: 0.85rem;
+                scroll-snap-align: start;
             }
             .calc-wrapper {
                 padding: 1.5rem 1.2rem !important;
@@ -563,7 +581,6 @@
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: 0;
         }
 
         .info-card p {
@@ -909,31 +926,33 @@
     </header>
 
     <!-- Navigation Tabs -->
-    <div class="tabs">
-        <button id="btn-tab-vpd" class="tab-btn active" onclick="switchTab('vpd')">
-            <span class="desktop-text">포차 계산기 (VPD)</span>
-            <span class="mobile-text">VPD</span>
-        </button>
-        <button id="btn-tab-valve" class="tab-btn" onclick="switchTab('valve')">
-            <span class="desktop-text">난방 혼합 밸브</span>
-            <span class="mobile-text">혼합 밸브</span>
-        </button>
-        <button id="btn-tab-fert" class="tab-btn" onclick="switchTab('fert')">
-            <span class="desktop-text">원액 희석 계산기 (양액)</span>
-            <span class="mobile-text">양액 희석</span>
-        </button>
-        <button id="btn-tab-heat-loss" class="tab-btn" onclick="switchTab('heat-loss')">
-            <span class="desktop-text">온실 열손실 계산기</span>
-            <span class="mobile-text">열손실</span>
-        </button>
-        <button id="btn-tab-roi" class="tab-btn" onclick="switchTab('roi')">
-            <span class="desktop-text">보일러 vs 히트펌프 ROI</span>
-            <span class="mobile-text">난방 ROI</span>
-        </button>
-        <button id="btn-tab-transpiration" class="tab-btn" onclick="switchTab('transpiration')">
-            <span class="desktop-text">식물 증산량 추정기 (PM)</span>
-            <span class="mobile-text">증산량 (PM)</span>
-        </button>
+    <div class="tabs-container">
+        <div class="tabs">
+            <button id="btn-tab-vpd" class="tab-btn active" onclick="switchTab('vpd')">
+                <span class="desktop-text">포차 계산기 (VPD)</span>
+                <span class="mobile-text">VPD</span>
+            </button>
+            <button id="btn-tab-valve" class="tab-btn" onclick="switchTab('valve')">
+                <span class="desktop-text">난방 혼합 밸브</span>
+                <span class="mobile-text">혼합 밸브</span>
+            </button>
+            <button id="btn-tab-fert" class="tab-btn" onclick="switchTab('fert')">
+                <span class="desktop-text">원액 희석 계산기 (양액)</span>
+                <span class="mobile-text">양액 희석</span>
+            </button>
+            <button id="btn-tab-heat-loss" class="tab-btn" onclick="switchTab('heat-loss')">
+                <span class="desktop-text">온실 열손실 계산기</span>
+                <span class="mobile-text">열손실</span>
+            </button>
+            <button id="btn-tab-roi" class="tab-btn" onclick="switchTab('roi')">
+                <span class="desktop-text">보일러 vs 히트펌프 ROI</span>
+                <span class="mobile-text">난방 ROI</span>
+            </button>
+            <button id="btn-tab-transpiration" class="tab-btn" onclick="switchTab('transpiration')">
+                <span class="desktop-text">식물 증산량 추정기 (PM)</span>
+                <span class="mobile-text">증산량 (PM)</span>
+            </button>
+        </div>
     </div>
 
     <!-- VPD SECTION -->
@@ -1952,6 +1971,13 @@
         document.getElementById(`btn-tab-${target}`).classList.add('active');
         document.getElementById(`section-${target}`).classList.add('active');
         
+        // Google Analytics 4 Custom Event for Tab Switches
+        if (typeof gtag === 'function') {
+            gtag('event', 'calculator_tab_switch', {
+                'tab_name': target
+            });
+        }
+        
         if (target === 'vpd') {
             calculateVpdEngine();
         } else if (target === 'valve') {
@@ -2634,6 +2660,14 @@
     function handleFeedbackClick(event) {
         const btn = document.getElementById('btn-feedback');
         const href = btn.getAttribute('href');
+        
+        // Google Analytics 4 Custom Event for Feedback Link Clicks
+        if (typeof gtag === 'function') {
+            gtag('event', 'feedback_link_click', {
+                'link_url': href
+            });
+        }
+
         if (href === '#' || href.includes('your-google-form-link')) {
             event.preventDefault();
             alert(currentLang === 'ko' ? 
