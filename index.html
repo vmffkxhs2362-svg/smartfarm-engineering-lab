@@ -17,6 +17,10 @@
       gtag('config', 'G-V4RYJBMEDE');
     </script>
     
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8597809158257497"
+         crossorigin="anonymous"></script>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1402,7 +1406,7 @@
             
             <div class="info-card">
                 <h4 id="lbl-hl-tip-title">풍속 마찰 손실 반영</h4>
-                <p id="hl-tip-desc">바람이 강할수록 대류 열전달 계수가 증가하여 추가적인 외벽 열손실이 발생합니다. 본 계산기는 풍속(m/s)에 따라 최대 1.4배의 마찰 수정 계수가 적용합니다.</p>
+                <p id="hl-tip-desc">바람이 강할수록 대류 열전달 계수가 증가하여 추가적인 외벽 열손실이 발생합니다. 본 계산기는 풍속(m/s)에 따라 최대 1.4배의 마찰 수정 계수를 적용합니다.</p>
             </div>
         </div>
     </div>
@@ -2229,9 +2233,11 @@
         }
         
         if (currentLang === 'ko') {
-            expEl.innerHTML = `원수 중탄산 <strong>${rawHco3} ppm</strong>을 <strong>${targetHco3} ppm</strong>으로 낮추기 위해, 원액탱크 <strong>${tankVol} L</strong>(희석비 1:${dilution}) 기준 <strong>${resultValEl.innerText}</strong>의 ${acidType === 'nitric' ? '질산' : '인산'}을 투입하십시오. (총 중화 필요량: ${totalMeq.toFixed(0)} meq)`;
+            const acidName = acidType === 'nitric' ? "질산 60%" : "인산 85%";
+            expEl.innerHTML = `원수 중탄산 <strong>${rawHco3} ppm</strong>에서 <strong>${targetHco3} ppm</strong>으로 낮추기 위해 중탄산 <strong>${meqL.toFixed(2)} meq/L</strong>을 중화해야 합니다.<br>원액탱크 ${tankVol}L에 <strong>${acidName}</strong>을 <strong>${acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL"}</strong> 혼합하여 조제하십시오.<br><small style="color: var(--danger); font-weight: 600;">⚠️ 주의: 강산을 원액탱크에 넣을 때 반드시 물을 채운 뒤 산을 마지막에 천천히 저으면서 넣으십시오. (절대로 산에 물을 부으면 안 됩니다!)</small>`;
         } else {
-            expEl.innerHTML = `To reduce raw bicarbonate from <strong>${rawHco3} ppm</strong> to <strong>${targetHco3} ppm</strong>, add <strong>${resultValEl.innerText}</strong> of ${acidType === 'nitric' ? 'Nitric Acid' : 'Phosphoric Acid'} into the <strong>${tankVol} L</strong> stock tank (at 1:${dilution} dilution). (Total required: ${totalMeq.toFixed(0)} meq)`;
+            const acidName = acidType === 'nitric' ? "60% Nitric Acid" : "85% Phosphoric Acid";
+            expEl.innerHTML = `To neutralize raw bicarbonate from <strong>${rawHco3} ppm</strong> to <strong>${targetHco3} ppm</strong>, we need to neutralize <strong>${meqL.toFixed(2)} meq/L</strong> of HCO₃⁻.<br>Add <strong>${acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL"}</strong> of <strong>${acidName}</strong> to the ${tankVol}L stock tank.<br><small style="color: var(--danger); font-weight: 600;">⚠️ CAUTION: Always add acid to water, never water to acid! Add slowly while stirring.</small>`;
         }
     }
     function switchPowerUnit(unit) {
@@ -2239,18 +2245,18 @@
         currentPowerUnit = unit;
         const kwBtn = document.getElementById('power-unit-kw');
         const btuBtn = document.getElementById('power-unit-btu');
-        const powerValEl = document.getElementById('heat-power');
+        const powerInput = document.getElementById('heat-power');
         const powerSuffix = document.getElementById('power-suffix');
-        let val = parseFloat(powerValEl.value);
+        let val = parseFloat(powerInput.value);
         if (unit === 'BTU') {
             kwBtn.classList.remove('active');
             btuBtn.classList.add('active');
-            powerValEl.value = (val * 3412.14).toFixed(0);
+            powerInput.value = (val * 3412.14).toFixed(0);
             powerSuffix.innerText = 'BTU/h';
         } else {
             kwBtn.classList.add('active');
             btuBtn.classList.remove('active');
-            powerValEl.value = (val / 3412.14).toFixed(0);
+            powerInput.value = (val / 3412.14).toFixed(0);
             powerSuffix.innerText = 'kW';
         }
         calculateValveEngine();
@@ -2260,18 +2266,18 @@
         currentPressUnit = unit;
         const kpaBtn = document.getElementById('press-unit-kpa');
         const barBtn = document.getElementById('press-unit-bar');
-        const pressValEl = document.getElementById('valve-dp');
+        const pressInput = document.getElementById('valve-dp');
         const pressSuffix = document.getElementById('press-suffix');
-        let val = parseFloat(pressValEl.value);
+        let val = parseFloat(pressInput.value);
         if (unit === 'bar') {
             kpaBtn.classList.remove('active');
             barBtn.classList.add('active');
-            pressValEl.value = (val / 100).toFixed(3);
+            pressInput.value = (val / 100).toFixed(3);
             pressSuffix.innerText = 'bar';
         } else {
             kpaBtn.classList.add('active');
             barBtn.classList.remove('active');
-            pressValEl.value = (val * 100).toFixed(1);
+            pressInput.value = (val * 100).toFixed(1);
             pressSuffix.innerText = 'kPa';
         }
         calculateValveEngine();
@@ -2279,77 +2285,90 @@
     function calculateValveEngine() {
         let Q = parseFloat(document.getElementById('heat-power').value);
         let dT = parseFloat(document.getElementById('valve-dt').value);
-        let dP = parseFloat(document.getElementById('valve-dp').value);
-        if (isNaN(Q) || isNaN(dT) || isNaN(dP) || dT <= 0 || dP <= 0) return;
+        let dPv = parseFloat(document.getElementById('valve-dp').value);
+        if (isNaN(Q) || isNaN(dT) || isNaN(dPv) || dT <= 0 || dPv <= 0) return;
         if (currentPowerUnit === 'BTU') {
-            Q = Q / 3412.14; // to kW
+            Q = Q / 3412.14;
         }
-        let dPbar = dP;
+        let dPv_bar = dPv;
         if (currentPressUnit === 'kPa') {
-            dPbar = dP / 100;
+            dPv_bar = dPv / 100;
         }
         const flowRate = (Q * 0.86) / dT;
-        const kv = flowRate / Math.sqrt(dPbar);
+        const kv = flowRate / Math.sqrt(dPv_bar);
         document.getElementById('valve-value').innerText = kv.toFixed(2);
+        const statusPill = document.getElementById('valve-status-pill');
+        statusPill.innerText = i18n[currentLang].valveStatusPill;
+        const pipeCard = document.getElementById('pipe-suggestion-card');
+        let dn = "DN15 (1/2\")";
+        if (flowRate <= 1.0) {
+            dn = "DN15 (1/2\")";
+        } else if (flowRate > 1.0 && flowRate <= 2.2) {
+            dn = "DN20 (3/4\")";
+        } else if (flowRate > 2.2 && flowRate <= 3.5) {
+            dn = "DN25 (1\")";
+        } else if (flowRate > 3.5 && flowRate <= 6.5) {
+            dn = "DN32 (1-1/4\")";
+        } else if (flowRate > 6.5 && flowRate <= 10.0) {
+            dn = "DN40 (1-1/2\")";
+        } else {
+            dn = "DN50 (2\")";
+        }
         const expEl = document.getElementById('valve-explanation');
         expEl.innerHTML = i18n[currentLang].valveExplanation
             .replace('{flowRate}', flowRate.toFixed(2))
             .replace('{kv}', kv.toFixed(2));
-        
-        let dn = "DN25 (1\\\")";
-        if (flowRate > 15.0) dn = "DN65 (2-1/2\\\")";
-        else if (flowRate > 8.0) dn = "DN50 (2\\\")";
-        else if (flowRate > 5.0) dn = "DN40 (1-1/2\\\")";
-        else if (flowRate > 3.0) dn = "DN32 (1-1/4\\\")";
-        else if (flowRate > 1.5) dn = "DN25 (1\\\")";
-        else dn = "DN20 (3/4\\\")";
-        
-        const kvsList = [1.0, 1.6, 2.5, 4.0, 6.3, 10, 16, 25, 40, 63, 100];
-        let selectedKvs = kvsList[kvsList.length - 1];
-        for (let i = 0; i < kvsList.length; i++) {
-            if (kvsList[i] >= kv) {
-                selectedKvs = kvsList[i];
+            
+        // Calculate closest standard commercial Kvs (providing control authority margin)
+        const stdKvs = [0.63, 1.0, 1.6, 2.5, 4.0, 6.3, 10.0, 16.0, 25.0, 40.0, 63.0, 100.0];
+        let recommendedKvs = stdKvs[stdKvs.length - 1];
+        const targetKvs = kv * 1.25;
+        for (let i = 0; i < stdKvs.length; i++) {
+            if (stdKvs[i] >= targetKvs) {
+                recommendedKvs = stdKvs[i];
                 break;
             }
         }
         
-        const cardEl = document.getElementById('pipe-suggestion-card');
-        cardEl.querySelector('h4').innerText = i18n[currentLang].pipeRecommendationTitle;
-        cardEl.querySelector('p').innerHTML = i18n[currentLang].pipeRecommendationDesc
-            .replace('{dn}', dn)
-            .replace('{kvsMargin}', selectedKvs);
+        pipeCard.innerHTML = `
+            <h4>${i18n[currentLang].pipeRecommendationTitle}</h4>
+            <p>${i18n[currentLang].pipeRecommendationDesc
+                .replace('{dn}', dn)
+                .replace('{kv}', kv.toFixed(2))
+                .replace('{kvsMargin}', recommendedKvs.toFixed(1))}</p>
+        `;
     }
-    const fertPurityPreset = {
-        custom: 15.5,
-        calcium_nitrate: 15.5,
-        potassium_nitrate: 13.0,
-        mkp: 22.7,
-        potassium_sulfate: 41.5,
-        magnesium_sulfate: 9.8,
-        ammonium_sulfate: 21.0
+    const fertDb = {
+        custom: { purity: 15.5, tank: 'none' },
+        calcium_nitrate: { purity: 15.5, tank: 'A' },
+        potassium_nitrate: { purity: 13.0, tank: 'AB' },
+        mkp: { purity: 22.7, tank: 'B' },
+        potassium_sulfate: { purity: 41.5, tank: 'B' },
+        magnesium_sulfate: { purity: 9.8, tank: 'B' },
+        ammonium_sulfate: { purity: 21.0, tank: 'B' }
     };
     function applyFertPreset() {
         const presetKey = document.getElementById('fert-preset').value;
         const purityEl = document.getElementById('fert-purity');
         const badgeEl = document.getElementById('fert-tank-badge');
-        
         if (presetKey === 'custom') {
             purityEl.disabled = false;
             badgeEl.style.display = 'none';
         } else {
             purityEl.disabled = true;
-            purityEl.value = fertPurityPreset[presetKey];
-            
+            purityEl.value = fertDb[presetKey].purity;
+            const tank = fertDb[presetKey].tank;
             badgeEl.style.display = 'inline-flex';
-            if (presetKey === 'calcium_nitrate') {
-                badgeEl.innerText = 'Tank A';
-                badgeEl.className = 'tank-badge tank-a';
-            } else if (presetKey === 'potassium_nitrate' || presetKey === 'ammonium_sulfate') {
-                badgeEl.innerText = 'Tank A or B';
-                badgeEl.className = 'tank-badge tank-ab';
-            } else {
-                badgeEl.innerText = 'Tank B';
-                badgeEl.className = 'tank-badge tank-b';
+            badgeEl.className = 'tank-badge';
+            if (tank === 'A') {
+                badgeEl.classList.add('tank-a');
+                badgeEl.innerText = currentLang === 'ko' ? 'A통 권장' : 'Tank A';
+            } else if (tank === 'B') {
+                badgeEl.classList.add('tank-b');
+                badgeEl.innerText = currentLang === 'ko' ? 'B통 권장' : 'Tank B';
+            } else if (tank === 'AB') {
+                badgeEl.classList.add('tank-ab');
+                badgeEl.innerText = currentLang === 'ko' ? 'A/B 가능' : 'Tank A/B';
             }
         }
         calculateFertEngine();
@@ -2359,20 +2378,26 @@
         const tankVolume = parseFloat(document.getElementById('fert-vol').value);
         const dilution = parseFloat(document.getElementById('fert-ratio').value);
         const purity = parseFloat(document.getElementById('fert-purity').value);
-        
         if (isNaN(targetPpm) || isNaN(tankVolume) || isNaN(dilution) || isNaN(purity) || purity <= 0) return;
-        
+
+        // Mass (kg) = (Target PPM * Stock Tank Vol * Dilution Ratio) / (Purity % * 10,000)
         const mass = (targetPpm * tankVolume * dilution) / (purity * 10000);
+
         document.getElementById('fert-value').innerText = mass.toFixed(1) + " kg";
-        
+
+        const statusPill = document.getElementById('fert-status-pill');
+        statusPill.innerText = i18n[currentLang].fertStatusPill;
+
         const expEl = document.getElementById('fert-explanation');
         expEl.innerHTML = i18n[currentLang].fertExplanation
-            .replace('{tankVolume}', tankVolume)
             .replace('{mass}', mass.toFixed(1))
+            .replace('{tankVolume}', tankVolume)
             .replace('{dilution}', dilution)
             .replace('{targetPpm}', targetPpm);
+            
+        runAcidEngine();
     }
-    
+
     const hlPresetDb = {
         custom: 5.5,
         single_poly: 6.0,
