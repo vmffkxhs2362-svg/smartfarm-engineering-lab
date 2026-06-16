@@ -826,7 +826,7 @@
             color: var(--text-dark);
             border: none;
             padding: 0.7rem 1.2rem;
-            border-radius: 10px;
+            border-radius: 100px;
             font-weight: 800;
             font-size: 0.9rem;
             cursor: pointer;
@@ -1600,7 +1600,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Smart Farm Engineering Lab. All rights reserved.</p>
+        <p>&copy; 2026 Smart Farm Engineering Lab. All rights reserved. | <a href="privacy.html" style="color: var(--text-gray); text-decoration: underline;">개인정보처리방침 (Privacy Policy)</a></p>
         <p>Built for zero-cost static hosting. Designed by Inwoovation &bull; <a href="mailto:vmffkxhs2362@gmail.com">Contact Support</a></p>
         <p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.5; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;">
             <!-- Rendered dynamically -->
@@ -2217,16 +2217,16 @@
         const btuBtn = document.getElementById('power-unit-btu');
         const powerInput = document.getElementById('heat-power');
         const powerSuffix = document.getElementById('power-suffix');
-        let val = parseFloat(powerInput.value);
+        let powerVal = parseFloat(powerInput.value);
         if (unit === 'BTU') {
             kwBtn.classList.remove('active');
             btuBtn.classList.add('active');
-            powerInput.value = (val * 3412.14).toFixed(0);
+            powerInput.value = (powerVal * 3412.14).toFixed(0);
             powerSuffix.innerText = 'BTU/h';
         } else {
             kwBtn.classList.add('active');
             btuBtn.classList.remove('active');
-            powerInput.value = (val / 3412.14).toFixed(0);
+            powerInput.value = (powerVal / 3412.14).toFixed(1);
             powerSuffix.innerText = 'kW';
         }
         calculateValveEngine();
@@ -2238,107 +2238,89 @@
         const barBtn = document.getElementById('press-unit-bar');
         const pressInput = document.getElementById('valve-dp');
         const pressSuffix = document.getElementById('press-suffix');
-        let val = parseFloat(pressInput.value);
+        let pressVal = parseFloat(pressInput.value);
         if (unit === 'bar') {
             kpaBtn.classList.remove('active');
             barBtn.classList.add('active');
-            pressInput.value = (val / 100).toFixed(3);
+            pressInput.value = (pressVal / 100).toFixed(3);
             pressSuffix.innerText = 'bar';
         } else {
             kpaBtn.classList.add('active');
             barBtn.classList.remove('active');
-            pressInput.value = (val * 100).toFixed(1);
+            pressInput.value = (pressVal * 100).toFixed(1);
             pressSuffix.innerText = 'kPa';
         }
         calculateValveEngine();
     }
     function calculateValveEngine() {
         let Q = parseFloat(document.getElementById('heat-power').value);
-        let dT = parseFloat(document.getElementById('valve-dt').value);
+        const dT = parseFloat(document.getElementById('valve-dt').value);
         let dPv = parseFloat(document.getElementById('valve-dp').value);
-        if (isNaN(Q) || isNaN(dT) || isNaN(dPv) || dT <= 0 || dPv <= 0) return;
+        if (isNaN(Q) || isNaN(dT) || isNaN(dPv)) return;
         if (currentPowerUnit === 'BTU') {
-            Q = Q / 3412.14;
+            Q = Q / 3412.14; 
         }
-        let dPv_bar = dPv;
-        if (currentPressUnit === 'kPa') {
-            dPv_bar = dPv / 100;
+        if (currentPressUnit === 'bar') {
+            dPv = dPv * 100; 
         }
-        const flowRate = (Q * 0.86) / dT;
-        const kv = flowRate / Math.sqrt(dPv_bar);
-        document.getElementById('valve-value').innerText = kv.toFixed(2);
-        const statusPill = document.getElementById('valve-status-pill');
-        statusPill.innerText = i18n[currentLang].valveStatusPill;
+        if (dT <= 0 || dPv <= 0) return;
+        const G = (Q * 3600) / (4.186 * 1000 * dT); 
+        const Kv = G / Math.sqrt(dPv / 100); 
+        document.getElementById('valve-value').innerText = Kv.toFixed(1);
+        
+        let dnRecommendation = "DN25";
+        let kvsMargin = "25";
+        if (G <= 1.0) { dnRecommendation = "DN15 (1/2\")"; kvsMargin = "1.6"; }
+        else if (G > 1.0 && G <= 2.5) { dnRecommendation = "DN20 (3/4\")"; kvsMargin = "4.0"; }
+        else if (G > 2.5 && G <= 4.5) { dnRecommendation = "DN25 (1\")"; kvsMargin = "6.3"; }
+        else if (G > 4.5 && G <= 8.5) { dnRecommendation = "DN32 (1 1/4\")"; kvsMargin = "10"; }
+        else if (G > 8.5 && G <= 14.0) { dnRecommendation = "DN40 (1 1/2\")"; kvsMargin = "16"; }
+        else if (G > 14.0 && G <= 22.0) { dnRecommendation = "DN50 (2\")"; kvsMargin = "25"; }
+        else if (G > 22.0 && G <= 35.0) { dnRecommendation = "DN65 (2 1/2\")"; kvsMargin = "40"; }
+        else { dnRecommendation = "DN80 (3\")"; kvsMargin = "63+"; }
+        
         const pipeCard = document.getElementById('pipe-suggestion-card');
-        let dn = "DN15 (1/2\")";
-        if (flowRate <= 1.0) {
-            dn = "DN15 (1/2\")";
-        } else if (flowRate > 1.0 && flowRate <= 2.2) {
-            dn = "DN20 (3/4\")";
-        } else if (flowRate > 2.2 && flowRate <= 3.5) {
-            dn = "DN25 (1\")";
-        } else if (flowRate > 3.5 && flowRate <= 6.5) {
-            dn = "DN32 (1-1/4\")";
-        } else if (flowRate > 6.5 && flowRate <= 10.0) {
-            dn = "DN40 (1-1/2\")";
-        } else {
-            dn = "DN50 (2\")";
-        }
+        pipeCard.querySelector('p').innerHTML = i18n[currentLang].pipeRecommendationDesc
+            .replace('{dn}', dnRecommendation)
+            .replace('{kvsMargin}', kvsMargin);
+            
         const expEl = document.getElementById('valve-explanation');
         expEl.innerHTML = i18n[currentLang].valveExplanation
-            .replace('{flowRate}', flowRate.toFixed(2))
-            .replace('{kv}', kv.toFixed(2));
-            
-        // Calculate closest standard commercial Kvs (providing control authority margin)
-        const stdKvs = [0.63, 1.0, 1.6, 2.5, 4.0, 6.3, 10.0, 16.0, 25.0, 40.0, 63.0, 100.0];
-        let recommendedKvs = stdKvs[stdKvs.length - 1];
-        const targetKvs = kv * 1.25;
-        for (let i = 0; i < stdKvs.length; i++) {
-            if (stdKvs[i] >= targetKvs) {
-                recommendedKvs = stdKvs[i];
-                break;
-            }
-        }
-        
-        pipeCard.innerHTML = `
-            <h4>${i18n[currentLang].pipeRecommendationTitle}</h4>
-            <p>${i18n[currentLang].pipeRecommendationDesc
-                .replace('{dn}', dn)
-                .replace('{kv}', kv.toFixed(2))
-                .replace('{kvsMargin}', recommendedKvs.toFixed(1))}</p>
-        `;
+            .replace('{flowRate}', G.toFixed(2))
+            .replace('{kv}', Kv.toFixed(2));
     }
-    const fertDb = {
-        custom: { purity: 15.5, tank: 'none' },
-        calcium_nitrate: { purity: 15.5, tank: 'A' },
-        potassium_nitrate: { purity: 13.0, tank: 'AB' },
-        mkp: { purity: 22.7, tank: 'B' },
-        potassium_sulfate: { purity: 41.5, tank: 'B' },
-        magnesium_sulfate: { purity: 9.8, tank: 'B' },
-        ammonium_sulfate: { purity: 21.0, tank: 'B' }
+    const fertPurityDb = {
+        custom: 100,
+        calcium_nitrate: 15.5,
+        potassium_nitrate: 13.0,
+        mkp: 22.7,
+        potassium_sulfate: 41.5,
+        magnesium_sulfate: 9.8,
+        ammonium_sulfate: 21.0
     };
     function applyFertPreset() {
-        const presetKey = document.getElementById('fert-preset').value;
-        const purityEl = document.getElementById('fert-purity');
-        const badgeEl = document.getElementById('fert-tank-badge');
-        if (presetKey === 'custom') {
-            purityEl.disabled = false;
-            badgeEl.style.display = 'none';
+        const preset = document.getElementById('fert-preset').value;
+        const purityInput = document.getElementById('fert-purity');
+        const tankBadge = document.getElementById('fert-tank-badge');
+        
+        if (preset === 'custom') {
+            purityInput.disabled = false;
+            tankBadge.style.display = 'none';
         } else {
-            purityEl.disabled = true;
-            purityEl.value = fertDb[presetKey].purity;
-            const tank = fertDb[presetKey].tank;
-            badgeEl.style.display = 'inline-flex';
-            badgeEl.className = 'tank-badge';
-            if (tank === 'A') {
-                badgeEl.classList.add('tank-a');
-                badgeEl.innerText = currentLang === 'ko' ? 'A통 권장' : 'Tank A';
-            } else if (tank === 'B') {
-                badgeEl.classList.add('tank-b');
-                badgeEl.innerText = currentLang === 'ko' ? 'B통 권장' : 'Tank B';
-            } else if (tank === 'AB') {
-                badgeEl.classList.add('tank-ab');
-                badgeEl.innerText = currentLang === 'ko' ? 'A/B 가능' : 'Tank A/B';
+            purityInput.disabled = true;
+            purityInput.value = fertPurityDb[preset];
+            
+            // Show chemistry safety tags
+            tankBadge.style.display = 'inline-flex';
+            if (preset === 'calcium_nitrate') {
+                tankBadge.className = "tank-badge tank-a";
+                tankBadge.innerText = currentLang === 'ko' ? "A통 배치 (칼슘)" : "Tank A Only";
+            } else if (preset === 'mkp' || preset === 'potassium_sulfate' || preset === 'magnesium_sulfate') {
+                tankBadge.className = "tank-badge tank-b";
+                tankBadge.innerText = currentLang === 'ko' ? "B통 배치 (인/황산)" : "Tank B Only";
+            } else {
+                tankBadge.className = "tank-badge tank-ab";
+                tankBadge.innerText = currentLang === 'ko' ? "A/B통 공용" : "Tank A or B";
             }
         }
         calculateFertEngine();
@@ -2349,54 +2331,47 @@
         const dilution = parseFloat(document.getElementById('fert-ratio').value);
         const purity = parseFloat(document.getElementById('fert-purity').value);
         if (isNaN(targetPpm) || isNaN(tankVolume) || isNaN(dilution) || isNaN(purity) || purity <= 0) return;
-
-        // Mass (kg) = (Target PPM * Stock Tank Vol * Dilution Ratio) / (Purity % * 10,000)
-        const mass = (targetPpm * tankVolume * dilution) / (purity * 10000);
-
-        document.getElementById('fert-value').innerText = mass.toFixed(1) + " kg";
-
-        const statusPill = document.getElementById('fert-status-pill');
-        statusPill.innerText = i18n[currentLang].fertStatusPill;
-
+        const targetG_L = targetPpm / 1000;
+        const targetTotalMassG = targetG_L * tankVolume * dilution;
+        const requiredFertMassG = targetTotalMassG / (purity / 100);
+        const requiredFertMassKg = requiredFertMassG / 1000;
+        document.getElementById('fert-value').innerText = requiredFertMassKg.toFixed(2);
+        
         const expEl = document.getElementById('fert-explanation');
         expEl.innerHTML = i18n[currentLang].fertExplanation
-            .replace('{mass}', mass.toFixed(1))
             .replace('{tankVolume}', tankVolume)
+            .replace('{mass}', requiredFertMassKg.toFixed(2))
             .replace('{dilution}', dilution)
             .replace('{targetPpm}', targetPpm);
             
         runAcidEngine();
     }
-
-    const hlPresetDb = {
-        custom: 5.5,
-        single_poly: 6.0,
-        double_poly: 3.5,
-        glass: 5.5,
-        double_glass: 3.0,
-        pc_8: 3.3,
-        pc_16: 2.3
-    };
-
+    
+    // Heat Loss Engine
     function applyHlPreset() {
-        const presetKey = document.getElementById('hl-preset').value;
-        const uvalueEl = document.getElementById('hl-uvalue');
-        if (presetKey === 'custom') {
-            uvalueEl.disabled = false;
+        const preset = document.getElementById('hl-preset').value;
+        const uValueEl = document.getElementById('hl-uvalue');
+        if (preset === 'custom') {
+            uValueEl.disabled = false;
         } else {
-            uvalueEl.disabled = true;
-            uvalueEl.value = hlPresetDb[presetKey];
+            uValueEl.disabled = true;
+            if (preset === 'single_poly') uValueEl.value = "6.0";
+            else if (preset === 'double_poly') uValueEl.value = "3.5";
+            else if (preset === 'glass') uValueEl.value = "5.5";
+            else if (preset === 'double_glass') uValueEl.value = "3.0";
+            else if (preset === 'pc_8') uValueEl.value = "3.3";
+            else if (preset === 'pc_16') uValueEl.value = "2.3";
         }
         calculateHeatLossEngine();
     }
-
+    
     function calculateHeatLossEngine() {
         const A = parseFloat(document.getElementById('hl-area').value);
         const U = parseFloat(document.getElementById('hl-uvalue').value);
         const tempIn = parseFloat(document.getElementById('hl-temp-in').value);
         const tempOut = parseFloat(document.getElementById('hl-temp-out').value);
         const wind = parseFloat(document.getElementById('hl-wind').value);
-
+        
         if (isNaN(A) || isNaN(U) || isNaN(tempIn) || isNaN(tempOut) || isNaN(wind)) return;
 
         const deltaT = tempIn - tempOut;
