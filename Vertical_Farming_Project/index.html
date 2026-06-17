@@ -1,9 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vertical Farm Light &amp; Power Analyzer</title>
+    <title>수직농업 DLI 계산기 & LED 방열량 시뮬레이터 | Vertical Farm Light & Power Analyzer</title>
+    <meta name="description" content="수직농장(식물공장) LED PPFD 대비 DLI 광조사 주기 계산기, 엽면 포차(VPD) 분석 및 LED 소자 접합부 최고 온도(Tj) 및 전기요금(OPEX) 시뮬레이션 툴킷.">
+    <link rel="canonical" href="https://smartfarm.inwoovation.com/Vertical_Farming_Project/index.html" />
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V4RYJBMEDE');
+    </script>
+
     <!-- Google Fonts Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -546,7 +558,7 @@
             <svg viewBox="0 0 24 24">
                 <path d="M12,3L1,9L12,15L21,10.5V17H23V9L12,3M12,5.3L18.8,9L12,12.7L5.2,9L12,5.3M3,13.5V17.5L12,21.5L21,17.5V13.5L12,17.5L3,13.5Z"/>
             </svg>
-            <h1>Vertical Farm Light &amp; Power Analyzer</h1>
+            <h1 id="header-title">Vertical Farm Light &amp; Power Analyzer</h1>
         </div>
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('tab-light')">PPFD &amp; DLI Calc</button>

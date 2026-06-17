@@ -1648,6 +1648,10 @@
             tabRoiMobil: "난방 ROI",
             tabTranspirationDeskt: "식물 증산량 추정기 (PM)",
             tabTranspirationMobil: "증산량 (PM)",
+            tabPollinatorDeskt: "🐝 병해충 자가진단 & 수분벌",
+            tabPollinatorMobil: "🐝 병해충/벌",
+            tabVerticalDeskt: "🌱 수직농업 DLI 계산기",
+            tabVerticalMobil: "🌱 수직농업",
             vpdTitle: "환경 데이터 입력",
             stageSeedling: "육묘/삽목기",
             stageVeg: "영양생장기",
@@ -1742,6 +1746,10 @@
             tabRoiMobil: "Heating ROI",
             tabTranspirationDeskt: "Plant Transpiration (PM)",
             tabTranspirationMobil: "Transpiration (PM)",
+            tabPollinatorDeskt: "🐝 Crop Diagnosis & Bees",
+            tabPollinatorMobil: "🐝 Pest/Bees",
+            tabVerticalDeskt: "🌱 Vertical Farming DLI",
+            tabVerticalMobil: "🌱 Vertical DLI",
             vpdTitle: "Environmental Data",
             stageSeedling: "Seedling/Clone",
             stageVeg: "Vegetative",
@@ -1852,7 +1860,11 @@
         transTab.querySelector('.desktop-text').innerText = i18n[lang].tabTranspirationDeskt;
         transTab.querySelector('.mobile-text').innerText = i18n[lang].tabTranspirationMobil;
         document.getElementById('lnk-tab-pollinator').href = `Pollinator_Safety_Project/index.html?lang=${lang}`;
+        document.getElementById('lnk-tab-pollinator').querySelector('.desktop-text').innerText = i18n[lang].tabPollinatorDeskt;
+        document.getElementById('lnk-tab-pollinator').querySelector('.mobile-text').innerText = i18n[lang].tabPollinatorMobil;
         document.getElementById('lnk-tab-vertical').href = `Vertical_Farming_Project/index.html?lang=${lang}`;
+        document.getElementById('lnk-tab-vertical').querySelector('.desktop-text').innerText = i18n[lang].tabVerticalDeskt;
+        document.getElementById('lnk-tab-vertical').querySelector('.mobile-text').innerText = i18n[lang].tabVerticalMobil;
 
         // VPD Section translation
         document.querySelector('#section-vpd .form-panel .panel-title').innerText = i18n[lang].vpdTitle;
