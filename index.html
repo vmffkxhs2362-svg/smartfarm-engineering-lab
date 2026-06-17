@@ -8,6 +8,13 @@
     <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" />
     <link rel="canonical" href="https://smartfarm.inwoovation.com/" />
     
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smartfarm.inwoovation.com/">
+    <meta property="og:title" content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator">
+    <meta property="og:description" content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요.">
+    <meta property="og:image" content="https://smartfarm.inwoovation.com/cover.png">
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
     <script>
@@ -1835,6 +1842,7 @@
 
     function changeLanguage(lang) {
         currentLang = lang;
+        localStorage.setItem('smartfarm_lang', lang);
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`lang-${lang}`).classList.add('active');
         document.getElementById('header-title').innerText = i18n[lang].headerTitle;
@@ -2732,7 +2740,18 @@
     if (langParam === 'ko' || langParam === 'en') {
         changeLanguage(langParam);
     } else {
-        changeLanguage('en');
+        const savedLang = localStorage.getItem('smartfarm_lang');
+        if (savedLang === 'ko' || savedLang === 'en') {
+            changeLanguage(savedLang);
+        } else {
+            // Auto-detect browser locale
+            const userLocale = navigator.language || navigator.userLanguage;
+            if (userLocale && userLocale.startsWith('ko')) {
+                changeLanguage('ko');
+            } else {
+                changeLanguage('en');
+            }
+        }
     }
     const tabParam = urlParams.get('tab');
     if (tabParam && ['vpd', 'valve', 'fert', 'heat-loss', 'roi', 'transpiration'].includes(tabParam)) {

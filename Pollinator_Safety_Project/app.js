@@ -979,6 +979,13 @@ function loadSavedPreferences() {
         const savedLang = localStorage.getItem('pollinator_lang');
         if (savedLang) {
             currentLang = savedLang;
+        } else {
+            const userLocale = navigator.language || navigator.userLanguage;
+            if (userLocale && userLocale.startsWith('ko')) {
+                currentLang = 'ko';
+            } else {
+                currentLang = 'en';
+            }
         }
     }
 

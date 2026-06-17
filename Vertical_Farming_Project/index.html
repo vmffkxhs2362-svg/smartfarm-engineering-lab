@@ -7,6 +7,13 @@
     <meta name="description" content="수직농장(식물공장) LED PPFD 대비 DLI 광조사 주기 계산기, 엽면 포차(VPD) 분석 및 LED 소자 접합부 최고 온도(Tj) 및 전기요금(OPEX) 시뮬레이션 툴킷.">
     <link rel="canonical" href="https://smartfarm.inwoovation.com/Vertical_Farming_Project/index.html" />
     
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://smartfarm.inwoovation.com/Vertical_Farming_Project/index.html">
+    <meta property="og:title" content="수직농업 DLI 계산기 & LED 방열량 시뮬레이터 | Vertical Farm Light & Power Analyzer">
+    <meta property="og:description" content="수직농장(식물공장) LED PPFD 대비 DLI 광조사 주기 계산기, 엽면 포차(VPD) 분석 및 LED 소자 접합부 최고 온도(Tj) 및 전기요금(OPEX) 시뮬레이션 툴킷.">
+    <meta property="og:image" content="https://smartfarm.inwoovation.com/cover.png">
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
     <script>
@@ -1480,7 +1487,12 @@
                 if (savedLang) {
                     setLanguage(savedLang);
                 } else {
-                    setLanguage('en');
+                    const userLocale = navigator.language || navigator.userLanguage;
+                    if (userLocale && userLocale.startsWith('ko')) {
+                        setLanguage('ko');
+                    } else {
+                        setLanguage('en');
+                    }
                 }
             }
         };
