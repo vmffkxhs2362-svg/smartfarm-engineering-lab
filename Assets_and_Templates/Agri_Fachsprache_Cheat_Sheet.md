@@ -70,7 +70,7 @@
     * *KO*: "오늘 배액률이 15%입니다. 너무 낮습니다."
 * **DE**: "Prüfen Sie bitte, ob der Durchflussmesser verstopft ist."
     * *KO*: "유량계가 막혔는지 확인해 주십시오."
-* **DE**: "Das Sättigungsdefizit (VPD) is zu niedrig. Die Pflanzen transpirieren nicht genug. Öffnen Sie die Lüftungsschlitze leicht."
+* **DE**: "Das Sättigungsdefizit (VPD) ist zu niedrig. Die Pflanzen transpirieren nicht genug. Öffnen Sie die Lüftungsschlitze leicht."
     * *KO*: "증기압포차(VPD)가 너무 낮습니다. 작물의 증산이 부족합니다. 천창을 살짝 열어주세요."
 * **DE**: "Es gibt eine Störung im Bewässerungscomputer. Der Druck ist abgefallen."
     * *KO*: "관수 컴퓨터에 오류가 발생했습니다. 압력이 떨어졌습니다."

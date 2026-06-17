@@ -921,7 +921,7 @@
 <div class="container">
     <!-- Header -->
     <header>
-        <div id="header-badge" class="badge">Last Updated: June 2026</div>
+        <div id="header-badge" class="badge">Last Updated: June 17, 2026</div>
         <div class="lang-switch">
             <button id="lang-ko" class="lang-btn" onclick="changeLanguage('ko')">KO</button>
             <button id="lang-en" class="lang-btn active" onclick="changeLanguage('en')">EN</button>
@@ -957,6 +957,14 @@
                 <span class="desktop-text">식물 증산량 추정기 (PM)</span>
                 <span class="mobile-text">증산량 (PM)</span>
             </button>
+            <a href="Pollinator_Safety_Project/index.html" class="tab-btn" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem;">
+                <span class="desktop-text">🐝 병해충 자가진단 & 수분벌</span>
+                <span class="mobile-text">🐝 병해충/벌</span>
+            </a>
+            <a href="Vertical_Farming_Project/index.html" class="tab-btn" style="background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem;">
+                <span class="desktop-text">🌱 수직농업 DLI 계산기</span>
+                <span class="mobile-text">🌱 수직농업</span>
+            </a>
         </div>
     </div>
 
@@ -964,7 +972,7 @@
     <div id="section-vpd" class="calc-wrapper active">
         <!-- Premium Promotion Banner -->
         <!-- Premium Promotion Banner (Hidden until products are created and tested) -->
-        <div class="promo-banner" id="vpd-promo-banner" style="display: none !important; grid-column: 1 / -1; margin-bottom: 0.5rem;">
+        <div class="promo-banner" id="vpd-promo-banner" style="grid-column: 1 / -1; margin-bottom: 0.5rem;">
             <div class="promo-text">
                 <h3 id="lbl-promo-title">🚀 온실 운영을 한 단계 더 최적화하세요</h3>
                 <p id="lbl-promo-desc">모든 센서 보정 스케줄, 양액 배합 공식 및 작물 일지가 포함된 전문가용 "스마트팜 운영 OS" 노션 템플릿과 엑셀 패키지를 만나보세요.</p>
@@ -1610,6 +1618,8 @@
         </div>
     </div>
 
+
+
     <!-- Adspace Placeholder -->
     <div class="ad-space-placeholder">
         Sponsored Link - Google AdSense Placement Space
@@ -1724,7 +1734,8 @@
             promoTitle: "🚀 온실 운영을 한 단계 더 최적화하세요",
             promoDesc: "모든 센서 보정 스케줄, 양액 배합 공식 및 작물 일지가 포함된 전문가용 '스마트팜 운영 OS' 노션 템플릿과 엑셀 패키지를 다운로드하세요.",
             btnPromoMain: "스마트팜 노션 OS ($19.99)",
-            btnPromoSub: "엔지니어링 엑셀 ($29.00)"
+            btnPromoSub: "엔지니어링 엑셀 ($29.00)",
+
         },
         en: {
             headerTitle: "Smart Farm Engineering Lab",
@@ -1817,7 +1828,8 @@
             promoTitle: "🚀 Optimize Your Greenhouse Operations Further",
             promoDesc: "Download our professional 'Smart Farm Operator OS' Notion Template & Engineering Excel Packages containing sensor calibration schedules, fertigation formulas, and crop logs.",
             btnPromoMain: "Get Notion OS ($19.99)",
-            btnPromoSub: "Get Excel Package ($29.00)"
+            btnPromoSub: "Get Excel Package ($29.00)",
+
         }
     };
 
@@ -1849,6 +1861,7 @@
         const transTab = document.getElementById('btn-tab-transpiration');
         transTab.querySelector('.desktop-text').innerText = i18n[lang].tabTranspirationDeskt;
         transTab.querySelector('.mobile-text').innerText = i18n[lang].tabTranspirationMobil;
+
 
         // VPD Section translation
         document.querySelector('#section-vpd .form-panel .panel-title').innerText = i18n[lang].vpdTitle;
@@ -1967,6 +1980,8 @@
         document.getElementById('hl-trans-tip-desc').innerText = lang === 'ko' ? "Penman-Monteith(펜맨-몬테이쓰) 수식은 태양 복사 에너지(복사열 항)와 주변 공기의 VPD 및 경계층 풍속(공기역학적 항)을 종합하여 식물의 생리적 물 증산 요구량을 계산하는 국제 표준 모델입니다." : "The Penman-Monteith equation is the physical standard integrating radiation energy balance and aerodynamic vapor transfer, constrained by plant stomatal resistance.";
         document.getElementById('trans-status-pill').innerText = i18n[lang].transStatusPill;
 
+
+
         const trCrop = document.getElementById('tr-crop');
         trCrop.options[0].text = lang === 'ko' ? '토마토 (Tomato, rs=100 s/m)' : 'Tomato (rs=100 s/m)';
         trCrop.options[1].text = lang === 'ko' ? '파프리카 (Pepper, rs=120 s/m)' : 'Bell Pepper (rs=120 s/m)';
@@ -1994,6 +2009,7 @@
         calculateHeatLossEngine();
         calculateRoiEngine();
         calculateTranspirationEngine();
+
     }
     
     function switchTab(target) {
@@ -2023,6 +2039,7 @@
             calculateRoiEngine();
         } else if (target === 'transpiration') {
             calculateTranspirationEngine();
+
         }
     }
     function toggleAccordion(id) {
@@ -2688,6 +2705,8 @@
             .replace('{et}', etHr.toFixed(3))
             .replace('{etDay}', etDay.toFixed(2));
     }
+
+
 
     function handleFeedbackClick(event) {
         const btn = document.getElementById('btn-feedback');

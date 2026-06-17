@@ -35,7 +35,7 @@
   $$Q_{loss} = U \cdot A \cdot (T_{in} - T_{out}) \cdot \text{Modifier}$$
   $$Q_{loss} = 5.8 \cdot 1000 \cdot (18 - (-2)) \cdot 1.0 = 116,000 \, \text{W} = 116 \, \text{kW}$$
 * **브라우저 테스트 수행법**:
-  1. Chrome/Edge에서 index.html을 엽니다.
+  1. Chrome/Edge에서 [index.html](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/index.html)을 엽니다.
   2. 첫 번째 탭 "Greenhouse Heat Loss"에서 위 입력값을 기입합니다.
   3. 계산 버튼 클릭 후 화면에 출력되는 총 열손실량이 정확히 **116.0 kW** (또는 $99,760 \text{ kcal/h}$)로 렌더링되는지 확인합니다.
 
@@ -97,7 +97,7 @@
   ```
 * **검증 기준 (Pass Criteria)**:
   * 터미널에 `✅ Successfully compiled KDP manuscript to Kindle-ready HTML` 메시지가 출력되어야 함.
-  * 빌드된 manuscript.html 파일의 크기가 30KB 이상이어야 함.
+  * 빌드된 [manuscript.html](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/KDP_Book/manuscript.html) 파일의 크기가 30KB 이상이어야 함.
   * 크롬 브라우저로 해당 HTML을 열었을 때, Structured Text 코드가 담긴 `<pre><code>` 블록의 줄바꿈과 들여쓰기가 깨지지 않고, LaTeX 수식들이 마크다운 문법 텍스트 그대로 가독성 있게 표현되는지 확인.
 
 ---

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 자가진단 & 수분벌 안전 처방 포털 | Greenhouse Diagnosis & Pollinator Safety Portal</title>
+    <meta name="description" content="시설하우스 주요 병해충 즉시 자가진단, 안전 방제 약제 추천 및 수분 벌 보호 대기시간(REI) 자동 연동 툴킷. 영농 현장 필수 AgTech 분석 도구.">
+    <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" />
+    <link rel="canonical" href="https://smartfarm.inwoovation.com/pollinator.html" />
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V4RYJBMEDE');
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- SEO JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Greenhouse Diagnosis & Pollinator Safety Portal",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "browserRequirements": "Requires HTML5, Javascript, CSS3",
+      "softwareVersion": "3.0",
+      "description": "Symptoms-based agricultural disease diagnostics linked to pesticide re-entry interval models for honeybees and bumblebees.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <!-- Language Toggle -->
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+        <div class="lang-switch">
+            <button class="lang-btn active" id="lang-ko" onclick="setLanguage('ko')">한국어</button>
+            <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="badge" id="header-badge">시설원예 & 과수원 화분매개 솔루션</div>
+        <h1 id="header-title">병해충 자가진단 & 수분벌 안전 처방 포털</h1>
+        <p id="header-desc">시설하우스 주요 병해충 즉시 자가진단, 안전 방제 약제 추천 및 수분 벌 보호 대기시간(REI) 자동 연동 툴킷</p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" id="btn-tab-diagnosis" onclick="switchTab('diagnosis')">병해충 자가진단</button>
+        <button class="tab-btn" id="btn-tab-pesticide" onclick="switchTab('pesticide')">농약 안전성 진단</button>
+        <button class="tab-btn" id="btn-tab-density" onclick="switchTab('density')">적정 벌통수 산출</button>
+        <button class="tab-btn" id="btn-tab-activity" onclick="switchTab('activity')">활동성 시뮬레이터</button>
+    </div>
+
+    <!-- Tab 0: Disease & Pest Diagnosis -->
+    <div id="tab-diagnosis" class="tab-content active">
+        <div class="dashboard-grid">
+            <div class="form-panel">
+                <h2 class="panel-title" id="lbl-diag-input-title">증상기반 예찰 변수</h2>
+                
+                <!-- Select Crop -->
+                <div class="input-group">
+                    <label id="lbl-select-crop" for="diag-crop">재배 중인 작물</label>
+                    <div class="input-control-wrapper select-arrow-wrapper">
+                        <select id="diag-crop">
+                            <option value="" id="opt-diag-placeholder">-- 선택해 주세요 --</option>
+                            <option value="tomato">토마토 (Tomato)</option>
+                            <option value="strawberry">딸기 (Strawberry)</option>
+                            <option value="blueberry">블루베리 (Blueberry)</option>
+                            <option value="melon">참외/멜론 (Melon)</option>
+                            <option value="pepper">고추/파프리카 (Pepper)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Select Plant Part -->
+                <div class="input-group">
+                    <label id="lbl-select-part" for="diag-part">피해 부위 선택</label>
+                    <div class="input-control-wrapper select-arrow-wrapper">
+                        <select id="diag-part" disabled>
+                            <option value="">-- 선택해 주세요 --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Select Symptom details -->
+                <div class="input-group">
+                    <label id="lbl-select-symptom" for="diag-symptom">관찰되는 세부 증상</label>
+                    <div class="input-control-wrapper select-arrow-wrapper">
+                        <select id="diag-symptom" disabled>
+                            <option value="">-- 선택해 주세요 --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-panel">
+                <h2 class="panel-title" id="lbl-diag-result-title">AI 진단 및 처방 보고서</h2>
+                <div id="diag-result-content">
+                    <!-- Dynamic rendering via app.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 1: Pesticide Safety -->
+    <div id="tab-pesticide" class="tab-content">
+        <div class="dashboard-grid">
+            <div class="form-panel">
+                <h2 class="panel-title" id="lbl-pest-input-title">농약 성분 검색</h2>
+                
+                <div class="input-group">
+                    <label for="pest-search" style="font-weight: 600; font-size: 0.95rem; color: var(--text-gray);" id="lbl-pest-search-desc">살포할 농약 성분명 입력</label>
+                    <div class="search-container">
+                        <div class="input-control-wrapper">
+                            <input type="text" id="pest-search" autocomplete="off" placeholder="예: 이미다클로프리드, 보스칼리드">
+                        </div>
+                        <div class="autocomplete-list" id="autocomplete-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-panel">
+                <h2 class="panel-title" id="lbl-pest-result-title">안전 진단 결과</h2>
+                <div id="pest-result-content">
+                    <!-- Dynamic rendering via app.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Stocking Density -->
+    <div id="tab-density" class="tab-content">
+        <div class="dashboard-grid">
+            <div class="form-panel">
+                <h2 class="panel-title" id="lbl-density-input-title">재배 환경 변수</h2>
+                
+                <!-- Crop type -->
+                <div class="input-group">
+                    <label id="lbl-crop-type" for="crop-type">대상 재배 작물</label>
+                    <div class="input-control-wrapper select-arrow-wrapper">
+                        <select id="crop-type" onchange="calculateDensity()">
+                            <option value="tomato" selected>완숙/방울토마토</option>
+                            <option value="strawberry">딸기</option>
+                            <option value="melon">참외/멜론</option>
+                            <option value="blueberry">블루베리</option>
+                            <option value="pepper">파프리카/고추</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Floor area -->
+                <div class="input-group">
+                    <label id="lbl-area" for="area">재배 면적 (㎡)</label>
+                    <div class="input-control-wrapper">
+                        <input type="number" id="area" value="3300" min="10" max="200000" step="100" oninput="calculateDensity()">
+                        <span class="suffix">m²</span>
+                    </div>
+                </div>
+
+                <!-- Season/Deployment -->
+                <div class="input-group">
+                    <label id="lbl-season" for="season">현재 방사 계열/계절</label>
+                    <div class="input-control-wrapper select-arrow-wrapper">
+                        <select id="season" onchange="calculateDensity()">
+                            <option value="spring_autumn" selected>봄 / 가을 (표준 기후)</option>
+                            <option value="summer">여름 (고온 극복 필요)</option>
+                            <option value="winter">겨울 (보온 및 저온 극복 필요)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-panel">
+                <h2 class="panel-title" id="lbl-density-result-title">최적 방사 규모</h2>
+                
+                <div>
+                    <span class="result-header" id="lbl-req-hives-title">추천 뒤영벌 봉군 수</span>
+                    <div class="big-number-container">
+                        <span id="hives-count-large" class="big-number">9</span>
+                        <span style="font-size: 1.2rem; font-weight: 700; color: var(--text-gray); margin-left: 0.3rem;" id="lbl-hives-unit">통 (Hives)</span>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="result-header" id="lbl-expected-lifespan-title">봉군 예상 수명 주기</span>
+                    <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-light); margin-top: 0.3rem;" id="hives-lifespan">
+                        8 ~ 12주 (표준 수명)
+                    </div>
+                </div>
+
+                <p id="density-math-result" class="result-desc">로딩 중...</p>
+
+                <div class="info-card" style="border-left: 4px solid var(--primary);">
+                    <h4 id="lbl-density-desc-title">📋 배치 가이드라인</h4>
+                    <p id="density-guide-text">로딩 중...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 3: Foraging Activity Simulator -->
+    <div id="tab-activity" class="tab-content">
+        <div class="dashboard-grid">
+            <div class="form-panel">
+                <h2 class="panel-title" id="lbl-act-input-title">온도 시뮬레이션</h2>
+                
+                <!-- Max Temp -->
+                <div class="input-group">
+                    <label id="lbl-max-temp" for="max-temp">오늘 온실 예상 최고 온도 (℃)</label>
+                    <div class="input-control-wrapper">
+                        <input type="number" id="max-temp" value="23" min="-10" max="50" step="1" oninput="simulateActivity()">
+                        <span class="suffix">℃</span>
+                    </div>
+                </div>
+
+                <!-- Min Temp -->
+                <div class="input-group">
+                    <label id="lbl-min-temp" for="min-temp">오늘 온실 예상 최저 온도 (℃)</label>
+                    <div class="input-control-wrapper">
+                        <input type="number" id="min-temp" value="14" min="-20" max="40" step="1" oninput="simulateActivity()">
+                        <span class="suffix">℃</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-panel">
+                <h2 class="panel-title" id="lbl-act-result-title">벌 활동성 예측 스코어</h2>
+                
+                <div>
+                    <span class="result-header" id="lbl-act-status-title">활동 상태</span>
+                    <div class="big-number-container">
+                        <span id="activity-score-large" class="big-number">100%</span>
+                    </div>
+                    <div id="activity-status-pill" class="status-pill safe" style="margin-top: 0.6rem;">최적 활동성</div>
+                </div>
+
+                <p id="activity-score-desc" class="result-desc">로딩 중...</p>
+
+                <div class="info-card" style="border-left: 4px solid var(--accent);">
+                    <h4 id="lbl-act-guide-title">📋 환경 제어 가이드</h4>
+                    <p id="activity-guide-text">로딩 중...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gumroad & KDP Promotion Banner -->
+    <div class="promo-banner" id="pollinator-promo-banner">
+        <div class="promo-text">
+            <h3 id="promo-title">🐝 온실 병해충 자가 처방 & 수정벌 통합 관리 도감</h3>
+            <p id="promo-desc">시설하우스 돌발 병해충 도감, 천적 곤충 활용 가이드 및 수분벌을 살리는 농약 사용 수칙이 담긴 KDP 가이드북과 스프레드시트 영농 일지 패키지.</p>
+        </div>
+        <div class="promo-actions">
+            <a href="https://smartfarm.inwoovation.com/" class="promo-btn-secondary">Main Portal</a>
+            <a href="https://inwoovation.gumroad.com/l/smartfarm-os" target="_blank" class="promo-btn" id="btn-kdp-book">KDP 도서 ($19.99)</a>
+            <a href="https://inwoovation.gumroad.com/l/greenhouse-excel" target="_blank" class="promo-btn-secondary" id="btn-excel-sheet">안전 방제 일지 엑셀 ($29.00)</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 AgTech Bumblebee Lab. All rights reserved. | <a href="privacy.html">개인정보처리방침 (Privacy Policy)</a></p>
+        <p>Decoupled stand-alone pipeline. Built for zero-cost static hosting. &bull; <a href="mailto:vmffkxhs2362@gmail.com">Contact Support</a></p>
+        <p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.5; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500;">
+            <!-- Rendered dynamically -->
+        </p>
+    </footer>
+</div>
+
+<!-- JavaScript Core -->
+<script src="app.js"></script>
+</body>
+</html>

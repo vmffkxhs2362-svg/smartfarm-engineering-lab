@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Farm Light &amp; Power Analyzer</title>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-base: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --color-primary: #10b981; /* Neon Emerald */
+            --color-secondary: #f97316; /* Energy Orange */
+            --color-accent: #3b82f6; /* Electric Blue */
+            --color-danger: #ef4444; /* Alert Red */
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navigation Header */
+        header {
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-section svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--color-primary);
+        }
+
+        .logo-section h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--color-primary);
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Container Main Layout */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 1.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Forms Layout & Inputs */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="number"], select {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Checkbox slider toggles */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+            user-select: none;
+            gap: 0.75rem;
+            color: var(--text-main);
+        }
+
+        /* Sliders */
+        .slider-group {
+            background-color: rgba(15, 23, 42, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .slider-val {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-primary);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--color-primary);
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Dashboard Results Section */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 968px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-box {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .text-emerald { color: var(--color-primary); }
+        .text-blue { color: var(--color-accent); }
+        .text-orange { color: var(--color-secondary); }
+        .text-danger { color: var(--color-danger); }
+
+        .metric-value {
+            font-size: 3.2rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-unit {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            -webkit-text-fill-color: initial;
+            margin-left: 0.25rem;
+        }
+
+        /* Table design inside results */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        /* Alert zones */
+        .alert {
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            margin-top: 1rem;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+        }
+
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        /* Fallback offline chart styling */
+        .fallback-bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 0.5rem;
+        }
+
+        .fallback-bar-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .fallback-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .fallback-bar-track {
+            background: rgba(255, 255, 255, 0.05);
+            height: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .fallback-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.4s ease;
+        }
+
+        /* Footer styling */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background-color: rgba(15, 23, 42, 0.4);
+            margin-top: auto;
+        }
+
+        /* Specific Spectrum Bar display */
+        .spectrum-bar-display {
+            display: flex;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .spectrum-segment {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header navigation -->
+    <header>
+        <div class="logo-section">
+            <svg viewBox="0 0 24 24">
+                <path d="M12,3L1,9L12,15L21,10.5V17H23V9L12,3M12,5.3L18.8,9L12,12.7L5.2,9L12,5.3M3,13.5V17.5L12,21.5L21,17.5V13.5L12,17.5L3,13.5Z"/>
+            </svg>
+            <h1>Vertical Farm Light &amp; Power Analyzer</h1>
+        </div>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab-light')">PPFD &amp; DLI Calc</button>
+            <button class="tab-btn" onclick="switchTab('tab-vpd')">VPD &amp; Humidity</button>
+            <button class="tab-btn" onclick="switchTab('tab-thermal')">LED Thermal &amp; OPEX</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+
+        <!-- Tab 1: PPFD & DLI Engine -->
+        <div id="tab-light" class="tab-content active">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h2>Photosynthetic Photon Flux &amp; DLI Optimizer</h2>
+                    <p>Select target crop presets, calculate required photoperiods, and design customized PAR spectrum layouts.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="crop-select">Target Plant Profile</label>
+                        <select id="crop-select" onchange="applyCropPreset(); calculateLight();">
+                            <option value="greens" selected>Leafy Greens (Target DLI: 16 mol)</option>
+                            <option value="strawberry">Strawberries (Target DLI: 22 mol)</option>
+                            <option value="herbs">Medicinal Herbs &amp; Basil (Target DLI: 12 mol)</option>
+                            <option value="custom">Custom (User-Defined DLI)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-dli">Target DLI (mol/m²/day)</label>
+                        <input type="number" id="target-dli" value="16.0" step="0.5" min="1" oninput="calculateLight()">
+                    </div>
+                    <div class="form-group">
+                        <label for="measured-ppfd">Measured PPFD (&mu;mol/m²/s)</label>
+                        <input type="number" id="measured-ppfd" value="250" step="10" min="10" oninput="calculateLight()">
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <!-- Spectrum sliders -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Deep Red (660 nm)</span>
+                            <span class="slider-val" id="slide-red-val">70%</span>
+                        </div>
+                        <input type="range" id="slide-red" min="0" max="100" value="70" oninput="updateSpectrum(); calculateLight();">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Deep Blue (450 nm)</span>
+                            <span class="slider-val" id="slide-blue-val">15%</span>
+                        </div>
+                        <input type="range" id="slide-blue" min="0" max="100" value="15" oninput="updateSpectrum(); calculateLight();">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Green/White (550 nm)</span>
+                            <span class="slider-val" id="slide-green-val">10%</span>
+                        </div>
+                        <input type="range" id="slide-green" min="0" max="100" value="10" oninput="updateSpectrum(); calculateLight();">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Far-Red (730 nm)</span>
+                            <span class="slider-val" id="slide-far-val">5%</span>
+                        </div>
+                        <input type="range" id="slide-far" min="0" max="100" value="5" oninput="updateSpectrum(); calculateLight();">
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Text Metrics -->
+                    <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="result-title text-emerald">Calculated DLI Output</div>
+                            <div class="metric-value" id="light-dli-val">16.2 <span class="metric-unit">mol/m²/d</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="light-dli-desc">DLI output based on PPFD and active operational photoperiod.</p>
+                        </div>
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                            <div class="result-title text-blue">Optimal Photoperiod</div>
+                            <div class="metric-value" id="light-hours-val">17.8 <span class="metric-unit">Hours</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);" id="light-hours-desc">Daily run-time required to reach target crop DLI thresholds.</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Spectrum mix -->
+                    <div class="result-box">
+                        <div class="result-title text-orange">Spectral Energy Distribution</div>
+                        <div class="spectrum-bar-display">
+                            <div class="spectrum-segment" id="seg-red" style="background-color: #ef4444; width: 70%;"></div>
+                            <div class="spectrum-segment" id="seg-blue" style="background-color: #3b82f6; width: 15%;"></div>
+                            <div class="spectrum-segment" id="seg-green" style="background-color: #10b981; width: 10%;"></div>
+                            <div class="spectrum-segment" id="seg-far" style="background-color: #a855f7; width: 5%;"></div>
+                        </div>
+                        <table style="margin-top: 1.5rem;">
+                            <thead>
+                                <tr>
+                                    <th>Color Band</th>
+                                    <th style="text-align: right;">Percentage (%)</th>
+                                    <th style="text-align: right;">Estimated Flux (PPFD)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span style="color: #ef4444; font-weight:700;">● Red (660nm)</span></td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-red-txt">70.0%</td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-red-txt">175.0 &mu;mol</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: #3b82f6; font-weight:700;">● Blue (450nm)</span></td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-blue-txt">15.0%</td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-blue-txt">37.5 &mu;mol</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: #10b981; font-weight:700;">● Green (550nm)</span></td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-green-txt">10.0%</td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-green-txt">25.0 &mu;mol</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: #a855f7; font-weight:700;">● Far-Red (730nm)</span></td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-far-txt">5.0%</td>
+                                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-far-txt">12.5 &mu;mol</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: VPD & Humidity -->
+        <div id="tab-vpd" class="tab-content">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h2>Vapor Pressure Deficit (VPD) Calculator</h2>
+                    <p>Calculate saturation vapor pressure deficit boundaries using physical plant leaf-temperature offsets.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="vpd-temp">Air Temperature T_air (°C)</label>
+                        <input type="number" id="vpd-temp" value="23.0" step="0.5" min="5" max="45" oninput="calculateVPD()">
+                    </div>
+                    <div class="form-group">
+                        <label for="vpd-rh">Relative Humidity RH (%)</label>
+                        <input type="number" id="vpd-rh" value="65" min="10" max="98" oninput="calculateVPD()">
+                    </div>
+                    <div class="form-group">
+                        <label for="vpd-offset">Leaf Temp Offset &Delta;T_leaf (°C)</label>
+                        <input type="number" id="vpd-offset" value="-1.5" step="0.1" min="-5" max="5" oninput="calculateVPD()">
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Metrics displaying VPD -->
+                    <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="result-title text-orange">Vapor Pressure Deficit</div>
+                            <div class="metric-value" id="vpd-val">0.82 <span class="metric-unit">kPa</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">VPD calculated utilizing leaf boundary layer saturation dynamics.</p>
+                        </div>
+                        <div id="vpd-status-zone">
+                            <!-- JS Inject Safe / Warning Alert -->
+                        </div>
+                    </div>
+
+                    <!-- Chart or diagram -->
+                    <div class="result-box">
+                        <div class="result-title text-blue">VPD Safety Zone Map</div>
+                        <div class="chart-container" id="vpd-chart-wrapper">
+                            <canvas id="vpdChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: LED Thermal & OPEX -->
+        <div id="tab-thermal" class="tab-content">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h2>LED Module Thermal &amp; Operational Cost Modeler</h2>
+                    <p>Estimate junction temperature (T_j) threshold safety and forecast monthly racking electrical consumption.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="led-power">LED Bar Power P_elec (W)</label>
+                        <input type="number" id="led-power" value="45" step="5" min="5" oninput="calculateThermal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="led-bars">Quantity of LED Bars (N)</label>
+                        <input type="number" id="led-bars" value="120" min="1" oninput="calculateThermal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="opt-efficiency">Optical Efficiency (&eta;_opt)</label>
+                        <input type="number" id="opt-efficiency" value="0.40" step="0.05" min="0.2" max="0.6" oninput="calculateThermal()">
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label for="heatsink-area">Heatsink Surface Area per bar (cm²)</label>
+                        <input type="number" id="heatsink-area" value="2500" step="100" min="100" oninput="calculateThermal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="convective-h">Heat Transfer Coeff (h, W/m²K)</label>
+                        <input type="number" id="convective-h" value="10.0" step="0.5" min="2" max="30" oninput="calculateThermal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="elec-rate">Electricity Rate (&euro;/kWh)</label>
+                        <input type="number" id="elec-rate" value="0.25" step="0.01" min="0.01" oninput="calculateThermal()">
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Metrics Display -->
+                    <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="result-title text-danger">LED Junction Temperature (T_j)</div>
+                            <div class="metric-value" id="thermal-tj-val">68.2 <span class="metric-unit">°C</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="tj-desc">Estimated junction point hotspot temperature.</p>
+                        </div>
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                            <div class="result-title text-emerald">Monthly Racking OPEX</div>
+                            <div class="metric-value" id="thermal-cost-val">&euro;729 <span class="metric-unit">/ Month</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);" id="opex-desc">Operational lighting energy expenditure forecast.</p>
+                        </div>
+                    </div>
+
+                    <!-- Thermal metrics chart -->
+                    <div class="result-box">
+                        <div class="result-title text-blue">Energy Cost Split by Operating Photoperiod</div>
+                        <div class="chart-container" id="thermal-chart-wrapper">
+                            <canvas id="thermalChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Vertical Farm Analyzer Toolkit • Designed for KDP Operations Curriculum</p>
+        <p style="margin-top: 0.5rem; color: var(--text-muted);">Companion software to the Vertical Farming &amp; LED Photobiology manual.</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Crop presets
+        const CROPS = {
+            greens: { name: "Leafy Greens", dli: 16.0, photoperiod: 18.0 },
+            strawberry: { name: "Strawberries", dli: 22.0, photoperiod: 16.0 },
+            herbs: { name: "Medicinal Herbs", dli: 12.0, photoperiod: 12.0 }
+        };
+
+        let vpdChart = null;
+        let thermalChart = null;
+
+        // Switch Tabs SPA
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+
+            const btnIndex = tabId === 'tab-light' ? 0 : tabId === 'tab-vpd' ? 1 : 2;
+            document.querySelectorAll('.nav-tabs .tab-btn')[btnIndex].classList.add('active');
+
+            if (tabId === 'tab-light') {
+                calculateLight();
+            } else if (tabId === 'tab-vpd') {
+                calculateVPD();
+            } else if (tabId === 'tab-thermal') {
+                calculateThermal();
+            }
+        }
+
+        // Apply presets
+        function applyCropPreset() {
+            const cropType = document.getElementById('crop-select').value;
+            if (cropType !== 'custom') {
+                const preset = CROPS[cropType];
+                document.getElementById('target-dli').value = preset.dli.toFixed(1);
+            }
+        }
+
+        // Spectrum Normalization & Efficacy Calculator
+        function updateSpectrum() {
+            const r = parseFloat(document.getElementById('slide-red').value) || 0;
+            const b = parseFloat(document.getElementById('slide-blue').value) || 0;
+            const g = parseFloat(document.getElementById('slide-green').value) || 0;
+            const f = parseFloat(document.getElementById('slide-far').value) || 0;
+
+            const total = r + b + g + f || 1;
+            
+            const pctR = (r / total) * 100;
+            const pctB = (b / total) * 100;
+            const pctG = (g / total) * 100;
+            const pctF = (f / total) * 100;
+
+            document.getElementById('slide-red-val').innerText = pctR.toFixed(0) + '%';
+            document.getElementById('slide-blue-val').innerText = pctB.toFixed(0) + '%';
+            document.getElementById('slide-green-val').innerText = pctG.toFixed(0) + '%';
+            document.getElementById('slide-far-val').innerText = pctF.toFixed(0) + '%';
+        }
+
+        // Calculations: Tab 1 - Light DLI & Optimum Photoperiod
+        function calculateLight() {
+            const targetDli = parseFloat(document.getElementById('target-dli').value) || 16;
+            const ppfd = parseFloat(document.getElementById('measured-ppfd').value) || 250;
+
+            // Get spectrum percentages
+            const r = parseFloat(document.getElementById('slide-red').value) || 0;
+            const b = parseFloat(document.getElementById('slide-blue').value) || 0;
+            const g = parseFloat(document.getElementById('slide-green').value) || 0;
+            const f = parseFloat(document.getElementById('slide-far').value) || 0;
+            const total = r + b + g + f || 1;
+
+            const pctR = r / total;
+            const pctB = b / total;
+            const pctG = g / total;
+            const pctF = f / total;
+
+            // Optimum photoperiod needed to hit target DLI
+            // DLI = PPFD * Hours * 0.0036
+            let optHours = targetDli / (ppfd * 0.0036);
+            optHours = Math.max(1, Math.min(24, optHours));
+
+            // Realized DLI with the calculated run time
+            const actualDli = ppfd * optHours * 0.0036;
+
+            // Update UI
+            document.getElementById('light-dli-val').innerHTML = `${actualDli.toFixed(1)} <span class="metric-unit">mol/m²/d</span>`;
+            document.getElementById('light-hours-val').innerHTML = `${optHours.toFixed(1)} <span class="metric-unit">Hours</span>`;
+
+            if (optHours >= 24 && actualDli < targetDli) {
+                document.getElementById('light-hours-desc').innerHTML = `<span style="color: var(--color-danger); font-weight: 600;">PPFD TOO LOW!</span> Photoperiod maximized to 24 hours. Increase LED intensity or lower mounting height.`;
+            } else {
+                document.getElementById('light-hours-desc').innerText = `Daily run-time required to reach target crop DLI thresholds.`;
+            }
+
+            // Update spectrum bar segments
+            document.getElementById('seg-red').style.width = (pctR * 100) + '%';
+            document.getElementById('seg-blue').style.width = (pctB * 100) + '%';
+            document.getElementById('seg-green').style.width = (pctG * 100) + '%';
+            document.getElementById('seg-far').style.width = (pctF * 100) + '%';
+
+            // Update table values
+            document.getElementById('pct-red-txt').innerText = (pctR * 100).toFixed(1) + '%';
+            document.getElementById('pct-blue-txt').innerText = (pctB * 100).toFixed(1) + '%';
+            document.getElementById('pct-green-txt').innerText = (pctG * 100).toFixed(1) + '%';
+            document.getElementById('pct-far-txt').innerText = (pctF * 100).toFixed(1) + '%';
+
+            document.getElementById('flux-red-txt').innerHTML = (ppfd * pctR).toFixed(1) + ' <span style="font-size:0.75rem;">&mu;mol</span>';
+            document.getElementById('flux-blue-txt').innerHTML = (ppfd * pctB).toFixed(1) + ' <span style="font-size:0.75rem;">&mu;mol</span>';
+            document.getElementById('flux-green-txt').innerHTML = (ppfd * pctG).toFixed(1) + ' <span style="font-size:0.75rem;">&mu;mol</span>';
+            document.getElementById('flux-far-txt').innerHTML = (ppfd * pctF).toFixed(1) + ' <span style="font-size:0.75rem;">&mu;mol</span>';
+        }
+
+        // Calculations: Tab 2 - Vapor Pressure Deficit (VPD)
+        function calculateVPD() {
+            const tAir = parseFloat(document.getElementById('vpd-temp').value) || 23;
+            const rh = parseFloat(document.getElementById('vpd-rh').value) || 65;
+            const offset = parseFloat(document.getElementById('vpd-offset').value) || -1.5;
+
+            const tLeaf = tAir + offset;
+
+            // Antoine formula approximation
+            const vpsat = (t) => 0.61078 * Math.exp((17.27 * t) / (t + 237.3));
+
+            const vpSatLeaf = vpsat(tLeaf);
+            const vpSatAir = vpsat(tAir);
+            const vpActAir = vpSatAir * (rh / 100);
+
+            const vpd = Math.max(0, vpSatLeaf - vpActAir);
+
+            document.getElementById('vpd-val').innerHTML = `${vpd.toFixed(2)} <span class="metric-unit">kPa</span>`;
+
+            // Safety check
+            const statusZone = document.getElementById('vpd-status-zone');
+            if (vpd < 0.5) {
+                statusZone.innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>⚠️ TIPBURN RISK AREA (VPD < 0.5 kPa)</strong><br>
+                        Humidity is too high. Low transpiration prevents calcium transport to growing tips, causing cell wall collapse. Gaseous circulation fans should be turned on.
+                    </div>
+                `;
+            } else if (vpd > 1.4) {
+                statusZone.innerHTML = `
+                    <div class="alert alert-danger" style="background-color: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: #fed7aa;">
+                        <strong>⚠️ HIGH TRANSPIRATION STRESS (VPD > 1.4 kPa)</strong><br>
+                        Air is too dry. Plant closes stomata to prevent dehydration, restricting CO₂ uptake and stalling growth. Increase fogging system duty cycle.
+                    </div>
+                `;
+            } else {
+                statusZone.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>✅ OPTIMAL METABOLIC WINDOW (0.5 to 1.4 kPa)</strong><br>
+                        Excellent balance between water transport and photosynthesis. Canopy micro-climate dynamics are operating inside safe operational bounds.
+                    </div>
+                `;
+            }
+
+            // Draw Safety Chart
+            if (typeof Chart !== 'undefined') {
+                const humiditySteps = [30, 40, 50, 60, 70, 80, 90];
+                const vpdCurveData = humiditySteps.map(h => {
+                    const actAir = vpSatAir * (h / 100);
+                    return Math.max(0, vpSatLeaf - actAir);
+                });
+
+                if (vpdChart) {
+                    vpdChart.data.datasets[0].data = vpdCurveData;
+                    vpdChart.update();
+                } else {
+                    const ctx = document.getElementById('vpdChart').getContext('2d');
+                    vpdChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: humiditySteps.map(h => h + '%'),
+                            datasets: [{
+                                label: `VPD Curve at T_air = ${tAir}°C`,
+                                data: vpdCurveData,
+                                borderColor: 'rgba(16, 185, 129, 1)',
+                                backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { labels: { color: '#94a3b8' } }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 0 }
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Fallback rendering
+                const wrapper = document.getElementById('vpd-chart-wrapper');
+                wrapper.innerHTML = `
+                    <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                        <span class="text-emerald">VPD at ${tAir}°C:</span><br>
+                        RH 50%: ${(vpSatLeaf - vpSatAir*0.5).toFixed(2)} kPa |
+                        RH 70%: ${(vpSatLeaf - vpSatAir*0.7).toFixed(2)} kPa |
+                        RH 90%: ${(vpSatLeaf - vpSatAir*0.9).toFixed(2)} kPa
+                    </div>
+                `;
+            }
+        }
+
+        // Calculations: Tab 3 - LED Thermal & OPEX
+        function calculateThermal() {
+            const pElec = parseFloat(document.getElementById('led-power').value) || 45;
+            const nBars = parseFloat(document.getElementById('led-bars').value) || 120;
+            const effOpt = parseFloat(document.getElementById('opt-efficiency').value) || 0.40;
+            const aSink = parseFloat(document.getElementById('heatsink-area').value) || 2500;
+            const hCoeff = parseFloat(document.getElementById('convective-h').value) || 10.0;
+            const rate = parseFloat(document.getElementById('elec-rate').value) || 0.25;
+
+            // DLI tab run-hours
+            const targetDli = parseFloat(document.getElementById('target-dli').value) || 16;
+            const ppfd = parseFloat(document.getElementById('measured-ppfd').value) || 250;
+            let optHours = targetDli / (ppfd * 0.0036);
+            optHours = Math.max(1, Math.min(24, optHours));
+
+            // Thermal dissipation: 60% of power converts to heat (if effOpt = 0.40)
+            const pDiss = pElec * (1 - effOpt);
+
+            // R_theta_b-a = 10000 / (hCoeff * aSink)
+            const rHeatsink = 10000 / (hCoeff * aSink);
+            const rInternal = 1.5; // Junction-to-solder + TIM
+            const rTotal = rInternal + rHeatsink;
+
+            const tAmb = 22.0; // Reference room temp
+            const tJunction = tAmb + pDiss * rTotal;
+
+            // OPEX estimation
+            const dailyKWh = (pElec * nBars * optHours) / 1000;
+            const monthlyCost = dailyKWh * 30.4 * rate;
+
+            // Update metrics
+            document.getElementById('thermal-tj-val').innerHTML = `${tJunction.toFixed(1)} <span class="metric-unit">°C</span>`;
+            document.getElementById('thermal-cost-val').innerHTML = `&euro;${Math.round(monthlyCost).toLocaleString()} <span class="metric-unit">/ Month</span>`;
+
+            const tjDesc = document.getElementById('tj-desc');
+            if (tJunction > 85) {
+                tjDesc.innerHTML = `<span style="color: var(--color-danger); font-weight:600;">⚠️ TJ TOO HIGH!</span> Accelerated lumen decay. Improve heatsink area.`;
+            } else {
+                tjDesc.innerText = `Junction point safety: thermal degradation boundary safe (< 85°C).`;
+            }
+
+            // Draw Charts
+            const hoursSplit = [8, 12, 16, 20];
+            const costSplit = hoursSplit.map(hrs => ((pElec * nBars * hrs) / 1000) * 30.4 * rate);
+
+            if (typeof Chart !== 'undefined') {
+                if (thermalChart) {
+                    thermalChart.data.datasets[0].data = costSplit;
+                    thermalChart.update();
+                } else {
+                    const ctx = document.getElementById('thermalChart').getContext('2d');
+                    thermalChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: hoursSplit.map(hrs => hrs + ' Hours/Day'),
+                            datasets: [{
+                                label: 'Monthly Energy Cost (€)',
+                                data: costSplit,
+                                backgroundColor: 'rgba(249, 115, 22, 0.75)',
+                                borderColor: 'rgba(249, 115, 22, 1)',
+                                borderWidth: 1.5,
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Fallback rendering
+                const wrapper = document.getElementById('thermal-chart-wrapper');
+                const maxVal = Math.max(...costSplit);
+                let html = '<div class="fallback-bar-chart">';
+                for (let i = 0; i < hoursSplit.length; i++) {
+                    const pct = (costSplit[i] / maxVal) * 100;
+                    html += `
+                        <div class="fallback-bar-row">
+                            <div class="fallback-bar-label">
+                                <span>${hoursSplit[i]} Hours/Day</span>
+                                <span>&euro;${Math.round(costSplit[i]).toLocaleString()}</span>
+                            </div>
+                            <div class="fallback-bar-track">
+                                <div class="fallback-bar-fill" style="width: ${pct}%; background: var(--color-secondary);"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                wrapper.innerHTML = html;
+            }
+        }
+
+        // Initialize calculations on load
+        window.onload = function() {
+            calculateLight();
+            calculateVPD();
+            calculateThermal();
+        };
+    </script>
+</body>
+</html>

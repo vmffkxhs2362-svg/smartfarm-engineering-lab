@@ -22,16 +22,16 @@
 VPD(Vapour Pressure Deficit)는 식물의 증산(Transpiration) 구동력을 결정하는 핵심 지표입니다. 공기가 머금을 수 있는 최대 수증기압(포화수증기압)과 현재 실제 수증기압의 차이를 뜻합니다.
 
 대부분의 상용 환경제어 컴퓨터는 온실 내 공기 온습도 센서 상자(Aspiration Box)에서 측정된 **대기 온도($T_{air}$)**를 기준으로 saturation vapour pressure($VPsat$)를 계산합니다.
-$$\text{VPD}_{air} = VPsat(T_{air}) - VPactual$$
+$$	ext{VPD}_{air} = VPsat(T_{air}) - VPactual$$
 
 #### 🚨 무엇이 문제인가?
 식물은 대기와 열을 교환할 뿐만 아니라, 잎의 증산 작용(기화열 흡수)을 통해 스스로 온도를 낮춥니다. 이로 인해 낮 시간대 활발한 증산이 일어날 때 **실제 잎 온도($T_{leaf}$)**는 대기 온도보다 **최대 3°C에서 5°C까지 낮아집니다.** 반대로 강한 직사광선 아래에서 증산이 막히면 잎 온도는 대기 온도보다 높아질 수 있습니다.
 
 엽온($T_{leaf}$)을 반영하지 않은 채 $T_{air}$로 계산한 VPD는 심각한 오류를 낳습니다.
 *   **실제 상황**: 대기 온도가 25°C이고 상대습도가 60%일 때, 기상 컴퓨터는 VPD를 대략 **1.27 kPa**로 계산하고 "적정 증산 범위"라고 판단합니다.
-*   **물리적 실체**: 만약 활발한 증산으로 실제 엽온($T_{leaf}$)이 21°C로 떨어졌다면, 잎 표면의 경계층 포화수증기압은 $T_{air}$(25°C) 기준보다 훨씬 낮아집니다. 이 경우 잎 기준의 진짜 VPD($\text{VPD}_{leaf}$)는 **0.69 kPa**에 불과합니다.
+*   **물리적 실체**: 만약 활발한 증산으로 실제 엽온($T_{leaf}$)이 21°C로 떨어졌다면, 잎 표면의 경계층 포화수증기압은 $T_{air}$(25°C) 기준보다 훨씬 낮아집니다. 이 경우 잎 기준의 진짜 VPD($	ext{VPD}_{leaf}$)는 **0.69 kPa**에 불과합니다.
 
-즉, 기상 컴퓨터는 작물이 활발하게 물을 빨아올리고 있다고 착각하지만, 실제 작물은 턱없이 낮은 $\text{VPD}_{leaf}$로 인해 **증산 정체 상태**에 빠져 있습니다. 증산이 멈추면 대류를 통해 이동하는 필수 영양소인 **칼슘($Ca^{2+}$)이 성장점과 과실로 전달되지 못해 배꼽썩음병이 대량 발생**합니다.
+즉, 기상 컴퓨터는 작물이 활발하게 물을 빨아올리고 있다고 착각하지만, 실제 작물은 턱없이 낮은 $	ext{VPD}_{leaf}$로 인해 **증산 정체 상태**에 빠져 있습니다. 증산이 멈추면 대류를 통해 이동하는 필수 영양소인 **칼슘($Ca^{2+}$)이 성장점과 과실로 전달되지 못해 배꼽썩음병이 대량 발생**합니다.
 
 #### 🛠️ 엔지니어링적 해결책: IR(적외선) 엽온 피백 루프 구현
 단순 대기 온습도 센서에 의존하지 않고, 작물 상단 canopy에 **적외선 온도 센서(IR Temperature Sensor)** 또는 **열화상 카메라**를 설치하여 실시간 엽온($T_{leaf}$)을 컴퓨터에 피드백해야 합니다.
@@ -101,16 +101,16 @@ Why? Let's dissect **two critical engineering blind spots** of modern greenhouse
 VPD (Vapour Pressure Deficit) is the primary driver of plant transpiration. It measures the difference between the saturation vapour pressure (the maximum water vapour the air can hold) and the actual vapour pressure.
 
 Most commercial climate computers calculate saturation vapour pressure ($VPsat$) based on the **ambient air temperature ($T_{air}$)** measured inside the aspiration box:
-$$\text{VPD}_{air} = VPsat(T_{air}) - VPactual$$
+$$	ext{VPD}_{air} = VPsat(T_{air}) - VPactual$$
 
 #### 🚨 The Root Problem
 Plants are not passive objects; they cool themselves through transpiration (latent heat of vaporization). When transpiring actively during the day, **actual leaf temperature ($T_{leaf}$) drops up to 3°C to 5°C below ambient air temperature.** Conversely, under high solar radiation with closed stomata, leaf temperature can exceed air temperature.
 
 Calculating VPD using $T_{air}$ instead of $T_{leaf}$ introduces massive physical discrepancies:
 *   **The Illusion**: With $T_{air}$ at 25°C and Relative Humidity at 60%, the climate computer calculates a VPD of **1.27 kPa**, flagging it as "optimal transpiration range."
-*   **The Reality**: If active transpiration has cooled the actual leaf ($T_{leaf}$) to 21°C, the saturation vapour pressure at the leaf boundary layer is significantly lower. The true leaf-to-air VPD ($\text{VPD}_{leaf}$) is only **0.69 kPa**.
+*   **The Reality**: If active transpiration has cooled the actual leaf ($T_{leaf}$) to 21°C, the saturation vapour pressure at the leaf boundary layer is significantly lower. The true leaf-to-air VPD ($	ext{VPD}_{leaf}$) is only **0.69 kPa**.
 
-While the computer assumes the crop is actively drawing water and nutrients, the crop is actually in **transpirational stagnation** due to the low $\text{VPD}_{leaf}$. Because calcium ($Ca^{2+}$) transport relies entirely on the transpiration stream, this stagnation leads to a **calcium deficiency outbreak (Blossom-End Rot)** in growing tips and fruits.
+While the computer assumes the crop is actively drawing water and nutrients, the crop is actually in **transpirational stagnation** due to the low $	ext{VPD}_{leaf}$. Because calcium ($Ca^{2+}$) transport relies entirely on the transpiration stream, this stagnation leads to a **calcium deficiency outbreak (Blossom-End Rot)** in growing tips and fruits.
 
 #### 🛠️ The Engineering Solution: IR Leaf Temperature Feedback Loop
 Growers must install **Infrared (IR) Temperature Sensors** or thermal cameras targeting the crop canopy, feeding real-time $T_{leaf}$ back to the climate computer.

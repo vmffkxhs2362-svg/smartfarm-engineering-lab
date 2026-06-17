@@ -1,0 +1,41 @@
+{
+  "book_details": {
+    "title": "Precision Flow Control & Greenhouse Automation: Practical Manual for Smart Farm Maintenance and Operations",
+    "author": "Inwoo Hwang",
+    "description": "Precision Flow Control & Greenhouse Automation is a practical manual designed for smart farm operators, greenhouse technicians, and vocational students (such as those entering the German Gärtner Ausbildung). This book details the technical engineering principles of modern Venlo-style greenhouses, automated microclimate zoning, high-temperature fluid controls, proportional mixing valves, EC/pH calibration, and biological pest control systems.",
+    "language": "English",
+    "target_regions": ["US", "DE", "NL", "KR"]
+  },
+  "metadata": {
+    "primary_category": "Technology & Engineering / Agricultural",
+    "sub_categories": [
+      "Technology & Engineering / Automation",
+      "Science / Life Sciences / Horticulture"
+    ],
+    "keywords": [
+      "smart farm manual",
+      "greenhouse automation",
+      "precision agriculture",
+      "venlo greenhouse",
+      "agricultural automation",
+      "gärtner training",
+      "smart farming engineering",
+      "plc greenhouse control",
+      "irrigation valve tuning",
+      "ec ph calibration"
+    ]
+  },
+  "pricing": {
+    "kindle_ebook": {
+      "list_price_usd": 9.99,
+      "royalty_rate_pct": 70,
+      "estimated_royalty_usd": 6.99
+    },
+    "paperback": {
+      "list_price_usd": 24.99,
+      "royalty_rate_pct": 60,
+      "printing_cost_est_usd": 4.50,
+      "estimated_royalty_usd": 10.49
+    }
+  }
+}

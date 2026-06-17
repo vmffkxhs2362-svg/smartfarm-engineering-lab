@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farm Engineering Toolkit</title>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-base: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --color-primary: #10b981; /* Neon Emerald */
+            --color-secondary: #f97316; /* Energy Orange */
+            --color-accent: #3b82f6; /* Electric Blue */
+            --color-danger: #ef4444; /* Alert Red */
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Navigation Header */
+        header {
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-section svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--color-primary);
+        }
+
+        .logo-section h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--color-primary);
+            background-color: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .section-header p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Form elements styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Interactive sliders */
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .slider-val {
+            color: var(--color-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Flex Layouts for results */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 850px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-box {
+            background-color: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(to right, #fff, var(--color-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-unit {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Checkbox slider styling */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.95rem;
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .checkbox-container input:checked + .checkmark {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .checkbox-container input:checked + .checkmark::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+        }
+
+        /* Utility classes */
+        .text-emerald { color: var(--color-primary) !important; }
+        .text-orange { color: var(--color-secondary) !important; }
+        .text-blue { color: var(--color-accent) !important; }
+        .text-danger { color: var(--color-danger) !important; }
+        
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Offline Fallback Visuals */
+        .fallback-bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            padding: 1rem 0;
+        }
+
+        .fallback-bar-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .fallback-bar-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .fallback-bar-track {
+            background: rgba(255, 255, 255, 0.05);
+            height: 16px;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .fallback-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border-color);
+            background-color: rgba(15, 23, 42, 0.9);
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <svg viewBox="0 0 24 24">
+                <path d="M17,8C15.3,8 13.82,8.74 12.8,9.9C11.78,8.74 10.3,8 8.6,8C5.5,8 3,10.5 3,13.6C3,17.7 12,22 12,22C12,22 21,17.7 21,13.6C21,10.5 18.5,8 17,8M12,19.7C9.84,17.82 5,13.92 5,13.6C5,11.6 6.6,10 8.6,10C10.1,10 11.4,11.1 11.8,12.5H12.2C12.6,11.1 13.9,10 15.4,10C17.4,10 19,11.6 19,13.6C19,13.92 14.16,17.82 12,19.7Z"/>
+            </svg>
+            <h1>Smart Farm Engineering Toolkit</h1>
+        </div>
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab-hydro')">Hydroponic Calc</button>
+            <button class="tab-btn" onclick="switchTab('tab-thermal')">Thermal &amp; ROI</button>
+            <button class="tab-btn" onclick="switchTab('tab-valve')">Valve Converter</button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Tab 1: Hydroponic Nutrients -->
+        <div id="tab-hydro" class="tab-content active">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h2>Hydroponic Nutrient Recipe Calculator</h2>
+                    <p>Calculate precise chemical fertilizer weights (A/B Tank Mix) for commercial closed-loop crop recipes.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="crop-select">Select Target Crop Recipe</label>
+                        <select id="crop-select" onchange="calculateHydroponics()">
+                            <option value="tomato_veg">Tomato (Vegetative Phase)</option>
+                            <option value="tomato_fruit">Tomato (Fruiting Phase)</option>
+                            <option value="greens">Lettuce &amp; Leafy Greens</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="water-volume">Total Water Volume (Liters)</label>
+                        <input type="number" id="water-volume" value="1000" min="1" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="tank-factor">Stock Tank Concentration Factor</label>
+                        <select id="tank-factor" onchange="calculateHydroponics()">
+                            <option value="1">1x (Direct Injection)</option>
+                            <option value="100" selected>100x (Standard Concentrate)</option>
+                            <option value="200">200x (High Concentrate)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Water Analysis Inputs (Optional) -->
+                <h3 style="margin-bottom: 1rem; font-size: 1.05rem;" class="text-blue">Raw Water Quality Baseline (PPM)</h3>
+                <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label for="raw-ca">Calcium (Ca)</label>
+                        <input type="number" id="raw-ca" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="raw-mg">Magnesium (Mg)</label>
+                        <input type="number" id="raw-mg" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="raw-k">Potassium (K)</label>
+                        <input type="number" id="raw-k" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="raw-n">Nitrogen (N)</label>
+                        <input type="number" id="raw-n" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="raw-p">Phosphorus (P)</label>
+                        <input type="number" id="raw-p" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="raw-s">Sulfur (S)</label>
+                        <input type="number" id="raw-s" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="raw-hco3">Bicarbonate (HCO₃⁻)</label>
+                        <input type="number" id="raw-hco3" value="0" min="0" oninput="calculateHydroponics()">
+                    </div>
+                    <div class="form-group">
+                        <label for="acid-select">pH Correction Acid</label>
+                        <select id="acid-select" onchange="calculateHydroponics()">
+                            <option value="nitric">Nitric Acid (60%)</option>
+                            <option value="phosphoric">Phosphoric Acid (75%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Fertilizer weight results -->
+                    <div class="result-box">
+                        <div class="result-title text-emerald">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.5V17H23V9L12,3M12,5.3L18.8,9L12,12.7L5.2,9L12,5.3M12,15.9L5,12.06V14.6L12,18.5L19,14.6V12.06L12,15.9Z"/></svg>
+                            Required Fertilizer Stock Batch
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Chemical Fertilizer</th>
+                                    <th>Tank</th>
+                                    <th style="text-align: right;">Batch Weight (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hydro-table-body">
+                                <!-- JS Injection -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Target vs Actual Chart -->
+                    <div class="result-box">
+                        <div class="result-title text-blue">Nutrient Concentration Balance (PPM)</div>
+                        <div class="chart-container" id="hydro-chart-wrapper">
+                            <canvas id="hydroChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Thermal Equilibrium & ROI -->
+        <div id="tab-thermal" class="tab-content">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h2>Greenhouse Thermal &amp; Energy ROI Simulator</h2>
+                    <p>Calculate dynamic heat loss and simulate the economic payback period (Payback Period) of energy upgrades.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="floor-area">Greenhouse Floor Area (m²)</label>
+                        <input type="number" id="floor-area" value="5000" min="10" oninput="calculateThermal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="glass-height">Greenhouse Gutter Height (m)</label>
+                        <input type="number" id="glass-height" value="6.0" step="0.5" min="2" oninput="calculateThermal()">
+                    </div>
+                    <div class="form-group">
+                        <label for="glazing-type">Glazing Material</label>
+                        <select id="glazing-type" onchange="calculateThermal()">
+                            <option value="5.8">Single Float Glass (U = 5.8)</option>
+                            <option value="2.8" selected>Double-pane Glass / Coated (U = 2.8)</option>
+                            <option value="3.5">Double Polycarbonate (U = 3.5)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="screen-installed" checked onchange="calculateThermal()">
+                            <span class="checkmark"></span>
+                            Deploy Shading/Thermal Screen (Reduces Heat Loss by 40%)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="region-select">Geographic Target Climate</label>
+                        <select id="region-select" onchange="calculateThermal()">
+                            <option value="us">United States (Winter Avg: -5°C)</option>
+                            <option value="de" selected>Germany (Straelen Avg: -2°C)</option>
+                            <option value="nl">Netherlands (Westland Avg: 1°C)</option>
+                            <option value="kr">South Korea (Winter Avg: -4°C)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <!-- Sliders -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Desired Indoor Temp (T_in)</span>
+                            <span class="slider-val" id="temp-in-val">18°C</span>
+                        </div>
+                        <input type="range" id="temp-in" min="10" max="25" value="18" oninput="updateSliders(); calculateThermal();">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span>Energy Retrofit CapEx (€)</span>
+                            <span class="slider-val" id="capex-val">€35,000</span>
+                        </div>
+                        <input type="range" id="capex" min="5000" max="150000" step="5000" value="35000" oninput="updateSliders(); calculateThermal();">
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Thermal Metrics -->
+                    <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="result-title text-orange">Heating Power Requirement</div>
+                            <div class="metric-value" id="heat-load-val">180.4 <span class="metric-unit">kW</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Maximum heat supply capability required for winter peak baseline.</p>
+                        </div>
+                        
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                            <div class="result-title text-emerald">Simulation Financial ROI</div>
+                            <div class="metric-value" id="roi-payback-val" style="color: var(--color-primary);">1.4 <span class="metric-unit">Years</span></div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);" id="roi-explanation">Payback period calculated from boiler gas consumption offsets.</p>
+                        </div>
+                    </div>
+
+                    <!-- ROI Chart -->
+                    <div class="result-box">
+                        <div class="result-title text-blue">Annual Heating Costs Comparison (€)</div>
+                        <div class="chart-container" id="thermal-chart-wrapper">
+                            <canvas id="thermalChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Valve Sizing & Cavitation -->
+        <div id="tab-valve" class="tab-content">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h2>Modulating Valve Sizing &amp; Cavitation Inspector</h2>
+                    <p>Calculate valve flow coefficient (Kv &amp; Cv) requirements and inspect cavitation risks in pipeline loops.</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="flow-rate">Target Flow Rate Q (m³/h)</label>
+                        <input type="number" id="flow-rate" value="25.0" step="1.0" min="0.1" oninput="calculateValve()">
+                    </div>
+                    <div class="form-group">
+                        <label for="delta-p">Valve Differential Pressure ΔP (bar)</label>
+                        <input type="number" id="delta-p" value="0.8" step="0.05" min="0.05" oninput="calculateValve()">
+                    </div>
+                    <div class="form-group">
+                        <label for="liquid-sg">Liquid Specific Gravity (Water = 1.0)</label>
+                        <input type="number" id="liquid-sg" value="1.0" step="0.05" min="0.5" oninput="calculateValve()">
+                    </div>
+                </div>
+
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label for="press-u">Upstream Pressure P_u (bar)</label>
+                        <input type="number" id="press-u" value="4.0" step="0.1" min="0.1" oninput="calculateValve()">
+                    </div>
+                    <div class="form-group">
+                        <label for="press-d">Downstream Pressure P_d (bar)</label>
+                        <input type="number" id="press-d" value="3.2" step="0.1" min="0.1" oninput="calculateValve()">
+                    </div>
+                    <div class="form-group">
+                        <label for="press-v">Liquid Vapor Pressure P_v (bar)</label>
+                        <input type="number" id="press-v" value="0.25" step="0.05" min="0.01" oninput="calculateValve()">
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Valve coefficients values -->
+                    <div class="result-box">
+                        <div class="result-title text-blue">Calculated Sizing Coefficients</div>
+                        <div style="display: flex; gap: 3rem; margin-top: 1rem;">
+                            <div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Metric (Kv)</div>
+                                <div class="metric-value" id="val-kv" style="font-size: 2.8rem;">27.9</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">m³/h @ 1 bar drop</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Imperial (Cv)</div>
+                                <div class="metric-value" id="val-cv" style="font-size: 2.8rem; background: linear-gradient(to right, #fff, var(--color-secondary)); -webkit-background-clip: text;">32.3</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">gpm @ 1 psi drop</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cavitation Index -->
+                    <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div class="result-title text-orange">Cavitation Index (σ)</div>
+                            <div class="metric-value" id="val-sigma" style="color: var(--color-secondary);">3.69</div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Index calculation baseline for safety verification.</p>
+                        </div>
+                        <div id="cavitation-alert-zone">
+                            <!-- Alert message inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Smart Farm Engineering Toolkit • Designed for KDP Automation Curriculum</p>
+        <p style="margin-top: 0.5rem; color: var(--text-muted);">Companion software to the Advanced Smart Farm System Operations manual.</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Data presets
+        const RECIPES = {
+            tomato_veg: { name: "Tomato (Vegetative Phase)", N: 150, P: 50, K: 200, Ca: 150, Mg: 60, S: 80, Fe: 2.8 },
+            tomato_fruit: { name: "Tomato (Fruiting Phase)", N: 120, P: 45, K: 350, Ca: 140, Mg: 50, S: 70, Fe: 3.0 },
+            greens: { name: "Lettuce & Leafy Greens", N: 100, P: 30, K: 180, Ca: 90, Mg: 45, S: 40, Fe: 1.5 }
+        };
+
+        const CLIMATES = {
+            us: { name: "United States", tempOut: -5, gasPrice: 0.045, geoPrice: 0.012 },
+            de: { name: "Germany", tempOut: -2, gasPrice: 0.082, geoPrice: 0.024 },
+            nl: { name: "Netherlands", tempOut: 1, gasPrice: 0.075, geoPrice: 0.022 },
+            kr: { name: "South Korea", tempOut: -4, gasPrice: 0.052, geoPrice: 0.015 }
+        };
+
+        // Chart.js references
+        let hydroChart = null;
+        let thermalChart = null;
+
+        // Switch Tabs SPA
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            
+            // Find button that triggers this tab
+            const btnIndex = tabId === 'tab-hydro' ? 0 : tabId === 'tab-thermal' ? 1 : 2;
+            document.querySelectorAll('.nav-tabs .tab-btn')[btnIndex].classList.add('active');
+
+            // Force recalculations & redraws
+            if (tabId === 'tab-hydro') {
+                calculateHydroponics();
+            } else if (tabId === 'tab-thermal') {
+                calculateThermal();
+            } else if (tabId === 'tab-valve') {
+                calculateValve();
+            }
+        }
+
+        // Sliders updates
+        function updateSliders() {
+            const tempIn = document.getElementById('temp-in').value;
+            document.getElementById('temp-in-val').innerText = tempIn + '°C';
+
+            const capex = document.getElementById('capex').value;
+            document.getElementById('capex-val').innerText = '€' + Number(capex).toLocaleString();
+        }
+
+        // Calculations: Tab 1 - Hydroponics
+        function calculateHydroponics() {
+            const cropType = document.getElementById('crop-select').value;
+            const volume = parseFloat(document.getElementById('water-volume').value) || 1000;
+            const factor = parseFloat(document.getElementById('tank-factor').value) || 100;
+
+            const target = RECIPES[cropType];
+
+            // Water Quality Subtractions
+            const rawCa = parseFloat(document.getElementById('raw-ca').value) || 0;
+            const rawMg = parseFloat(document.getElementById('raw-mg').value) || 0;
+            const rawK = parseFloat(document.getElementById('raw-k').value) || 0;
+            const rawN = parseFloat(document.getElementById('raw-n').value) || 0;
+            const rawP = parseFloat(document.getElementById('raw-p').value) || 0;
+            const rawS = parseFloat(document.getElementById('raw-s').value) || 0;
+
+            // Target deficiencies to be covered (including acid correction chemistry)
+            const rawHco3 = parseFloat(document.getElementById('raw-hco3').value) || 0;
+            const acidSelect = document.getElementById('acid-select').value;
+            
+            // Bicarbonate neutralization chemistry: 1 mmol/L = 61.02 ppm
+            const hco3_mmol = rawHco3 / 61.02;
+            const neutralize_amount = Math.max(0, hco3_mmol - 0.5); // Target residual 0.5 mmol/L bicarbonate
+            
+            let n_added_ppm = 0;
+            let p_added_ppm = 0;
+            let acid_molarity = 13.04; // default nitric
+            let acid_name = "Nitric Acid (60% HNO₃)";
+            
+            if (acidSelect === 'nitric') {
+                acid_molarity = 13.04;
+                n_added_ppm = neutralize_amount * 14.007; // 14.007 mg N per mmol HNO3
+                acid_name = "Nitric Acid (60% HNO₃)";
+            } else if (acidSelect === 'phosphoric') {
+                acid_molarity = 12.09; // 75% H3PO4 is 12.09 M
+                p_added_ppm = neutralize_amount * 30.974; // 30.974 mg P per mmol H3PO4
+                acid_name = "Phosphoric Acid (75% H₃PO₄)";
+            }
+            
+            // Required acid volume in system (mL) = (neutralize_amount mmol/L / acid_molarity mmol/mL) * volume L
+            // Multiply by factor for stock tank dosage
+            const acid_volume_ml = (neutralize_amount / acid_molarity) * volume * factor;
+
+            const defCa = Math.max(0, target.Ca - rawCa);
+            const defMg = Math.max(0, target.Mg - rawMg);
+            const defP = Math.max(0, target.P - rawP - p_added_ppm);
+            const defK = Math.max(0, target.K - rawK);
+            const defN = Math.max(0, target.N - rawN - n_added_ppm);
+            const defS = Math.max(0, target.S - rawS);
+
+            // Calculations utilizing chemical weight factors (per 1000L basis)
+            // 1. P is covered by KH2PO4 (Monopotassium Phosphate)
+            const kh2po4_g = (defP / 0.227) * (volume / 1000) * factor;
+            let k_from_p = (kh2po4_g / factor / (volume / 1000)) * 0.287;
+
+            // 2. Ca is covered 100% by Calcium Nitrate [Ca(NO3)2]
+            const calcium_nitrate_g = (defCa / 0.19) * (volume / 1000) * factor;
+            let n_from_ca = (calcium_nitrate_g / factor / (volume / 1000)) * 0.155;
+
+            // 3. Mg is covered 100% by Magnesium Sulfate [MgSO4]
+            const mg_sulfate_g = (defMg / 0.098) * (volume / 1000) * factor;
+            let s_from_mg = (mg_sulfate_g / factor / (volume / 1000)) * 0.13;
+
+            // 4. Nitrogen remainder covered by Potassium Nitrate [KNO3]
+            const n_rem = Math.max(0, defN - n_from_ca);
+            const kno3_g = (n_rem / 0.138) * (volume / 1000) * factor;
+            let k_from_n = (kno3_g / factor / (volume / 1000)) * 0.386;
+
+            // 5. Potassium remainder covered by Potassium Sulfate [K2SO4]
+            const k_rem = Math.max(0, defK - k_from_p - k_from_n);
+            const k_sulfate_g = (k_rem / 0.448) * (volume / 1000) * factor;
+            let s_from_k = (k_sulfate_g / factor / (volume / 1000)) * 0.184;
+
+            // 6. Fe-DTPA (Fe 10% target Fe)
+            const fe_dtpa_g = (target.Fe / 0.10) * (volume / 1000) * factor;
+
+            // Total actual concentrations computed
+            const actP = defP + p_added_ppm;
+            const actCa = defCa;
+            const actMg = defMg;
+            const actN = n_from_ca + n_rem + n_added_ppm;
+            const actK = k_from_p + k_from_n + k_rem;
+            const actS = s_from_mg + s_from_k;
+
+            // Table updates
+            const tableBody = document.getElementById('hydro-table-body');
+            tableBody.innerHTML = `
+                <tr>
+                    <td>Calcium Nitrate [Ca(NO₃)₂]</td>
+                    <td><span style="color: var(--color-danger); font-weight:700;">A Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${calcium_nitrate_g.toFixed(1)} g</td>
+                </tr>
+                <tr>
+                    <td>Iron Chelate [Fe-DTPA 10%]</td>
+                    <td><span style="color: var(--color-danger); font-weight:700;">A Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${fe_dtpa_g.toFixed(1)} g</td>
+                </tr>
+                <tr>
+                    <td>Monopotassium Phosphate [KH₂PO₄]</td>
+                    <td><span style="color: var(--color-accent); font-weight:700;">B Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${kh2po4_g.toFixed(1)} g</td>
+                </tr>
+                <tr>
+                    <td>Potassium Nitrate [KNO₃]</td>
+                    <td><span style="color: var(--color-accent); font-weight:700;">B Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${kno3_g.toFixed(1)} g</td>
+                </tr>
+                <tr>
+                    <td>Magnesium Sulfate [MgSO₄]</td>
+                    <td><span style="color: var(--color-accent); font-weight:700;">B Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${mg_sulfate_g.toFixed(1)} g</td>
+                </tr>
+                <tr>
+                    <td>Potassium Sulfate [K₂SO₄]</td>
+                    <td><span style="color: var(--color-accent); font-weight:700;">B Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${k_sulfate_g.toFixed(1)} g</td>
+                </tr>
+                <tr>
+                    <td>${acid_name}</td>
+                    <td><span style="color: var(--color-secondary); font-weight:700;">C Tank</span></td>
+                    <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;">${acid_volume_ml.toFixed(1)} mL</td>
+                </tr>
+            `;
+
+            // Draw/Redraw Chart
+            const labels = ['Nitrogen (N)', 'Phosphorus (P)', 'Potassium (K)', 'Calcium (Ca)', 'Magnesium (Mg)', 'Sulfur (S)'];
+            const targetData = [target.N, target.P, target.K, target.Ca, target.Mg, target.S];
+            const actualData = [actN + rawN, actP + rawP, actK + rawK, actCa + rawCa, actMg + rawMg, actS + rawS];
+
+            if (typeof Chart !== 'undefined') {
+                if (hydroChart) {
+                    hydroChart.data.datasets[0].data = targetData;
+                    hydroChart.data.datasets[1].data = actualData;
+                    hydroChart.update();
+                } else {
+                    const ctx = document.getElementById('hydroChart').getContext('2d');
+                    hydroChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Target concentration',
+                                    data: targetData,
+                                    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                                    borderColor: 'rgba(255, 255, 255, 0.4)',
+                                    borderWidth: 1.5,
+                                    borderRadius: 4
+                                },
+                                {
+                                    label: 'Actual mix (Water + Fertilizer)',
+                                    data: actualData,
+                                    backgroundColor: 'rgba(16, 185, 129, 0.65)',
+                                    borderColor: 'rgba(16, 185, 129, 1)',
+                                    borderWidth: 1.5,
+                                    borderRadius: 4
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    labels: { color: '#94a3b8', font: { family: 'Inter' } }
+                                }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Fallback rendering
+                const wrapper = document.getElementById('hydro-chart-wrapper');
+                let html = '<div class="fallback-bar-chart">';
+                for (let i = 0; i < labels.length; i++) {
+                    const pct = Math.min(100, (actualData[i] / targetData[i]) * 100 || 0);
+                    html += `
+                        <div class="fallback-bar-row">
+                            <div class="fallback-bar-label">
+                                <span>${labels[i]}</span>
+                                <span>${actualData[i].toFixed(0)} / ${targetData[i]} ppm</span>
+                            </div>
+                            <div class="fallback-bar-track">
+                                <div class="fallback-bar-fill" style="width: ${pct}%; background: var(--color-primary);"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                wrapper.innerHTML = html;
+            }
+        }
+
+        // Calculations: Tab 2 - Thermal Equilibrium
+        function calculateThermal() {
+            const floorArea = parseFloat(document.getElementById('floor-area').value) || 5000;
+            const height = parseFloat(document.getElementById('glass-height').value) || 6.0;
+            let uVal = parseFloat(document.getElementById('glazing-type').value) || 2.8;
+            const hasScreen = document.getElementById('screen-installed').checked;
+            const region = document.getElementById('region-select').value;
+            const tIn = parseFloat(document.getElementById('temp-in').value) || 18;
+            const capex = parseFloat(document.getElementById('capex').value) || 35000;
+
+            const climate = CLIMATES[region];
+            const tOut = climate.tempOut;
+
+            // Apply screen reduction
+            if (hasScreen) {
+                uVal *= 0.60; // 40% reduction
+            }
+
+            // Estimate wall surface area (Assuming square floor layout + roof pitch modifier 1.25x)
+            const sideLen = Math.sqrt(floorArea);
+            const envelopeArea = (floorArea * 1.1) + (sideLen * 4 * height);
+
+            // 1. Peak Heating Load Requirement (W)
+            const deltaT = tIn - tOut;
+            const peakHeatLoadW = uVal * envelopeArea * deltaT;
+            const peakHeatLoadKW = peakHeatLoadW / 1000;
+
+            // 2. Annual heating energy demand simulation (Rough degree-days integration)
+            const heatingDegreeDays = 2600; // Average European baseline HDD
+            const annualEnergyKWh = (uVal * envelopeArea * heatingDegreeDays * 24) / 1000 * 0.75; // 0.75 load efficiency factor
+
+            // 3. Costs comparison (Gas Boiler @ 85% Eff vs Geothermal Heat Pump COP 3.5)
+            const gasEff = 0.85;
+            const gasPriceKWh = climate.gasPrice;
+            const electricityPriceKWh = climate.geoPrice;
+
+            const annualGasCost = (annualEnergyKWh / gasEff) * gasPriceKWh;
+            const annualGeoCost = (annualEnergyKWh / 3.5) * electricityPriceKWh;
+
+            const annualSavings = annualGasCost - annualGeoCost;
+            const paybackPeriod = capex / annualSavings;
+
+            // Display metrics
+            document.getElementById('heat-load-val').innerHTML = `${peakHeatLoadKW.toFixed(1)} <span class="metric-unit">kW</span>`;
+            document.getElementById('roi-payback-val').innerHTML = `${paybackPeriod.toFixed(1)} <span class="metric-unit">Years</span>`;
+
+            document.getElementById('roi-explanation').innerText = `Annual Gas Heating Cost: €${Math.round(annualGasCost).toLocaleString()} vs. Geothermal Heat Pump Cost: €${Math.round(annualGeoCost).toLocaleString()}. Net annual savings: €${Math.round(annualSavings).toLocaleString()}.`;
+
+            // Draw Charts
+            const chartData = [annualGasCost, annualGeoCost];
+
+            if (typeof Chart !== 'undefined') {
+                if (thermalChart) {
+                    thermalChart.data.datasets[0].data = chartData;
+                    thermalChart.update();
+                } else {
+                    const ctx = document.getElementById('thermalChart').getContext('2d');
+                    thermalChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Natural Gas Boiler', 'Geothermal Heat Pump (COP 3.5)'],
+                            datasets: [{
+                                label: 'Annual heating cost (€)',
+                                data: chartData,
+                                backgroundColor: [
+                                    'rgba(249, 115, 22, 0.75)', // Orange
+                                    'rgba(16, 185, 129, 0.75)'  // Emerald
+                                ],
+                                borderColor: [
+                                    'rgba(249, 115, 22, 1)',
+                                    'rgba(16, 185, 129, 1)'
+                                ],
+                                borderWidth: 1.5,
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Fallback rendering
+                const wrapper = document.getElementById('thermal-chart-wrapper');
+                const maxVal = Math.max(...chartData);
+                const pct1 = (chartData[0] / maxVal) * 100;
+                const pct2 = (chartData[1] / maxVal) * 100;
+                wrapper.innerHTML = `
+                    <div class="fallback-bar-chart">
+                        <div class="fallback-bar-row">
+                            <div class="fallback-bar-label">
+                                <span>Natural Gas Boiler</span>
+                                <span>€${Math.round(chartData[0]).toLocaleString()}</span>
+                            </div>
+                            <div class="fallback-bar-track">
+                                <div class="fallback-bar-fill" style="width: ${pct1}%; background: var(--color-secondary);"></div>
+                            </div>
+                        </div>
+                        <div class="fallback-bar-row">
+                            <div class="fallback-bar-label">
+                                <span>Geothermal Heat Pump</span>
+                                <span>€${Math.round(chartData[1]).toLocaleString()}</span>
+                            </div>
+                            <div class="fallback-bar-track">
+                                <div class="fallback-bar-fill" style="width: ${pct2}%; background: var(--color-primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Calculations: Tab 3 - Valve Coefficients
+        function calculateValve() {
+            const flowRate = parseFloat(document.getElementById('flow-rate').value) || 25.0;
+            const deltaP = parseFloat(document.getElementById('delta-p').value) || 0.8;
+            const sg = parseFloat(document.getElementById('liquid-sg').value) || 1.0;
+            
+            const pressU = parseFloat(document.getElementById('press-u').value) || 4.0;
+            const pressD = parseFloat(document.getElementById('press-d').value) || 3.2;
+            const pressV = parseFloat(document.getElementById('press-v').value) || 0.25;
+
+            // 1. Metric Kv & Imperial Cv sizing
+            const kv = flowRate * Math.sqrt(sg / deltaP);
+            const cv = 1.156 * kv;
+
+            // 2. Cavitation index calculation
+            const diffPressure = pressU - pressD;
+            let sigma = 99.9;
+            if (diffPressure > 0) {
+                sigma = (pressD - pressV) / diffPressure;
+            }
+
+            // Display results
+            document.getElementById('val-kv').innerText = kv.toFixed(2);
+            document.getElementById('val-cv').innerText = cv.toFixed(2);
+            document.getElementById('val-sigma').innerText = sigma.toFixed(2);
+
+            // Handle cavitation alerts
+            const alertZone = document.getElementById('cavitation-alert-zone');
+            if (sigma < 0.3) {
+                document.getElementById('val-sigma').style.background = 'linear-gradient(to right, #ff9f9f, var(--color-danger))';
+                document.getElementById('val-sigma').style.webkitBackgroundClip = 'text';
+                alertZone.innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>⚠️ SEVERE CAVITATION RISK!</strong> (σ < 0.3). Vapor bubbles will violently collapse, creating micro-jets that will erode metal components and create high-frequency noise. Increase downstream pressure or use a multi-stage pressure drop valve body!
+                    </div>
+                `;
+            } else if (sigma < 0.6) {
+                document.getElementById('val-sigma').style.background = 'linear-gradient(to right, #ffe1a1, var(--color-secondary))';
+                document.getElementById('val-sigma').style.webkitBackgroundClip = 'text';
+                alertZone.innerHTML = `
+                    <div class="alert alert-danger" style="background-color: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: #fed7aa;">
+                        <strong>⚠️ INCIPIENT CAVITATION WARNING!</strong> (0.3 ≤ σ < 0.6). Minor cavitation and localized vibrations may occur. Monitor valve performance and trim seals regularly.
+                    </div>
+                `;
+            } else {
+                document.getElementById('val-sigma').style.background = 'linear-gradient(to right, #fff, var(--color-primary))';
+                document.getElementById('val-sigma').style.webkitBackgroundClip = 'text';
+                alertZone.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>✅ SAFE FLUID FLOW CONDITION.</strong> (σ ≥ 0.6). Cavitation index is well above critical margins. Modulating plug is operating within safe mechanical thresholds.
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize calculations on load
+        window.onload = function() {
+            calculateHydroponics();
+            calculateThermal();
+            calculateValve();
+        };
+    </script>
+</body>
+</html>
