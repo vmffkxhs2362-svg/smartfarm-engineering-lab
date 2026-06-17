@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script>
+        // Redirect to main unified dashboard
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'ko';
+        window.location.replace('../index.html?tab=pollinator&lang=' + lang);
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>병해충 자가진단 & 수분벌 안전 처방 포털 | Greenhouse Diagnosis & Pollinator Safety Portal</title>

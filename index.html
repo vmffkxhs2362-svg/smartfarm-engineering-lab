@@ -358,11 +358,25 @@
             background: #ffffff;
             border: 1px solid var(--border-card);
             padding: 1rem 1.2rem;
+            padding-right: 4.5rem; /* Ensure input text doesn't overlap suffix */
             border-radius: 14px;
             color: var(--text-light);
             font-size: 1.2rem;
             font-weight: 600;
             transition: all 0.3s ease;
+        }
+
+        /* Hide browser up/down spinners on numeric inputs */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { 
+            -webkit-appearance: none !important; 
+            appearance: none !important;
+            margin: 0 !important; 
+        }
+        input[type="number"] {
+            -webkit-appearance: none !important;
+            -moz-appearance: textfield !important;
+            appearance: none !important;
         }
 
         .input-control-wrapper input:focus {
@@ -1037,10 +1051,18 @@
 <div class="container">
     <!-- Header -->
     <header>
-        <div id="header-badge" class="badge">Last Updated: June 17, 2026</div>
-        <div class="lang-switch">
-            <button id="lang-ko" class="lang-btn" onclick="changeLanguage('ko')">KO</button>
-            <button id="lang-en" class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+        <div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;">
+            <div id="header-badge" class="badge" style="margin-bottom: 0;">Last Updated: June 17, 2026</div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <div class="lang-switch" style="margin-bottom: 0;">
+                    <button id="lang-ko" class="lang-btn" onclick="changeLanguage('ko')">KO</button>
+                    <button id="lang-en" class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+                </div>
+                <div id="unit-switch" class="lang-switch" style="margin-bottom: 0; display: none;">
+                    <button id="unit-metric" class="lang-btn active" onclick="changeUnit('metric')">Metric</button>
+                    <button id="unit-imperial" class="lang-btn" onclick="changeUnit('imperial')">Imperial</button>
+                </div>
+            </div>
         </div>
         <h1 id="header-title">스마트팜 엔지니어링 랩</h1>
         <p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
@@ -1246,8 +1268,9 @@
                             </div>
                             <div class="input-control-wrapper">
                                 <input type="number" id="est-area" value="1000" step="50" oninput="runEstimatorEngine()">
-                                <span class="suffix">m²</span>
+                                <span id="est-area-suffix" class="suffix">m²</span>
                             </div>
+                            <div id="est-area-pyeong" class="pyeong-helper" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
                         </div>
                         <div class="input-group">
                             <div class="input-header">
@@ -1347,7 +1370,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="fert-vol" value="1000" step="50" oninput="calculateFertEngine()">
-                    <span class="suffix">Liters</span>
+                    <span id="fert-vol-suffix" class="suffix">Liters</span>
                 </div>
             </div>
 
@@ -1466,8 +1489,9 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="hl-area" value="1500" step="50" oninput="calculateHeatLossEngine()">
-                    <span class="suffix">m²</span>
+                    <span id="hl-area-suffix" class="suffix">m²</span>
                 </div>
+                <div id="hl-area-pyeong" class="pyeong-helper" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
             </div>
 
             <div class="input-group">
@@ -1476,7 +1500,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="hl-uvalue" value="5.5" step="0.1" oninput="calculateHeatLossEngine()">
-                    <span class="suffix">W/m²·K</span>
+                    <span id="hl-uvalue-suffix" class="suffix">W/m²·K</span>
                 </div>
             </div>
 
@@ -1486,7 +1510,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="hl-temp-in" value="18" step="1" oninput="calculateHeatLossEngine()">
-                    <span class="suffix">°C</span>
+                    <span id="hl-temp-in-suffix" class="suffix">°C</span>
                 </div>
             </div>
 
@@ -1496,7 +1520,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="hl-temp-out" value="-5" step="1" oninput="calculateHeatLossEngine()">
-                    <span class="suffix">°C</span>
+                    <span id="hl-temp-out-suffix" class="suffix">°C</span>
                 </div>
             </div>
 
@@ -1506,7 +1530,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="hl-wind" value="3.0" step="0.5" oninput="calculateHeatLossEngine()">
-                    <span class="suffix">m/s</span>
+                    <span id="hl-wind-suffix" class="suffix">m/s</span>
                 </div>
             </div>
         </div>
@@ -1664,7 +1688,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="tr-temp" value="25.0" step="0.1" oninput="calculateTranspirationEngine()">
-                    <span class="suffix">°C</span>
+                    <span id="tr-temp-suffix" class="suffix">°C</span>
                 </div>
             </div>
 
@@ -1704,7 +1728,7 @@
                 </div>
                 <div class="input-control-wrapper">
                     <input type="number" id="tr-wind" value="0.2" step="0.05" oninput="calculateTranspirationEngine()">
-                    <span class="suffix">m/s</span>
+                    <span id="tr-wind-suffix" class="suffix">m/s</span>
                 </div>
             </div>
         </div>
@@ -1821,8 +1845,9 @@
                     <label id="lbl-area" for="area">재배 면적 (㎡)</label>
                     <div class="input-control-wrapper">
                         <input type="number" id="area" value="3300" min="50" step="50" oninput="calculateDensity()">
-                        <span class="suffix">㎡</span>
+                        <span id="area-suffix" class="suffix">㎡</span>
                     </div>
+                    <div id="area-pyeong" class="pyeong-helper" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
                 </div>
                 <div class="input-group">
                     <label id="lbl-season" for="season">현재 방사 계열/계절</label>
@@ -2797,12 +2822,23 @@
     };
 
     let currentLang = 'ko';
+    let currentUnit = localStorage.getItem('smartfarm_unit') || 'metric';
 
     function changeLanguage(lang) {
         currentLang = lang;
         localStorage.setItem('smartfarm_lang', lang);
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`lang-${lang}`).classList.add('active');
+        
+        if (lang === 'ko') {
+            currentUnit = 'metric';
+            document.getElementById('unit-switch').style.display = 'none';
+        } else {
+            document.getElementById('unit-switch').style.display = 'flex';
+            document.querySelectorAll('#unit-switch .lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`unit-${currentUnit}`).classList.add('active');
+        }
+        
         document.getElementById('header-title').innerText = i18n[lang].headerTitle;
         document.getElementById('header-desc').innerText = i18n[lang].headerDesc;
         
@@ -3075,6 +3111,109 @@
         simulateActivity();
         calculateLight();
         calculateThermal();
+        updatePyeongHelpers();
+    }
+
+    // ==========================================
+    // REGIONAL UNITS SYSTEM & PYEONG CONVERSIONS
+    // ==========================================
+    
+    function changeUnit(unit) {
+        if (unit !== 'metric' && unit !== 'imperial') unit = 'metric';
+        currentUnit = unit;
+        localStorage.setItem('smartfarm_unit', unit);
+        
+        document.querySelectorAll('#unit-switch .lang-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`unit-${unit}`).classList.add('active');
+        
+        updateUnitUI();
+    }
+
+    function updatePyeongHelpers() {
+        if (currentLang !== 'ko') {
+            document.querySelectorAll('.pyeong-helper').forEach(el => el.style.display = 'none');
+            return;
+        }
+        const targets = [
+            { inputId: 'est-area', helperId: 'est-area-pyeong' },
+            { inputId: 'hl-area', helperId: 'hl-area-pyeong' },
+            { inputId: 'area', helperId: 'area-pyeong' }
+        ];
+        targets.forEach(item => {
+            const input = document.getElementById(item.inputId);
+            const helper = document.getElementById(item.helperId);
+            if (!input || !helper) return;
+            const val = parseFloat(input.value);
+            if (!isNaN(val) && val > 0) {
+                const pyeong = Math.round(val / 3.30578 * 10) / 10;
+                helper.innerHTML = `(약 <strong>${pyeong.toLocaleString()}</strong> 평)`;
+                helper.style.display = 'block';
+            } else {
+                helper.style.display = 'none';
+            }
+        });
+    }
+
+    function updateUnitUI() {
+        const isImperial = (currentUnit === 'imperial');
+        
+        // Update input suffixes in DOM
+        document.getElementById('est-area-suffix').innerText = isImperial ? 'sq ft' : 'm²';
+        document.getElementById('hl-area-suffix').innerText = isImperial ? 'sq ft' : 'm²';
+        document.getElementById('area-suffix').innerText = isImperial ? 'sq ft' : (currentLang === 'ko' ? '㎡' : 'm²');
+        document.getElementById('hl-uvalue-suffix').innerText = isImperial ? 'BTU/h·ft²·°F' : 'W/m²·K';
+        document.getElementById('hl-temp-in-suffix').innerText = isImperial ? '°F' : '°C';
+        document.getElementById('hl-temp-out-suffix').innerText = isImperial ? '°F' : '°C';
+        document.getElementById('hl-wind-suffix').innerText = isImperial ? 'mph' : 'm/s';
+        document.getElementById('fert-vol-suffix').innerText = isImperial ? 'gal' : 'Liters';
+        document.getElementById('tr-temp-suffix').innerText = isImperial ? '°F' : '°C';
+        document.getElementById('tr-wind-suffix').innerText = isImperial ? 'mph' : 'm/s';
+        
+        // Update labels for VPD temperature unit switcher automatically
+        if (isImperial) {
+            switchTempUnit('F');
+        } else {
+            switchTempUnit('C');
+        }
+
+        // Convert default input values if they are still standard metric/imperial defaults
+        const conversions = [
+            { id: 'est-area', toImp: val => Math.round(val * 10.7639), toMet: val => Math.round(val / 10.7639) },
+            { id: 'hl-area', toImp: val => Math.round(val * 10.7639), toMet: val => Math.round(val / 10.7639) },
+            { id: 'area', toImp: val => Math.round(val * 10.7639), toMet: val => Math.round(val / 10.7639) },
+            { id: 'hl-uvalue', toImp: val => parseFloat((val * 0.17611).toFixed(2)), toMet: val => parseFloat((val / 0.17611).toFixed(2)) },
+            { id: 'hl-temp-in', toImp: val => Math.round(val * 1.8 + 32), toMet: val => Math.round((val - 32) / 1.8) },
+            { id: 'hl-temp-out', toImp: val => Math.round(val * 1.8 + 32), toMet: val => Math.round((val - 32) / 1.8) },
+            { id: 'hl-wind', toImp: val => parseFloat((val * 2.23694).toFixed(1)), toMet: val => parseFloat((val / 2.23694).toFixed(1)) },
+            { id: 'fert-vol', toImp: val => Math.round(val / 3.78541), toMet: val => Math.round(val * 3.78541) },
+            { id: 'tr-temp', toImp: val => Math.round(val * 1.8 + 32), toMet: val => Math.round((val - 32) / 1.8) },
+            { id: 'tr-wind', toImp: val => parseFloat((val * 2.23694).toFixed(1)), toMet: val => parseFloat((val / 2.23694).toFixed(1)) }
+        ];
+
+        conversions.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (!el) return;
+            const val = parseFloat(el.value);
+            if (isNaN(val)) return;
+            
+            const lastUnit = el.dataset.lastUnit || 'metric';
+            if (lastUnit !== currentUnit) {
+                if (isImperial) {
+                    el.value = item.toImp(val);
+                } else {
+                    el.value = item.toMet(val);
+                }
+                el.dataset.lastUnit = currentUnit;
+            }
+        });
+        
+        // Re-run calculations
+        runEstimatorEngine();
+        calculateHeatLossEngine();
+        calculateRoiEngine();
+        calculateTranspirationEngine();
+        calculateDensity();
+        calculateFertEngine();
     }
     
     function switchTab(target) {
@@ -3297,9 +3436,12 @@
         if (isNaN(rawHco3) || isNaN(targetHco3) || isNaN(tankVol) || isNaN(dilution)) return;
         
         const deltaHco3 = rawHco3 - targetHco3;
+        const resultValEl = document.getElementById('acid-result-value');
+        const expEl = document.getElementById('acid-explanation');
+
         if (deltaHco3 <= 0) {
-            document.getElementById('acid-result-value').innerText = "0.0 mL";
-            document.getElementById('acid-explanation').innerText = currentLang === 'ko' ? "중화할 중탄산이 없습니다. 원수의 pH 버퍼 능력이 안정적입니다." : "No bicarbonate to neutralize. Water pH buffer is stable.";
+            resultValEl.innerText = currentUnit === 'imperial' ? "0.0 fl oz" : "0.0 mL";
+            expEl.innerText = currentLang === 'ko' ? "중화할 중탄산이 없습니다. 원수의 pH 버퍼 능력이 안정적입니다." : "No bicarbonate to neutralize. Water pH buffer is stable.";
             return;
         }
         
@@ -3309,16 +3451,23 @@
             acidMolarity = 14.6; // Phosphoric Acid 85%
         }
         
-        const totalMeq = meqL * tankVol * dilution;
+        const tankVol_L = currentUnit === 'imperial' ? tankVol * 3.78541 : tankVol;
+        const totalMeq = meqL * tankVol_L * dilution;
         const acidVolMl = totalMeq / acidMolarity;
         
-        const resultValEl = document.getElementById('acid-result-value');
-        const expEl = document.getElementById('acid-explanation');
-        
-        if (acidVolMl >= 1000) {
-            resultValEl.innerText = (acidVolMl / 1000).toFixed(2) + " L";
+        if (currentUnit === 'imperial') {
+            const flOz = acidVolMl / 29.5735;
+            if (flOz >= 128) {
+                resultValEl.innerText = (flOz / 128).toFixed(2) + " gal";
+            } else {
+                resultValEl.innerText = flOz.toFixed(1) + " fl oz";
+            }
         } else {
-            resultValEl.innerText = acidVolMl.toFixed(0) + " mL";
+            if (acidVolMl >= 1000) {
+                resultValEl.innerText = (acidVolMl / 1000).toFixed(2) + " L";
+            } else {
+                resultValEl.innerText = acidVolMl.toFixed(0) + " mL";
+            }
         }
         
         if (currentLang === 'ko') {
@@ -3326,7 +3475,11 @@
             expEl.innerHTML = `원수 중탄산 <strong>${rawHco3} ppm</strong>에서 <strong>${targetHco3} ppm</strong>으로 낮추기 위해 중탄산 <strong>${meqL.toFixed(2)} meq/L</strong>을 중화해야 합니다.<br>원액탱크 ${tankVol}L에 <strong>${acidName}</strong>을 <strong>${acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL"}</strong> 혼합하여 조제하십시오.<br><small style="color: var(--danger); font-weight: 600;">⚠️ 주의: 강산을 원액탱크에 넣을 때 반드시 물을 채운 뒤 산을 마지막에 천천히 저으면서 넣으십시오. (절대로 산에 물을 부으면 안 됩니다!)</small>`;
         } else {
             const acidName = acidType === 'nitric' ? "60% Nitric Acid" : "85% Phosphoric Acid";
-            expEl.innerHTML = `To neutralize raw bicarbonate from <strong>${rawHco3} ppm</strong> to <strong>${targetHco3} ppm</strong>, we need to neutralize <strong>${meqL.toFixed(2)} meq/L</strong> of HCO₃⁻.<br>Add <strong>${acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL"}</strong> of <strong>${acidName}</strong> to the ${tankVol}L stock tank.<br><small style="color: var(--danger); font-weight: 600;">⚠️ CAUTION: Always add acid to water, never water to acid! Add slowly while stirring.</small>`;
+            const volStr = currentUnit === 'imperial' ? 
+                (acidVolMl / 29.5735 >= 128 ? (acidVolMl / 29.5735 / 128).toFixed(2) + " gal" : (acidVolMl / 29.5735).toFixed(1) + " fl oz") :
+                (acidVolMl >= 1000 ? (acidVolMl/1000).toFixed(2) + " L" : acidVolMl.toFixed(0) + " mL");
+            
+            expEl.innerHTML = `To neutralize raw bicarbonate from <strong>${rawHco3} ppm</strong> to <strong>${targetHco3} ppm</strong>, we need to neutralize <strong>${meqL.toFixed(2)} meq/L</strong> of HCO₃⁻.<br>Add <strong>${volStr}</strong> of <strong>${acidName}</strong> to the ${tankVol}${currentUnit === 'imperial' ? ' gal' : 'L'} stock tank.<br><small style="color: var(--danger); font-weight: 600;">⚠️ CAUTION: Always add acid to water, never water to acid! Add slowly while stirring.</small>`;
         }
     }
     function switchPowerUnit(unit) {
@@ -3469,20 +3622,32 @@
         const purity = parseFloat(document.getElementById('fert-purity').value);
         if (isNaN(targetPpm) || isNaN(tankVolume) || isNaN(dilution) || isNaN(purity) || purity <= 0) return;
 
-        // Mass (kg) = (Target PPM * Stock Tank Vol * Dilution Ratio) / (Purity % * 10,000)
-        const mass = (targetPpm * tankVolume * dilution) / (purity * 10000);
+        const tankVolume_L = currentUnit === 'imperial' ? tankVolume * 3.78541 : tankVolume;
+        const mass_kg = (targetPpm * tankVolume_L * dilution) / (purity * 10000);
+        
+        let displayMass = mass_kg;
+        let massUnit = 'kg';
+        if (currentUnit === 'imperial') {
+            displayMass = mass_kg * 2.20462;
+            massUnit = 'lb';
+        }
 
-        document.getElementById('fert-value').innerText = mass.toFixed(1) + " kg";
+        document.getElementById('fert-value').innerText = displayMass.toFixed(1) + " " + massUnit;
 
         const statusPill = document.getElementById('fert-status-pill');
         statusPill.innerText = i18n[currentLang].fertStatusPill;
 
         const expEl = document.getElementById('fert-explanation');
-        expEl.innerHTML = i18n[currentLang].fertExplanation
-            .replace('{mass}', mass.toFixed(1))
+        let exp = i18n[currentLang].fertExplanation
+            .replace('{mass}', displayMass.toFixed(1))
             .replace('{tankVolume}', tankVolume)
             .replace('{dilution}', dilution)
             .replace('{targetPpm}', targetPpm);
+        
+        if (currentUnit === 'imperial') {
+            exp = exp.replace(' kg', ' lb').replace('L ', ' gal ');
+        }
+        expEl.innerHTML = exp;
             
         runAcidEngine();
     }
@@ -3520,24 +3685,35 @@
 
         const deltaT = tempIn - tempOut;
         if (deltaT <= 0) {
-            document.getElementById('hl-value').innerText = "0.0 kW";
+            document.getElementById('hl-value').innerText = currentUnit === 'imperial' ? "0.0 BTU/h" : "0.0 kW";
             document.getElementById('hl-explanation').innerText = currentLang === 'ko' ? "실외 온도가 실내 온도보다 높거나 같아 난방이 필요하지 않습니다." : "Outdoor temperature is higher than or equal to indoor. Heating not required.";
             document.getElementById('hl-status-pill').className = "status-pill optimal";
             document.getElementById('hl-status-pill').innerText = currentLang === 'ko' ? "난방 불필요" : "No Heat Needed";
+            updatePyeongHelpers();
             return;
         }
 
         // Wind friction multiplier (simplified ASHRAE/standard engineering approach)
         let fWind = 1.0;
-        if (wind > 10.0) fWind = 1.40;
-        else if (wind > 5.0) fWind = 1.25;
-        else if (wind > 2.0) fWind = 1.12;
+        const windSpeedMs = currentUnit === 'imperial' ? wind / 2.23694 : wind;
+        if (windSpeedMs > 10.0) fWind = 1.40;
+        else if (windSpeedMs > 5.0) fWind = 1.25;
+        else if (windSpeedMs > 2.0) fWind = 1.12;
 
-        // Q = U * A * dT * fWind (W) -> divided by 1000 for kW
-        const qLossKw = (U * A * deltaT * fWind) / 1000;
-        const qLossBtu = qLossKw * 3412.14;
+        let qLossKw, qLossBtu;
+        if (currentUnit === 'imperial') {
+            qLossBtu = U * A * deltaT * fWind;
+            qLossKw = qLossBtu / 3412.14;
+        } else {
+            qLossKw = (U * A * deltaT * fWind) / 1000;
+            qLossBtu = qLossKw * 3412.14;
+        }
 
-        document.getElementById('hl-value').innerText = qLossKw.toFixed(1) + " kW";
+        if (currentUnit === 'imperial') {
+            document.getElementById('hl-value').innerText = Math.round(qLossBtu).toLocaleString() + " BTU/h";
+        } else {
+            document.getElementById('hl-value').innerText = qLossKw.toFixed(1) + " kW";
+        }
 
         const statusPill = document.getElementById('hl-status-pill');
         if (qLossKw < 50) {
@@ -3552,12 +3728,19 @@
         }
 
         const expEl = document.getElementById('hl-explanation');
-        expEl.innerHTML = i18n[currentLang].heatLossExplanation
+        let exp = i18n[currentLang].heatLossExplanation
             .replace('{tempOut}', tempOut)
             .replace('{tempIn}', tempIn)
             .replace('{fWind}', fWind.toFixed(2))
             .replace('{heatLoss}', qLossKw.toFixed(1))
             .replace('{btuVal}', qLossBtu.toFixed(0));
+            
+        if (currentUnit === 'imperial') {
+            exp = exp.replace('°C', '°F').replace('°C', '°F');
+            exp = exp.replace(/<strong>(.*?) kW<\/strong> \((.*?) BTU\/h\)/, '<strong>$2 BTU/h</strong> ($1 kW)');
+        }
+        expEl.innerHTML = exp;
+        updatePyeongHelpers();
     }
 
     let currentRoiCurrency = 'KRW';
@@ -3733,13 +3916,16 @@
 
         if (isNaN(T) || isNaN(RH) || isNaN(Rg) || isNaN(LAI) || isNaN(rs) || isNaN(u) || u <= 0 || LAI <= 0) return;
 
-        const es = 0.61078 * Math.exp((17.27 * T) / (T + 237.3));
-        const Delta = (4098 * es) / Math.pow(T + 237.3, 2);
+        const T_c = currentUnit === 'imperial' ? (T - 32) / 1.8 : T;
+        const u_ms = currentUnit === 'imperial' ? u / 2.23694 : u;
+
+        const es = 0.61078 * Math.exp((17.27 * T_c) / (T_c + 237.3));
+        const Delta = (4098 * es) / Math.pow(T_c + 237.3, 2);
         const gamma = 0.066;
         const ea = es * (RH / 100);
         const VPD = es - ea;
         const Rn = Rg * 0.60;
-        const ra = 250 / Math.max(0.05, u);
+        const ra = 250 / Math.max(0.05, u_ms);
         const rc = rs / (0.5 * LAI); 
         const lambda = 2.45; 
         const rho_a = 1.2;
@@ -3754,7 +3940,16 @@
         const etHr = (LE * 3600) / (lambda * 1000000); 
         const etDay = etHr * 10; 
 
-        document.getElementById('trans-value').innerText = etHr.toFixed(3) + " L/m²·h";
+        let displayEt = etHr;
+        let displayEtDay = etDay;
+        let etUnit = 'L/m²·h';
+        if (currentUnit === 'imperial') {
+            displayEt = etHr * 24.5424;
+            displayEtDay = etDay * 24.5424;
+            etUnit = 'gal/1000 ft²·h';
+        }
+
+        document.getElementById('trans-value').innerText = displayEt.toFixed(currentUnit === 'imperial' ? 2 : 3) + " " + etUnit;
 
         const statusPill = document.getElementById('trans-status-pill');
         if (etHr > 0.25) {
@@ -3769,12 +3964,20 @@
         }
 
         const expEl = document.getElementById('trans-explanation');
-        expEl.innerHTML = i18n[currentLang].transExplanation
+        let exp = i18n[currentLang].transExplanation
             .replace('{temp}', T.toFixed(1))
             .replace('{rh}', RH)
             .replace('{rad}', Rg)
-            .replace('{et}', etHr.toFixed(3))
-            .replace('{etDay}', etDay.toFixed(2));
+            .replace('{et}', displayEt.toFixed(currentUnit === 'imperial' ? 2 : 3))
+            .replace('{etDay}', displayEtDay.toFixed(currentUnit === 'imperial' ? 1 : 2));
+            
+        if (currentUnit === 'imperial') {
+            exp = exp.replace('°C', '°F');
+            exp = exp.replace(' L/m²·hr', ' gal/1000 ft²·h')
+                     .replace(' mm/hr', '')
+                     .replace(' L/m²·day', ' gal/1000 ft²·day');
+        }
+        expEl.innerHTML = exp;
     }
 
     // ==========================================
@@ -4112,8 +4315,9 @@
         const cropWeight = cropWeights[cropType] || 1.0;
         const seasonAdj = seasonAdjustments[season] || 1.0;
 
-        let hivesCount = (area / 3300) * baseHivesPer1000Pyung * cropWeight * seasonAdj;
-        hivesCount = Math.max(area > 0 ? 1 : 0, Math.round(hivesCount * 10) / 10);
+        const area_m2 = currentUnit === 'imperial' ? area / 10.7639 : area;
+        let hivesCount = (area_m2 / 3300) * baseHivesPer1000Pyung * cropWeight * seasonAdj;
+        hivesCount = Math.max(area_m2 > 0 ? 1 : 0, Math.round(hivesCount * 10) / 10);
 
         let lifespanText = "";
         if (season === 'summer') {
@@ -4125,13 +4329,17 @@
         }
 
         const cropLabel = document.getElementById('crop-type').options[document.getElementById('crop-type').selectedIndex].text;
-        const pyeong = Math.round(area * 0.3025);
+        const pyeong = Math.round(area_m2 * 0.3025);
         
-        const formattedMath = i18n[currentLang].densityCalculationText
+        let formattedMath = i18n[currentLang].densityCalculationText
             .replace('{area}', area.toLocaleString())
             .replace('{pyeong}', pyeong)
             .replace('{crop}', cropLabel)
             .replace('{hives}', hivesCount);
+            
+        if (currentUnit === 'imperial') {
+            formattedMath = formattedMath.replace(/ m²<\/strong> \(approx\. <strong>.*?<\/strong> pyeong\)/, ' sq ft</strong>');
+        }
 
         document.getElementById('hives-value').innerText = hivesCount + (currentLang === 'ko' ? " 통" : " Hives");
         document.getElementById('lifespan-value').innerText = lifespanText;
@@ -4143,6 +4351,7 @@
         else if (cropType === 'pepper') guideKey = "densityGuidelinePepper";
 
         document.getElementById('density-guide-text').innerHTML = formattedMath + "<br><br>" + i18n[currentLang][guideKey];
+        updatePyeongHelpers();
     }
 
     // Pollinator Safety - Activity Simulator

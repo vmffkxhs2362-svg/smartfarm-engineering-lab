@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script>
+        // Redirect to main unified dashboard
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'ko';
+        window.location.replace('../index.html?tab=vertical&lang=' + lang);
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>수직농업 DLI 계산기 & LED 방열량 시뮬레이터 | Vertical Farm Light & Power Analyzer</title>
