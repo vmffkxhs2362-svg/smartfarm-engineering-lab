@@ -1555,7 +1555,7 @@
 
             <div class="input-group">
                 <div class="input-header">
-                    <label for="roi-currency" id="lbl-roi-currency">기준 통화 설정</label>
+                    <label id="lbl-roi-currency">기준 통화 설정</label>
                     <div class="toggle-container">
                         <button id="roi-curr-krw" class="toggle-btn active" onclick="switchRoiCurrency('KRW')">KRW (₩)</button>
                         <button id="roi-curr-eur" class="toggle-btn" onclick="switchRoiCurrency('EUR')">EUR (€)</button>
@@ -1957,28 +1957,28 @@
 
                 <div class="slider-group">
                     <div class="slider-header">
-                        <span id="lbl-slider-red">Deep Red (660 nm)</span>
+                        <label id="lbl-slider-red" for="slide-red">Deep Red (660 nm)</label>
                         <span class="slider-val" id="slide-red-val">70%</span>
                     </div>
                     <input type="range" id="slide-red" min="0" max="100" value="70" oninput="updateSpectrum(); calculateLight();">
                 </div>
                 <div class="slider-group">
                     <div class="slider-header">
-                        <span id="lbl-slider-blue">Deep Blue (450 nm)</span>
+                        <label id="lbl-slider-blue" for="slide-blue">Deep Blue (450 nm)</label>
                         <span class="slider-val" id="slide-blue-val">15%</span>
                     </div>
                     <input type="range" id="slide-blue" min="0" max="100" value="15" oninput="updateSpectrum(); calculateLight();">
                 </div>
                 <div class="slider-group">
                     <div class="slider-header">
-                        <span id="lbl-slider-green">Green/White (550 nm)</span>
+                        <label id="lbl-slider-green" for="slide-green">Green/White (550 nm)</label>
                         <span class="slider-val" id="slide-green-val">10%</span>
                     </div>
                     <input type="range" id="slide-green" min="0" max="100" value="10" oninput="updateSpectrum(); calculateLight();">
                 </div>
                 <div class="slider-group">
                     <div class="slider-header">
-                        <span id="lbl-slider-far">Far-Red (730 nm)</span>
+                        <label id="lbl-slider-far" for="slide-far">Far-Red (730 nm)</label>
                         <span class="slider-val" id="slide-far-val">5%</span>
                     </div>
                     <input type="range" id="slide-far" min="0" max="100" value="5" oninput="updateSpectrum(); calculateLight();">
