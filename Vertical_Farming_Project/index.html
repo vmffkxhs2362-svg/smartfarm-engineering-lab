@@ -12,16 +12,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-base: #0f172a;
-            --bg-card: rgba(30, 41, 59, 0.7);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --color-primary: #10b981; /* Neon Emerald */
-            --color-secondary: #f97316; /* Energy Orange */
-            --color-accent: #3b82f6; /* Electric Blue */
-            --color-danger: #ef4444; /* Alert Red */
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --bg-base: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(15, 23, 42, 0.08);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --color-primary: #059669; /* Neon Emerald - slightly darker */
+            --color-secondary: #ea580c; /* Energy Orange */
+            --color-accent: #2563eb; /* Electric Blue */
+            --color-danger: #dc2626; /* Alert Red */
+            --glass-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
         }
 
         * {
@@ -42,7 +42,7 @@
 
         /* Top Navigation Header */
         header {
-            background-color: rgba(15, 23, 42, 0.85);
+            background-color: rgba(248, 250, 252, 0.85);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             position: sticky;
@@ -70,7 +70,7 @@
             font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: -0.025em;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
+            background: linear-gradient(to right, #0f172a, #475569);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -94,13 +94,13 @@
 
         .tab-btn:hover {
             color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: rgba(15, 23, 42, 0.04);
         }
 
         .tab-btn.active {
             color: var(--color-primary);
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background-color: rgba(5, 150, 105, 0.1);
+            border: 1px solid rgba(5, 150, 105, 0.2);
         }
 
         /* Container Main Layout */
@@ -146,7 +146,7 @@
         .section-header h2 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-main);
             margin-bottom: 0.4rem;
         }
 
@@ -178,7 +178,7 @@
         }
 
         input[type="number"], select {
-            background-color: rgba(15, 23, 42, 0.6);
+            background-color: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-main);
@@ -207,7 +207,7 @@
 
         /* Sliders */
         .slider-group {
-            background-color: rgba(15, 23, 42, 0.3);
+            background-color: rgba(15, 23, 42, 0.02);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 1rem 1.25rem;
@@ -229,7 +229,7 @@
         input[type="range"] {
             width: 100%;
             accent-color: var(--color-primary);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.08);
             height: 6px;
             border-radius: 3px;
             outline: none;
@@ -251,7 +251,7 @@
         }
 
         .result-box {
-            background: rgba(15, 23, 42, 0.4);
+            background: rgba(15, 23, 42, 0.02);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 1.5rem;
@@ -279,7 +279,7 @@
             font-family: 'Inter', sans-serif;
             letter-spacing: -0.03em;
             margin-bottom: 0.25rem;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
+            background: linear-gradient(to right, #0f172a, #475569);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -393,7 +393,7 @@
             text-align: center;
             color: var(--text-muted);
             font-size: 0.85rem;
-            background-color: rgba(15, 23, 42, 0.4);
+            background-color: rgba(248, 250, 252, 0.95);
             margin-top: auto;
         }
 
@@ -405,7 +405,7 @@
             overflow: hidden;
             margin-top: 1rem;
             border: 1px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(15, 23, 42, 0.03);
         }
 
         .spectrum-segment {
