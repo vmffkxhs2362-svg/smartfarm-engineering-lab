@@ -151,6 +151,89 @@ header p {
     border-bottom-color: var(--primary);
 }
 
+/* Global Tabs Navigation */
+.global-tabs-container {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0.2rem 0;
+    margin-bottom: 0.5rem;
+}
+
+.global-tabs-container::-webkit-scrollbar {
+    display: none;
+}
+
+.global-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    background: rgba(15, 23, 42, 0.03);
+    border: 1px solid var(--border-card);
+    padding: 0.4rem;
+    border-radius: 100px;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.global-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.global-tab-btn:hover {
+    color: var(--text-light);
+    background: rgba(15, 23, 42, 0.05);
+}
+
+.global-tab-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+/* Responsive Text Spans */
+.desktop-text {
+    display: inline;
+}
+
+.mobile-text {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .desktop-text {
+        display: none;
+    }
+    .mobile-text {
+        display: inline;
+    }
+    .global-tabs-container {
+        padding: 0.2rem 0.5rem;
+    }
+    .global-tabs {
+        margin: 0;
+    }
+    .global-tab-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
 /* Dashboard Section */
 .tab-content {
     display: none;

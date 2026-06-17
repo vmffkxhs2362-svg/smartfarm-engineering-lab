@@ -271,6 +271,23 @@ const i18n = {
         headerTitle: "병해충 자가진단 & 수분벌 안전 처방 포털",
         headerDesc: "시설하우스 주요 병해충 즉시 자가진단, 안전 방제 약제 추천 및 수분 벌 보호 대기시간(REI) 자동 연동 툴킷",
         
+        gtVpdD: "포차 계산기 (VPD)",
+        gtVpdM: "VPD",
+        gtValveD: "난방 혼합 밸브",
+        gtValveM: "혼합 밸브",
+        gtFertD: "원액 희석 계산기 (양액)",
+        gtFertM: "양액 희석",
+        gtHeatLossD: "온실 열손실 계산기",
+        gtHeatLossM: "열손실",
+        gtRoiD: "보일러 vs 히트펌프 ROI",
+        gtRoiM: "난방 ROI",
+        gtTransD: "식물 증산량 추정기 (PM)",
+        gtTransM: "증산량 (PM)",
+        gtPollinatorD: "🐝 병해충 자가진단 & 수분벌",
+        gtPollinatorM: "🐝 병해충/벌",
+        gtVerticalD: "🌱 수직농업 DLI 계산기",
+        gtVerticalM: "🌱 수직농업",
+
         tabDiagnosis: "병해충 자가진단",
         tabPesticide: "농약 안전성 진단",
         tabDensity: "적정 벌통수 산출",
@@ -362,6 +379,23 @@ const i18n = {
         headerTitle: "Greenhouse Diagnosis & Pollinator Safety Portal",
         headerDesc: "Diagnose greenhouse crop diseases step-by-step, check safe chemical recommendations, and calculate Re-entry Intervals (REI) for pollinators.",
         
+        gtVpdD: "Vapor Pressure Deficit (VPD)",
+        gtVpdM: "VPD",
+        gtValveD: "Mixing Valve Sizing",
+        gtValveM: "Mixing Valve",
+        gtFertD: "Fertilizer Stock Dilution",
+        gtFertM: "Fert Dilution",
+        gtHeatLossD: "Greenhouse Heat Loss",
+        gtHeatLossM: "Heat Loss",
+        gtRoiD: "Boiler vs Heat Pump ROI",
+        gtRoiM: "Heating ROI",
+        gtTransD: "Plant Transpiration (PM)",
+        gtTransM: "Transpiration (PM)",
+        gtPollinatorD: "🐝 Greenhouse Diagnosis & Pollinators",
+        gtPollinatorM: "🐝 Disease/Pollinators",
+        gtVerticalD: "🌱 Vertical Farm DLI",
+        gtVerticalM: "🌱 Vertical DLI",
+
         tabDiagnosis: "Pest & Disease Diagnosis",
         tabPesticide: "Pesticide REI Diagnosis",
         tabDensity: "Optimal Density Math",
@@ -479,6 +513,38 @@ function setLanguage(lang) {
     document.getElementById('btn-tab-density').innerText = i18n[lang].tabDensity;
     document.getElementById('btn-tab-activity').innerText = i18n[lang].tabActivity;
 
+    // Global Navigation Tabs Update
+    document.getElementById('lnk-global-vpd').href = `../index.html?tab=vpd&lang=${lang}`;
+    document.getElementById('lnk-global-vpd').querySelector('.desktop-text').innerText = i18n[lang].gtVpdD;
+    document.getElementById('lnk-global-vpd').querySelector('.mobile-text').innerText = i18n[lang].gtVpdM;
+    
+    document.getElementById('lnk-global-valve').href = `../index.html?tab=valve&lang=${lang}`;
+    document.getElementById('lnk-global-valve').querySelector('.desktop-text').innerText = i18n[lang].gtValveD;
+    document.getElementById('lnk-global-valve').querySelector('.mobile-text').innerText = i18n[lang].gtValveM;
+    
+    document.getElementById('lnk-global-fert').href = `../index.html?tab=fert&lang=${lang}`;
+    document.getElementById('lnk-global-fert').querySelector('.desktop-text').innerText = i18n[lang].gtFertD;
+    document.getElementById('lnk-global-fert').querySelector('.mobile-text').innerText = i18n[lang].gtFertM;
+    
+    document.getElementById('lnk-global-heat-loss').href = `../index.html?tab=heat-loss&lang=${lang}`;
+    document.getElementById('lnk-global-heat-loss').querySelector('.desktop-text').innerText = i18n[lang].gtHeatLossD;
+    document.getElementById('lnk-global-heat-loss').querySelector('.mobile-text').innerText = i18n[lang].gtHeatLossM;
+    
+    document.getElementById('lnk-global-roi').href = `../index.html?tab=roi&lang=${lang}`;
+    document.getElementById('lnk-global-roi').querySelector('.desktop-text').innerText = i18n[lang].gtRoiD;
+    document.getElementById('lnk-global-roi').querySelector('.mobile-text').innerText = i18n[lang].gtRoiM;
+    
+    document.getElementById('lnk-global-transpiration').href = `../index.html?tab=transpiration&lang=${lang}`;
+    document.getElementById('lnk-global-transpiration').querySelector('.desktop-text').innerText = i18n[lang].gtTransD;
+    document.getElementById('lnk-global-transpiration').querySelector('.mobile-text').innerText = i18n[lang].gtTransM;
+    
+    document.getElementById('lnk-global-pollinator').querySelector('.desktop-text').innerText = i18n[lang].gtPollinatorD;
+    document.getElementById('lnk-global-pollinator').querySelector('.mobile-text').innerText = i18n[lang].gtPollinatorM;
+    
+    document.getElementById('lnk-global-vertical').href = `../Vertical_Farming_Project/index.html?lang=${lang}`;
+    document.getElementById('lnk-global-vertical').querySelector('.desktop-text').innerText = i18n[lang].gtVerticalD;
+    document.getElementById('lnk-global-vertical').querySelector('.mobile-text').innerText = i18n[lang].gtVerticalM;
+
     // Tab 0 (Diagnosis) UI
     document.getElementById('lbl-diag-input-title').innerText = i18n[lang].lblDiagInputTitle;
     document.getElementById('lbl-select-crop').innerText = i18n[lang].lblSelectCrop;
@@ -521,11 +587,7 @@ function setLanguage(lang) {
     document.getElementById('lbl-act-status-title').innerText = i18n[lang].lblActStatus;
     document.getElementById('lbl-act-guide-title').innerText = i18n[lang].lblActGuide;
 
-    // Promo & Footer
-    document.getElementById('promo-title').innerText = i18n[lang].promoTitle;
-    document.getElementById('promo-desc').innerText = i18n[lang].promoDesc;
-    document.getElementById('btn-kdp-book').innerText = i18n[lang].btnKdpBook;
-    document.getElementById('btn-excel-sheet').innerText = i18n[lang].btnExcel;
+    // Footer
     document.getElementById('footer-disclaimer').innerHTML = i18n[lang].disclaimer;
 
     // Trigger updates
@@ -908,11 +970,16 @@ function simulateActivity() {
     document.getElementById('activity-guide-text').innerText = guideText;
 }
 
-// Local Storage Loaders
 function loadSavedPreferences() {
-    const savedLang = localStorage.getItem('pollinator_lang');
-    if (savedLang) {
-        currentLang = savedLang;
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get('lang');
+    if (urlLang === 'ko' || urlLang === 'en') {
+        currentLang = urlLang;
+    } else {
+        const savedLang = localStorage.getItem('pollinator_lang');
+        if (savedLang) {
+            currentLang = savedLang;
+        }
     }
 
     const savedArea = localStorage.getItem('pollinator_area');

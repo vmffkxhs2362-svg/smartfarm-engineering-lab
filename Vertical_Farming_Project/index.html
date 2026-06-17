@@ -412,9 +412,133 @@
             height: 100%;
             transition: width 0.3s ease;
         }
+
+        /* Global Tabs Navigation */
+        .global-tabs-container {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0.2rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .global-tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .global-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem;
+            border-radius: 100px;
+            width: max-content;
+            margin: 0 auto;
+        }
+
+        .global-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .global-tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(15, 23, 42, 0.05);
+        }
+
+        .global-tab-btn.active {
+            background: var(--color-primary);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            display: flex;
+            gap: 0.2rem;
+            background: rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 0.2rem;
+            border-radius: 8px;
+            width: max-content;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            color: var(--text-main);
+        }
+
+        .lang-btn.active {
+            background: var(--color-primary);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* Responsive Text Spans */
+        .desktop-text {
+            display: inline;
+        }
+
+        .mobile-text {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-text {
+                display: none;
+            }
+            .mobile-text {
+                display: inline;
+            }
+            .global-tabs-container {
+                padding: 0.2rem 0.5rem;
+            }
+            .global-tabs {
+                margin: 0;
+            }
+            .global-tab-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Language Toggle -->
+    <div style="display: flex; justify-content: flex-end; width: 100%; max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 0 1.5rem; box-sizing: border-box;">
+        <div class="lang-switch">
+            <button class="lang-btn active" id="lang-ko" onclick="setLanguage('ko')">한국어</button>
+            <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
+        </div>
+    </div>
 
     <!-- Header navigation -->
     <header>
@@ -434,30 +558,68 @@
     <!-- Main Container -->
     <main>
 
+        <!-- Global Navigation Tabs -->
+        <div class="global-tabs-container">
+            <div class="global-tabs">
+                <a id="lnk-global-vpd" href="../index.html?tab=vpd" class="global-tab-btn">
+                    <span class="desktop-text">포차 계산기 (VPD)</span>
+                    <span class="mobile-text">VPD</span>
+                </a>
+                <a id="lnk-global-valve" href="../index.html?tab=valve" class="global-tab-btn">
+                    <span class="desktop-text">난방 혼합 밸브</span>
+                    <span class="mobile-text">혼합 밸브</span>
+                </a>
+                <a id="lnk-global-fert" href="../index.html?tab=fert" class="global-tab-btn">
+                    <span class="desktop-text">원액 희석 계산기 (양액)</span>
+                    <span class="mobile-text">양액 희석</span>
+                </a>
+                <a id="lnk-global-heat-loss" href="../index.html?tab=heat-loss" class="global-tab-btn">
+                    <span class="desktop-text">온실 열손실 계산기</span>
+                    <span class="mobile-text">열손실</span>
+                </a>
+                <a id="lnk-global-roi" href="../index.html?tab=roi" class="global-tab-btn">
+                    <span class="desktop-text">보일러 vs 히트펌프 ROI</span>
+                    <span class="mobile-text">난방 ROI</span>
+                </a>
+                <a id="lnk-global-transpiration" href="../index.html?tab=transpiration" class="global-tab-btn">
+                    <span class="desktop-text">식물 증산량 추정기 (PM)</span>
+                    <span class="mobile-text">증산량 (PM)</span>
+                </a>
+                <a id="lnk-global-pollinator" href="../Pollinator_Safety_Project/index.html" class="global-tab-btn" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <span class="desktop-text">🐝 병해충 자가진단 & 수분벌</span>
+                    <span class="mobile-text">🐝 병해충/벌</span>
+                </a>
+                <a id="lnk-global-vertical" href="#" class="global-tab-btn active" style="background: rgba(5, 150, 105, 0.15); color: var(--color-primary); border: 1px solid rgba(5, 150, 105, 0.3);">
+                    <span class="desktop-text">🌱 수직농업 DLI 계산기</span>
+                    <span class="mobile-text">🌱 수직농업</span>
+                </a>
+            </div>
+        </div>
+
         <!-- Tab 1: PPFD & DLI Engine -->
         <div id="tab-light" class="tab-content active">
             <div class="glass-card">
                 <div class="section-header">
-                    <h2>Photosynthetic Photon Flux &amp; DLI Optimizer</h2>
-                    <p>Select target crop presets, calculate required photoperiods, and design customized PAR spectrum layouts.</p>
+                    <h2 id="lbl-light-title">Photosynthetic Photon Flux &amp; DLI Optimizer</h2>
+                    <p id="lbl-light-desc">Select target crop presets, calculate required photoperiods, and design customized PAR spectrum layouts.</p>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="crop-select">Target Plant Profile</label>
+                        <label id="lbl-crop-select" for="crop-select">Target Plant Profile</label>
                         <select id="crop-select" onchange="applyCropPreset(); calculateLight();">
-                            <option value="greens" selected>Leafy Greens (Target DLI: 16 mol)</option>
-                            <option value="strawberry">Strawberries (Target DLI: 22 mol)</option>
-                            <option value="herbs">Medicinal Herbs &amp; Basil (Target DLI: 12 mol)</option>
-                            <option value="custom">Custom (User-Defined DLI)</option>
+                            <option value="greens" id="opt-greens" selected>Leafy Greens (Target DLI: 16 mol)</option>
+                            <option value="strawberry" id="opt-strawberry">Strawberries (Target DLI: 22 mol)</option>
+                            <option value="herbs" id="opt-herbs">Medicinal Herbs &amp; Basil (Target DLI: 12 mol)</option>
+                            <option value="custom" id="opt-custom">Custom (User-Defined DLI)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="target-dli">Target DLI (mol/m²/day)</label>
+                        <label id="lbl-target-dli" for="target-dli">Target DLI (mol/m²/day)</label>
                         <input type="number" id="target-dli" value="16.0" step="0.5" min="1" oninput="calculateLight()">
                     </div>
                     <div class="form-group">
-                        <label for="measured-ppfd">Measured PPFD (&mu;mol/m²/s)</label>
+                        <label id="lbl-measured-ppfd" for="measured-ppfd">Measured PPFD (&mu;mol/m²/s)</label>
                         <input type="number" id="measured-ppfd" value="250" step="10" min="10" oninput="calculateLight()">
                     </div>
                 </div>
@@ -466,28 +628,28 @@
                     <!-- Spectrum sliders -->
                     <div class="slider-group">
                         <div class="slider-header">
-                            <span>Deep Red (660 nm)</span>
+                            <span id="lbl-slider-red">Deep Red (660 nm)</span>
                             <span class="slider-val" id="slide-red-val">70%</span>
                         </div>
                         <input type="range" id="slide-red" min="0" max="100" value="70" oninput="updateSpectrum(); calculateLight();">
                     </div>
                     <div class="slider-group">
                         <div class="slider-header">
-                            <span>Deep Blue (450 nm)</span>
+                            <span id="lbl-slider-blue">Deep Blue (450 nm)</span>
                             <span class="slider-val" id="slide-blue-val">15%</span>
                         </div>
                         <input type="range" id="slide-blue" min="0" max="100" value="15" oninput="updateSpectrum(); calculateLight();">
                     </div>
                     <div class="slider-group">
                         <div class="slider-header">
-                            <span>Green/White (550 nm)</span>
+                            <span id="lbl-slider-green">Green/White (550 nm)</span>
                             <span class="slider-val" id="slide-green-val">10%</span>
                         </div>
                         <input type="range" id="slide-green" min="0" max="100" value="10" oninput="updateSpectrum(); calculateLight();">
                     </div>
                     <div class="slider-group">
                         <div class="slider-header">
-                            <span>Far-Red (730 nm)</span>
+                            <span id="lbl-slider-far">Far-Red (730 nm)</span>
                             <span class="slider-val" id="slide-far-val">5%</span>
                         </div>
                         <input type="range" id="slide-far" min="0" max="100" value="5" oninput="updateSpectrum(); calculateLight();">
@@ -498,12 +660,12 @@
                     <!-- Text Metrics -->
                     <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
                         <div>
-                            <div class="result-title text-emerald">Calculated DLI Output</div>
+                            <div class="result-title text-emerald" id="lbl-dli-output-title">Calculated DLI Output</div>
                             <div class="metric-value" id="light-dli-val">16.2 <span class="metric-unit">mol/m²/d</span></div>
                             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="light-dli-desc">DLI output based on PPFD and active operational photoperiod.</p>
                         </div>
                         <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
-                            <div class="result-title text-blue">Optimal Photoperiod</div>
+                            <div class="result-title text-blue" id="lbl-opt-photoperiod-title">Optimal Photoperiod</div>
                             <div class="metric-value" id="light-hours-val">17.8 <span class="metric-unit">Hours</span></div>
                             <p style="font-size: 0.85rem; color: var(--text-muted);" id="light-hours-desc">Daily run-time required to reach target crop DLI thresholds.</p>
                         </div>
@@ -511,7 +673,7 @@
 
                     <!-- Visual Spectrum mix -->
                     <div class="result-box">
-                        <div class="result-title text-orange">Spectral Energy Distribution</div>
+                        <div class="result-title text-orange" id="lbl-spectral-energy-title">Spectral Energy Distribution</div>
                         <div class="spectrum-bar-display">
                             <div class="spectrum-segment" id="seg-red" style="background-color: #ef4444; width: 70%;"></div>
                             <div class="spectrum-segment" id="seg-blue" style="background-color: #3b82f6; width: 15%;"></div>
@@ -521,29 +683,29 @@
                         <table style="margin-top: 1.5rem;">
                             <thead>
                                 <tr>
-                                    <th>Color Band</th>
-                                    <th style="text-align: right;">Percentage (%)</th>
-                                    <th style="text-align: right;">Estimated Flux (PPFD)</th>
+                                    <th id="lbl-th-color">Color Band</th>
+                                    <th style="text-align: right;" id="lbl-th-pct">Percentage (%)</th>
+                                    <th style="text-align: right;" id="lbl-th-flux">Estimated Flux (PPFD)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><span style="color: #ef4444; font-weight:700;">● Red (660nm)</span></td>
+                                    <td><span style="color: #ef4444; font-weight:700;" id="lbl-tbl-red">● Red (660nm)</span></td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-red-txt">70.0%</td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-red-txt">175.0 &mu;mol</td>
                                 </tr>
                                 <tr>
-                                    <td><span style="color: #3b82f6; font-weight:700;">● Blue (450nm)</span></td>
+                                    <td><span style="color: #3b82f6; font-weight:700;" id="lbl-tbl-blue">● Blue (450nm)</span></td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-blue-txt">15.0%</td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-blue-txt">37.5 &mu;mol</td>
                                 </tr>
                                 <tr>
-                                    <td><span style="color: #10b981; font-weight:700;">● Green (550nm)</span></td>
+                                    <td><span style="color: #10b981; font-weight:700;" id="lbl-tbl-green">● Green (550nm)</span></td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-green-txt">10.0%</td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-green-txt">25.0 &mu;mol</td>
                                 </tr>
                                 <tr>
-                                    <td><span style="color: #a855f7; font-weight:700;">● Far-Red (730nm)</span></td>
+                                    <td><span style="color: #a855f7; font-weight:700;" id="lbl-tbl-far">● Far-Red (730nm)</span></td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace;" id="pct-far-txt">5.0%</td>
                                     <td style="text-align: right; font-family:'JetBrains Mono', monospace; font-weight:600;" id="flux-far-txt">12.5 &mu;mol</td>
                                 </tr>
@@ -558,21 +720,21 @@
         <div id="tab-vpd" class="tab-content">
             <div class="glass-card">
                 <div class="section-header">
-                    <h2>Vapor Pressure Deficit (VPD) Calculator</h2>
-                    <p>Calculate saturation vapor pressure deficit boundaries using physical plant leaf-temperature offsets.</p>
+                    <h2 id="lbl-vpd-title">Vapor Pressure Deficit (VPD) Calculator</h2>
+                    <p id="lbl-vpd-desc">Calculate saturation vapor pressure deficit boundaries using physical plant leaf-temperature offsets.</p>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="vpd-temp">Air Temperature T_air (°C)</label>
+                        <label id="lbl-vpd-temp-label" for="vpd-temp">Air Temperature T_air (°C)</label>
                         <input type="number" id="vpd-temp" value="23.0" step="0.5" min="5" max="45" oninput="calculateVPD()">
                     </div>
                     <div class="form-group">
-                        <label for="vpd-rh">Relative Humidity RH (%)</label>
+                        <label id="lbl-vpd-rh-label" for="vpd-rh">Relative Humidity RH (%)</label>
                         <input type="number" id="vpd-rh" value="65" min="10" max="98" oninput="calculateVPD()">
                     </div>
                     <div class="form-group">
-                        <label for="vpd-offset">Leaf Temp Offset &Delta;T_leaf (°C)</label>
+                        <label id="lbl-vpd-offset-label" for="vpd-offset">Leaf Temp Offset &Delta;T_leaf (°C)</label>
                         <input type="number" id="vpd-offset" value="-1.5" step="0.1" min="-5" max="5" oninput="calculateVPD()">
                     </div>
                 </div>
@@ -581,9 +743,9 @@
                     <!-- Metrics displaying VPD -->
                     <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
                         <div>
-                            <div class="result-title text-orange">Vapor Pressure Deficit</div>
+                            <div class="result-title text-orange" id="lbl-vpd-val-title">Vapor Pressure Deficit</div>
                             <div class="metric-value" id="vpd-val">0.82 <span class="metric-unit">kPa</span></div>
-                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">VPD calculated utilizing leaf boundary layer saturation dynamics.</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="lbl-vpd-val-desc">VPD calculated utilizing leaf boundary layer saturation dynamics.</p>
                         </div>
                         <div id="vpd-status-zone">
                             <!-- JS Inject Safe / Warning Alert -->
@@ -592,7 +754,7 @@
 
                     <!-- Chart or diagram -->
                     <div class="result-box">
-                        <div class="result-title text-blue">VPD Safety Zone Map</div>
+                        <div class="result-title text-blue" id="lbl-vpd-chart-title">VPD Safety Zone Map</div>
                         <div class="chart-container" id="vpd-chart-wrapper">
                             <canvas id="vpdChart"></canvas>
                         </div>
@@ -605,36 +767,36 @@
         <div id="tab-thermal" class="tab-content">
             <div class="glass-card">
                 <div class="section-header">
-                    <h2>LED Module Thermal &amp; Operational Cost Modeler</h2>
-                    <p>Estimate junction temperature (T_j) threshold safety and forecast monthly racking electrical consumption.</p>
+                    <h2 id="lbl-thermal-title">LED Module Thermal &amp; Operational Cost Modeler</h2>
+                    <p id="lbl-thermal-desc">Estimate junction temperature (T_j) threshold safety and forecast monthly racking electrical consumption.</p>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="led-power">LED Bar Power P_elec (W)</label>
+                        <label id="lbl-led-power-label" for="led-power">LED Bar Power P_elec (W)</label>
                         <input type="number" id="led-power" value="45" step="5" min="5" oninput="calculateThermal()">
                     </div>
                     <div class="form-group">
-                        <label for="led-bars">Quantity of LED Bars (N)</label>
+                        <label id="lbl-led-bars-label" for="led-bars">Quantity of LED Bars (N)</label>
                         <input type="number" id="led-bars" value="120" min="1" oninput="calculateThermal()">
                     </div>
                     <div class="form-group">
-                        <label for="opt-efficiency">Optical Efficiency (&eta;_opt)</label>
+                        <label id="lbl-opt-efficiency-label" for="opt-efficiency">Optical Efficiency (&eta;_opt)</label>
                         <input type="number" id="opt-efficiency" value="0.40" step="0.05" min="0.2" max="0.6" oninput="calculateThermal()">
                     </div>
                 </div>
 
                 <div class="form-grid" style="margin-bottom: 2rem;">
                     <div class="form-group">
-                        <label for="heatsink-area">Heatsink Surface Area per bar (cm²)</label>
+                        <label id="lbl-heatsink-area-label" for="heatsink-area">Heatsink Surface Area per bar (cm²)</label>
                         <input type="number" id="heatsink-area" value="2500" step="100" min="100" oninput="calculateThermal()">
                     </div>
                     <div class="form-group">
-                        <label for="convective-h">Heat Transfer Coeff (h, W/m²K)</label>
+                        <label id="lbl-convective-h-label" for="convective-h">Heat Transfer Coeff (h, W/m²K)</label>
                         <input type="number" id="convective-h" value="10.0" step="0.5" min="2" max="30" oninput="calculateThermal()">
                     </div>
                     <div class="form-group">
-                        <label for="elec-rate">Electricity Rate (&euro;/kWh)</label>
+                        <label id="lbl-elec-rate-label" for="elec-rate">Electricity Rate (&euro;/kWh)</label>
                         <input type="number" id="elec-rate" value="0.25" step="0.01" min="0.01" oninput="calculateThermal()">
                     </div>
                 </div>
@@ -643,12 +805,12 @@
                     <!-- Metrics Display -->
                     <div class="result-box" style="display: flex; flex-direction: column; justify-content: space-between;">
                         <div>
-                            <div class="result-title text-danger">LED Junction Temperature (T_j)</div>
+                            <div class="result-title text-danger" id="lbl-thermal-tj-title">LED Junction Temperature (T_j)</div>
                             <div class="metric-value" id="thermal-tj-val">68.2 <span class="metric-unit">°C</span></div>
                             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;" id="tj-desc">Estimated junction point hotspot temperature.</p>
                         </div>
                         <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
-                            <div class="result-title text-emerald">Monthly Racking OPEX</div>
+                            <div class="result-title text-emerald" id="lbl-thermal-cost-title">Monthly Racking OPEX</div>
                             <div class="metric-value" id="thermal-cost-val">&euro;729 <span class="metric-unit">/ Month</span></div>
                             <p style="font-size: 0.85rem; color: var(--text-muted);" id="opex-desc">Operational lighting energy expenditure forecast.</p>
                         </div>
@@ -656,7 +818,7 @@
 
                     <!-- Thermal metrics chart -->
                     <div class="result-box">
-                        <div class="result-title text-blue">Energy Cost Split by Operating Photoperiod</div>
+                        <div class="result-title text-blue" id="lbl-thermal-chart-title">Energy Cost Split by Operating Photoperiod</div>
                         <div class="chart-container" id="thermal-chart-wrapper">
                             <canvas id="thermalChart"></canvas>
                         </div>
@@ -669,12 +831,294 @@
 
     <!-- Footer -->
     <footer>
-        <p>Vertical Farm Analyzer Toolkit • Designed for KDP Operations Curriculum</p>
-        <p style="margin-top: 0.5rem; color: var(--text-muted);">Companion software to the Vertical Farming &amp; LED Photobiology manual.</p>
+        <p id="lbl-footer-text-1">Vertical Farm Analyzer Toolkit • Designed for KDP Operations Curriculum</p>
+        <p style="margin-top: 0.5rem; color: var(--text-muted);" id="lbl-footer-text-2">Companion software to the Vertical Farming &amp; LED Photobiology manual.</p>
     </footer>
 
     <!-- Logic Script -->
     <script>
+        const i18n = {
+            ko: {
+                headerTitle: "수직농장 광원 및 에너지 분석기",
+                tabLight: "PPFD & DLI 계산기",
+                tabVpd: "VPD & 습도 계산기",
+                tabThermal: "LED 발열 및 OPEX",
+                
+                // Tab 1: DLI
+                lblLightTitle: "광합성 광량 및 DLI 최적화",
+                lblLightDesc: "대상 작물 프리셋을 선택하고, 필요한 광조사 시간(광주기)을 산출하며, 맞춤형 PAR 스펙트럼 배분을 설계합니다.",
+                lblCropSelect: "대상 작물 프로필",
+                optGreens: "엽채류 (목표 DLI: 16 mol)",
+                optStrawberry: "딸기 (목표 DLI: 22 mol)",
+                optHerbs: "허브류 및 바질 (목표 DLI: 12 mol)",
+                optCustom: "직접 입력 (Custom)",
+                lblTargetDli: "목표 DLI (mol/m²/일)",
+                lblMeasuredPpfd: "측정된 PPFD (μmol/m²/s)",
+                lblSliderRed: "적색광 (Red, 660 nm)",
+                lblSliderBlue: "청색광 (Blue, 450 nm)",
+                lblSliderGreen: "녹색/백색광 (Green/White, 550 nm)",
+                lblSliderFar: "원적색광 (Far-Red, 730 nm)",
+                lblDliOutputTitle: "산출된 DLI 결과값",
+                lblOptPhotoperiodTitle: "최적 일 광주기",
+                lblSpectralEnergyTitle: "PAR 스펙트럼 에너지 분포",
+                lblThColor: "파장 대역 (Color Band)",
+                lblThPct: "비율 (%)",
+                lblThFlux: "추정 광자속 (PPFD)",
+                lblTblRed: "● 적색광 (660nm)",
+                lblTblBlue: "● 청색광 (450nm)",
+                lblTblGreen: "● 녹색광 (550nm)",
+                lblTblFar: "● 원적색광 (730nm)",
+                dliUnit: "mol/m²/일",
+                hoursUnit: "시간",
+                ppfdTooLow: "<span style='color: var(--color-danger); font-weight: 600;'>PPFD 광량 수치 부족!</span> 일 광주기가 최대치인 24시간에 도달했습니다. LED 출력을 높이거나 설치 높이를 낮춰주십시오.",
+                lightHoursDesc: "목표 DLI를 달성하기 위해 하루 동안 조사해야 하는 최적의 LED 가동 시간입니다.",
+                
+                // Tab 2: VPD
+                lblVpdTitle: "엽면 포차 (VPD) 계산기",
+                lblVpdDesc: "대기 온도와 대기 대비 엽온 편차 값을 적용하여 정밀 포화 수증기압 차이(VPD)를 계산합니다.",
+                lblVpdTempLabel: "대기 온도 T_air (°C)",
+                lblVpdRhLabel: "상대 습도 RH (%)",
+                lblVpdOffsetLabel: "엽온 편차 ΔT_leaf (°C)",
+                lblVpdValTitle: "엽면 포차 (VPD)",
+                lblVpdValDesc: "엽면 기공 경계층의 포화 수증기압 동역학 모델을 기준으로 자동 계산된 실시간 VPD 값입니다.",
+                lblVpdChartTitle: "온도별 VPD 안전 구역 맵",
+                vpdCurveLabel: "대기 온도 {tAir}°C 기준 VPD 곡선",
+                
+                // Tab 3: Thermal
+                lblThermalTitle: "LED 모듈 발열 및 운영비(OPEX) 분석기",
+                lblThermalDesc: "소자 접합부 최고 온도(T_j)의 한계 안전성을 예측하고, 다단 랙 가동 시 월 조명 전기 소비 요금을 실시간 모델링합니다.",
+                lblLedPowerLabel: "LED 바 개별 소비 전력 P_elec (W)",
+                lblLedBarsLabel: "Racking 내 총 LED 바 수량 (N)",
+                lblOptEfficiencyLabel: "광변환 효율 (η_opt)",
+                lblHeatsinkAreaLabel: "바당 방열판 표면적 (cm²)",
+                lblConvectiveHLabel: "대류 열전달 계수 (h, W/m²K)",
+                lblElecRateLabel: "전기 요금 단가 (원/kWh 또는 €/kWh)",
+                lblThermalTjTitle: "LED 소자 접합부 온도 (T_j)",
+                lblThermalCostTitle: "월별 랙당 조명 전기료 (OPEX)",
+                lblThermalChartTitle: "가동 광주기별 월 조명 전기료 분할 예측",
+                tjTooHigh: "<span style='color: var(--color-danger); font-weight:600;'>⚠️ 접합부 온도 초과!</span> 소자 광량의 빠른 노화 감쇠가 우려됩니다. 방열 면적을 키우십시오.",
+                tjDesc: "LED 접합부 발열 안전 경계: 85°C 미만으로 유지 시 열화 방지 및 칩 보호에 안전합니다.",
+                monthlyUnit: "원 / 월",
+                monthlyUnitEn: "/ Month",
+                opexDesc: "산출된 일일 광조사 시간에 기반한 월별 조명 전력 비용 시뮬레이션 결과입니다.",
+                
+                // Global Navigation
+                gtVpdD: "포차 계산기 (VPD)",
+                gtVpdM: "VPD",
+                gtValveD: "난방 혼합 밸브",
+                gtValveM: "혼합 밸브",
+                gtFertD: "원액 희석 계산기 (양액)",
+                gtFertM: "양액 희석",
+                gtHeatLossD: "온실 열손실 계산기",
+                gtHeatLossM: "열손실",
+                gtRoiD: "보일러 vs 히트펌프 ROI",
+                gtRoiM: "난방 ROI",
+                gtTransD: "식물 증산량 추정기 (PM)",
+                gtTransM: "증산량 (PM)",
+                gtPollinatorD: "🐝 병해충 자가진단 & 수분벌",
+                gtPollinatorM: "🐝 병해충/벌",
+                gtVerticalD: "🌱 수직농업 DLI 계산기",
+                gtVerticalM: "🌱 수직농업",
+                
+                // Footer
+                lblFooterText1: "수직농장 분석 툴킷 • KDP 스마트팜 운영 실무 과정 교육용 설계",
+                lblFooterText2: "수직형 식물공장 및 LED 포토바이올로지 엔지니어링 매뉴얼 부속 프로그램입니다."
+            },
+            en: {
+                headerTitle: "Vertical Farm Light & Power Analyzer",
+                tabLight: "PPFD & DLI Calc",
+                tabVpd: "VPD & Humidity",
+                tabThermal: "LED Thermal & OPEX",
+                
+                // Tab 1: DLI
+                lblLightTitle: "Photosynthetic Photon Flux & DLI Optimizer",
+                lblLightDesc: "Select target crop presets, calculate required photoperiods, and design customized PAR spectrum layouts.",
+                lblCropSelect: "Target Plant Profile",
+                optGreens: "Leafy Greens (Target DLI: 16 mol)",
+                optStrawberry: "Strawberries (Target DLI: 22 mol)",
+                optHerbs: "Medicinal Herbs & Basil (Target DLI: 12 mol)",
+                optCustom: "Custom (User-Defined DLI)",
+                lblTargetDli: "Target DLI (mol/m²/day)",
+                lblMeasuredPpfd: "Measured PPFD (μmol/m²/s)",
+                lblSliderRed: "Deep Red (660 nm)",
+                lblSliderBlue: "Deep Blue (450 nm)",
+                lblSliderGreen: "Green/White (550 nm)",
+                lblSliderFar: "Far-Red (730 nm)",
+                lblDliOutputTitle: "Calculated DLI Output",
+                lblOptPhotoperiodTitle: "Optimal Photoperiod",
+                lblSpectralEnergyTitle: "Spectral Energy Distribution",
+                lblThColor: "Color Band",
+                lblThPct: "Percentage (%)",
+                lblThFlux: "Estimated Flux (PPFD)",
+                lblTblRed: "● Red (660nm)",
+                lblTblBlue: "● Blue (450nm)",
+                lblTblGreen: "● Green (550nm)",
+                lblTblFar: "● Far-Red (730nm)",
+                dliUnit: "mol/m²/d",
+                hoursUnit: "Hours",
+                ppfdTooLow: "<span style='color: var(--color-danger); font-weight: 600;'>PPFD TOO LOW!</span> Photoperiod maximized to 24 hours. Increase LED intensity or lower mounting height.",
+                lightHoursDesc: "Daily run-time required to reach target crop DLI thresholds.",
+                
+                // Tab 2: VPD
+                lblVpdTitle: "Vapor Pressure Deficit (VPD) Calculator",
+                lblVpdDesc: "Calculate saturation vapor pressure deficit boundaries using physical plant leaf-temperature offsets.",
+                lblVpdTempLabel: "Air Temperature T_air (°C)",
+                lblVpdRhLabel: "Relative Humidity RH (%)",
+                lblVpdOffsetLabel: "Leaf Temp Offset ΔT_leaf (°C)",
+                lblVpdValTitle: "Vapor Pressure Deficit",
+                lblVpdValDesc: "VPD calculated utilizing leaf boundary layer saturation dynamics.",
+                lblVpdChartTitle: "VPD Safety Zone Map",
+                vpdCurveLabel: "VPD Curve at T_air = {tAir}°C",
+                
+                // Tab 3: Thermal
+                lblThermalTitle: "LED Module Thermal & Operational Cost Modeler",
+                lblThermalDesc: "Estimate junction temperature (T_j) threshold safety and forecast monthly racking electrical consumption.",
+                lblLedPowerLabel: "LED Bar Power P_elec (W)",
+                lblLedBarsLabel: "Quantity of LED Bars (N)",
+                lblOptEfficiencyLabel: "Optical Efficiency (η_opt)",
+                lblHeatsinkAreaLabel: "Heatsink Surface Area per bar (cm²)",
+                lblConvectiveHLabel: "Heat Transfer Coeff (h, W/m²K)",
+                lblElecRateLabel: "Electricity Rate (€/kWh)",
+                lblThermalTjTitle: "LED Junction Temperature (T_j)",
+                lblThermalCostTitle: "Monthly Racking OPEX",
+                lblThermalChartTitle: "Energy Cost Split by Operating Photoperiod",
+                tjTooHigh: "<span style='color: var(--color-danger); font-weight:600;'>⚠️ TJ TOO HIGH!</span> Accelerated lumen decay. Improve heatsink area.",
+                tjDesc: "Junction point safety: thermal degradation boundary safe (< 85°C).",
+                monthlyUnit: "/ Month",
+                monthlyUnitEn: "/ Month",
+                opexDesc: "Operational lighting energy expenditure forecast.",
+                
+                // Global Navigation
+                gtVpdD: "Vapor Pressure Deficit (VPD)",
+                gtVpdM: "VPD",
+                gtValveD: "Mixing Valve Sizing",
+                gtValveM: "Mixing Valve",
+                gtFertD: "Fertilizer Stock Dilution",
+                gtFertM: "Fert Dilution",
+                gtHeatLossD: "Greenhouse Heat Loss",
+                gtHeatLossM: "Heat Loss",
+                gtRoiD: "Boiler vs Heat Pump ROI",
+                gtRoiM: "Heating ROI",
+                gtTransD: "Plant Transpiration (PM)",
+                gtTransM: "Transpiration (PM)",
+                gtPollinatorD: "🐝 Greenhouse Diagnosis & Pollinators",
+                gtPollinatorM: "🐝 Disease/Pollinators",
+                gtVerticalD: "🌱 Vertical Farm DLI",
+                gtVerticalM: "🌱 Vertical DLI",
+                
+                // Footer
+                lblFooterText1: "Vertical Farm Analyzer Toolkit • Designed for KDP Operations Curriculum",
+                lblFooterText2: "Companion software to the Vertical Farming & LED Photobiology manual."
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('vertical_lang', lang);
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            // Header Elements
+            document.getElementById('header-title').innerText = i18n[lang].headerTitle;
+            const tabButtons = document.querySelectorAll('.nav-tabs .tab-btn');
+            tabButtons[0].innerText = i18n[lang].tabLight;
+            tabButtons[1].innerText = i18n[lang].tabVpd;
+            tabButtons[2].innerText = i18n[lang].tabThermal;
+
+            // Tab 1 Elements
+            document.getElementById('lbl-light-title').innerText = i18n[lang].lblLightTitle;
+            document.getElementById('lbl-light-desc').innerText = i18n[lang].lblLightDesc;
+            document.getElementById('lbl-crop-select').innerText = i18n[lang].lblCropSelect;
+            document.getElementById('opt-greens').innerText = i18n[lang].optGreens;
+            document.getElementById('opt-strawberry').innerText = i18n[lang].optStrawberry;
+            document.getElementById('opt-herbs').innerText = i18n[lang].optHerbs;
+            document.getElementById('opt-custom').innerText = i18n[lang].optCustom;
+            document.getElementById('lbl-target-dli').innerText = i18n[lang].lblTargetDli;
+            document.getElementById('lbl-measured-ppfd').innerText = i18n[lang].lblMeasuredPpfd;
+            document.getElementById('lbl-slider-red').innerText = i18n[lang].lblSliderRed;
+            document.getElementById('lbl-slider-blue').innerText = i18n[lang].lblSliderBlue;
+            document.getElementById('lbl-slider-green').innerText = i18n[lang].lblSliderGreen;
+            document.getElementById('lbl-slider-far').innerText = i18n[lang].lblSliderFar;
+            document.getElementById('lbl-dli-output-title').innerText = i18n[lang].lblDliOutputTitle;
+            document.getElementById('lbl-opt-photoperiod-title').innerText = i18n[lang].lblOptPhotoperiodTitle;
+            document.getElementById('lbl-spectral-energy-title').innerText = i18n[lang].lblSpectralEnergyTitle;
+            document.getElementById('lbl-th-color').innerText = i18n[lang].lblThColor;
+            document.getElementById('lbl-th-pct').innerText = i18n[lang].lblThPct;
+            document.getElementById('lbl-th-flux').innerText = i18n[lang].lblThFlux;
+            document.getElementById('lbl-tbl-red').innerText = i18n[lang].lblTblRed;
+            document.getElementById('lbl-tbl-blue').innerText = i18n[lang].lblTblBlue;
+            document.getElementById('lbl-tbl-green').innerText = i18n[lang].lblTblGreen;
+            document.getElementById('lbl-tbl-far').innerText = i18n[lang].lblTblFar;
+
+            // Tab 2 Elements
+            document.getElementById('lbl-vpd-title').innerText = i18n[lang].lblVpdTitle;
+            document.getElementById('lbl-vpd-desc').innerText = i18n[lang].lblVpdDesc;
+            document.getElementById('lbl-vpd-temp-label').innerText = i18n[lang].lblVpdTempLabel;
+            document.getElementById('lbl-vpd-rh-label').innerText = i18n[lang].lblVpdRhLabel;
+            document.getElementById('lbl-vpd-offset-label').innerText = i18n[lang].lblVpdOffsetLabel;
+            document.getElementById('lbl-vpd-val-title').innerText = i18n[lang].lblVpdValTitle;
+            document.getElementById('lbl-vpd-val-desc').innerText = i18n[lang].lblVpdValDesc;
+            document.getElementById('lbl-vpd-chart-title').innerText = i18n[lang].lblVpdChartTitle;
+
+            // Tab 3 Elements
+            document.getElementById('lbl-thermal-title').innerText = i18n[lang].lblThermalTitle;
+            document.getElementById('lbl-thermal-desc').innerText = i18n[lang].lblThermalDesc;
+            document.getElementById('lbl-led-power-label').innerText = i18n[lang].lblLedPowerLabel;
+            document.getElementById('lbl-led-bars-label').innerText = i18n[lang].lblLedBarsLabel;
+            document.getElementById('lbl-opt-efficiency-label').innerText = i18n[lang].lblOptEfficiencyLabel;
+            document.getElementById('lbl-heatsink-area-label').innerText = i18n[lang].lblHeatsinkAreaLabel;
+            document.getElementById('lbl-convective-h-label').innerText = i18n[lang].lblConvectiveHLabel;
+            document.getElementById('lbl-elec-rate-label').innerText = i18n[lang].lblElecRateLabel;
+            document.getElementById('lbl-thermal-tj-title').innerText = i18n[lang].lblThermalTjTitle;
+            document.getElementById('lbl-thermal-cost-title').innerText = i18n[lang].lblThermalCostTitle;
+            document.getElementById('lbl-thermal-chart-title').innerText = i18n[lang].lblThermalChartTitle;
+            document.getElementById('opex-desc').innerText = i18n[lang].opexDesc;
+
+            // Global Navigation Tabs Update
+            document.getElementById('lnk-global-vpd').href = `../index.html?tab=vpd&lang=${lang}`;
+            document.getElementById('lnk-global-vpd').querySelector('.desktop-text').innerText = i18n[lang].gtVpdD;
+            document.getElementById('lnk-global-vpd').querySelector('.mobile-text').innerText = i18n[lang].gtVpdM;
+            
+            document.getElementById('lnk-global-valve').href = `../index.html?tab=valve&lang=${lang}`;
+            document.getElementById('lnk-global-valve').querySelector('.desktop-text').innerText = i18n[lang].gtValveD;
+            document.getElementById('lnk-global-valve').querySelector('.mobile-text').innerText = i18n[lang].gtValveM;
+            
+            document.getElementById('lnk-global-fert').href = `../index.html?tab=fert&lang=${lang}`;
+            document.getElementById('lnk-global-fert').querySelector('.desktop-text').innerText = i18n[lang].gtFertD;
+            document.getElementById('lnk-global-fert').querySelector('.mobile-text').innerText = i18n[lang].gtFertM;
+            
+            document.getElementById('lnk-global-heat-loss').href = `../index.html?tab=heat-loss&lang=${lang}`;
+            document.getElementById('lnk-global-heat-loss').querySelector('.desktop-text').innerText = i18n[lang].gtHeatLossD;
+            document.getElementById('lnk-global-heat-loss').querySelector('.mobile-text').innerText = i18n[lang].gtHeatLossM;
+            
+            document.getElementById('lnk-global-roi').href = `../index.html?tab=roi&lang=${lang}`;
+            document.getElementById('lnk-global-roi').querySelector('.desktop-text').innerText = i18n[lang].gtRoiD;
+            document.getElementById('lnk-global-roi').querySelector('.mobile-text').innerText = i18n[lang].gtRoiM;
+            
+            document.getElementById('lnk-global-transpiration').href = `../index.html?tab=transpiration&lang=${lang}`;
+            document.getElementById('lnk-global-transpiration').querySelector('.desktop-text').innerText = i18n[lang].gtTransD;
+            document.getElementById('lnk-global-transpiration').querySelector('.mobile-text').innerText = i18n[lang].gtTransM;
+            
+            document.getElementById('lnk-global-pollinator').href = `../Pollinator_Safety_Project/index.html?lang=${lang}`;
+            document.getElementById('lnk-global-pollinator').querySelector('.desktop-text').innerText = i18n[lang].gtPollinatorD;
+            document.getElementById('lnk-global-pollinator').querySelector('.mobile-text').innerText = i18n[lang].gtPollinatorM;
+            
+            document.getElementById('lnk-global-vertical').querySelector('.desktop-text').innerText = i18n[lang].gtVerticalD;
+            document.getElementById('lnk-global-vertical').querySelector('.mobile-text').innerText = i18n[lang].gtVerticalM;
+
+            // Footer
+            document.getElementById('lbl-footer-text-1').innerText = i18n[lang].lblFooterText1;
+            document.getElementById('lbl-footer-text-2').innerText = i18n[lang].lblFooterText2;
+
+            // Trigger updates to recalculate calculations with current language variables
+            calculateLight();
+            calculateVPD();
+            calculateThermal();
+        }
+
         // Crop presets
         const CROPS = {
             greens: { name: "Leafy Greens", dli: 16.0, photoperiod: 18.0 },
@@ -763,13 +1207,13 @@
             const actualDli = ppfd * optHours * 0.0036;
 
             // Update UI
-            document.getElementById('light-dli-val').innerHTML = `${actualDli.toFixed(1)} <span class="metric-unit">mol/m²/d</span>`;
-            document.getElementById('light-hours-val').innerHTML = `${optHours.toFixed(1)} <span class="metric-unit">Hours</span>`;
+            document.getElementById('light-dli-val').innerHTML = `${actualDli.toFixed(1)} <span class="metric-unit">${i18n[currentLang].dliUnit}</span>`;
+            document.getElementById('light-hours-val').innerHTML = `${optHours.toFixed(1)} <span class="metric-unit">${i18n[currentLang].hoursUnit}</span>`;
 
             if (optHours >= 24 && actualDli < targetDli) {
-                document.getElementById('light-hours-desc').innerHTML = `<span style="color: var(--color-danger); font-weight: 600;">PPFD TOO LOW!</span> Photoperiod maximized to 24 hours. Increase LED intensity or lower mounting height.`;
+                document.getElementById('light-hours-desc').innerHTML = i18n[currentLang].ppfdTooLow;
             } else {
-                document.getElementById('light-hours-desc').innerText = `Daily run-time required to reach target crop DLI thresholds.`;
+                document.getElementById('light-hours-desc').innerText = i18n[currentLang].lightHoursDesc;
             }
 
             // Update spectrum bar segments
@@ -812,21 +1256,36 @@
             // Safety check
             const statusZone = document.getElementById('vpd-status-zone');
             if (vpd < 0.5) {
-                statusZone.innerHTML = `
+                statusZone.innerHTML = currentLang === 'ko' ? `
+                    <div class="alert alert-danger">
+                        <strong>⚠️ 잎끝마름증(팁번) 위험 구역 (VPD < 0.5 kPa)</strong><br>
+                        습도가 너무 높습니다. 증산 작용이 억제되어 칼슘이 성장점까지 이동하지 못해 세포벽 붕괴 및 팁번을 유발합니다. 유동팬을 가동하고 환기율을 높이십시오.
+                    </div>
+                ` : `
                     <div class="alert alert-danger">
                         <strong>⚠️ TIPBURN RISK AREA (VPD < 0.5 kPa)</strong><br>
                         Humidity is too high. Low transpiration prevents calcium transport to growing tips, causing cell wall collapse. Gaseous circulation fans should be turned on.
                     </div>
                 `;
             } else if (vpd > 1.4) {
-                statusZone.innerHTML = `
+                statusZone.innerHTML = currentLang === 'ko' ? `
+                    <div class="alert alert-danger" style="background-color: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: #fed7aa;">
+                        <strong>⚠️ 고증산 수분 스트레스 구역 (VPD > 1.4 kPa)</strong><br>
+                        대기가 너무 건조합니다. 식물이 수분 탈실을 막기 위해 기공을 닫아 CO₂ 흡수가 억제되며 생장이 정체됩니다. 포그 미스트 가동 시간을 늘려 가습하십시오.
+                    </div>
+                ` : `
                     <div class="alert alert-danger" style="background-color: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: #fed7aa;">
                         <strong>⚠️ HIGH TRANSPIRATION STRESS (VPD > 1.4 kPa)</strong><br>
                         Air is too dry. Plant closes stomata to prevent dehydration, restricting CO₂ uptake and stalling growth. Increase fogging system duty cycle.
                     </div>
                 `;
             } else {
-                statusZone.innerHTML = `
+                statusZone.innerHTML = currentLang === 'ko' ? `
+                    <div class="alert alert-success">
+                        <strong>✅ 최적 작물 활성 창 (VPD 0.5 ~ 1.4 kPa)</strong><br>
+                        수분 흡수 및 광합성 활성의 균형이 매우 뛰어난 대기 환경입니다. 온실 미기후 제어가 매우 안정적으로 유지되고 있습니다.
+                    </div>
+                ` : `
                     <div class="alert alert-success">
                         <strong>✅ OPTIMAL METABOLIC WINDOW (0.5 to 1.4 kPa)</strong><br>
                         Excellent balance between water transport and photosynthesis. Canopy micro-climate dynamics are operating inside safe operational bounds.
@@ -843,6 +1302,7 @@
                 });
 
                 if (vpdChart) {
+                    vpdChart.data.datasets[0].label = currentLang === 'ko' ? `대기 온도 = ${tAir}°C 기준 VPD 곡선` : `VPD Curve at T_air = ${tAir}°C`;
                     vpdChart.data.datasets[0].data = vpdCurveData;
                     vpdChart.update();
                 } else {
@@ -852,7 +1312,7 @@
                         data: {
                             labels: humiditySteps.map(h => h + '%'),
                             datasets: [{
-                                label: `VPD Curve at T_air = ${tAir}°C`,
+                                label: currentLang === 'ko' ? `대기 온도 = ${tAir}°C 기준 VPD 곡선` : `VPD Curve at T_air = ${tAir}°C`,
                                 data: vpdCurveData,
                                 borderColor: 'rgba(16, 185, 129, 1)',
                                 backgroundColor: 'rgba(16, 185, 129, 0.15)',
@@ -917,34 +1377,42 @@
             // OPEX estimation
             const dailyKWh = (pElec * nBars * optHours) / 1000;
             const monthlyCost = dailyKWh * 30.4 * rate;
+            const displayCost = currentLang === 'ko' ? monthlyCost * 1400 : monthlyCost;
+            const currencySymbol = currentLang === 'ko' ? '₩' : '&euro;';
+            const unitText = currentLang === 'ko' ? ' / 월' : ' / Month';
 
             // Update metrics
             document.getElementById('thermal-tj-val').innerHTML = `${tJunction.toFixed(1)} <span class="metric-unit">°C</span>`;
-            document.getElementById('thermal-cost-val').innerHTML = `&euro;${Math.round(monthlyCost).toLocaleString()} <span class="metric-unit">/ Month</span>`;
+            document.getElementById('thermal-cost-val').innerHTML = `${currencySymbol}${Math.round(displayCost).toLocaleString()} <span class="metric-unit">${unitText}</span>`;
 
             const tjDesc = document.getElementById('tj-desc');
             if (tJunction > 85) {
-                tjDesc.innerHTML = `<span style="color: var(--color-danger); font-weight:600;">⚠️ TJ TOO HIGH!</span> Accelerated lumen decay. Improve heatsink area.`;
+                tjDesc.innerHTML = i18n[currentLang].tjTooHigh;
             } else {
-                tjDesc.innerText = `Junction point safety: thermal degradation boundary safe (< 85°C).`;
+                tjDesc.innerText = i18n[currentLang].tjDesc;
             }
 
             // Draw Charts
             const hoursSplit = [8, 12, 16, 20];
-            const costSplit = hoursSplit.map(hrs => ((pElec * nBars * hrs) / 1000) * 30.4 * rate);
+            const costSplit = hoursSplit.map(hrs => {
+                const rawCost = ((pElec * nBars * hrs) / 1000) * 30.4 * rate;
+                return currentLang === 'ko' ? rawCost * 1400 : rawCost;
+            });
 
             if (typeof Chart !== 'undefined') {
                 if (thermalChart) {
+                    thermalChart.data.datasets[0].label = currentLang === 'ko' ? '월 조명 전력 요금 (₩)' : 'Monthly Energy Cost (€)';
                     thermalChart.data.datasets[0].data = costSplit;
+                    thermalChart.data.labels = hoursSplit.map(hrs => currentLang === 'ko' ? `${hrs}시간 가동/일` : `${hrs} Hours/Day`);
                     thermalChart.update();
                 } else {
                     const ctx = document.getElementById('thermalChart').getContext('2d');
                     thermalChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: hoursSplit.map(hrs => hrs + ' Hours/Day'),
+                            labels: hoursSplit.map(hrs => currentLang === 'ko' ? `${hrs}시간 가동/일` : `${hrs} Hours/Day`),
                             datasets: [{
-                                label: 'Monthly Energy Cost (€)',
+                                label: currentLang === 'ko' ? '월 조명 전력 요금 (₩)' : 'Monthly Energy Cost (€)',
                                 data: costSplit,
                                 backgroundColor: 'rgba(249, 115, 22, 0.75)',
                                 borderColor: 'rgba(249, 115, 22, 1)',
@@ -975,8 +1443,8 @@
                     html += `
                         <div class="fallback-bar-row">
                             <div class="fallback-bar-label">
-                                <span>${hoursSplit[i]} Hours/Day</span>
-                                <span>&euro;${Math.round(costSplit[i]).toLocaleString()}</span>
+                                <span>${hoursSplit[i]}${currentLang === 'ko' ? '시간 가동/일' : ' Hours/Day'}</span>
+                                <span>${currencySymbol}${Math.round(costSplit[i]).toLocaleString()}</span>
                             </div>
                             <div class="fallback-bar-track">
                                 <div class="fallback-bar-fill" style="width: ${pct}%; background: var(--color-secondary);"></div>
@@ -991,9 +1459,18 @@
 
         // Initialize calculations on load
         window.onload = function() {
-            calculateLight();
-            calculateVPD();
-            calculateThermal();
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLang = urlParams.get('lang');
+            if (urlLang === 'ko' || urlLang === 'en') {
+                setLanguage(urlLang);
+            } else {
+                const savedLang = localStorage.getItem('vertical_lang');
+                if (savedLang) {
+                    setLanguage(savedLang);
+                } else {
+                    setLanguage('en');
+                }
+            }
         };
     </script>
 </body>

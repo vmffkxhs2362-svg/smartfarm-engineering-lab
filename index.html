@@ -958,11 +958,11 @@
                 <span class="desktop-text">식물 증산량 추정기 (PM)</span>
                 <span class="mobile-text">증산량 (PM)</span>
             </button>
-            <a href="Pollinator_Safety_Project/index.html" class="tab-btn" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem;">
+            <a id="lnk-tab-pollinator" href="Pollinator_Safety_Project/index.html" class="tab-btn" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem;">
                 <span class="desktop-text">🐝 병해충 자가진단 & 수분벌</span>
                 <span class="mobile-text">🐝 병해충/벌</span>
             </a>
-            <a href="Vertical_Farming_Project/index.html" class="tab-btn" style="background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem;">
+            <a id="lnk-tab-vertical" href="Vertical_Farming_Project/index.html" class="tab-btn" style="background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem;">
                 <span class="desktop-text">🌱 수직농업 DLI 계산기</span>
                 <span class="mobile-text">🌱 수직농업</span>
             </a>
@@ -971,18 +971,7 @@
 
     <!-- VPD SECTION -->
     <div id="section-vpd" class="calc-wrapper active">
-        <!-- Premium Promotion Banner -->
-        <!-- Premium Promotion Banner (Hidden until products are created and tested) -->
-        <div class="promo-banner" id="vpd-promo-banner" style="display: none !important; grid-column: 1 / -1; margin-bottom: 0.5rem;">
-            <div class="promo-text">
-                <h3 id="lbl-promo-title">🚀 온실 운영을 한 단계 더 최적화하세요</h3>
-                <p id="lbl-promo-desc">모든 센서 보정 스케줄, 양액 배합 공식 및 작물 일지가 포함된 전문가용 "스마트팜 운영 OS" 노션 템플릿과 엑셀 패키지를 만나보세요.</p>
-            </div>
-            <div class="promo-actions">
-                <a href="https://inwoovation.gumroad.com/l/smartfarm-os" target="_blank" class="promo-btn" id="btn-promo-main">스마트팜 노션 OS ($19.99)</a>
-                <a href="https://inwoovation.gumroad.com/l/greenhouse-excel" target="_blank" class="promo-btn-secondary" id="btn-promo-sub">엔지니어링 엑셀 ($29.00)</a>
-            </div>
-        </div>
+
 
         <div class="form-panel">
             <h2 class="panel-title">환경 데이터 입력</h2>
@@ -1862,7 +1851,8 @@
         const transTab = document.getElementById('btn-tab-transpiration');
         transTab.querySelector('.desktop-text').innerText = i18n[lang].tabTranspirationDeskt;
         transTab.querySelector('.mobile-text').innerText = i18n[lang].tabTranspirationMobil;
-
+        document.getElementById('lnk-tab-pollinator').href = `Pollinator_Safety_Project/index.html?lang=${lang}`;
+        document.getElementById('lnk-tab-vertical').href = `Vertical_Farming_Project/index.html?lang=${lang}`;
 
         // VPD Section translation
         document.querySelector('#section-vpd .form-panel .panel-title').innerText = i18n[lang].vpdTitle;
@@ -1995,11 +1985,7 @@
         document.getElementById('lbl-feedback-text').innerText = lang === 'ko' ? '피드백 보내기' : 'Give Feedback';
         document.getElementById('footer-disclaimer').innerHTML = i18n[lang].disclaimer;
 
-        // Promotional Banner translations
-        document.getElementById('lbl-promo-title').innerText = i18n[lang].promoTitle;
-        document.getElementById('lbl-promo-desc').innerText = i18n[lang].promoDesc;
-        document.getElementById('btn-promo-main').innerText = i18n[lang].btnPromoMain;
-        document.getElementById('btn-promo-sub').innerText = i18n[lang].btnPromoSub;
+
 
         applyFertPreset();
         applyVpdPreset();
@@ -2728,8 +2714,18 @@
         }
     }
 
-    // INIT with default language (English)
-    changeLanguage('en');
+    // INIT with URL parameters support
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam === 'ko' || langParam === 'en') {
+        changeLanguage(langParam);
+    } else {
+        changeLanguage('en');
+    }
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['vpd', 'valve', 'fert', 'heat-loss', 'roi', 'transpiration'].includes(tabParam)) {
+        switchTab(tabParam);
+    }
 </script>
 </body>
 </html>
