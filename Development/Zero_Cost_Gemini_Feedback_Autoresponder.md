@@ -145,4 +145,20 @@ function onFormSubmitTrigger(e) {
     Logger.log("Trigger Error: " + err.toString());
   }
 }
+
+// ==========================================
+// 🧪 LOCAL TEST FUNCTION (에디터 내 수동 실행용 테스트 함수)
+// ==========================================
+// Apps Script 에디터 상단에서 'testTrigger'를 선택한 후 [실행]을 누르면,
+// 실제로 폼을 제출하지 않고도 코드가 잘 작동하는지 테스트할 수 있습니다.
+function testTrigger() {
+  const mockEvent = {
+    values: [
+      new Date().toString(), // 타임스탬프
+      "contact@inwoovation.com", // 테스트 완료 후 답변을 확인할 이메일 주소
+      "What is Leaf Vapor Pressure Deficit (VPD) and why does it matter?" // 테스트 질문
+    ]
+  };
+  onFormSubmitTrigger(mockEvent);
+}
 ```
