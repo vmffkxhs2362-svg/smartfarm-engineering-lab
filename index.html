@@ -1049,13 +1049,89 @@
                 display: grid;
             }
         }
-        @media (max-width: 768px) {
-            .feedback-fab {
-                bottom: 1.5rem;
-                right: 1.5rem;
-                padding: 0.7rem 1rem;
-                font-size: 0.8rem;
-            }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            width: 460px;
+            max-width: 90%;
+            padding: 28px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+            position: relative;
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-light);
+            text-align: left;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-gray);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .btn-submit:hover {
+            background: var(--cyan);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.2);
         }
     </style>
 </head>
@@ -1221,10 +1297,7 @@
                 </ul>
             </div>
 
-            <!-- Actionable Inline Feedback Button -->
-            <a href="https://forms.gle/SC3ehhA4r6sPEZxV7" target="_blank" onclick="handleFeedbackClick(event)" class="promo-btn-secondary" style="width: 100%; margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; border-color: var(--primary); color: var(--primary);" id="btn-result-feedback">
-                💡 피드백 남기고 개선점 건의하기
-            </a>
+
         </div>
     </div>
 
@@ -2143,10 +2216,10 @@
     </footer>
 </div>
 
-<!-- Floating Feedback Button (FAB) -->
-<a id="btn-feedback" href="https://forms.gle/SC3ehhA4r6sPEZxV7" onclick="handleFeedbackClick(event)" target="_blank" class="feedback-fab">
-    <span class="icon">💡</span>
-    <span id="lbl-feedback-text" class="text">Give Feedback</span>
+<!-- Floating Inquiry Button (FAB) -->
+<a id="btn-feedback" href="#" onclick="openInquiryModal(event)" class="feedback-fab">
+    <span class="icon">📩</span>
+    <span id="lbl-feedback-text" class="text">Inquiry & Request</span>
 </a>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -2906,7 +2979,7 @@
         vpdPreset.options[4].text = lang === 'ko' ? '야간/암기 (엽온 편차 0.0°C)' : 'Night/Dark (Offset 0.0°C)';
 
         // VPD Result Feedback Button translation
-        document.getElementById('btn-result-feedback').innerText = lang === 'ko' ? '💡 피드백 남기고 개선점 건의하기' : '💡 Leave Feedback & Suggest Improvements';
+        
 
 
         // Mixing Valve Section translation
@@ -3113,7 +3186,22 @@
 
         // General translations
         document.getElementById('header-badge').innerText = lang === 'ko' ? '최종 업데이트: 2026년 6월 17일' : 'Last Updated: June 17, 2026';
-        document.getElementById('lbl-feedback-text').innerText = lang === 'ko' ? '피드백 보내기' : 'Give Feedback';
+        document.getElementById('lbl-feedback-text').innerText = lang === 'ko' ? '문의 및 의뢰하기' : 'Inquiry & Request';
+        
+        // Modal translations
+        document.getElementById('lbl-modal-title').innerText = lang === 'ko' ? '비즈니스 및 협업 문의' : 'Business & B2B Inquiry';
+        document.getElementById('lbl-modal-subtitle').innerText = lang === 'ko' ? '맞춤형 스마트팜 분석 보고서 의뢰, 솔루션 개발 의뢰, 또는 제휴/광고 문의를 등록해 주세요.' : 'Connect with Inwoovation for custom smart farm reports, partnerships, or software customization.';
+        document.getElementById('lbl-inq-name').innerText = lang === 'ko' ? '성함 *' : 'Your Name *';
+        document.getElementById('lbl-inq-email').innerText = lang === 'ko' ? '이메일 주소 *' : 'Business Email *';
+        document.getElementById('lbl-inq-org').innerText = lang === 'ko' ? '소속 회사 / 단체명' : 'Organization / Company';
+        document.getElementById('lbl-inq-topic').innerText = lang === 'ko' ? '문의 종류 *' : 'Inquiry Topic *';
+        document.getElementById('opt-custom-report').innerText = lang === 'ko' ? '맞춤형 보고서 및 분석 의뢰' : 'Request Custom Feasibility Report';
+        document.getElementById('opt-software-custom').innerText = lang === 'ko' ? '소프트웨어 커스터마이징 및 외주 의뢰' : 'Software Customization / Hiring';
+        document.getElementById('opt-partnership').innerText = lang === 'ko' ? '비즈니스 제휴 및 광고 제안' : 'Business Partnership / Advertising';
+        document.getElementById('opt-feedback').innerText = lang === 'ko' ? '일반 문의 및 기타 의견 건의' : 'General Inquiry / Suggestion';
+        document.getElementById('lbl-inq-message').innerText = lang === 'ko' ? '문의 상세 내용 *' : 'Message / Details *';
+        document.getElementById('inq-message').placeholder = lang === 'ko' ? '의뢰 내용 및 상세 프로젝트 세부사항을 입력해 주세요...' : 'Describe your project or requirement...';
+        document.getElementById('btn-inq-submit').innerText = lang === 'ko' ? '문의 메일 보내기' : 'Send Inquiry';
         document.getElementById('footer-disclaimer').innerHTML = i18n[lang].disclaimer;
 
         applyFertPreset();
@@ -4659,6 +4747,49 @@
         }
     }
 
+    
+    // B2B Inquiry Modal Handlers
+    function openInquiryModal(event) {
+        if (event) event.preventDefault();
+        document.getElementById("inquiryModal").style.display = "flex";
+    }
+
+    function closeInquiryModal() {
+        document.getElementById("inquiryModal").style.display = "none";
+    }
+
+    function submitInquiry() {
+        const name = document.getElementById("inq-name").value.trim();
+        const email = document.getElementById("inq-email").value.trim();
+        const org = document.getElementById("inq-org").value.trim();
+        const topicSelect = document.getElementById("inq-topic");
+        const topicText = topicSelect.options[topicSelect.selectedIndex].text;
+        const message = document.getElementById("inq-message").value.trim();
+
+        if (!name || !email || !message) {
+            alert(currentLang === 'ko' ? 
+                "필수 입력 항목(성함, 이메일, 내용)을 모두 입력해 주세요." : 
+                "Please fill in all required fields (Name, Email, and Message).");
+            return;
+        }
+
+        const recipient = "contact@inwoovation.com";
+        const subject = encodeURIComponent(`[Smart Farm Lab B2B Inquiry] ${topicText}`);
+        const body = encodeURIComponent(
+            `Name: ${name}\n` +
+            `Email: ${email}\n` +
+            `Organization: ${org || 'Not Specified'}\n` +
+            `Topic: ${topicText}\n\n` +
+            `Message:\n${message}`
+        );
+
+        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+        closeInquiryModal();
+        alert(currentLang === 'ko' ? 
+            "이메일 클라이언트를 실행합니다. 메일을 전송해 주세요." : 
+            "Opening your email client to send the inquiry. Thank you!");
+    }
+
     // INIT with URL parameters support
     const urlParams = new URLSearchParams(window.location.search);
     const langParam = urlParams.get('lang');
@@ -4760,3 +4891,43 @@
         switchTab('vpd');
     }
 </script>
+
+
+  <!-- Business Inquiry Modal -->
+  <div class="modal-overlay" id="inquiryModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="lbl-modal-title">Business & B2B Inquiry</div>
+        <button class="modal-close" onclick="closeInquiryModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-subtitle" id="lbl-modal-subtitle">Connect with Inwoovation for custom smart farm reports, partnerships, or software customization.</p>
+        <div class="input-group" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
+          <label for="inq-name" style="font-size: 0.8rem; font-weight: 600; color: var(--text-gray);" id="lbl-inq-name">Your Name *</label>
+          <input type="text" id="inq-name" placeholder="John Doe" style="width: 100%; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); border-radius: 8px; color: var(--text-light); padding: 10px; font-size: 0.85rem; outline: none;">
+        </div>
+        <div class="input-group" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
+          <label for="inq-email" style="font-size: 0.8rem; font-weight: 600; color: var(--text-gray);" id="lbl-inq-email">Business Email *</label>
+          <input type="email" id="inq-email" placeholder="john@company.com" style="width: 100%; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); border-radius: 8px; color: var(--text-light); padding: 10px; font-size: 0.85rem; outline: none;">
+        </div>
+        <div class="input-group" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
+          <label for="inq-org" style="font-size: 0.8rem; font-weight: 600; color: var(--text-gray);" id="lbl-inq-org">Organization / Company</label>
+          <input type="text" id="inq-org" placeholder="Smart Farm Inc." style="width: 100%; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); border-radius: 8px; color: var(--text-light); padding: 10px; font-size: 0.85rem; outline: none;">
+        </div>
+        <div class="input-group" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;">
+          <label for="inq-topic" style="font-size: 0.8rem; font-weight: 600; color: var(--text-gray);" id="lbl-inq-topic">Inquiry Topic *</label>
+          <select id="inq-topic" style="width: 100%; background: #ffffff; border: 1px solid var(--border-card); border-radius: 8px; color: var(--text-light); padding: 10px; font-size: 0.85rem; outline: none;">
+            <option value="custom_report" id="opt-custom-report">Request Custom Feasibility Report</option>
+            <option value="software_customization" id="opt-software-custom">Software Customization / Hiring</option>
+            <option value="partnership" id="opt-partnership">Business Partnership / Advertising</option>
+            <option value="feedback" id="opt-feedback">General Inquiry / Suggestion</option>
+          </select>
+        </div>
+        <div class="input-group" style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 4px;">
+          <label for="inq-message" style="font-size: 0.8rem; font-weight: 600; color: var(--text-gray);" id="lbl-inq-message">Message / Details *</label>
+          <textarea id="inq-message" rows="4" placeholder="Describe your project or requirement..." style="width: 100%; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); border-radius: 8px; color: var(--text-light); padding: 10px; font-size: 0.85rem; font-family: inherit; resize: none; outline: none;"></textarea>
+        </div>
+        <button class="btn-submit" id="btn-inq-submit" onclick="submitInquiry()">Send Inquiry</button>
+      </div>
+    </div>
+  </div>
