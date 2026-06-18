@@ -29,7 +29,7 @@
                 ▼ (On Form Submit 이벤트 트리거)
 [구글 앱스 스크립트(GAS) 구동]
                 │
-                ├─► [Gemini API (gemini-1.5-flash) 호출: 프롬프트 주입 및 답변 생성]
+                ├─► [Gemini API (gemini-2.0-flash) 호출: 프롬프트 주입 및 답변 생성]
                 │
                 ▼ (답변 이메일 자동 발송)
 [사용자 수신함: AI 작성 이메일] & [관리자 수신함: 알림 카피본 이메일]
@@ -99,7 +99,7 @@ function onFormSubmitTrigger(e) {
     const prompt = `User Email: ${userEmail}\nQuestion/Feedback:\n"${userQuestion}"`;
 
     // 3. Gemini API 요청 Payload 작성
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
     
     const payload = {
       contents: [{
