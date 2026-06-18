@@ -627,6 +627,7 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.2);
             border-left: 5px solid var(--primary);
+            grid-column: 1 / -1; /* Spans all columns in grid */
         }
 
         .promo-text h3 {
@@ -919,12 +920,25 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1000;
             cursor: pointer;
+            animation: pulse-border 2.5s infinite;
         }
 
         .feedback-fab:hover {
             transform: translateY(-3px) scale(1.03);
             border-color: var(--cyan);
             box-shadow: 0 12px 30px rgba(2, 132, 199, 0.12);
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 8px 25px var(--primary-glow), 0 0 0 0 rgba(5, 150, 105, 0.4);
+            }
+            70% {
+                box-shadow: 0 8px 25px var(--primary-glow), 0 0 0 10px rgba(5, 150, 105, 0);
+            }
+            100% {
+                box-shadow: 0 8px 25px var(--primary-glow), 0 0 0 0 rgba(5, 150, 105, 0);
+            }
         }
 
         /* Consolidated SPA Styles */
@@ -1108,7 +1122,6 @@
     <!-- VPD SECTION -->
     <div id="section-vpd" class="calc-wrapper active">
 
-
         <div class="form-panel">
             <h2 class="panel-title">환경 데이터 입력</h2>
             
@@ -1207,6 +1220,11 @@
                     <!-- Populated dynamically -->
                 </ul>
             </div>
+
+            <!-- Actionable Inline Feedback Button -->
+            <a href="https://forms.gle/SC3ehhA4r6sPEZxV7" target="_blank" onclick="handleFeedbackClick(event)" class="promo-btn-secondary" style="width: 100%; margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; border-color: var(--primary); color: var(--primary);" id="btn-result-feedback">
+                💡 피드백 남기고 개선점 건의하기
+            </a>
         </div>
     </div>
 
@@ -1559,6 +1577,7 @@
                     <div class="toggle-container">
                         <button id="roi-curr-krw" class="toggle-btn active" onclick="switchRoiCurrency('KRW')">KRW (₩)</button>
                         <button id="roi-curr-eur" class="toggle-btn" onclick="switchRoiCurrency('EUR')">EUR (€)</button>
+                        <button id="roi-curr-usd" class="toggle-btn" onclick="switchRoiCurrency('USD')">USD ($)</button>
                     </div>
                 </div>
             </div>
@@ -2886,6 +2905,10 @@
         vpdPreset.options[3].text = lang === 'ko' ? '자연광 낮 (엽온 편차 -1.5°C)' : 'Sunlight Day (Offset -1.5°C)';
         vpdPreset.options[4].text = lang === 'ko' ? '야간/암기 (엽온 편차 0.0°C)' : 'Night/Dark (Offset 0.0°C)';
 
+        // VPD Result Feedback Button translation
+        document.getElementById('btn-result-feedback').innerText = lang === 'ko' ? '💡 피드백 남기고 개선점 건의하기' : '💡 Leave Feedback & Suggest Improvements';
+
+
         // Mixing Valve Section translation
         document.querySelector('#section-valve .form-panel .panel-title').innerText = i18n[lang].valveTitle;
         document.querySelector('label[for="heat-power"]').innerText = i18n[lang].lblHeatPower;
@@ -3750,6 +3773,7 @@
         
         const krwBtn = document.getElementById('roi-curr-krw');
         const eurBtn = document.getElementById('roi-curr-eur');
+        const usdBtn = document.getElementById('roi-curr-usd');
         const boilerPriceSuffix = document.getElementById('roi-boiler-price-unit');
         const elecPriceSuffix = document.getElementById('roi-hp-price-unit');
         const capexSuffix = document.getElementById('roi-capex-unit');
@@ -3758,10 +3782,15 @@
         const boilerPriceInput = document.getElementById('roi-boiler-price');
         const hpPriceInput = document.getElementById('roi-hp-price');
 
+        // Toggle active button styling
+        [krwBtn, eurBtn, usdBtn].forEach(btn => {
+            if (btn) btn.classList.remove('active');
+        });
+        if (currency === 'KRW') krwBtn.classList.add('active');
+        else if (currency === 'EUR') eurBtn.classList.add('active');
+        else if (currency === 'USD') usdBtn.classList.add('active');
+
         if (currency === 'EUR') {
-            krwBtn.classList.remove('active');
-            eurBtn.classList.add('active');
-            
             boilerPriceSuffix.innerText = 'EUR/kWh';
             elecPriceSuffix.innerText = 'EUR/kWh';
             capexSuffix.innerText = 'EUR';
@@ -3770,10 +3799,16 @@
             hpPriceInput.value = "0.15";
             
             onBoilerTypeChange();
-        } else {
-            krwBtn.classList.add('active');
-            eurBtn.classList.remove('active');
+        } else if (currency === 'USD') {
+            boilerPriceSuffix.innerText = 'USD/kWh';
+            elecPriceSuffix.innerText = 'USD/kWh';
+            capexSuffix.innerText = 'USD';
             
+            capexInput.value = "12000";
+            hpPriceInput.value = "0.12";
+            
+            onBoilerTypeChange();
+        } else {
             boilerPriceSuffix.innerText = '원/m³';
             elecPriceSuffix.innerText = '원/kWh';
             capexSuffix.innerText = '원';
@@ -3796,6 +3831,11 @@
             if (type === 'gas') priceInput.value = "0.08";
             else if (type === 'oil') priceInput.value = "0.12";
             else if (type === 'lpg') priceInput.value = "0.15";
+        } else if (currentRoiCurrency === 'USD') {
+            priceSuffix.innerText = 'USD/kWh';
+            if (type === 'gas') priceInput.value = "0.09";
+            else if (type === 'oil') priceInput.value = "0.13";
+            else if (type === 'lpg') priceInput.value = "0.16";
         } else {
             if (type === 'gas') {
                 priceSuffix.innerText = '원/m³';
@@ -3823,7 +3863,7 @@
         if (isNaN(demand) || isNaN(boilerPrice) || isNaN(boilerEff) || isNaN(hpCop) || isNaN(hpPrice) || isNaN(capex) || boilerEff <= 0 || hpCop <= 0) return;
 
         let boilerCost = 0;
-        if (currentRoiCurrency === 'EUR') {
+        if (currentRoiCurrency === 'EUR' || currentRoiCurrency === 'USD') {
             boilerCost = (demand / boilerEff) * boilerPrice;
         } else {
             let energyPerUnit = 10.5; // Gas
@@ -3873,6 +3913,8 @@
         let formattedSavings = "";
         if (currentRoiCurrency === 'EUR') {
             formattedSavings = "€" + annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 });
+        } else if (currentRoiCurrency === 'USD') {
+            formattedSavings = "$" + annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 });
         } else {
             formattedSavings = "₩" + annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 });
         }
