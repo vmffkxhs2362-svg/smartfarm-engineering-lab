@@ -3262,6 +3262,7 @@
         document.getElementById('hl-temp-in-suffix').innerText = isImperial ? '°F' : '°C';
         document.getElementById('hl-temp-out-suffix').innerText = isImperial ? '°F' : '°C';
         document.getElementById('hl-wind-suffix').innerText = isImperial ? 'mph' : 'm/s';
+        document.getElementById('dt-suffix').innerText = isImperial ? '°F' : '°C';
         document.getElementById('fert-vol-suffix').innerText = isImperial ? 'gal' : 'Liters';
         document.getElementById('tr-temp-suffix').innerText = isImperial ? '°F' : '°C';
         document.getElementById('tr-wind-suffix').innerText = isImperial ? 'mph' : 'm/s';
@@ -3282,6 +3283,7 @@
             { id: 'hl-temp-in', toImp: val => Math.round(val * 1.8 + 32), toMet: val => Math.round((val - 32) / 1.8) },
             { id: 'hl-temp-out', toImp: val => Math.round(val * 1.8 + 32), toMet: val => Math.round((val - 32) / 1.8) },
             { id: 'hl-wind', toImp: val => parseFloat((val * 2.23694).toFixed(1)), toMet: val => parseFloat((val / 2.23694).toFixed(1)) },
+            { id: 'valve-dt', toImp: val => parseFloat((val * 1.8).toFixed(1)), toMet: val => parseFloat((val / 1.8).toFixed(1)) },
             { id: 'fert-vol', toImp: val => Math.round(val / 3.78541), toMet: val => Math.round(val * 3.78541) },
             { id: 'tr-temp', toImp: val => Math.round(val * 1.8 + 32), toMet: val => Math.round((val - 32) / 1.8) },
             { id: 'tr-wind', toImp: val => parseFloat((val * 2.23694).toFixed(1)), toMet: val => parseFloat((val / 2.23694).toFixed(1)) }
@@ -3504,8 +3506,15 @@
             document.getElementById('est-result-value').innerText = "0 kW";
             return;
         }
-        const qEst = (1.4 * area * U * deltaT * 1.25) / 1000;
-        document.getElementById('est-result-value').innerText = qEst.toFixed(0) + " kW";
+        let qEstKw;
+        if (currentUnit === 'imperial') {
+            const U_imp = U * 0.17611;
+            const qEstBtu = 1.4 * area * U_imp * deltaT * 1.25;
+            qEstKw = qEstBtu / 3412.14;
+        } else {
+            qEstKw = (1.4 * area * U * deltaT * 1.25) / 1000;
+        }
+        document.getElementById('est-result-value').innerText = qEstKw.toFixed(0) + " kW";
     }
     function applyEstimatedLoad() {
         const resultVal = parseFloat(document.getElementById('est-result-value').innerText);
@@ -3633,7 +3642,13 @@
         if (currentPressUnit === 'kPa') {
             dPv_bar = dPv / 100;
         }
-        const flowRate = (Q * 0.86) / dT;
+        
+        let actualDtC = dT;
+        if (currentUnit === 'imperial') {
+            actualDtC = dT / 1.8;
+        }
+        
+        const flowRate = (Q * 0.86) / actualDtC;
         const kv = flowRate / Math.sqrt(dPv_bar);
         document.getElementById('valve-value').innerText = kv.toFixed(2);
         const statusPill = document.getElementById('valve-status-pill');
@@ -3766,7 +3781,11 @@
             uvalueEl.disabled = false;
         } else {
             uvalueEl.disabled = true;
-            uvalueEl.value = hlPresetDb[presetKey];
+            let val = hlPresetDb[presetKey];
+            if (currentUnit === 'imperial') {
+                val = parseFloat((val * 0.17611).toFixed(2));
+            }
+            uvalueEl.value = val;
         }
         calculateHeatLossEngine();
     }
@@ -3791,8 +3810,20 @@
         }
 
         // Wind friction multiplier (simplified ASHRAE/standard engineering approach)
-        let fWind = 1.0;
         const windSpeedMs = currentUnit === 'imperial' ? wind / 2.23694 : wind;
+        
+        if (windSpeedMs >= 25.0) {
+            document.getElementById('hl-value').innerText = "N/A";
+            document.getElementById('hl-explanation').innerHTML = currentLang === 'ko' ? 
+                "<strong style='color:var(--danger);'>🚨 경고: 극한 풍속(태풍 수준) 초과</strong><br>풍속 25m/s 이상에서는 난방 부하 계산보다 온실 구조체의 붕괴나 피복재 파손 방어가 우선입니다. 난방 설계가 무의미한 재난 환경입니다." : 
+                "<strong style='color:var(--danger);'>🚨 Warning: Extreme Wind Speed</strong><br>At >25m/s, structural failure (e.g., torn plastic, collapsed frame) is the primary concern before heat loss. Heating calculation is invalid.";
+            document.getElementById('hl-status-pill').className = "status-pill danger";
+            document.getElementById('hl-status-pill').innerText = currentLang === 'ko' ? "계산 차단 (붕괴 위험)" : "Calculation Blocked";
+            updatePyeongHelpers();
+            return;
+        }
+
+        let fWind = 1.0;
         if (windSpeedMs > 10.0) fWind = 1.40;
         else if (windSpeedMs > 5.0) fWind = 1.25;
         else if (windSpeedMs > 2.0) fWind = 1.12;
