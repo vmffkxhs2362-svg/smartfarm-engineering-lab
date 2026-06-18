@@ -46,21 +46,13 @@
 ### 2단계: 앱스 스크립트 에디터 열기
 1. 생성된 구글 스프레드시트 상단 메뉴에서 **[확장 프로그램] (Extensions)** ➡️ **[Apps Script]**를 클릭합니다.
 2. 기본으로 작성되어 있는 `Code.gs` 내의 코드를 모두 지우고, 아래 제공된 코드를 복사해서 붙여넣습니다.
-3. 상단의 디스크 아이콘(Save project)을 클릭하여 저장합니다.
+3. 안전한 키 관리를 위해 아래 소스코드 가이드에 따라 구글 Apps Script의 **[프로젝트 설정] ➡️ [스크립트 속성]**에 `GEMINI_API_KEY`를 추가합니다. (혹은 소스코드의 `"YOUR_GEMINI_API_KEY_HERE"` 부분을 발급받은 API 키 문자열로 직접 수정해 주셔도 됩니다.)
+4. 상단의 디스크 아이콘(Save project)을 클릭하여 저장합니다.
 
-### 3단계: Gemini API 키 발급 및 설정
-1. [Google AI Studio](https://aistudio.google.com/)에 접속하여 구글 계정으로 로그인합니다.
-2. **[Get API key]** 버튼을 클릭하여 무료 API 키를 생성하고 복사합니다.
-3. Apps Script 에디터 좌측 메뉴의 **[프로젝트 설정] (톱니바퀴 아이콘)**을 클릭합니다.
-4. 화면 가장 하단의 **[스크립트 속성] (Script Properties)** 섹션으로 이동하여 **[스크립트 속성 추가]** 버튼을 누릅니다.
-   * **속성(Property)**: `GEMINI_API_KEY`
-   * **값(Value)**: 복사한 Gemini API 키
-5. **[스크립트 속성 저장]**을 클릭합니다.
-
-### 4단계: 트리거(Trigger) 활성화
+### 3단계: 트리거(Trigger) 활성화
 1. Apps Script 에디터 좌측 메뉴에서 **[트리거] (시계 아이콘)**를 클릭합니다.
 2. 우측 하단의 **[트리거 추가] (Add Trigger)** 버튼을 클릭합니다.
-   * **실행할 함수 선택**: `onFormSubmit`
+   * **실행할 함수 선택**: `onFormSubmitTrigger`
    * **실행할 배포 버전 선택**: `기본값 (Head)`
    * **이벤트 소스 선택**: `스프레드시트에서 (From spreadsheet)`
    * **이벤트 유형 선택**: `양식 제출 시 (On form submit)`
@@ -71,138 +63,86 @@
 ## 💻 IV. 구글 앱스 스크립트(GAS) 소스코드
 
 ```javascript
-/**
- * Inwoovation Smart Farm Lab - Google Form AI Auto-Responder
- * 
- * 구글 스프레드시트에 행이 추가되면 동작하며, 구글 Gemini API를 활용하여
- * 전문가 수준의 답변 이메일을 작성하여 자동 발송합니다.
- */
+// ==========================================
+// 💡 CONFIGURATION (설정)
+// ==========================================
+// API 키는 Google Apps Script의 [프로젝트 설정] -> [스크립트 속성]에 'GEMINI_API_KEY' 이름으로 등록하여 사용하는 것이 안전합니다.
+// 만약 코드 내에 직접 입력하시려면 아래 "YOUR_GEMINI_API_KEY_HERE"를 본인의 API 키로 수정하십시오.
+const GEMINI_API_KEY = PropertiesService.getScriptProperties().getProperty("GEMINI_API_KEY") || "YOUR_GEMINI_API_KEY_HERE";
+const EMAIL_SUBJECT = "[Inwoovation] Re: Smart Farm Engineering Lab Feedback";
 
-const CONFIG = {
-  ADMIN_EMAIL: "contact@inwoovation.com", // 수집 알림을 받을 관리자 이메일
-  GEMINI_MODEL: "gemini-1.5-flash",       // 빠르고 비용이 들지 않는 무료 모델
-  API_URL: "https://generativelanguage.googleapis.com/v1beta/models/"
-};
-
-function onFormSubmit(e) {
-  Logger.log("Form submission received.");
-  
-  if (!e || !e.values) {
-    Logger.log("이벤트 값이 없습니다. 반드시 '양식 제출 시' 트리거를 등록해야 정상 작동합니다.");
-    return;
-  }
-  
-  // 스프레드시트 열 순서에 맞춰 인덱싱
-  // index 0: 타임스탬프, index 1: 이메일 주소, index 2: 질문/피드백 내용
-  const timestamp = e.values[0];
-  const userEmail = e.values[1] ? e.values[1].trim() : "";
-  const userQuestion = e.values[2] ? e.values[2].trim() : "";
-  
-  if (!userEmail || !userQuestion) {
-    Logger.log("이메일 또는 질문 내용이 비어있어 처리를 중단합니다.");
-    return;
-  }
-  
-  Logger.log("답변 메일: " + userEmail);
-  
-  // Script Properties에서 API 키 로드
-  const apiKey = PropertiesService.getScriptProperties().getProperty("GEMINI_API_KEY");
-  if (!apiKey) {
-    Logger.log("에러: 스크립트 속성에 GEMINI_API_KEY가 등록되지 않았습니다.");
-    MailApp.sendEmail(
-      CONFIG.ADMIN_EMAIL,
-      "⚠️ 경고: Apps Script 내 Gemini API 키가 누락되었습니다.",
-      `새 질문이 접수되었으나 API 키가 설정되지 않아 자동 답변이 발송되지 못했습니다.\n\n질문 이메일: ${userEmail}\n질문 내용: ${userQuestion}`
-    );
-    return;
-  }
-  
-  // AI 전문가 프롬프트 정의
-  const systemInstruction = 
-    "You are the expert agronomist and software engineer support team at Inwoovation Smart Farm Engineering Lab.\n" +
-    "A user has submitted feedback, a bug report, or an agronomic question via our calculator dashboard.\n" +
-    "Your goal is to provide a highly helpful, scientific, polite, and detailed response in the same language as the user's question (Korean or English).\n\n" +
-    "Strict guidelines:\n" +
-    "1. If it is a bug report or formula correction, thank them profusely and state that our development team will review it immediately.\n" +
-    "2. If it is an agronomic question (e.g., VPD, Kv valves, fertigation, thermal heat loss), provide a detailed scientific and engineering explanation.\n" +
-    "3. Keep the tone premium, educational, and warm.\n" +
-    "4. End with standard closing: 'Best regards,\nInwoovation Smart Farm Lab Support Team'";
-
-  const payload = {
-    contents: [
-      {
-        parts: [
-          {
-            text: `System context:\n${systemInstruction}\n\nUser Question:\n"${userQuestion}"\n\nPlease write the email response body (do not include Subject line in the text, only the email body):`
-          }
-        ]
-      }
-    ],
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 2048
-    }
-  };
-  
-  const url = `${CONFIG.API_URL}${CONFIG.GEMINI_MODEL}:generateContent?key=${apiKey}`;
-  const options = {
-    method: "post",
-    contentType: "application/json",
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
-  };
-  
+function onFormSubmitTrigger(e) {
   try {
+    // 1. 구글 폼 제출 데이터 파싱
+    // 스프레드시트 열 순서에 따라 인덱스 조절 (1: 타임스탬프, 2: 이메일, 3: 질문 내용)
+    const rowValues = e.values;
+    const userEmail = rowValues[1]; // 이메일 주소 열
+    const userQuestion = rowValues[2]; // 질문/피드백 내용 열
+    
+    if (!userEmail || !userQuestion) return;
+
+    // API 키 확인
+    if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE" || !GEMINI_API_KEY) {
+      Logger.log("Error: GEMINI_API_KEY is not set.");
+      return;
+    }
+
+    // 2. Gemini API 호출을 위한 프롬프트 구성
+    const systemInstruction = 
+      "You are an AgTech & Greenhouse Engineering Consultant working for 'Inwoovation'. " +
+      "Answer the following grower's question professionally, concisely, and accurately. " +
+      "The grower used the 'Smart Farm Engineering Lab' online calculator. " +
+      "Provide actionable horticultural or hydraulic context. Keep the answer structured and friendly. " +
+      "Always reply in the same language as the user's question (Korean or English). " +
+      "Sign the email at the bottom as 'Sincerely,\nInwoovation Team'.";
+
+    const prompt = `User Email: ${userEmail}\nQuestion/Feedback:\n"${userQuestion}"`;
+
+    // 3. Gemini API 요청 Payload 작성
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    const payload = {
+      contents: [{
+        parts: [{
+          text: `${systemInstruction}\n\n${prompt}`
+        }]
+      }]
+    };
+
+    const options = {
+      method: "post",
+      contentType: "application/json",
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    };
+
+    // 4. API 전송 및 응답 수신
     const response = UrlFetchApp.fetch(url, options);
     const json = JSON.parse(response.getContentText());
     
-    if (json.candidates && json.candidates[0] && json.candidates[0].content && json.candidates[0].content.parts[0]) {
-      const emailBody = json.candidates[0].content.parts[0].text;
-      
-      // 1. 사용자에게 AI 답변 이메일 발송
-      const emailSubject = `[Inwoovation Smart Farm Lab] Response to Your Feedback / Q&A`;
-      MailApp.sendEmail({
-        to: userEmail,
-        replyTo: CONFIG.ADMIN_EMAIL,
-        subject: emailSubject,
-        body: emailBody
-      });
-      Logger.log("사용자에게 메일 발송 완료.");
-      
-      // 2. 관리자(사령관님)에게 알림 메일 발송
-      const adminBody = 
-        `사령관님,\n\n` +
-        `계산기 피드백/질문 제출건에 대해 Gemini가 자동 답변 메일을 발송했습니다.\n\n` +
-        `----------------------------------------\n` +
-        `[접수 정보]\n` +
-        `접수 시간: ${timestamp}\n` +
-        `사용자 메일: ${userEmail}\n` +
-        `질문 내용:\n${userQuestion}\n` +
-        `----------------------------------------\n` +
-        `[발송된 AI 답변 내용]\n` +
-        `${emailBody}\n` +
-        `----------------------------------------\n\n` +
-        `추가 조치가 필요하면 ${userEmail} 주소로 답장을 발송해 주세요.`;
-        
-      MailApp.sendEmail({
-        to: CONFIG.ADMIN_EMAIL,
-        subject: `[Form Sync] AI 자동답변 발송 알림 (${userEmail})`,
-        body: adminBody
-      });
-      Logger.log("관리자에게 알림 메일 발송 완료.");
-      
+    let replyText = "";
+    if (json.candidates && json.candidates[0].content.parts[0].text) {
+      replyText = json.candidates[0].content.parts[0].text;
     } else {
-      Logger.log("API 응답 구조 오류: " + JSON.stringify(json));
-      throw new Error("API 응답 값이 비정상적입니다.");
+      replyText = "Thank you for your feedback. We have received your query and will get back to you shortly.";
+      Logger.log("Gemini API Error: " + response.getContentText());
     }
-    
-  } catch (error) {
-    Logger.log("Gemini API 호출 또는 이메일 전송 중 에러 발생: " + error.toString());
-    MailApp.sendEmail(
-      CONFIG.ADMIN_EMAIL,
-      "❌ 에러: Gemini 자동 피드백 응답기 작동 실패",
-      `다음 질문 처리에 실패했습니다:\n\n에러 내용: ${error.toString()}\n\n질문 이메일: ${userEmail}\n질문 내용: ${userQuestion}`
-    );
+
+    // 5. Gmail 임시보관함(Draft)에 답변 메일 자동 등록
+    const emailBody = 
+      `안녕하세요,\n\nInwoovation 스마트팜 엔지니어링 랩을 이용해 주셔서 감사합니다.\n` +
+      `보내주신 문의사항에 대해 AI 참모가 초안 작성한 답변을 아래와 같이 첨부합니다.\n\n` +
+      `--------------------------------------------------\n` +
+      `${replyText}\n` +
+      `--------------------------------------------------\n\n` +
+      `추가 문의 사항이 있으시다면 본 메일로 회신해 주시기 바랍니다.\n\n` +
+      `감사합니다.\nInwoovation 드림`;
+
+    GmailApp.createDraft(userEmail, EMAIL_SUBJECT, emailBody);
+    Logger.log("Successfully created draft for " + userEmail);
+
+  } catch (err) {
+    Logger.log("Trigger Error: " + err.toString());
   }
 }
 ```
