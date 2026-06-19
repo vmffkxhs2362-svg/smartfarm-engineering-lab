@@ -56,7 +56,7 @@ SVG_SCREEN = """
     <rect x="20" y="30" width="460" height="35" fill="#3498db" opacity="0.08"/>
     <text x="250" y="50" font-family="Georgia" font-size="9.5" fill="#2980b9" text-anchor="middle" font-style="italic">Dead Air Insulation Buffer (Reduces Heat Loss)</text>
     <line x1="20" y1="125" x2="480" y2="125" stroke="#27ae60" stroke-width="2"/>
-    <text x="30" y="120" font-family="Georgia" font-size="9" fill="#27ae60" font-weight="bold">Cultivation Canopy Height</text>
+    <text x="30" y="138" font-family="Georgia" font-size="9" fill="#27ae60" font-weight="bold">Cultivation Canopy Height</text>
     <path d="M 50 125 Q 60 105 70 125 M 150 125 Q 160 105 170 125 M 250 125 Q 260 105 270 125 M 350 125 Q 360 105 370 125 M 430 125 Q 440 105 450 125" stroke="#2ecc71" stroke-width="2" fill="none"/>
     <text x="250" y="165" font-family="Georgia" font-size="11" fill="#333" text-anchor="middle" font-weight="bold">Thermal Screen Installation Profile</text>
 </svg>
@@ -150,7 +150,7 @@ SVG_VENTURI = """
     <line x1="40" y1="80" x2="100" y2="80" stroke="#3498db" stroke-width="3"/>
     <polygon points="100,77 108,80 100,83" fill="#3498db"/>
     <text x="70" y="70" font-family="Georgia" font-size="8.5" fill="#3498db" text-anchor="middle">Main Flow (Low Velocity)</text>
-    <text x="250" y="66" font-family="Georgia" font-size="8.5" fill="#e74c3c" text-anchor="middle" font-weight="bold">Constriction (High Velocity)</text>
+    <text x="250" y="38" font-family="Georgia" font-size="8.5" fill="#e74c3c" text-anchor="middle" font-weight="bold">Constriction (High Velocity)</text>
     <line x1="230" y1="85" x2="270" y2="85" stroke="#e74c3c" stroke-width="1.5"/>
     <line x1="250" y1="135" x2="250" y2="105" stroke="#2ecc71" stroke-width="2.5"/>
     <polygon points="247,110 250,102 253,110" fill="#2ecc71"/>
@@ -606,8 +606,16 @@ def compile_and_bake():
         print("Extracting baked DOM for Kindle eBook...")
         baked_html = page.content()
         
-        # Remove the KaTeX script tags since we've already rendered them into HTML/MathML
+        # Remove the script tags since we've already rendered them
         baked_html = re.sub(r'<script.*?>.*?</script>', '', baked_html, flags=re.DOTALL)
+        
+        # Move and minify giant MathJax style tag to the end of the body to prevent parser buffer limits
+        style_match = re.search(r'(<style id="MJX-SVG-styles">.*?</style>)', baked_html, flags=re.DOTALL)
+        if style_match:
+            style_block = style_match.group(1)
+            minified_style = re.sub(r'\s+', ' ', style_block)
+            baked_html = baked_html.replace(style_block, '')
+            baked_html = baked_html.replace('</body>', f'{minified_style}\n</body>')
         
         # Save as the final eBook manuscript
         with open(HTML_EBOOK_PATH, "w", encoding="utf-8") as f:
