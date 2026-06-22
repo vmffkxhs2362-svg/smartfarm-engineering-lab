@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroCal: 스마트 수경재배 양액 조제 계산기</title>
+    <meta name="description" content="수경재배 원료 비료 배합 및 타겟 N-P-K-Ca-Mg 농도 자동 처방 계산기. 서버 비용 없이 100% 프론트엔드로 작동하는 정밀 양액 계산 솔루션.">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V4RYJBMEDE');
+    </script>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8597809158257497"
+         crossorigin="anonymous"></script>
+
+    <!-- Google Fonts Outfit & Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-green: #10b981;
+            --accent-green-glow: rgba(16, 185, 129, 0.4);
+            --accent-blue: #3b82f6;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --input-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #34d399, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        main {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #38bdf8;
+        }
+
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 4px var(--accent-green-glow);
+        }
+
+        .unit {
+            position: absolute;
+            right: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .result-item {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .result-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .result-name {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .result-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .result-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-green);
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+        }
+
+        .result-value span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            display: inline-block;
+        }
+
+        footer {
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-download {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+        }
+
+        .btn-download:hover {
+            background: #2563eb;
+        }
+
+        .ad-space-container {
+            grid-column: 1 / -1;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .ad-space-placeholder {
+            width: 100%;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #10b981;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Navigation link back to main hub */
+        .hub-link {
+            align-self: flex-start;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.2s;
+        }
+
+        .hub-link:hover {
+            color: var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="hub-link">← 스마트팜 엔지니어링 랩으로 돌아가기</a>
+
+    <header>
+        <h1>HydroCal Pro</h1>
+        <p>충남대 수경재배학 실습 A+ 알고리즘 적용. 물 1,000L 배합 기준 비료 원료들의 최적 처방 중량을 원클릭으로 계산합니다.</p>
+    </header>
+
+    <main>
+        <!-- INPUT CARD -->
+        <section class="card">
+            <h2>💡 처방 목표 농도 (Target ppm)</h2>
+            <div class="input-group">
+                <label for="target_n">질소 (N - Nitrogen)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="target_n" value="150" min="0" max="500" oninput="calculateFertilizers()">
+                    <span class="unit">ppm</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="target_p">인 (P - Phosphorus)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="target_p" value="40" min="0" max="200" oninput="calculateFertilizers()">
+                    <span class="unit">ppm</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="target_k">칼륨 (K - Potassium)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="target_k" value="200" min="0" max="600" oninput="calculateFertilizers()">
+                    <span class="unit">ppm</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="target_ca">칼슘 (Ca - Calcium)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="target_ca" value="120" min="0" max="400" oninput="calculateFertilizers()">
+                    <span class="unit">ppm</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="target_mg">마그네슘 (Mg - Magnesium)</label>
+                <div class="input-wrapper">
+                    <input type="number" id="target_mg" value="50" min="0" max="200" oninput="calculateFertilizers()">
+                    <span class="unit">ppm</span>
+                </div>
+            </div>
+            <button id="calc_btn" onclick="calculateFertilizers()">배합 처방 산출</button>
+        </section>
+
+        <!-- OUTPUT CARD -->
+        <section class="card">
+            <h2>📊 원료별 배합 처방 (per 1,000L)</h2>
+            <div class="results" id="result_container">
+                <div class="result-item">
+                    <div class="result-info">
+                        <span class="result-name">질산칼슘 <span class="badge">Ca(NO₃)₂</span></span>
+                        <span class="result-sub">칼슘(Ca) 및 질소(N) 공급원</span>
+                    </div>
+                    <div class="result-value" id="res_ca_nitrate">0.00 <span>g</span></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-info">
+                        <span class="result-name">제1인산칼륨 <span class="badge">KH₂PO₄</span></span>
+                        <span class="result-sub">인(P) 및 칼륨(K) 공급원</span>
+                    </div>
+                    <div class="result-value" id="res_mkp">0.00 <span>g</span></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-info">
+                        <span class="result-name">질산칼륨 <span class="badge">KNO₃</span></span>
+                        <span class="result-sub">추가 칼륨(K) 및 질소(N) 보정원</span>
+                    </div>
+                    <div class="result-value" id="res_k_nitrate">0.00 <span>g</span></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-info">
+                        <span class="result-name">황산마그네슘 <span class="badge">MgSO₄</span></span>
+                        <span class="result-sub">마그네슘(Mg) 및 황(S) 공급원</span>
+                    </div>
+                    <div class="result-value" id="res_mg_sulfate">0.00 <span>g</span></div>
+                </div>
+                <div class="result-item" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25);">
+                    <div class="result-info">
+                        <span class="result-name" style="color: #34d399; font-weight: 700;">실제 질소 공급 농도 <span class="badge" style="background: rgba(52, 211, 153, 0.2); color: #34d399;">Actual N</span></span>
+                        <span class="result-sub">Ca(NO₃)₂ 및 KNO₃에 의해 자동 결정된 질소 농도</span>
+                    </div>
+                    <div class="result-value" id="res_actual_n" style="color: #34d399;">0.00 <span>ppm</span></div>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="action-btn btn-copy" onclick="copyResults()">📋 처방 복사</button>
+                <button class="action-btn btn-download" onclick="downloadCSV()">💾 CSV 다운로드</button>
+            </div>
+        </section>
+
+        <!-- Google AdSense Inline Display Ad -->
+        <div class="ad-space-container">
+            <div class="ad-space-placeholder">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8597809158257497"
+                     data-ad-slot="5405747210"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast" class="toast">처방 결과가 클립보드에 복사되었습니다!</div>
+
+    <footer>
+        <p>© 2026 HydroCal. Powered by Antigravity Smart Agriculture Engine.</p>
+        <p>본 도구는 상업적 배포 및 애드센스 탑재가 가능한 무비용 유지보수 웹 자산입니다.</p>
+    </footer>
+
+    <script>
+        function calculateFertilizers() {
+            // 1. Get input target ppms
+            const targetN = parseFloat(document.getElementById('target_n').value) || 0;
+            const targetP = parseFloat(document.getElementById('target_p').value) || 0;
+            const targetK = parseFloat(document.getElementById('target_k').value) || 0;
+            const targetCa = parseFloat(document.getElementById('target_ca').value) || 0;
+            const targetMg = parseFloat(document.getElementById('target_mg').value) || 0;
+
+            // 2. Fertilizer nutrient percentages (Purity adjustment included)
+            // Calcium Nitrate: Ca = 19%, N = 15.5%
+            // KH2PO4 (MKP): P = 22.7%, K = 28.7%
+            // Potassium Nitrate (KNO3): K = 38.6%, N = 13.8%
+            // Magnesium Sulfate (MgSO4): Mg = 9.8%
+
+            // 3. Step-by-step back-calculation (per 1,000L)
+            // 1 ppm = 1 mg/L = 1 g / 1,000L
+            
+            // Step 3.1: Calculate Calcium Nitrate amount based on Target Ca
+            // Target Ca (g) = Ca_Nitrate * 0.19 -> Ca_Nitrate = Target Ca / 0.19
+            const caNitrate = targetCa / 0.19;
+            // Nitrogen supplied by Calcium Nitrate
+            const nFromCaNitrate = caNitrate * 0.155;
+
+            // Step 3.2: Calculate MKP (KH2PO4) based on Target P
+            // Target P (g) = MKP * 0.227 -> MKP = Target P / 0.227
+            const mkp = targetP / 0.227;
+            // Potassium supplied by MKP
+            const kFromMkp = mkp * 0.287;
+
+            // Step 3.3: Calculate Potassium Nitrate (KNO3) based on remaining Target K
+            // Remaining K = Target K - kFromMkp
+            let remK = targetK - kFromMkp;
+            if (remK < 0) remK = 0;
+            // KNO3 required = remK / 0.386
+            const kNitrate = remK / 0.386;
+            // Nitrogen supplied by KNO3
+            const nFromKNitrate = kNitrate * 0.138;
+
+            // Step 3.4: Calculate Magnesium Sulfate based on Target Mg
+            // Target Mg (g) = Mg_Sulfate * 0.098 -> Mg_Sulfate = Target Mg / 0.098
+            const mgSulfate = targetMg / 0.098;
+
+            // Step 3.5: Calculate Actual Nitrogen supplied
+            const actualN = nFromCaNitrate + nFromKNitrate;
+
+            // 4. Update UI with values rounded to 2 decimal places
+            document.getElementById('res_ca_nitrate').innerHTML = `${caNitrate.toFixed(2)} <span>g</span>`;
+            document.getElementById('res_mkp').innerHTML = `${mkp.toFixed(2)} <span>g</span>`;
+            document.getElementById('res_k_nitrate').innerHTML = `${kNitrate.toFixed(2)} <span>g</span>`;
+            document.getElementById('res_mg_sulfate').innerHTML = `${mgSulfate.toFixed(2)} <span>g</span>`;
+            
+            const diffN = actualN - targetN;
+            const diffSign = diffN >= 0 ? '+' : '';
+            document.getElementById('res_actual_n').innerHTML = `${actualN.toFixed(2)} <span>ppm (목표대비 ${diffSign}${diffN.toFixed(2)})</span>`;
+            
+            // Store globally for export functions
+            window.lastCalc = {
+                target: { N: targetN, P: targetP, K: targetK, Ca: targetCa, Mg: targetMg },
+                result: { caNitrate, mkp, kNitrate, mgSulfate, actualN }
+            };
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        function copyResults() {
+            if (!window.lastCalc) return;
+            const data = window.lastCalc;
+            const diffN = data.result.actualN - data.target.N;
+            const diffSign = diffN >= 0 ? '+' : '';
+            const text = `[HydroCal 수경재배 양액 처방 결과]
+목표 농도(Target ppm):
+- 질소(N): ${data.target.N} ppm
+- 인(P): ${data.target.P} ppm
+- 칼륨(K): ${data.target.K} ppm
+- 칼슘(Ca): ${data.target.Ca} ppm
+- 마그네슘(Mg): ${data.target.Mg} ppm
+
+실제 질소 공급 농도(Actual N): ${data.result.actualN.toFixed(2)} ppm (목표대비 ${diffSign}${diffN.toFixed(2)})
+
+물 1,000L 기준 비료 처방 중량:
+- 질산칼슘: ${data.result.caNitrate.toFixed(2)} g
+- 제1인산칼륨(MKP): ${data.result.mkp.toFixed(2)} g
+- 질산칼륨: ${data.result.kNitrate.toFixed(2)} g
+- 황산마그네슘: ${data.result.mgSulfate.toFixed(2)} g
+* Powered by Antigravity Smart Agriculture Engine`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("처방 결과가 클립보드에 복사되었습니다!");
+                if (typeof gtag === 'function') {
+                    gtag('event', 'calc_results_copy', { 'event_category': 'engagement' });
+                }
+            }).catch(err => {
+                console.error("복사 실패:", err);
+            });
+        }
+
+        function downloadCSV() {
+            if (!window.lastCalc) return;
+            const data = window.lastCalc;
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Add BOM for Excel Korean support
+            csvContent += "구분,원소/원료명,값,단위\r\n";
+            csvContent += `목표농도,질소(N),${data.target.N},ppm\r\n`;
+            csvContent += `목표농도,인(P),${data.target.P},ppm\r\n`;
+            csvContent += `목표농도,칼륨(K),${data.target.K},ppm\r\n`;
+            csvContent += `목표농도,칼슘(Ca),${data.target.Ca},ppm\r\n`;
+            csvContent += `목표농도,마그네슘(Mg),${data.target.Mg},ppm\r\n`;
+            csvContent += `실제공급농도,질소(N),${data.result.actualN.toFixed(2)},ppm\r\n`;
+            csvContent += `비료필요량(1000L),질산칼슘,${data.result.caNitrate.toFixed(2)},g\r\n`;
+            csvContent += `비료필요량(1000L),제1인산칼륨(MKP),${data.result.mkp.toFixed(2)},g\r\n`;
+            csvContent += `비료필요량(1000L),질산칼륨,${data.result.kNitrate.toFixed(2)},g\r\n`;
+            csvContent += `비료필요량(1000L),황산마그네슘,${data.result.mgSulfate.toFixed(2)},g\r\n`;
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `HydroCal_Prescription_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            if (typeof gtag === 'function') {
+                gtag('event', 'calc_results_csv_download', { 'event_category': 'engagement' });
+            }
+        }
+
+        // Run calculation once on load to show initial states
+        window.onload = calculateFertilizers;
+    </script>
+</body>
+</html>
