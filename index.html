@@ -4816,27 +4816,38 @@
         const d = activeDiagnosisData;
         const diseaseName = currentLang === 'ko' ? d.diseaseKo : d.diseaseEn;
         const remedyText = currentLang === 'ko' ? d.remedyKo : d.remedyEn;
-        const chemical = d.suggestedChemical ? (currentLang === 'ko' ? d.suggestedChemical : d.suggestedChemical) : null;
+
+        // 약제 DB(chemicals)에서 다국어 명칭 룩업
+        let chemicalNameToShow = null;
+        if (d.suggestedChemical) {
+            const chemObj = chemicals.find(c => c.nameKo === d.suggestedChemical);
+            if (chemObj) {
+                chemicalNameToShow = currentLang === 'ko' ? chemObj.nameKo : chemObj.nameEn;
+            } else {
+                chemicalNameToShow = d.suggestedChemical; // Fallback
+            }
+        }
 
         let chemicalSectionHtml = "";
-        if (chemical) {
+        if (chemicalNameToShow) {
             chemicalSectionHtml = `
                 <div>
                     <span class="result-header">${i18n[currentLang].lblDiagChemical}</span>
                     <div style="font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-top: 0.3rem;">
-                        💊 ${chemical}
+                        💊 ${chemicalNameToShow}
                     </div>
-                    <button class="estimator-btn" style="margin-top: 0.8rem; font-size: 0.85rem; padding: 0.5rem 1rem; width: auto;" onclick="jumpToReiCalculator('${chemical}')">
+                    <button class="estimator-btn" style="margin-top: 0.8rem; font-size: 0.85rem; padding: 0.5rem 1rem; width: auto;" onclick="jumpToReiCalculator('${d.suggestedChemical}')">
                         ${i18n[currentLang].btnGoToRei}
                     </button>
                 </div>
             `;
         } else {
+            const naText = currentLang === 'ko' ? 'N/A (물리적 제어 또는 무독성 비료 처방)' : 'N/A (Physical control or non-toxic treatment)';
             chemicalSectionHtml = `
                 <div>
                     <span class="result-header">${i18n[currentLang].lblDiagChemical}</span>
                     <div style="font-size: 0.95rem; color: var(--text-gray); font-style: italic; margin-top: 0.3rem;">
-                        N/A (물리적 제어 또는 무독성 비료 처방)
+                        ${naText}
                     </div>
                 </div>
             `;
