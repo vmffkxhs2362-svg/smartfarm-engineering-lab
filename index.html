@@ -1302,6 +1302,73 @@
         .academic-guide-lang {
             display: none;
         }
+        
+        /* Dashboard Home Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        .dashboard-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            padding: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            text-align: left;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+            border-color: var(--primary);
+            background: #ffffff;
+        }
+        .dashboard-card .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.2rem;
+        }
+        .dashboard-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0;
+        }
+        .dashboard-card p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        /* Language Toggle Helpers for Dashboard */
+        .lang-text-ko, .lang-text-en {
+            display: inline;
+        }
+        .lang-block-ko, .lang-block-en {
+            display: block;
+        }
+        
+        @keyframes fadeInCard {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1344,7 +1411,11 @@
     <!-- Navigation Tabs -->
     <div class="tabs-container">
         <div class="tabs">
-            <button id="btn-tab-vpd" class="tab-btn active" onclick="switchTab('vpd')" data-category="climate" data-keywords="vpd, 포차압, 대기 온도, 상대 습도, 엽온 편차, climate, humidity">
+            <button id="btn-tab-dashboard" class="tab-btn active" onclick="switchTab('dashboard')" data-category="all" data-keywords="home, dashboard, 대시보드, 홈, 전체">
+                <span class="desktop-text">🏠 대시보드 홈</span>
+                <span class="mobile-text">홈</span>
+            </button>
+            <button id="btn-tab-vpd" class="tab-btn" onclick="switchTab('vpd')" data-category="climate" data-keywords="vpd, 포차압, 대기 온도, 상대 습도, 엽온 편차, climate, humidity">
                 <span class="desktop-text">포차 계산기 (VPD)</span>
                 <span class="mobile-text">VPD</span>
             </button>
@@ -1376,6 +1447,8 @@
                 <span class="desktop-text">🌱 수직농업 DLI 계산기</span>
                 <span class="mobile-text">🌱 수직농업</span>
             </button>
+            <!-- Beta calculators are hidden until officially approved for production -->
+            <!--
             <button id="btn-tab-hydrocal" class="tab-btn beta-only-tab" onclick="location.href='hydroponics_calculator.html'" data-category="beta" data-keywords="hydrocal, 양액 처방, 질소, 인, 칼륨, 칼슘, 마그네슘, 처방전, 하이드로칼" style="background: rgba(16, 185, 129, 0.1); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.2); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer; display: none;">
                 <span class="desktop-text">📊 정밀 양액 처방 (HydroCal)</span>
                 <span class="mobile-text">📊 정밀양액</span>
@@ -1384,11 +1457,106 @@
                 <span class="desktop-text">🛍️ 홈가드닝 자재 추천 (GreenPocket)</span>
                 <span class="mobile-text">🛍️ 홈가드닝</span>
             </button>
+            -->
+        </div>
+    </div>
+
+    <!-- DASHBOARD HOME SECTION -->
+    <div id="section-dashboard" class="calc-wrapper active" style="grid-template-columns: 1fr; display: block; background: transparent; border: none; box-shadow: none; padding: 0;">
+        <div class="dashboard-grid">
+            <div class="dashboard-card" onclick="switchTab('vpd')" data-category="climate" data-keywords="vpd, 포차압, 대기 온도, 상대 습도, 엽온 편차, climate, humidity">
+                <div class="card-icon">🌬️</div>
+                <h3>
+                    <span class="lang-text-ko">포차 계산기 (VPD)</span>
+                    <span class="lang-text-en">Vapor Pressure Deficit (VPD)</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">대기 온도, 상대 습도 및 엽온 편차를 통해 작물의 최적 엽면 포차압(VPD)을 도출합니다.</span>
+                    <span class="lang-block-en">Calculates the optimal leaf-to-air VPD based on air temp, relative humidity, and leaf temperature offset.</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('valve')" data-category="facility" data-keywords="valve, 밸브, 난방, 혼합, 3방향, 유량, kv, piping, heating">
+                <div class="card-icon">🎛️</div>
+                <h3>
+                    <span class="lang-text-ko">난방 혼합 밸브</span>
+                    <span class="lang-text-en">Heating Mixing Valve</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">온실 난방 시스템용 3방향 혼합 밸브의 적정 Kv 용량과 추천 배관 규격(DN)을 계산합니다.</span>
+                    <span class="lang-block-en">Sizes the appropriate Kv capacity coefficient and DN pipe diameter for greenhouse 3-way mixing valves.</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('fert')" data-category="fertigation" data-keywords="fert, 양액, 희석, 비료, 배합, 중탄산, acid, 농도, ppm, nutrition">
+                <div class="card-icon">🧪</div>
+                <h3>
+                    <span class="lang-text-ko">원액 희석 계산기 (양액)</span>
+                    <span class="lang-text-en">Stock Tank Fertigation</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">목표 농도(ppm)와 탱크 용량에 따른 단용비료 실량 처방 및 중탄산 중화 산량 계산을 수행합니다.</span>
+                    <span class="lang-block-en">Calculates raw fertilizer weight compounding and acid neutralization for bicarbonate control.</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('heat-loss')" data-category="facility" data-keywords="heat loss, 열손실, 난방부하, 피복재, 외기온, u-value, greenhouse">
+                <div class="card-icon">📉</div>
+                <h3>
+                    <span class="lang-text-ko">온실 열손실 계산기</span>
+                    <span class="lang-text-en">Greenhouse Heat Loss</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">온실 피복재 종류, 바닥 면적 및 풍속 보정을 반영하여 추정 최대 난방부하를 산출합니다.</span>
+                    <span class="lang-block-en">Estimates maximum heating load based on cover materials, wind friction, and temperature delta.</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('roi')" data-category="facility" data-keywords="roi, 보일러, 히트펌프, 경제성, 에너지 비용, lpg, boiler, heat pump">
+                <div class="card-icon">📊</div>
+                <h3>
+                    <span class="lang-text-ko">보일러 vs 히트펌프 ROI</span>
+                    <span class="lang-text-en">Boiler vs Heat Pump ROI</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">연간 열부하 요구량 기준 연료별 난방 비용과 히트펌프 전환에 따른 연간 절감액을 역산합니다.</span>
+                    <span class="lang-block-en">Analyzes economic feasibility, comparing heating fuels against heat pump transition savings.</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('transpiration')" data-category="fertigation" data-keywords="transpiration, 증산량, penman, 펜맨, 광도, 풍속, 기온, pm, crop">
+                <div class="card-icon">🍃</div>
+                <h3>
+                    <span class="lang-text-ko">식물 증산량 추정기 (PM)</span>
+                    <span class="lang-text-en">Plant Transpiration (PM)</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">Penman-Monteith(펜맨-몬테이쓰) 물리 공식을 사용해 실시간 기상 데이터 기준 증산 강도를 연산합니다.</span>
+                    <span class="lang-block-en">Calculates dynamic crop transpiration rates using the biophysical Penman-Monteith model.</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('pollinator')" data-category="climate" data-keywords="pollinator, 병해충, 수분벌, 자가진단, 벌, 안전성, 복숭아혹진딧물, 응애">
+                <div class="card-icon">🐝</div>
+                <h3>
+                    <span class="lang-text-ko">병해충 자가진단 & 수분벌</span>
+                    <span class="lang-text-en">Crop Diagnosis & Bees</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">작물 및 부위별 병징 진단과 살포 약제에 대한 수분벌 안전성(REI) 및 적정 벌통 방사 밀도를 진단합니다.</span>
+                    <span class="lang-block-en">Diagnoses pest/disease symptoms and assesses insecticide bee safety intervals (REI).</span>
+                </p>
+            </div>
+            <div class="dashboard-card" onclick="switchTab('vertical')" data-category="climate" data-keywords="vertical, 수직농업, dli, 광량, led, ppfd, 일장, photoperiod">
+                <div class="card-icon">🌱</div>
+                <h3>
+                    <span class="lang-text-ko">수직농업 DLI 계산기</span>
+                    <span class="lang-text-en">Vertical Farming DLI</span>
+                </h3>
+                <p>
+                    <span class="lang-block-ko">수직 농장 재배 LED의 분광 스펙트럼 배합 비율, PPFD와 일장(Photoperiod)을 고려한 DLI 및 방열 수치를 모델링합니다.</span>
+                    <span class="lang-block-en">Calculates Daily Light Integral (DLI) and thermal outputs for vertical farm LED grow lights.</span>
+                </p>
+            </div>
         </div>
     </div>
 
     <!-- VPD SECTION -->
-    <div id="section-vpd" class="calc-wrapper active">
+    <div id="section-vpd" class="calc-wrapper">
 
         <div class="form-panel">
             <h2 class="panel-title">환경 데이터 입력</h2>
@@ -3311,8 +3479,10 @@
     function applyFilters() {
         const query = document.getElementById('calc-search').value.toLowerCase().trim();
         const tabButtons = document.querySelectorAll('.tabs .tab-btn');
+        const dashboardCards = document.querySelectorAll('.dashboard-card');
         
         tabButtons.forEach(btn => {
+            if (btn.id === 'btn-tab-dashboard') return; // Dashboard home button is always visible
             const btnCategory = btn.getAttribute('data-category');
             const btnKeywords = btn.getAttribute('data-keywords') ? btn.getAttribute('data-keywords').toLowerCase() : '';
             const btnText = btn.textContent.toLowerCase();
@@ -3327,6 +3497,26 @@
                 btn.classList.remove('hide');
             } else {
                 btn.classList.add('hide');
+            }
+        });
+
+        // Dashboard cards filtering with smooth animation
+        dashboardCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            const cardKeywords = card.getAttribute('data-keywords') ? card.getAttribute('data-keywords').toLowerCase() : '';
+            const cardText = card.textContent.toLowerCase();
+            
+            const matchesCategory = (currentCategory === 'all' || cardCategory === currentCategory);
+            const matchesQuery = (query === '' || cardKeywords.includes(query) || cardText.includes(query));
+            
+            const isBetaCard = card.classList.contains('beta-only-tab');
+            const allowedBeta = !isBetaCard || isBetaMode;
+            
+            if (matchesCategory && matchesQuery && allowedBeta) {
+                card.style.display = 'flex';
+                card.style.animation = 'fadeInCard 0.3s ease forwards';
+            } else {
+                card.style.display = 'none';
             }
         });
     }
@@ -3650,6 +3840,22 @@
                 el.style.display = 'none';
             }
         });
+
+        // Translate Dashboard tab button
+        const dashboardTab = document.getElementById('btn-tab-dashboard');
+        if (dashboardTab) {
+            dashboardTab.querySelector('.desktop-text').innerText = lang === 'ko' ? '🏠 대시보드 홈' : '🏠 Dashboard Home';
+            dashboardTab.querySelector('.mobile-text').innerText = lang === 'ko' ? '홈' : 'Home';
+        }
+
+        // Toggle Dashboard internal cards texts
+        document.querySelectorAll('.lang-text-ko').forEach(el => el.style.display = lang === 'ko' ? 'inline' : 'none');
+        document.querySelectorAll('.lang-text-en').forEach(el => el.style.display = lang === 'en' ? 'inline' : 'none');
+        document.querySelectorAll('.lang-block-ko').forEach(el => el.style.display = lang === 'ko' ? 'block' : 'none');
+        document.querySelectorAll('.lang-block-en').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
+
+        // Apply filters to sync UI
+        applyFilters();
     }
 
     // ==========================================
@@ -3760,8 +3966,13 @@
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.calc-wrapper').forEach(card => card.classList.remove('active'));
         
-        document.getElementById(`btn-tab-${target}`).classList.add('active');
-        document.getElementById(`section-${target}`).classList.add('active');
+        const targetBtn = document.getElementById(`btn-tab-${target}`);
+        const targetSec = document.getElementById(`section-${target}`);
+        if (targetBtn) targetBtn.classList.add('active');
+        if (targetSec) targetSec.classList.add('active');
+        
+        // Smooth scroll to top when changing tabs (Apple/Google style)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         
         // Google Analytics 4 Custom Event for Tab Switches
         if (typeof gtag === 'function') {
@@ -4817,10 +5028,10 @@
         const diseaseName = currentLang === 'ko' ? d.diseaseKo : d.diseaseEn;
         const remedyText = currentLang === 'ko' ? d.remedyKo : d.remedyEn;
 
-        // 약제 DB(chemicals)에서 다국어 명칭 룩업
+        // 약제 DB(pesticideDB)에서 다국어 명칭 룩업
         let chemicalNameToShow = null;
         if (d.suggestedChemical) {
-            const chemObj = chemicals.find(c => c.nameKo === d.suggestedChemical);
+            const chemObj = pesticideDB.find(c => c.nameKo === d.suggestedChemical || c.nameEn.toLowerCase() === d.suggestedChemical.toLowerCase());
             if (chemObj) {
                 chemicalNameToShow = currentLang === 'ko' ? chemObj.nameKo : chemObj.nameEn;
             } else {
