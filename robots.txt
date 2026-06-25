@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /hydroponics_calculator.html
+Disallow: /home_gardening_directory.html
 
 Sitemap: https://smartfarm.inwoovation.com/sitemap.xml
