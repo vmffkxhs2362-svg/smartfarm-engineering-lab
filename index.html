@@ -380,8 +380,8 @@
 
         .input-control-wrapper input:focus {
             outline: none;
-            border-color: var(--cyan);
-            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
             background: #ffffff;
         }
 
@@ -761,8 +761,8 @@
 
         .input-control-wrapper select:focus {
             outline: none;
-            border-color: var(--cyan);
-            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
             background: #ffffff;
         }
 
@@ -1137,22 +1137,22 @@
         /* Academic Guide Accordion Styling */
         .academic-guide.accordion {
             padding: 0;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.55);
             border: 1px solid var(--border-card);
-            border-radius: 20px;
-            margin-top: 3rem;
-            grid-column: 1 / -1;
+            border-radius: 16px;
+            margin-top: 1.5rem;
+            width: 100%;
             text-align: left;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.6);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.5);
             overflow: hidden;
             transition: all 0.3s ease;
         }
         .academic-guide.accordion.open {
             background: #ffffff;
-            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
         }
         .academic-guide .accordion-header {
-            padding: 1.2rem 1.8rem;
+            padding: 1rem 1.2rem;
             user-select: none;
             display: flex;
             justify-content: space-between;
@@ -1167,50 +1167,50 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0 1.8rem;
+            padding: 0 1.2rem;
         }
         .academic-guide.accordion.open .accordion-body {
-            max-height: 2500px;
-            padding: 1.8rem;
+            max-height: 3500px;
+            padding: 1.2rem;
             border-top: 1px solid var(--border-card);
         }
         .academic-guide h3 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.15rem;
             color: var(--text-light);
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             border-bottom: 2px solid var(--primary-glow);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.4rem;
         }
         .academic-guide h4 {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--cyan);
-            margin-top: 1.5rem;
-            margin-bottom: 0.6rem;
+            margin-top: 1.2rem;
+            margin-bottom: 0.5rem;
             font-weight: 700;
         }
         .academic-guide p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-gray);
-            line-height: 1.7;
-            margin-bottom: 1rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
         }
         .academic-guide ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            margin-left: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-gray);
-            line-height: 1.7;
+            line-height: 1.6;
         }
         .academic-guide li {
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.3rem;
         }
         .academic-guide code {
             background: rgba(15, 23, 42, 0.05);
-            padding: 0.2rem 0.4rem;
+            padding: 0.15rem 0.35rem;
             border-radius: 4px;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-light);
         }
         .academic-guide-lang {
@@ -1347,47 +1347,6 @@
                     <span id="offset-leaf-unit" class="suffix">°C</span>
                 </div>
             </div>
-        </div>
-
-        <div class="result-panel">
-            <div class="result-header">엽면 포차 (Leaf-to-Air VPD)</div>
-            
-            <!-- Dynamic Gauge SVG -->
-            <div class="gauge-svg-wrapper">
-                <svg width="200" height="110" viewBox="0 0 200 110">
-                    <defs>
-                        <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#ef4444" /> <!-- Red (dry) -->
-                            <stop offset="40%" stop-color="#f59e0b" /> <!-- Yellow -->
-                            <stop offset="60%" stop-color="#10b981" /> <!-- Green (opt) -->
-                            <stop offset="85%" stop-color="#06b6d4" /> <!-- Cyan -->
-                            <stop offset="100%" stop-color="#ef4444" /> <!-- Red (wet) -->
-                        </linearGradient>
-                    </defs>
-                    <!-- Arc (Radius 90, Center 100,100) -->
-                    <path class="gauge-meter gauge-bg" d="M 10 100 A 90 90 0 0 1 190 100" />
-                    <path id="gauge-fill-arc" class="gauge-meter gauge-fill" d="M 10 100 A 90 90 0 0 1 190 100" />
-                </svg>
-                <div id="gauge-hand" class="gauge-indicator"></div>
-                <div class="gauge-center-dot"></div>
-            </div>
-
-            <div id="vpd-value" class="big-number">0.75</div>
-            <div id="vpd-status-pill" class="status-pill optimal">최적 VPD</div>
-            
-            <p id="vpd-explanation" class="result-desc">현재 생육 단계에 완벽한 기후 조건입니다.</p>
-            
-            <div class="info-card">
-                <h4>원예 과학 팁</h4>
-                <p id="vpd-tip">적절한 엽면 VPD를 유지하는 것은 식물의 정상적인 증산 작용과 칼슘 흡수를 촉진하여 배꼽썩음병 등의 생리장해를 예방하는 데 필수적입니다.</p>
-            </div>
-            
-            <div id="vpd-actions-card" class="info-card" style="border-left: 4px solid var(--primary);">
-                <h4 id="lbl-vpd-actions-title">실시간 환경 제어 지침</h4>
-                <ul id="vpd-actions-list" style="list-style-type: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
-                    <!-- Populated dynamically -->
-                </ul>
-            </div>
 
             <!-- VPD Scientific SEO Guide Accordion -->
             <div id="vpd-academic-accordion" class="accordion academic-guide">
@@ -1442,6 +1401,47 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header">엽면 포차 (Leaf-to-Air VPD)</div>
+            
+            <!-- Dynamic Gauge SVG -->
+            <div class="gauge-svg-wrapper">
+                <svg width="200" height="110" viewBox="0 0 200 110">
+                    <defs>
+                        <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#ef4444" /> <!-- Red (dry) -->
+                            <stop offset="40%" stop-color="#f59e0b" /> <!-- Yellow -->
+                            <stop offset="60%" stop-color="#10b981" /> <!-- Green (opt) -->
+                            <stop offset="85%" stop-color="#06b6d4" /> <!-- Cyan -->
+                            <stop offset="100%" stop-color="#ef4444" /> <!-- Red (wet) -->
+                        </linearGradient>
+                    </defs>
+                    <!-- Arc (Radius 90, Center 100,100) -->
+                    <path class="gauge-meter gauge-bg" d="M 10 100 A 90 90 0 0 1 190 100" />
+                    <path id="gauge-fill-arc" class="gauge-meter gauge-fill" d="M 10 100 A 90 90 0 0 1 190 100" />
+                </svg>
+                <div id="gauge-hand" class="gauge-indicator"></div>
+                <div class="gauge-center-dot"></div>
+            </div>
+
+            <div id="vpd-value" class="big-number">0.75</div>
+            <div id="vpd-status-pill" class="status-pill optimal">최적 VPD</div>
+            
+            <p id="vpd-explanation" class="result-desc">현재 생육 단계에 완벽한 기후 조건입니다.</p>
+            
+            <div class="info-card">
+                <h4>원예 과학 팁</h4>
+                <p id="vpd-tip">적절한 엽면 VPD를 유지하는 것은 식물의 정상적인 증산 작용과 칼슘 흡수를 촉진하여 배꼽썩음병 등의 생리장해를 예방하는 데 필수적입니다.</p>
+            </div>
+            
+            <div id="vpd-actions-card" class="info-card" style="border-left: 4px solid var(--primary);">
+                <h4 id="lbl-vpd-actions-title">실시간 환경 제어 지침</h4>
+                <ul id="vpd-actions-list" style="list-style-type: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
+                    <!-- Populated dynamically -->
+                </ul>
             </div>
 
         </div>
@@ -1551,20 +1551,7 @@
                     <button type="button" class="estimator-btn" onclick="applyEstimatedLoad()" id="btn-apply-est">추정부하 입력창에 적용하기</button>
                 </div>
             </div>
-        </div>
 
-        <div class="result-panel">
-            <div class="result-header">필요 밸브 용량 계수 (Kv)</div>
-            <div id="valve-value" class="big-number">16.3</div>
-            <div id="valve-status-pill" class="status-pill optimal">사이징 계산 완료</div>
-            
-            <p id="valve-explanation" class="result-desc">유량 계산 중...</p>
-            
-            <div id="pipe-suggestion-card" class="info-card">
-                <h4>DN 배관 추천</h4>
-                <p>배관 추천 계산 중...</p>
-            </div>
-            
             <!-- Mixing Valve Engineering SEO Guide Accordion -->
             <div id="valve-academic-accordion" class="accordion academic-guide">
                 <div class="accordion-header" onclick="toggleAccordion('valve-academic-accordion')">
@@ -1622,6 +1609,20 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="result-panel">
+            <div class="result-header">필요 밸브 용량 계수 (Kv)</div>
+            <div id="valve-value" class="big-number">16.3</div>
+            <div id="valve-status-pill" class="status-pill optimal">사이징 계산 완료</div>
+            
+            <p id="valve-explanation" class="result-desc">유량 계산 중...</p>
+            
+            <div id="pipe-suggestion-card" class="info-card">
+                <h4>DN 배관 추천</h4>
+                <p>배관 추천 계산 중...</p>
+            </div>
+            
 
         </div>
     </div>
@@ -1740,6 +1741,63 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Fertigation Chemical SEO Guide Accordion -->
+            <div id="fert-academic-accordion" class="accordion academic-guide">
+                <div class="accordion-header" onclick="toggleAccordion('fert-academic-accordion')">
+                    <span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 양액 조제 가이드북 (비료 배합)</span>
+                    <span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Fertigation Guide (Fertilizer Compounding)</span>
+                    <span class="icon" style="color: var(--primary);">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <div class="academic-guide-lang" data-lang="ko">
+                        <h3>📚 수경재배(하이드로포닉스) 양액 조제를 위한 단용비료 희석 계산 및 배합 안전 가이드</h3>
+                        <p>수경재배는 토양을 사용하지 않고 작물이 필요로 하는 필수 영양 원소를 물에 녹여 공급하는 정밀 농업 기술입니다. 배양액 조제 시 각 단용비료의 성분량과 원수(Irrigation Source Water)의 화학적 특성을 완벽히 이해해야 비료 이용 효율을 극대화하고 생리 장해를 방지할 수 있습니다.</p>
+                        
+                        <h4>1. PPM 농도 및 비료 소요량 산출식</h4>
+                        <p>PPM(Parts Per Million)은 <code>mg/L</code> 단위와 동일한 물리적 의미를 지닙니다. 공급액 내 특정 비료 원소의 목표 ppm 농도를 구현하기 위해 원액탱크에 투입해야 하는 비료의 실량은 비료 내 해당 원소의 성분 함량(순도, Purity%)과 원액 희석 비율(주입 배수)에 의해 계산됩니다:</p>
+                        <ul>
+                            <li>필요 비료량: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
+                            <li>이 공식은 비료 내 순수 성분이 용해되었을 때의 질량 보존을 기반으로 유도되었으며, 분모의 10,000 인자는 퍼센트(%) 단위를 ppm의 역수로 스케일링하는 보정 상수입니다.</li>
+                        </ul>
+
+                        <h4>2. 화학적 침전 리스크와 탱크 이원화(Tank A & B) 원리</h4>
+                        <p>고농도의 원액(Stock Solution)을 조제할 때 가장 주의해야 할 물리화학적 현상은 비료 이온 간의 결합에 의한 <strong>난용성 염(침전) 생성</strong>입니다. 
+                        특히 <strong>칼슘(Ca²⁺) 이온</strong>이 <strong>황산염(SO₄²⁻) 이온</strong> 또는 <strong>인산염(H₂PO₄⁻) 이온</strong>과 고농도에서 접촉하면 백색 침전물인 석고(Calcium Sulfate, <code>CaSO_4</code>)나 인산칼슘(Calcium Phosphate)이 생성되어 배관 내부와 미세 노즐(Drip Emitter)을 물리적으로 영구 폐쇄하게 됩니다.
+                        이를 원천적으로 차단하기 위해 원액 조제 시 칼슘(질산칼슘 등)은 <strong>A탱크</strong>에, 인산과 황산계 비료(제일인산칼륨, 황산마그네슘 등)는 <strong>B탱크</strong>에 나누어 격리 조제하여 보관하며, 실제 급액 시 두 탱크의 원액을 물과 함께 100배 이상 희석한 후에 최종 결합시킵니다.</p>
+
+                        <h4>3. 원수 중탄산(HCO₃⁻) 중화 원리 및 산(Acid) dosing</h4>
+                        <p>지하수 등 원수 내부에는 탄산수소이온(중탄산, <code>HCO_3^-</code>)이 잔존하여 pH 완충 역할을 합니다. 중탄산이 과도하게 높을 경우(100 ppm 초과 시) 양액의 pH가 급격히 상승하여 철(Fe), 아연(Zn) 등 미량원소의 침전과 흡수 차단을 유발합니다. 
+                        이를 해결하기 위해 질산(<code>HNO_3</code>)이나 인산(<code>H_3PO_4</code>) 등 강산을 투입하여 중탄산을 적정 수준(50 ppm 내외)으로 파괴하고 pH를 5.5 ~ 6.5의 최적 흡수 대역으로 조정합니다. 중화 반응식은 다음과 같습니다:</p>
+                        <ul>
+                            <li><code>HCO_3^- + H^+ -> H_2O + CO_2↑</code></li>
+                        </ul>
+                    </div>
+                    <div class="academic-guide-lang" data-lang="en">
+                        <h3>📚 Fertigation Dilution Solvers and Chemical Compatibility Guidelines for Hydroponics</h3>
+                        <p>Hydroponics and fertigation require precise dosing of mineral fertilizers to establish the optimal EC and pH environment in the root zone. A deep understanding of ion dynamics, solubility margins, and source water chemistry is vital to prevent systemic plant nutrient locking and physical irrigation failures.</p>
+                        
+                        <h4>1. Volumetric Calculations for Target PPM and Fertilizer Mass</h4>
+                        <p>PPM (Parts Per Million) equals <code>mg/L</code> in metric units. The mass of fertilizer needed to achieve a target elemental concentration in a specific stock tank volume under a set injector ratio is determined by the element's mass fraction (Purity%):</p>
+                        <ul>
+                            <li>Required Fertilizer Mass: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
+                            <li>This formula derives from mass conservation, correcting for elemental weight fractions and dilution multipliers, where 10,000 is the scaling factor converting percentage purity into ppm equivalent values.</li>
+                        </ul>
+
+                        <h4>2. Solubility Limits and the Chemistry of A/B Tank Separation</h4>
+                        <p>When compounding high-concentration stock solutions (often 100x to 200x concentration), preventing ionic precipitation is the single most critical task. 
+                        Free <strong>Calcium (Ca²⁺)</strong> ions must never meet <strong>Sulfates (SO₄²⁻)</strong> or <strong>Phosphates (H₂PO₄⁻)</strong> at high concentrations. If combined, they react to form highly insoluble compounds like gypsum (calcium sulfate, <code>CaSO_4</code>) or calcium phosphate, resulting in white crystalline precipitates that clog drip emitters. 
+                        Hence, calcium sources (e.g., Calcium Nitrate) are isolated in <strong>Tank A</strong>, while phosphates and sulfates (e.g., MKP, Magnesium Sulfate) are stored in <strong>Tank B</strong>. They are only mixed downstream in the fresh water stream where concentrations are dilute enough to remain well below solubility products.</p>
+
+                        <h4>3. Alkalinity Control: Bicarbonate (HCO₃⁻) Neutralization</h4>
+                        <p>Source water alkalinity is primarily governed by bicarbonate (<code>HCO_3^-</code>) ions, which act as a pH buffer. Excessive bicarbonate (>100 ppm) maintains an alkaline root zone, reducing the bioavailability of key trace minerals like iron and manganese. 
+                        Dosing mineral acids (nitric or phosphoric acid) decomposes bicarbonates into carbon dioxide and water, stabilizing the pH in the critical absorption window of 5.5 to 6.5:</p>
+                        <ul>
+                            <li><code>HCO_3^- + H^+ -> H_2O + CO_2 (gas)</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="result-panel">
@@ -1753,65 +1811,6 @@
                 <h4>원액탱크 안전 수칙</h4>
                 <p>칼슘계 비료와 인산/황산계 비료는 화학적 침전 및 노즐 막힘을 방지하기 위해 반드시 A통과 B통으로 나누어 조제해야 합니다.</p>
             </div>
-        </div>
-        
-        <!-- Fertigation Chemical SEO Guide Accordion -->
-        <div id="fert-academic-accordion" class="accordion academic-guide">
-            <div class="accordion-header" onclick="toggleAccordion('fert-academic-accordion')">
-                <span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 양액 조제 가이드북 (비료 배합)</span>
-                <span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Fertigation Guide (Fertilizer Compounding)</span>
-                <span class="icon" style="color: var(--primary);">▼</span>
-            </div>
-            <div class="accordion-body">
-                <div class="academic-guide-lang" data-lang="ko">
-                <h3>📚 수경재배(하이드로포닉스) 양액 조제를 위한 단용비료 희석 계산 및 배합 안전 가이드</h3>
-                <p>수경재배는 토양을 사용하지 않고 작물이 필요로 하는 필수 영양 원소를 물에 녹여 공급하는 정밀 농업 기술입니다. 배양액 조제 시 각 단용비료의 성분량과 원수(Irrigation Source Water)의 화학적 특성을 완벽히 이해해야 비료 이용 효율을 극대화하고 생리 장해를 방지할 수 있습니다.</p>
-                
-                <h4>1. PPM 농도 및 비료 소요량 산출식</h4>
-                <p>PPM(Parts Per Million)은 <code>mg/L</code> 단위와 동일한 물리적 의미를 지닙니다. 공급액 내 특정 비료 원소의 목표 ppm 농도를 구현하기 위해 원액탱크에 투입해야 하는 비료의 실량은 비료 내 해당 원소의 성분 함량(순도, Purity%)과 원액 희석 비율(주입 배수)에 의해 계산됩니다:</p>
-                <ul>
-                    <li>필요 비료량: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
-                    <li>이 공식은 비료 내 순수 성분이 용해되었을 때의 질량 보존을 기반으로 유도되었으며, 분모의 10,000 인자는 퍼센트(%) 단위를 ppm의 역수로 스케일링하는 보정 상수입니다.</li>
-                </ul>
-
-                <h4>2. 화학적 침전 리스크와 탱크 이원화(Tank A & B) 원리</h4>
-                <p>고농도의 원액(Stock Solution)을 조제할 때 가장 주의해야 할 물리화학적 현상은 비료 이온 간의 결합에 의한 <strong>난용성 염(침전) 생성</strong>입니다. 
-                특히 <strong>칼슘(Ca²⁺) 이온</strong>이 <strong>황산염(SO₄²⁻) 이온</strong> 또는 <strong>인산염(H₂PO₄⁻) 이온</strong>과 고농도에서 접촉하면 백색 침전물인 석고(Calcium Sulfate, <code>CaSO_4</code>)나 인산칼슘(Calcium Phosphate)이 생성되어 배관 내부와 미세 노즐(Drip Emitter)을 물리적으로 영구 폐쇄하게 됩니다.
-                이를 원천적으로 차단하기 위해 원액 조제 시 칼슘(질산칼슘 등)은 <strong>A탱크</strong>에, 인산과 황산계 비료(제일인산칼륨, 황산마그네슘 등)는 <strong>B탱크</strong>에 나누어 격리 조제하여 보관하며, 실제 급액 시 두 탱크의 원액을 물과 함께 100배 이상 희석한 후에 최종 결합시킵니다.</p>
-
-                <h4>3. 원수 중탄산(HCO₃⁻) 중화 원리 및 산(Acid) dosing</h4>
-                <p>지하수 등 원수 내부에는 탄산수소이온(중탄산, <code>HCO_3^-</code>)이 잔존하여 pH 완충 역할을 합니다. 중탄산이 과도하게 높을 경우(100 ppm 초과 시) 양액의 pH가 급격히 상승하여 철(Fe), 아연(Zn) 등 미량원소의 침전과 흡수 차단을 유발합니다. 
-                이를 해결하기 위해 질산(<code>HNO_3</code>)이나 인산(<code>H_3PO_4</code>) 등 강산을 투입하여 중탄산을 적정 수준(50 ppm 내외)으로 파괴하고 pH를 5.5 ~ 6.5의 최적 흡수 대역으로 조정합니다. 중화 반응식은 다음과 같습니다:</p>
-                <ul>
-                    <li><code>HCO_3^- + H^+ -> H_2O + CO_2↑</code></li>
-                </ul>
-            </div>
-            <div class="academic-guide-lang" data-lang="en">
-                <h3>📚 Fertigation Dilution Solvers and Chemical Compatibility Guidelines for Hydroponics</h3>
-                <p>Hydroponics and fertigation require precise dosing of mineral fertilizers to establish the optimal EC and pH environment in the root zone. A deep understanding of ion dynamics, solubility margins, and source water chemistry is vital to prevent systemic plant nutrient locking and physical irrigation failures.</p>
-                
-                <h4>1. Volumetric Calculations for Target PPM and Fertilizer Mass</h4>
-                <p>PPM (Parts Per Million) equals <code>mg/L</code> in metric units. The mass of fertilizer needed to achieve a target elemental concentration in a specific stock tank volume under a set injector ratio is determined by the element's mass fraction (Purity%):</p>
-                <ul>
-                    <li>Required Fertilizer Mass: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
-                    <li>This formula derives from mass conservation, correcting for elemental weight fractions and dilution multipliers, where 10,000 is the scaling factor converting percentage purity into ppm equivalent values.</li>
-                </ul>
-
-                <h4>2. Solubility Limits and the Chemistry of A/B Tank Separation</h4>
-                <p>When compounding high-concentration stock solutions (often 100x to 200x concentration), preventing ionic precipitation is the single most critical task. 
-                Free <strong>Calcium (Ca²⁺)</strong> ions must never meet <strong>Sulfates (SO₄²⁻)</strong> or <strong>Phosphates (H₂PO₄⁻)</strong> at high concentrations. If combined, they react to form highly insoluble compounds like gypsum (calcium sulfate, <code>CaSO_4</code>) or calcium phosphate, resulting in white crystalline precipitates that clog drip emitters. 
-                Hence, calcium sources (e.g., Calcium Nitrate) are isolated in <strong>Tank A</strong>, while phosphates and sulfates (e.g., MKP, Magnesium Sulfate) are stored in <strong>Tank B</strong>. They are only mixed downstream in the fresh water stream where concentrations are dilute enough to remain well below solubility products.</p>
-
-                <h4>3. Alkalinity Control: Bicarbonate (HCO₃⁻) Neutralization</h4>
-                <p>Source water alkalinity is primarily governed by bicarbonate (<code>HCO_3^-</code>) ions, which act as a pH buffer. Excessive bicarbonate (>100 ppm) maintains an alkaline root zone, reducing the bioavailability of key trace minerals like iron and manganese. 
-                Dosing mineral acids (nitric or phosphoric acid) decomposes bicarbonates into carbon dioxide and water, stabilizing the pH in the critical absorption window of 5.5 to 6.5:</p>
-                <ul>
-                    <li><code>HCO_3^- + H^+ -> H_2O + CO_2 (gas)</code></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
         </div>
     </div>
 
