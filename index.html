@@ -1389,7 +1389,7 @@
                 </div>
             </div>
         </div>
-        <h1 id="header-title">스마트팜 엔지니어링 랩</h1>
+        <h1 id="header-title" onclick="resetToHome()" style="cursor: pointer; display: inline-block;">스마트팜 엔지니어링 랩</h1>
         <p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
     </header>
 
@@ -3555,6 +3555,11 @@
         document.getElementById('header-title').innerText = i18n[lang].headerTitle;
         document.getElementById('header-desc').innerText = i18n[lang].headerDesc;
         
+        const searchInput = document.getElementById('calc-search');
+        if (searchInput) {
+            searchInput.placeholder = lang === 'ko' ? '필요한 계산기나 키워드를 입력하세요... (예: VPD, 난방, 양액, DLI)' : 'Search calculators or keywords... (e.g. VPD, heating, nutrient, DLI)';
+        }
+        
         // Navigation Tabs translation
         const vpdTab = document.getElementById('btn-tab-vpd');
         vpdTab.querySelector('.desktop-text').innerText = i18n[lang].tabVpdDeskt;
@@ -3960,6 +3965,13 @@
         calculateTranspirationEngine();
         calculateDensity();
         calculateFertEngine();
+    }
+    
+    function resetToHome() {
+        const searchInput = document.getElementById('calc-search');
+        if (searchInput) searchInput.value = '';
+        filterCategory('all');
+        switchTab('dashboard');
     }
     
     function switchTab(target) {
