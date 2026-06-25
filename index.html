@@ -1134,16 +1134,45 @@
             box-shadow: 0 6px 16px rgba(2, 132, 199, 0.2);
         }
 
-        /* Academic / Scientific SEO Guides styling */
-        .academic-guide {
-            margin-top: 3rem;
-            padding: 2.5rem;
+        /* Academic Guide Accordion Styling */
+        .academic-guide.accordion {
+            padding: 0;
             background: rgba(255, 255, 255, 0.4);
             border: 1px solid var(--border-card);
             border-radius: 20px;
+            margin-top: 3rem;
             grid-column: 1 / -1;
             text-align: left;
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .academic-guide.accordion.open {
+            background: #ffffff;
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.04);
+        }
+        .academic-guide .accordion-header {
+            padding: 1.2rem 1.8rem;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .academic-guide .accordion-header:hover {
+            background: rgba(15, 23, 42, 0.02);
+        }
+        .academic-guide .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 1.8rem;
+        }
+        .academic-guide.accordion.open .accordion-body {
+            max-height: 2500px;
+            padding: 1.8rem;
+            border-top: 1px solid var(--border-card);
         }
         .academic-guide h3 {
             font-family: 'Outfit', sans-serif;
@@ -1360,51 +1389,58 @@
                 </ul>
             </div>
 
-            <!-- VPD Scientific SEO Guide -->
-            <div class="academic-guide">
-                <div class="academic-guide-lang" data-lang="ko">
-                    <h3>📚 VPD(포차압)의 원예생리학적 메커니즘과 환경 제어 가이드</h3>
-                    <p>엽면 포차압(Leaf-to-Air Vapor Pressure Deficit, VPD)은 단순한 대기 습도 지표를 넘어, 시설원예에서 식물의 증산 작용과 광합성 효율을 결정하는 핵심 환경 변수입니다. 공기가 보유할 수 있는 최대 수증기량과 실제 보유 수증기량의 차이를 압력 단위(kPa)로 표현하여 식물이 느끼는 건조도를 정밀하게 대변합니다.</p>
-                    
-                    <h4>1. VPD의 수학적 정의와 산출공식</h4>
-                    <p>VPD는 대기 온도(<code>T_air</code>)에서의 포화수증기압(<code>VPsat_air</code>)과 실제 수증기압(<code>VPact</code>)의 차이로 계산됩니다. 특히 엽면 VPD(Leaf-to-Air VPD)는 식물 잎 내부 기공(Stomata)이 수증기로 100% 포화되어 있다고 가정하고, 실제 엽온(<code>T_leaf</code>)을 기준으로 계산한 포화수증기압과 주변 대기 실제 수증기압의 편차를 구합니다. 계산 공식은 Tetens 식을 응용하여 다음과 같이 정의됩니다:</p>
-                    <ul>
-                        <li>대기 포화수증기압: <code>VPsat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3))</code> (kPa)</li>
-                        <li>대기 실제수증기압: <code>VPact = VPsat(T_air) * (RH / 100)</code> (kPa)</li>
-                        <li>엽면 VPD: <code>VPD_leaf = VPsat(T_leaf) - VPact</code> (kPa) (여기서 <code>T_leaf = T_air + Offset</code>)</li>
-                    </ul>
-
-                    <h4>2. 엽온 편차(Leaf Temperature Offset)의 생리적 가치</h4>
-                    <p>식물 잎은 활발한 증산 작용을 통해 주변 열을 흡수(증발잠열)하므로 일반적으로 대기 온도보다 1.5°C ~ 2.0°C 낮게 형성(음의 편차)됩니다. 그러나 광원에 따른 열복사 패턴의 차이로 인해 HPS(고압나트륨등) 조명은 잎에 직접적인 복사열을 가해 대기보다 엽온이 높아질 수 있으며, 복사열이 적은 LED 조명 온실에서는 엽온 편차가 상대적으로 적게 유지됩니다. 따라서 정확한 VPD 제어를 위해서는 단순 대기 측정치가 아닌 엽온 편차(Offset)를 반영한 엽면 VPD 산출이 필수적입니다.</p>
-
-                    <h4>3. 생육 단계별 최적 VPD 제어 및 생리장해 예방</h4>
-                    <ul>
-                        <li><strong>육묘 및 삽목기 (0.4 ~ 0.8 kPa)</strong>: 뿌리 발달이 완전하지 않은 생육 초기에는 증산을 억제하여 식물체의 탈수를 방지해야 합니다. 높은 습도와 낮은 VPD 관리를 통해 기공을 완만하게 열고 뿌리 생장을 유도합니다.</li>
-                        <li><strong>영양생장기 (0.8 ~ 1.1 kPa)</strong>: 이산화탄소 흡수를 위한 기공 개폐를 활성화하고, 증산 흐름을 통해 토양/배지로부터 질소, 칼륨 등의 양분 유입을 안정화합니다.</li>
-                        <li><strong>개화/착과기 및 생식생장기 (1.1 ~ 1.5 kPa)</strong>: 과도한 다습 환경은 병원균 포자의 발아를 촉진합니다. 다소 건조한 환경(높은 VPD)을 조성하여 식물의 세포벽을 튼튼하게 하고 증산을 통한 칼슘 흡수를 극대화함으로써 토마토 배꼽썩음병(Blossom-end rot)이나 상추 팁번(Tip-burn) 등의 생리 장해를 예방합니다.</li>
-                    </ul>
+            <!-- VPD Scientific SEO Guide Accordion -->
+            <div id="vpd-academic-accordion" class="accordion academic-guide">
+                <div class="accordion-header" onclick="toggleAccordion('vpd-academic-accordion')">
+                    <span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 환경 제어 가이드북 (VPD)</span>
+                    <span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Climate Control Guide (VPD)</span>
+                    <span class="icon" style="color: var(--primary);">▼</span>
                 </div>
-                <div class="academic-guide-lang" data-lang="en">
-                    <h3>📚 Horticultural Physiology of Vapor Pressure Deficit (VPD) and Climate Control</h3>
-                    <p>Vapor Pressure Deficit (VPD) is a critical climate variable in CEA (Controlled Environment Agriculture) that directly governs plant transpiration rates, nutrient uptake, and photosynthetic efficiency. Unlike Relative Humidity (RH), VPD reflects the true drying power of the air by calculating the difference between the saturation vapor pressure and actual vapor pressure in kilopascals (kPa).</p>
-                    
-                    <h4>1. Mathematical Definition and Formulas</h4>
-                    <p>VPD represents the pressure differential between the moisture inside the leaf's stomatal cavity (assumed to be 100% saturated at leaf temperature) and the surrounding air. The mathematical calculation uses the Tetens equation:</p>
-                    <ul>
-                        <li>Saturation Vapor Pressure: <code>VPsat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3))</code> (kPa)</li>
-                        <li>Actual Vapor Pressure of Air: <code>VPact = VPsat(T_air) * (RH / 100)</code> (kPa)</li>
-                        <li>Leaf-to-Air VPD: <code>VPD_leaf = VPsat(T_leaf) - VPact</code> (kPa) (where <code>T_leaf = T_air + Offset</code>)</li>
-                    </ul>
+                <div class="accordion-body">
+                    <div class="academic-guide-lang" data-lang="ko">
+                        <h3>📚 VPD(포차압)의 원예생리학적 메커니즘과 환경 제어 가이드</h3>
+                        <p>엽면 포차압(Leaf-to-Air Vapor Pressure Deficit, VPD)은 단순한 대기 습도 지표를 넘어, 시설원예에서 식물의 증산 작용과 광합성 효율을 결정하는 핵심 환경 변수입니다. 공기가 보유할 수 있는 최대 수증기량과 실제 보유 수증기량의 차이를 압력 단위(kPa)로 표현하여 식물이 느끼는 건조도를 정밀하게 대변합니다.</p>
+                        
+                        <h4>1. VPD의 수학적 정의와 산출공식</h4>
+                        <p>VPD는 대기 온도(<code>T_air</code>)에서의 포화수증기압(<code>VPsat_air</code>)과 실제 수증기압(<code>VPact</code>)의 차이로 계산됩니다. 특히 엽면 VPD(Leaf-to-Air VPD)는 식물 잎 내부 기공(Stomata)이 수증기로 100% 포화되어 있다고 가정하고, 실제 엽온(<code>T_leaf</code>)을 기준으로 계산한 포화수증기압과 주변 대기 실제 수증기압의 편차를 구합니다. 계산 공식은 Tetens 식을 응용하여 다음과 같이 정의됩니다:</p>
+                        <ul>
+                            <li>대기 포화수증기압: <code>VPsat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3))</code> (kPa)</li>
+                            <li>대기 실제수증기압: <code>VPact = VPsat(T_air) * (RH / 100)</code> (kPa)</li>
+                            <li>엽면 VPD: <code>VPD_leaf = VPsat(T_leaf) - VPact</code> (kPa) (여기서 <code>T_leaf = T_air + Offset</code>)</li>
+                        </ul>
 
-                    <h4>2. The Biophysical Role of Leaf Temperature Offset</h4>
-                    <p>Due to evaporative cooling during transpiration, active crop leaves are typically 1.5°C to 2.0°C cooler than the ambient air (negative temperature offset). However, artificial lighting heavily skews this dynamic. HPS lamps emit intensive infrared radiation, often heating the leaves above ambient temperatures, while LED lighting lacks this radiant heat, keeping the leaf temperature closer to or below the room temperature. Accounting for this Leaf Temperature Offset is crucial for high-precision climate control.</p>
+                        <h4>2. 엽온 편차(Leaf Temperature Offset)의 생리적 가치</h4>
+                        <p>식물 잎은 활발한 증산 작용을 통해 주변 열을 흡수(증발잠열)하므로 일반적으로 대기 온도보다 1.5°C ~ 2.0°C 낮게 형성(음의 편차)됩니다. 그러나 광원에 따른 열복사 패턴의 차이로 인해 HPS(고압나트륨등) 조명은 잎에 직접적인 복사열을 가해 대기보다 엽온이 높아질 수 있으며, 복사열이 적은 LED 조명 온실에서는 엽온 편차가 상대적으로 적게 유지됩니다. 따라서 정확한 VPD 제어를 위해서는 단순 대기 측정치가 아닌 엽온 편차(Offset)를 반영한 엽면 VPD 산출이 필수적입니다.</p>
 
-                    <h4>3. Target Ranges & Preventative Physiology</h4>
-                    <ul>
-                        <li><strong>Propagating & Rooting (0.4 - 0.8 kPa)</strong>: Low VPD prevents dehydration in rootless cuttings by keeping transpiration low, fostering cellular turgor and rapid rooting.</li>
-                        <li><strong>Vegetative Stage (0.8 - 1.1 kPa)</strong>: A moderate VPD keeps stomata open for optimal CO2 assimilation while ensuring a steady transpirational stream for major mobile nutrients.</li>
-                        <li><strong>Flowering & Fruiting (1.1 - 1.5 kPa)</strong>: Higher VPD rates facilitate transpirational pull for calcium, a non-mobile element essential for cell wall structure, effectively preventing blossom-end rot in tomatoes and tip-burn in leafy greens. It also suppresses fungal spore germination.</li>
-                    </ul>
+                        <h4>3. 생육 단계별 최적 VPD 제어 및 생리장해 예방</h4>
+                        <ul>
+                            <li><strong>육묘 및 삽목기 (0.4 ~ 0.8 kPa)</strong>: 뿌리 발달이 완전하지 않은 생육 초기에는 증산을 억제하여 식물체의 탈수를 방지해야 합니다. 높은 습도와 낮은 VPD 관리를 통해 기공을 완만하게 열고 뿌리 생장을 유도합니다.</li>
+                            <li><strong>영양생장기 (0.8 ~ 1.1 kPa)</strong>: 이산화탄소 흡수를 위한 기공 개폐를 활성화하고, 증산 흐름을 통해 토양/배지로부터 질소, 칼륨 등의 양분 유입을 안정화합니다.</li>
+                            <li><strong>개화/착과기 및 생식생장기 (1.1 ~ 1.5 kPa)</strong>: 과도한 다습 환경은 병원균 포자의 발아를 촉진합니다. 다소 건조한 환경(높은 VPD)을 조성하여 식물의 세포벽을 튼튼하게 하고 증산을 통한 칼슘 흡수를 극대화함으로써 토마토 배꼽썩음병(Blossom-end rot)이나 상추 팁번(Tip-burn) 등의 생리 장해를 예방합니다.</li>
+                        </ul>
+                    </div>
+                    <div class="academic-guide-lang" data-lang="en">
+                        <h3>📚 Horticultural Physiology of Vapor Pressure Deficit (VPD) and Climate Control</h3>
+                        <p>Vapor Pressure Deficit (VPD) is a critical climate variable in CEA (Controlled Environment Agriculture) that directly governs plant transpiration rates, nutrient uptake, and photosynthetic efficiency. Unlike Relative Humidity (RH), VPD reflects the true drying power of the air by calculating the difference between the saturation vapor pressure and actual vapor pressure in kilopascals (kPa).</p>
+                        
+                        <h4>1. Mathematical Definition and Formulas</h4>
+                        <p>VPD represents the pressure differential between the moisture inside the leaf's stomatal cavity (assumed to be 100% saturated at leaf temperature) and the surrounding air. The mathematical calculation uses the Tetens equation:</p>
+                        <ul>
+                            <li>Saturation Vapor Pressure: <code>VPsat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3))</code> (kPa)</li>
+                            <li>Actual Vapor Pressure of Air: <code>VPact = VPsat(T_air) * (RH / 100)</code> (kPa)</li>
+                            <li>Leaf-to-Air VPD: <code>VPD_leaf = VPsat(T_leaf) - VPact</code> (kPa) (where <code>T_leaf = T_air + Offset</code>)</li>
+                        </ul>
+
+                        <h4>2. The Biophysical Role of Leaf Temperature Offset</h4>
+                        <p>Due to evaporative cooling during transpiration, active crop leaves are typically 1.5°C to 2.0°C cooler than the ambient air (negative temperature offset). However, artificial lighting heavily skews this dynamic. HPS lamps emit intensive infrared radiation, often heating the leaves above ambient temperatures, while LED lighting lacks this radiant heat, keeping the leaf temperature closer to or below the room temperature. Accounting for this Leaf Temperature Offset is crucial for high-precision climate control.</p>
+
+                        <h4>3. Target Ranges & Preventative Physiology</h4>
+                        <ul>
+                            <li><strong>Propagating & Rooting (0.4 - 0.8 kPa)</strong>: Low VPD prevents dehydration in rootless cuttings by keeping transpiration low, fostering cellular turgor and rapid rooting.</li>
+                            <li><strong>Vegetative Stage (0.8 - 1.1 kPa)</strong>: A moderate VPD keeps stomata open for optimal CO2 assimilation while ensuring a steady transpirational stream for major mobile nutrients.</li>
+                            <li><strong>Flowering & Fruiting (1.1 - 1.5 kPa)</strong>: Higher VPD rates facilitate transpirational pull for calcium, a non-mobile element essential for cell wall structure, effectively preventing blossom-end rot in tomatoes and tip-burn in leafy greens. It also suppresses fungal spore germination.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -1529,54 +1565,61 @@
                 <p>배관 추천 계산 중...</p>
             </div>
             
-            <!-- Mixing Valve Engineering SEO Guide -->
-            <div class="academic-guide">
-                <div class="academic-guide-lang" data-lang="ko">
-                    <h3>📚 온실 온수 난방 설계에서 3방향 혼합 밸브 사이징(Kv) 및 배관 유압 공학 가이드</h3>
-                    <p>시설원예 및 스마트팜 온실의 난방 시스템은 주로 온수를 순환하는 배관망과 3방향 혼합 밸브(3-way Mixing Valve)를 이용하여 내부 온도를 미세하게 조절합니다. 최적의 유압적 안정성과 제어성능을 확보하기 위해서는 열부하를 정확히 유량으로 환산하고 이에 적합한 밸브 용량 계수(Kv)를 산정하는 유압 사이징이 필수적입니다.</p>
-                    
-                    <h4>1. Kv 계수의 정의와 수리학적 해석</h4>
-                    <p>밸브 용량 계수 <code>Kv</code>는 온도가 5°C에서 40°C 사이인 물이 밸브를 통과하면서 <strong>1 bar(100 kPa)</strong>의 압력 손실(차압)이 발생할 때 흐르는 시간당 부피 유량(m³/h)으로 정의됩니다. 미국식 규격인 Cv 계수와는 <code>Cv = 1.156 * Kv</code>의 상관성을 가집니다. 계산 수식은 다음과 같습니다:</p>
-                    <ul>
-                        <li><code>Kv = Q / sqrt(ΔPv)</code></li>
-                        <li>여기서 <code>Q</code>는 온수 체적 유량 (m³/h), <code>ΔPv</code>는 밸브에 걸리는 설계 차압 (bar) 입니다.</li>
-                    </ul>
-
-                    <h4>2. 밸브 권한비(Valve Authority)와 압력강하 설계 기준</h4>
-                    <p>온실 난방 제어가 안정적으로 이루어지려면 혼합 밸브가 전체 유압 루프의 압력 변화를 능동적으로 지배해야 합니다. 이를 지표화한 것이 <strong>밸브 권한비(N)</strong>로, 전체 순환 계통의 총 압력손실(배관+피팅+온실 방열관+밸브) 중 밸브가 차지하는 차압의 비율입니다. 권한비가 너무 낮으면(N &lt; 0.25) 밸브가 열리기 시작해도 유량 변화가 일어나지 않아 제어가 헌팅(Hunting)하는 불안정 현상이 발생합니다. 
-                    따라서 혼합 밸브 설계 시 <strong>10 ~ 15 kPa (0.1 ~ 0.15 bar)</strong>의 목표 밸브 차압을 설정하여, 밸브가 충분한 제어 마진(N = 0.25 ~ 0.50)을 가질 수 있도록 규격을 설계합니다.</p>
-
-                    <h4>3. 온실 열부하에 의한 유량 산출 및 배관 구경(DN) 설계</h4>
-                    <p>온실 면적과 열관류율에 의해 결정된 총 난방 요구 열부하(<code>P</code>, kW)를 온수 루프로 전달하기 위한 필요 유량은 에너지 평형 방정식에 의해 유도됩니다:</p>
-                    <ul>
-                        <li>체적 유량 <code>Q = P / (C * ρ * ΔT) * 3600</code> (m³/h)</li>
-                        <li>비열 <code>C = 4.186 kJ/kg·K</code>, 밀도 <code>ρ = 980 kg/m³</code> (평균 80°C 온수 기준), 물의 엔탈피 변화율을 적용한 약식 산정식: <code>Q = (P * 0.86) / ΔT</code></li>
-                        <li>여기서 <code>ΔT</code>는 공급수와 환수 간의 설계 온도차(보통 15°C ~ 20°C 적용)입니다.</li>
-                    </ul>
-                    <p>계산된 유량을 바탕으로 온실 주배관의 이송관 유속을 **0.5 m/s ~ 1.0 m/s** 범위로 제한하여 배관 구경(DN, Nominal Diameter)을 결정하며, 이를 통해 압력 손실 및 마찰 소음을 억제합니다.</p>
+            <!-- Mixing Valve Engineering SEO Guide Accordion -->
+            <div id="valve-academic-accordion" class="accordion academic-guide">
+                <div class="accordion-header" onclick="toggleAccordion('valve-academic-accordion')">
+                    <span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 배관 설계 가이드북 (혼합 밸브)</span>
+                    <span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Piping Sizing Guide (Mixing Valve)</span>
+                    <span class="icon" style="color: var(--primary);">▼</span>
                 </div>
-                <div class="academic-guide-lang" data-lang="en">
-                    <h3>📚 Hydraulic Engineering of 3-Way Mixing Valves (Kv) and Pipe Sizing in Greenhouse Heating</h3>
-                    <p>Modern commercial greenhouses utilize hot water circulating through pipe rail networks to maintain thermal homogeneity. A 3-way mixing valve acts as the central control actuator, blending high-temperature boiler supply water with cooler return water. Precise valve sizing (Kv calculations) is paramount to prevent control loop instability and system hunting.</p>
-                    
-                    <h4>1. Definition and Physical Derivation of Kv Value</h4>
-                    <p>The flow coefficient <code>Kv</code> is defined as the volume rate of water in cubic meters per hour (m³/h) that will flow through the mixing valve at a temperature between 5°C and 40°C with a pressure drop of exactly <strong>1 bar (100 kPa)</strong>. It is related to the American Cv index via the coefficient <code>Cv = 1.156 * Kv</code>. The governing hydraulic equation is:</p>
-                    <ul>
-                        <li><code>Kv = Q / sqrt(ΔPv)</code></li>
-                        <li>Where <code>Q</code> is the volumetric flow rate (m³/h) and <code>ΔPv</code> is the design pressure drop across the valve (bar).</li>
-                    </ul>
+                <div class="accordion-body">
+                    <div class="academic-guide-lang" data-lang="ko">
+                        <h3>📚 온실 온수 난방 설계에서 3방향 혼합 밸브 사이징(Kv) 및 배관 유압 공학 가이드</h3>
+                        <p>시설원예 및 스마트팜 온실의 난방 시스템은 주로 온수를 순환하는 배관망과 3방향 혼합 밸브(3-way Mixing Valve)를 이용하여 내부 온도를 미세하게 조절합니다. 최적의 유압적 안정성과 제어성능을 확보하기 위해서는 열부하를 정확히 유량으로 환산하고 이에 적합한 밸브 용량 계수(Kv)를 산정하는 유압 사이징이 필수적입니다.</p>
+                        
+                        <h4>1. Kv 계수의 정의와 수리학적 해석</h4>
+                        <p>밸브 용량 계수 <code>Kv</code>는 온도가 5°C에서 40°C 사이인 물이 밸브를 통과하면서 <strong>1 bar(100 kPa)</strong>의 압력 손실(차압)이 발생할 때 흐르는 시간당 부피 유량(m³/h)으로 정의됩니다. 미국식 규격인 Cv 계수와는 <code>Cv = 1.156 * Kv</code>의 상관성을 가집니다. 계산 수식은 다음과 같습니다:</p>
+                        <ul>
+                            <li><code>Kv = Q / sqrt(ΔPv)</code></li>
+                            <li>여기서 <code>Q</code>는 온수 체적 유량 (m³/h), <code>ΔPv</code>는 밸브에 걸리는 설계 차압 (bar) 입니다.</li>
+                        </ul>
 
-                    <h4>2. Valve Authority (N) and Dynamic Pressure Management</h4>
-                    <p>For high-fidelity modulation of temperature, the mixing valve must hold dynamic authority over the hydraulic circuit. <strong>Valve Authority (N)</strong> is defined as the ratio of the valve pressure drop to the total dynamic pressure drop of the system at maximum flow. If the valve is undersized or oversized, causing the authority to drop below 0.25, the valve loses its linear flow characteristics, causing temperature oscillations (hunting). Designing mixing valves for a target pressure drop of <strong>10 to 15 kPa (0.10 to 0.15 bar)</strong> secures a healthy authority margin (0.25 to 0.50).</p>
+                        <h4>2. 밸브 권한비(Valve Authority)와 압력강하 설계 기준</h4>
+                        <p>온실 난방 제어가 안정적으로 이루어지려면 혼합 밸브가 전체 유압 루프의 압력 변화를 능동적으로 지배해야 합니다. 이를 지표화한 것이 <strong>밸브 권한비(N)</strong>로, 전체 순환 계통의 총 압력손실(배관+피팅+온실 방열관+밸브) 중 밸브가 차지하는 차압의 비율입니다. 권한비가 너무 낮으면(N &lt; 0.25) 밸브가 열리기 시작해도 유량 변화가 일어나지 않아 제어가 헌팅(Hunting)하는 불안정 현상이 발생합니다. 
+                        따라서 혼합 밸브 설계 시 <strong>10 ~ 15 kPa (0.1 ~ 0.15 bar)</strong>의 목표 밸브 차압을 설정하여, 밸브가 충분한 제어 마진(N = 0.25 ~ 0.50)을 가질 수 있도록 규격을 설계합니다.</p>
 
-                    <h4>3. Volumetric Flow Rate Estimation and Pipe Nominal Diameter (DN)</h4>
-                    <p>The required mass flow rate of hot water to deliver the peak heating load (<code>P</code>, kW) to the greenhouse is calculated using the thermodynamic heat exchange formula:</p>
-                    <ul>
-                        <li>Volumetric Flow Rate: <code>Q = P / (C * ρ * ΔT) * 3600</code> (m³/h)</li>
-                        <li>Using water heat capacity parameters (specific heat <code>C = 4.186 kJ/kg·K</code>), this approximates to: <code>Q = (P * 0.86) / ΔT</code></li>
-                        <li>Where <code>ΔT</code> is the designed temperature delta between supply and return pipes (typically 15K to 20K).</li>
-                    </ul>
-                    <p>Once flow rate is solved, piping nominal diameters (DN) are sized to maintain fluid velocities within the erosion and friction boundary of **0.5 m/s to 1.0 m/s** to ensure quiet, energy-efficient circulation.</p>
+                        <h4>3. 온실 열부하에 의한 유량 산출 및 배관 구경(DN) 설계</h4>
+                        <p>온실 면적과 열관류율에 의해 결정된 총 난방 요구 열부하(<code>P</code>, kW)를 온수 루프로 전달하기 위한 필요 유량은 에너지 평형 방정식에 의해 유도됩니다:</p>
+                        <ul>
+                            <li>체적 유량 <code>Q = P / (C * ρ * ΔT) * 3600</code> (m³/h)</li>
+                            <li>비열 <code>C = 4.186 kJ/kg·K</code>, 밀도 <code>ρ = 980 kg/m³</code> (평균 80°C 온수 기준), 물의 엔탈피 변화율을 적용한 약식 산정식: <code>Q = (P * 0.86) / ΔT</code></li>
+                            <li>여기서 <code>ΔT</code>는 공급수와 환수 간의 설계 온도차(보통 15°C ~ 20°C 적용)입니다.</li>
+                        </ul>
+                        <p>계산된 유량을 바탕으로 온실 주배관의 이송관 유속을 **0.5 m/s ~ 1.0 m/s** 범위로 제한하여 배관 구경(DN, Nominal Diameter)을 결정하며, 이를 통해 압력 손실 및 마찰 소음을 억제합니다.</p>
+                    </div>
+                    <div class="academic-guide-lang" data-lang="en">
+                        <h3>📚 Hydraulic Engineering of 3-Way Mixing Valves (Kv) and Pipe Sizing in Greenhouse Heating</h3>
+                        <p>Modern commercial greenhouses utilize hot water circulating through pipe rail networks to maintain thermal homogeneity. A 3-way mixing valve acts as the central control actuator, blending high-temperature boiler supply water with cooler return water. Precise valve sizing (Kv calculations) is paramount to prevent control loop instability and system hunting.</p>
+                        
+                        <h4>1. Definition and Physical Derivation of Kv Value</h4>
+                        <p>The flow coefficient <code>Kv</code> is defined as the volume rate of water in cubic meters per hour (m³/h) that will flow through the mixing valve at a temperature between 5°C and 40°C with a pressure drop of exactly <strong>1 bar (100 kPa)</strong>. It is related to the American Cv index via the coefficient <code>Cv = 1.156 * Kv</code>. The governing hydraulic equation is:</p>
+                        <ul>
+                            <li><code>Kv = Q / sqrt(ΔPv)</code></li>
+                            <li>Where <code>Q</code> is the volumetric flow rate (m³/h) and <code>ΔPv</code> is the design pressure drop across the valve (bar).</li>
+                        </ul>
+
+                        <h4>2. Valve Authority (N) and Dynamic Pressure Management</h4>
+                        <p>For high-fidelity modulation of temperature, the mixing valve must hold dynamic authority over the hydraulic circuit. <strong>Valve Authority (N)</strong> is defined as the ratio of the valve pressure drop to the total dynamic pressure drop of the system at maximum flow. If the valve is undersized or oversized, causing the authority to drop below 0.25, the valve loses its linear flow characteristics, causing temperature oscillations (hunting). Designing mixing valves for a target pressure drop of <strong>10 to 15 kPa (0.10 to 0.15 bar)</strong> secures a healthy authority margin (0.25 to 0.50).</p>
+
+                        <h4>3. Volumetric Flow Rate Estimation and Pipe Nominal Diameter (DN)</h4>
+                        <p>The required mass flow rate of hot water to deliver the peak heating load (<code>P</code>, kW) to the greenhouse is calculated using the thermodynamic heat exchange formula:</p>
+                        <ul>
+                            <li>Volumetric Flow Rate: <code>Q = P / (C * ρ * ΔT) * 3600</code> (m³/h)</li>
+                            <li>Using water heat capacity parameters (specific heat <code>C = 4.186 kJ/kg·K</code>), this approximates to: <code>Q = (P * 0.86) / ΔT</code></li>
+                            <li>Where <code>ΔT</code> is the designed temperature delta between supply and return pipes (typically 15K to 20K).</li>
+                        </ul>
+                        <p>Once flow rate is solved, piping nominal diameters (DN) are sized to maintain fluid velocities within the erosion and friction boundary of **0.5 m/s to 1.0 m/s** to ensure quiet, energy-efficient circulation.</p>
+                    </div>
                 </div>
             </div>
 
@@ -1712,9 +1755,15 @@
             </div>
         </div>
         
-        <!-- Fertigation Chemical SEO Guide -->
-        <div class="academic-guide">
-            <div class="academic-guide-lang" data-lang="ko">
+        <!-- Fertigation Chemical SEO Guide Accordion -->
+        <div id="fert-academic-accordion" class="accordion academic-guide">
+            <div class="accordion-header" onclick="toggleAccordion('fert-academic-accordion')">
+                <span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 양액 조제 가이드북 (비료 배합)</span>
+                <span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Fertigation Guide (Fertilizer Compounding)</span>
+                <span class="icon" style="color: var(--primary);">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="academic-guide-lang" data-lang="ko">
                 <h3>📚 수경재배(하이드로포닉스) 양액 조제를 위한 단용비료 희석 계산 및 배합 안전 가이드</h3>
                 <p>수경재배는 토양을 사용하지 않고 작물이 필요로 하는 필수 영양 원소를 물에 녹여 공급하는 정밀 농업 기술입니다. 배양액 조제 시 각 단용비료의 성분량과 원수(Irrigation Source Water)의 화학적 특성을 완벽히 이해해야 비료 이용 효율을 극대화하고 생리 장해를 방지할 수 있습니다.</p>
                 
@@ -1761,6 +1810,7 @@
                 </ul>
             </div>
         </div>
+    </div>
 
         </div>
     </div>
