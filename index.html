@@ -229,6 +229,92 @@
             display: none;
         }
 
+        /* Search & Category Filter Navigation */
+        .nav-control-panel {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 1.5rem auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box-wrapper .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .search-box-wrapper input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid var(--border-card);
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            border-radius: 14px;
+            color: var(--text-light);
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .search-box-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
+            background: #ffffff;
+        }
+
+        .category-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+
+        .chip {
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid var(--border-card);
+            color: var(--text-gray);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chip:hover {
+            color: var(--text-light);
+            background: rgba(15, 23, 42, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: var(--text-dark);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+        }
+
+        .tab-btn.hide {
+            display: none !important;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1.5rem 0.8rem;
@@ -1240,51 +1326,64 @@
         <p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
     </header>
 
+    <!-- Search & Category Filter Navigation -->
+    <div class="nav-control-panel">
+        <div class="search-box-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="calc-search" oninput="filterCalculators()" placeholder="필요한 계산기나 키워드를 입력하세요... (예: VPD, 난방, 양액, DLI)">
+        </div>
+        <div class="category-chips">
+            <button class="chip active" onclick="filterCategory('all')" id="chip-all">전체 (All)</button>
+            <button class="chip" onclick="filterCategory('climate')" id="chip-climate">기후/환경 (Climate)</button>
+            <button class="chip" onclick="filterCategory('facility')" id="chip-facility">설비/에너지 (Facility)</button>
+            <button class="chip" onclick="filterCategory('fertigation')" id="chip-fertigation">양액/생리 (Nutrient)</button>
+            <button id="chip-beta" class="chip beta-only-chip" onclick="filterCategory('beta')" style="display: none; border-color: rgba(245, 158, 11, 0.3); color: var(--warning);">베타 검토 (Beta)</button>
+        </div>
+    </div>
+
     <!-- Navigation Tabs -->
     <div class="tabs-container">
         <div class="tabs">
-            <button id="btn-tab-vpd" class="tab-btn active" onclick="switchTab('vpd')">
+            <button id="btn-tab-vpd" class="tab-btn active" onclick="switchTab('vpd')" data-category="climate" data-keywords="vpd, 포차압, 대기 온도, 상대 습도, 엽온 편차, climate, humidity">
                 <span class="desktop-text">포차 계산기 (VPD)</span>
                 <span class="mobile-text">VPD</span>
             </button>
-            <button id="btn-tab-valve" class="tab-btn" onclick="switchTab('valve')">
+            <button id="btn-tab-valve" class="tab-btn" onclick="switchTab('valve')" data-category="facility" data-keywords="valve, 밸브, 난방, 혼합, 3방향, 유량, kv, piping, heating">
                 <span class="desktop-text">난방 혼합 밸브</span>
                 <span class="mobile-text">혼합 밸브</span>
             </button>
-            <button id="btn-tab-fert" class="tab-btn" onclick="switchTab('fert')">
+            <button id="btn-tab-fert" class="tab-btn" onclick="switchTab('fert')" data-category="fertigation" data-keywords="fert, 양액, 희석, 비료, 배합, 중탄산, acid, 농도, ppm, nutrition">
                 <span class="desktop-text">원액 희석 계산기 (양액)</span>
                 <span class="mobile-text">양액 희석</span>
             </button>
-            <button id="btn-tab-heat-loss" class="tab-btn" onclick="switchTab('heat-loss')">
+            <button id="btn-tab-heat-loss" class="tab-btn" onclick="switchTab('heat-loss')" data-category="facility" data-keywords="heat loss, 열손실, 난방부하, 피복재, 외기온, u-value, greenhouse">
                 <span class="desktop-text">온실 열손실 계산기</span>
                 <span class="mobile-text">열손실</span>
             </button>
-            <button id="btn-tab-roi" class="tab-btn" onclick="switchTab('roi')">
+            <button id="btn-tab-roi" class="tab-btn" onclick="switchTab('roi')" data-category="facility" data-keywords="roi, 보일러, 히트펌프, 경제성, 에너지 비용, lpg, boiler, heat pump">
                 <span class="desktop-text">보일러 vs 히트펌프 ROI</span>
                 <span class="mobile-text">난방 ROI</span>
             </button>
-            <button id="btn-tab-transpiration" class="tab-btn" onclick="switchTab('transpiration')">
+            <button id="btn-tab-transpiration" class="tab-btn" onclick="switchTab('transpiration')" data-category="fertigation" data-keywords="transpiration, 증산량, penman, 펜맨, 광도, 풍속, 기온, pm, crop">
                 <span class="desktop-text">식물 증산량 추정기 (PM)</span>
                 <span class="mobile-text">증산량 (PM)</span>
             </button>
-            <button id="btn-tab-pollinator" class="tab-btn" onclick="switchTab('pollinator')" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer;">
+            <button id="btn-tab-pollinator" class="tab-btn" onclick="switchTab('pollinator')" data-category="climate" data-keywords="pollinator, 병해충, 수분벌, 자가진단, 벌, 안전성, 복숭아혹진딧물, 응애" style="background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer;">
                 <span class="desktop-text">🐝 병해충 자가진단 & 수분벌</span>
                 <span class="mobile-text">🐝 병해충/벌</span>
             </button>
-            <button id="btn-tab-vertical" class="tab-btn" onclick="switchTab('vertical')" style="background: rgba(168, 85, 247, 0.15); color: #8b5cf6; border: 1px solid rgba(168, 85, 247, 0.3); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer;">
+            <button id="btn-tab-vertical" class="tab-btn" onclick="switchTab('vertical')" data-category="climate" data-keywords="vertical, 수직농업, dli, 광량, led, ppfd, 일장, photoperiod" style="background: rgba(168, 85, 247, 0.15); color: #8b5cf6; border: 1px solid rgba(168, 85, 247, 0.3); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer;">
                 <span class="desktop-text">🌱 수직농업 DLI 계산기</span>
                 <span class="mobile-text">🌱 수직농업</span>
             </button>
-            <!-- [Beta / Under Review]
-            <button id="btn-tab-hydrocal" class="tab-btn" onclick="location.href='hydroponics_calculator.html'" style="background: rgba(16, 185, 129, 0.1); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.2); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer;">
+            <button id="btn-tab-hydrocal" class="tab-btn beta-only-tab" onclick="location.href='hydroponics_calculator.html'" data-category="beta" data-keywords="hydrocal, 양액 처방, 질소, 인, 칼륨, 칼슘, 마그네슘, 처방전, 하이드로칼" style="background: rgba(16, 185, 129, 0.1); color: var(--primary); border: 1px solid rgba(16, 185, 129, 0.2); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer; display: none;">
                 <span class="desktop-text">📊 정밀 양액 처방 (HydroCal)</span>
                 <span class="mobile-text">📊 정밀양액</span>
             </button>
-            <button id="btn-tab-greenpocket" class="tab-btn" onclick="location.href='home_gardening_directory.html'" style="background: rgba(2, 132, 199, 0.1); color: var(--cyan); border: 1px solid rgba(2, 132, 199, 0.2); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer;">
+            <button id="btn-tab-greenpocket" class="tab-btn beta-only-tab" onclick="location.href='home_gardening_directory.html'" data-category="beta" data-keywords="greenpocket, 홈가드닝, 자재, 추천, 비료, 화분, 흙, 영양제, 그린포켓" style="background: rgba(2, 132, 199, 0.1); color: var(--cyan); border: 1px solid rgba(2, 132, 199, 0.2); font-size: 0.95rem; border-radius: 100px; padding: 0.8rem 1.8rem; cursor: pointer; display: none;">
                 <span class="desktop-text">🛍️ 홈가드닝 자재 추천 (GreenPocket)</span>
                 <span class="mobile-text">🛍️ 홈가드닝</span>
             </button>
-            -->
         </div>
     </div>
 
@@ -3186,6 +3285,67 @@
 
     let currentLang = 'ko';
     let currentUnit = localStorage.getItem('smartfarm_unit') || 'metric';
+    let currentCategory = 'all';
+    let isBetaMode = false;
+
+    // 실시간 검색 및 카테고리 필터링 엔진
+    function filterCategory(category) {
+        currentCategory = category;
+        document.querySelectorAll('.category-chips .chip').forEach(chip => {
+            chip.classList.remove('active');
+        });
+        
+        if (category === 'all') document.getElementById('chip-all').classList.add('active');
+        else if (category === 'climate') document.getElementById('chip-climate').classList.add('active');
+        else if (category === 'facility') document.getElementById('chip-facility').classList.add('active');
+        else if (category === 'fertigation') document.getElementById('chip-fertigation').classList.add('active');
+        else if (category === 'beta') document.getElementById('chip-beta').classList.add('active');
+        
+        applyFilters();
+    }
+
+    function filterCalculators() {
+        applyFilters();
+    }
+
+    function applyFilters() {
+        const query = document.getElementById('calc-search').value.toLowerCase().trim();
+        const tabButtons = document.querySelectorAll('.tabs .tab-btn');
+        
+        tabButtons.forEach(btn => {
+            const btnCategory = btn.getAttribute('data-category');
+            const btnKeywords = btn.getAttribute('data-keywords') ? btn.getAttribute('data-keywords').toLowerCase() : '';
+            const btnText = btn.textContent.toLowerCase();
+            
+            const matchesCategory = (currentCategory === 'all' || btnCategory === currentCategory);
+            const matchesQuery = (query === '' || btnKeywords.includes(query) || btnText.includes(query));
+            
+            const isBetaTab = btn.classList.contains('beta-only-tab');
+            const allowedBeta = !isBetaTab || isBetaMode;
+            
+            if (matchesCategory && matchesQuery && allowedBeta) {
+                btn.classList.remove('hide');
+            } else {
+                btn.classList.add('hide');
+            }
+        });
+    }
+
+    function checkBetaMode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'beta' || urlParams.get('dev') === 'true') {
+            isBetaMode = true;
+            document.querySelectorAll('.beta-only-tab').forEach(tab => {
+                tab.style.display = 'inline-block';
+            });
+            const betaChip = document.getElementById('chip-beta');
+            if (betaChip) betaChip.style.display = 'inline-block';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        checkBetaMode();
+    });
 
     function changeLanguage(lang) {
         currentLang = lang;
