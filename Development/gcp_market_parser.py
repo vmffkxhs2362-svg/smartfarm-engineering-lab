@@ -66,7 +66,7 @@ def hello_http(request):
         # 3. Build Market Data
         markets = {
             "EU": {
-                "name": "European Union (NL/ES)",
+                "name": "European Union (Germany Proxy / NL TTF)",
                 "currency": "EUR",
                 "datasets": {
                     "tomato": {"name": "Tomato (Round)", "unit": "€/kg", "color": "#ef4444", "data": get_dummy_trend(2.40, 0.05)},
