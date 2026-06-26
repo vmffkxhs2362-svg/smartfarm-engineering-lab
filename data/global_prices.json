@@ -2,7 +2,7 @@
   "last_updated": "2026-06-26 12:43:20 UTC",
   "markets": {
     "EU": {
-      "name": "European Union (NL/ES)",
+      "name": "European Union (Germany Wholesale Proxy)",
       "currency": "EUR",
       "datasets": {
         "tomato": {
@@ -5874,7 +5874,7 @@
           ]
         },
         "natural_gas": {
-          "name": "Natural Gas (TTF)",
+          "name": "Natural Gas",
           "unit": "\u20ac/MWh",
           "color": "#3b82f6",
           "data": [

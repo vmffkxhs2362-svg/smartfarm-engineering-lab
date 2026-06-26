@@ -66,14 +66,14 @@ def hello_http(request):
         # 3. Build Market Data
         markets = {
             "EU": {
-                "name": "European Union (Germany Proxy / NL TTF)",
+                "name": "European Union (Germany Wholesale Proxy)",
                 "currency": "EUR",
                 "datasets": {
                     "tomato": {"name": "Tomato (Round)", "unit": "€/kg", "color": "#ef4444", "data": get_dummy_trend(2.40, 0.05)},
                     "cucumber": {"name": "Cucumber", "unit": "€/kg", "color": "#10b981", "data": get_dummy_trend(1.20, 0.02)},
                     "pepper": {"name": "Sweet Pepper", "unit": "€/kg", "color": "#eab308", "data": get_dummy_trend(3.10, 0.08)},
                     "strawberry": {"name": "Strawberry", "unit": "€/kg", "color": "#f43f5e", "data": get_dummy_trend(6.50, 0.15)},
-                    "natural_gas": {"name": "Natural Gas (TTF)", "unit": "€/MWh", "color": "#3b82f6", "data": get_dummy_trend(35.0, 1.0)}
+                    "natural_gas": {"name": "Natural Gas", "unit": "€/MWh", "color": "#3b82f6", "data": get_dummy_trend(35.0, 1.0)}
                 }
             },
             "US": {

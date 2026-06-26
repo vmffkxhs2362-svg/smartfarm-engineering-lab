@@ -121,48 +121,19 @@
 </div></div><div class="calc-wrapper active" id="section-dashboard" style="grid-template-columns: 1fr; display: block; background: transparent; border: none; box-shadow: none; padding: 0;">
 
         <!-- Global Market Dashboard Section -->
-        <div class="market-dashboard-embedded" style="margin-bottom: 3rem;">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #facc15;">🌍 Global Agri-Market Index</h2>
-                <p style="color: var(--text-secondary);">Real-time tracking of wholesale prices across major global markets.</p>
-                <div class="last-updated" id="update-timestamp" style="display: inline-block; background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 500; margin-top: 1rem;">Loading latest data...</div>
-            </div>
-
-            <div class="controls-container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--surface-light); padding: 1rem; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-                <div class="toggle-group" id="region-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
-                    <button class="toggle-btn active" data-region="EU" onclick="setRegion('EU')" style="background: #3b82f6; border: none; color: white; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇪🇺 EU (DE)</button>
-                    <button class="toggle-btn" data-region="US" onclick="setRegion('US')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇺🇸 US</button>
-                    <button class="toggle-btn" data-region="MX" onclick="setRegion('MX')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇲🇽 Mexico</button>
-                </div>
-                
-                <div class="toggle-group" id="time-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
-                    <button class="toggle-btn" data-days="7" onclick="setTimeframe(7)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1W</button>
-                    <button class="toggle-btn active" data-days="30" onclick="setTimeframe(30)" style="background: #3b82f6; border: none; color: white; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1M</button>
-                    <button class="toggle-btn" data-days="90" onclick="setTimeframe(90)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">3M</button>
-                    <button class="toggle-btn" data-days="365" onclick="setTimeframe(365)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1Y</button>
-                </div>
-            </div>
-
-            <div class="metrics-grid" id="metrics-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;"></div>
-
-            <div class="chart-container" style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-                <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;" id="agri-chart-title">🍅 Agricultural Commodities</div>
-                <canvas id="agriChart" height="80"></canvas>
-            </div>
-
-            <div class="chart-container" id="energy-chart-wrapper" style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-                <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">⚡ Energy Impact (Natural Gas TTF)</div>
-                <canvas id="energyChart" height="60"></canvas>
-            </div>
-            
-            <div style="text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 2rem; padding-right: 0.5rem;">
-                <em>Data Sources: US/MX (USDA AMS Real-time API) &nbsp;|&nbsp; EU (German Wholesale Proxy / Simulated)</em>
-            </div>
-            
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
-            <h3 style="margin-bottom: 1.5rem; font-size: 1.4rem;">🛠️ Engineering Tools & Calculators</h3>
+        
         </div>
-<div class="dashboard-grid">
+
+<!-- Leaderboard Ad Slot -->
+<div class="ad-slot ad-leaderboard" style="width: 100%; height: 90px; background: rgba(15,23,42,0.02); border: 1px dashed var(--border-card); display: flex; align-items: center; justify-content: center; color: var(--text-gray); font-size: 0.8rem; margin-bottom: 2rem; border-radius: 8px;">
+    <span>[Advertisement - Leaderboard (728x90)]</span>
+</div>
+
+<div class="dashboard-two-column" style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;">
+    <!-- Left Column: Tools -->
+    <div class="dashboard-main-col" style="flex: 1 1 55%; min-width: 320px;">
+        <h3 style="margin-bottom: 1.5rem; font-size: 1.4rem;">🛠️ Engineering Tools & Calculators</h3>
+        <div class="dashboard-grid">
 <!-- market card removed --> <div class="dashboard-card" data-category="market_removed" style="display:none;" data-keywords="market, price, global, natural gas, tomato, cucumber, pepper, index" onclick="window.location.href='global_market.html'" style="border: 1px solid rgba(234, 179, 8, 0.5); background: linear-gradient(145deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.9) 100%);">
 <div class="card-icon">📈</div>
 <h3>
@@ -183,6 +154,9 @@
 <span>Calculates the optimal leaf-to-air VPD based on air temp, relative humidity, and leaf temperature offset.</span>
 </p>
 </div>
+
+<!-- In-feed Ad -->
+<div class="ad-slot ad-infeed" style="grid-column: 1 / -1; height: 100px; background: rgba(15,23,42,0.02); border: 1px dashed var(--border-card); display: flex; align-items: center; justify-content: center; color: var(--text-gray); font-size: 0.8rem; border-radius: 8px; margin: 0.5rem 0;"><span>[Advertisement - In-Feed Native]</span></div>
 <div class="dashboard-card" data-category="facility" data-keywords="valve, heating, mixing, 3-way, flow rate, kv, piping, heating" onclick="switchTab('valve')">
 <div class="card-icon">🎛️</div>
 <h3>
@@ -261,6 +235,51 @@
 </p>
 </div>
 </div>
+    </div>
+
+    <!-- Right Column: Market Sidebar -->
+    <div class="dashboard-sidebar-col" style="flex: 1 1 35%; min-width: 320px;">
+        <div class="market-dashboard-embedded" style="margin-bottom: 3rem;">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--primary);">🌍 Global Agri-Market Index</h2>
+                <p style="color: var(--text-secondary);">Real-time tracking of wholesale prices across major global markets.</p>
+                <div class="last-updated" id="update-timestamp" style="display: inline-block; background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 500; margin-top: 1rem;">Loading latest data...</div>
+            </div>
+
+            <div class="controls-container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--surface-light); padding: 1rem; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                <div class="toggle-group" id="region-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
+                    <button class="toggle-btn active" data-region="EU" onclick="setRegion('EU')" style="background: var(--primary); border: none; color: var(--bg-dark); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇪🇺 EU (DE)</button>
+                    <button class="toggle-btn" data-region="US" onclick="setRegion('US')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇺🇸 US</button>
+                    <button class="toggle-btn" data-region="MX" onclick="setRegion('MX')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇲🇽 Mexico</button>
+                </div>
+                
+                <div class="toggle-group" id="time-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
+                    <button class="toggle-btn" data-days="7" onclick="setTimeframe(7)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1W</button>
+                    <button class="toggle-btn active" data-days="30" onclick="setTimeframe(30)" style="background: var(--primary); border: none; color: var(--bg-dark); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1M</button>
+                    <button class="toggle-btn" data-days="90" onclick="setTimeframe(90)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">3M</button>
+                    <button class="toggle-btn" data-days="365" onclick="setTimeframe(365)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1Y</button>
+                </div>
+            </div>
+
+            <div class="metrics-grid" id="metrics-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;"></div>
+
+            <div class="chart-container" style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;" id="agri-chart-title">🍅 Agricultural Commodities</div>
+                <canvas id="agriChart" height="80"></canvas>
+            </div>
+
+            <div class="chart-container" id="energy-chart-wrapper" style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">⚡ Energy Impact (Natural Gas TTF)</div>
+                <canvas id="energyChart" height="60"></canvas>
+            </div>
+            
+            <div style="text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 2rem; padding-right: 0.5rem;">
+                <em>Data Sources: US/MX (USDA AMS Real-time API) &nbsp;|&nbsp; EU (German Wholesale Proxy / Simulated)</em>
+            </div>
+    </div>
+</div>
+
+
 </div>
 <footer>
 <div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; font-size: 0.9rem;">
