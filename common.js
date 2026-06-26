@@ -1029,7 +1029,7 @@
             'pollinator': 'diagnosis.html',
             'vertical': 'vertical_dli.html',
             'gear': 'greenpocket.html',
-            'market': 'global_market.html'
+            'market': 'index.html?tab=market'
         };
 
         const targetSec = document.getElementById(`section-${target}`);
