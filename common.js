@@ -1027,7 +1027,8 @@
             'roi': 'roi_simulator.html',
             'transpiration': 'transpiration.html',
             'pollinator': 'diagnosis.html',
-            'vertical': 'vertical_dli.html'
+            'vertical': 'vertical_dli.html',
+            'gear': 'greenpocket.html'
         };
 
         const targetSec = document.getElementById(`section-${target}`);
