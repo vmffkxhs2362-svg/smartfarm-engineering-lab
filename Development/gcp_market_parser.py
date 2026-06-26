@@ -16,7 +16,7 @@ from github import Github
 # Set these in GCP Cloud Function Environment Variables
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "your_github_personal_access_token")
 REPO_NAME = os.environ.get("GITHUB_REPO", "vmffkxhs2362-svg/smartfarm-engineering-lab")
-JSON_PATH = "data/global_prices.json"
+file_path = "data/market_prices.json"
 
 def get_dummy_trend(base_price, volatility, days=30):
     """
