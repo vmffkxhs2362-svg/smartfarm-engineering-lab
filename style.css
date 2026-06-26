@@ -427,6 +427,27 @@
             border-radius: 10px;
         }
 
+        .panel-reset-btn {
+            margin-left: auto;
+            background: rgba(5, 150, 105, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(5, 150, 105, 0.2);
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .panel-reset-btn:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
         .input-group {
             margin-bottom: 1.8rem;
         }

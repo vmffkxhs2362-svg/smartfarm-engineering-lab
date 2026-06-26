@@ -772,6 +772,43 @@
     document.addEventListener('DOMContentLoaded', () => {
         checkBetaMode();
         
+        // Dynamically add Reset buttons to all input panels
+        document.querySelectorAll('.panel-title').forEach(titleEl => {
+            const panel = titleEl.parentElement;
+            if (!panel) return;
+            
+            const inputs = panel.querySelectorAll('input:not([readonly]):not([type="hidden"]):not([id="calc-search"]), select');
+            if (inputs.length === 0) return;
+            
+            if (titleEl.querySelector('.panel-reset-btn')) return;
+
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'panel-reset-btn';
+            resetBtn.innerHTML = '↻ Reset';
+            resetBtn.title = 'Reset all inputs to default values';
+            
+            resetBtn.addEventListener('click', () => {
+                inputs.forEach(input => {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        input.checked = input.defaultChecked;
+                    } else if (input.tagName === 'SELECT') {
+                        const defaultOption = Array.from(input.options).find(opt => opt.defaultSelected);
+                        if (defaultOption) {
+                            defaultOption.selected = true;
+                        } else {
+                            input.selectedIndex = 0;
+                        }
+                    } else {
+                        input.value = input.defaultValue;
+                    }
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            });
+            
+            titleEl.appendChild(resetBtn);
+        });
+        
         // Add click outside listener for dropdown
         document.addEventListener('click', (e) => {
             const dropdown = document.getElementById('search-dropdown');
