@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Agri-Market Index | Smart Farm Engineering</title>
+    <meta name="description" content="Real-time global agricultural wholesale prices and energy (TTF Natural Gas) impact dashboard for greenhouse investors and commercial growers.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .market-dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .market-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .market-header h1 {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .market-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .last-updated {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .chart-container {
+            background: var(--surface-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cross-sell-banner {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.2) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .cross-sell-banner:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.3) 100%);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .cross-sell-banner h3 {
+            color: #60a5fa;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .cross-sell-banner p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-action {
+            background: #3b82f6;
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #2563eb;
+        }
+
+        /* Responsive Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--surface-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metric-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-unit {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <!-- Global Tabs Navigation -->
+    <div class="tabs">
+        <button class="tab-btn" onclick="window.location.href='index.html'">← Back to Hub</button>
+        <button class="tab-btn active">📈 Global Market</button>
+        <button class="tab-btn" onclick="window.location.href='roi_simulator.html'">Boiler vs Heat Pump ROI</button>
+    </div>
+
+    <div class="market-dashboard">
+        <div class="market-header">
+            <h1>Global Agri-Market Index</h1>
+            <p>Real-time tracking of EU agricultural wholesale prices and TTF Natural Gas correlation.</p>
+            <div class="last-updated" id="update-timestamp">Loading latest data...</div>
+        </div>
+
+        <div class="metrics-grid" id="metrics-container">
+            <!-- Populated via JS -->
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <div class="chart-title">🍅 Agricultural Commodities (€/kg)</div>
+            </div>
+            <canvas id="agriChart" height="100"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <div class="chart-title">⚡ Energy Impact: TTF Natural Gas (€/MWh)</div>
+            </div>
+            <canvas id="energyChart" height="80"></canvas>
+        </div>
+
+        <a href="roi_simulator.html" class="cross-sell-banner">
+            <h3>Is rising energy cost eating your margins?</h3>
+            <p>Don't let the TTF Natural Gas spikes destroy your greenhouse profitability. Simulate the exact ROI of upgrading to a Geothermal Heat Pump based on today's energy prices.</p>
+            <button class="btn-action">Run ROI Simulation 👉</button>
+        </a>
+
+    </div>
+
+    <script>
+        // Set up Chart.js global defaults for Dark Theme
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.borderColor = '#374151';
+        Chart.defaults.font.family = 'Inter, sans-serif';
+
+        async function loadMarketData() {
+            try {
+                // Fetch the static JSON pushed by our GCP Cloud Function
+                const response = await fetch('data/global_prices.json?t=' + new Date().getTime());
+                const data = await response.json();
+
+                document.getElementById('update-timestamp').innerText = `Last Updated: ${data.last_updated}`;
+
+                renderMetrics(data);
+                renderAgriChart(data);
+                renderEnergyChart(data);
+
+            } catch (error) {
+                console.error("Failed to load market data:", error);
+                document.getElementById('update-timestamp').innerText = "Data feed currently unavailable.";
+                document.getElementById('update-timestamp').style.color = "#ef4444";
+                document.getElementById('update-timestamp').style.background = "rgba(239, 68, 68, 0.1)";
+            }
+        }
+
+        function renderMetrics(data) {
+            const container = document.getElementById('metrics-container');
+            container.innerHTML = '';
+            
+            for (const [key, item] of Object.entries(data.datasets)) {
+                // Get the latest price (last item in array)
+                const latest = item.data[item.data.length - 1].price;
+                const prev = item.data[item.data.length - 2].price;
+                const change = ((latest - prev) / prev * 100).toFixed(2);
+                
+                const color = change >= 0 ? '#10b981' : '#ef4444';
+                const arrow = change >= 0 ? '▲' : '▼';
+
+                const card = document.createElement('div');
+                card.className = 'metric-card';
+                card.innerHTML = `
+                    <div class="metric-name">${item.name}</div>
+                    <div class="metric-value">${latest.toFixed(2)} <span class="metric-unit">${item.unit}</span></div>
+                    <div style="color: ${color}; font-size: 0.85rem; margin-top: 0.25rem;">
+                        ${arrow} ${Math.abs(change)}%
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        function renderAgriChart(data) {
+            const ctx = document.getElementById('agriChart').getContext('2d');
+            
+            // Assuming all datasets have the same dates
+            const labels = data.datasets.tomato.data.map(d => d.date);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: data.datasets.tomato.name,
+                            data: data.datasets.tomato.data.map(d => d.price),
+                            borderColor: data.datasets.tomato.color,
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: data.datasets.cucumber.name,
+                            data: data.datasets.cucumber.data.map(d => d.price),
+                            borderColor: data.datasets.cucumber.color,
+                            borderWidth: 2,
+                            tension: 0.4
+                        },
+                        {
+                            label: data.datasets.pepper.name,
+                            data: data.datasets.pepper.data.map(d => d.price),
+                            borderColor: data.datasets.pepper.color,
+                            borderWidth: 2,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { backgroundColor: 'rgba(17, 24, 39, 0.9)' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: { display: true, text: 'Price (€/kg)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderEnergyChart(data) {
+            const ctx = document.getElementById('energyChart').getContext('2d');
+            const gasData = data.datasets.natural_gas;
+            
+            const labels = gasData.data.map(d => d.date);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: gasData.name,
+                        data: gasData.data.map(d => d.price),
+                        borderColor: gasData.color,
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { backgroundColor: 'rgba(17, 24, 39, 0.9)' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: { display: true, text: 'Price (€/MWh)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadMarketData);
+    </script>
+</body>
+</html>

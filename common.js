@@ -1028,7 +1028,8 @@
             'transpiration': 'transpiration.html',
             'pollinator': 'diagnosis.html',
             'vertical': 'vertical_dli.html',
-            'gear': 'greenpocket.html'
+            'gear': 'greenpocket.html',
+            'market': 'global_market.html'
         };
 
         const targetSec = document.getElementById(`section-${target}`);
