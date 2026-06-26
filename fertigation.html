@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator</title>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." name="description"/>
+<meta content="스마트팜, 스마트팜 계산기, VPD 계산기, 엽면포차, 양액 희석, 혼합 밸브, 온실 열손실, 농업 계산기, AgTech, Smart Farm, Greenhouse Calculator" name="keywords"/>
+<meta content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" name="google-site-verification"/>
+<link href="https://smartfarm.inwoovation.com/" rel="canonical"/>
+<!-- Open Graph / Facebook -->
+<meta content="website" property="og:type">
+<meta content="https://smartfarm.inwoovation.com/" property="og:url"/>
+<meta content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator" property="og:title"/>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." property="og:description"/>
+<meta content="https://smartfarm.inwoovation.com/cover.png" property="og:image"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://smartfarm.inwoovation.com/" name="twitter:url"/>
+<meta content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator" name="twitter:title"/>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." name="twitter:description"/>
+<meta content="https://smartfarm.inwoovation.com/cover.png" name="twitter:image"/>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V4RYJBMEDE');
+    </script>
+<!-- Google AdSense -->
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8597809158257497"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- SEO JSON-LD Structured Data -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AgTech Precision Calculator",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "browserRequirements": "Requires HTML5, Javascript, CSS3",
+      "softwareVersion": "2.0",
+      "description": "High-precision online engineering calculation suite for greenhouse climate and hydraulics, including Leaf Vapor Pressure Deficit, Heating Mixing Valve Sizing (Kv), and Fertigation Stock Tank Mixing Solver.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</meta><link href="style.css" rel="stylesheet"/></head>
+<body>
+<div class="container"><header>
+<div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;">
+<div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: June 18, 2026</div>
+<div style="display: flex; gap: 0.5rem; align-items: center;">
+<div class="lang-switch" style="margin-bottom: 0;">
+<button class="lang-btn" id="lang-ko" onclick="changeLanguage('ko')">KO</button>
+<button class="lang-btn active" id="lang-en" onclick="changeLanguage('en')">EN</button>
+</div>
+<div class="lang-switch" id="unit-switch" style="margin-bottom: 0; display: none;">
+<button class="lang-btn active" id="unit-metric" onclick="changeUnit('metric')">Metric</button>
+<button class="lang-btn" id="unit-imperial" onclick="changeUnit('imperial')">Imperial</button>
+</div>
+</div>
+</div>
+<h1 id="header-title" onclick="resetToHome()" style="cursor: pointer; display: inline-block;">스마트팜 엔지니어링 랩</h1>
+<p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
+</header><div class="nav-control-panel">
+<div class="search-box-wrapper">
+<span class="search-icon">🔍</span>
+<input id="calc-search" oninput="filterCalculators()" placeholder="필요한 계산기나 키워드를 입력하세요... (예: VPD, 난방, 양액, DLI)" type="text"/>
+</div>
+<div class="category-chips">
+<button class="chip active" id="chip-all" onclick="filterCategory('all')">전체 (All)</button>
+<button class="chip" id="chip-climate" onclick="filterCategory('climate')">기후/환경 (Climate)</button>
+<button class="chip" id="chip-facility" onclick="filterCategory('facility')">설비/에너지 (Facility)</button>
+<button class="chip" id="chip-fertigation" onclick="filterCategory('fertigation')">양액/생리 (Nutrient)</button>
+<button class="chip beta-only-chip" id="chip-beta" onclick="filterCategory('beta')" style="display: none; border-color: rgba(245, 158, 11, 0.3); color: var(--warning);">베타 검토 (Beta)</button>
+</div>
+</div><div class="tabs-container"><div class="tabs">
+<a class="tab-btn" href="index.html" id="btn-tab-dashboard">
+<span class="desktop-text">🏠 대시보드 홈</span>
+<span class="mobile-text">홈</span>
+</a>
+<a class="tab-btn" href="vpd.html" id="btn-tab-vpd">
+<span class="desktop-text">포차 계산기 (VPD)</span>
+<span class="mobile-text">VPD</span>
+</a>
+<a class="tab-btn" href="mixing_valve.html" id="btn-tab-valve">
+<span class="desktop-text">난방 혼합 밸브</span>
+<span class="mobile-text">혼합 밸브</span>
+</a>
+<a class="tab-btn active" href="fertigation.html" id="btn-tab-fert">
+<span class="desktop-text">원액 희석 계산기 (양액)</span>
+<span class="mobile-text">양액 희석</span>
+</a>
+<a class="tab-btn" href="heat_loss.html" id="btn-tab-heat-loss">
+<span class="desktop-text">온실 열손실 계산기</span>
+<span class="mobile-text">열손실</span>
+</a>
+<a class="tab-btn" href="roi_simulator.html" id="btn-tab-roi">
+<span class="desktop-text">보일러 vs 히트펌프 ROI</span>
+<span class="mobile-text">난방 ROI</span>
+</a>
+<a class="tab-btn" href="transpiration.html" id="btn-tab-transpiration">
+<span class="desktop-text">식물 증산량 추정기 (PM)</span>
+<span class="mobile-text">증산량 (PM)</span>
+</a>
+<a class="tab-btn" href="diagnosis.html" id="btn-tab-pollinator">
+<span class="desktop-text">🐝 병해충 자가진단 &amp; 수분벌</span>
+<span class="mobile-text">🐝 병해충/벌</span>
+</a>
+<a class="tab-btn" href="vertical_dli.html" id="btn-tab-vertical">
+<span class="desktop-text">🌱 수직농업 DLI 계산기</span>
+<span class="mobile-text">🌱 수직농업</span>
+</a>
+</div></div><div class="calc-wrapper active" id="section-fert">
+<div class="form-panel">
+<h2 class="panel-title">원액탱크 매개변수</h2>
+<div class="input-group">
+<div class="input-header">
+<label for="fert-preset" id="lbl-fert-preset">비료 종류 프리셋</label>
+<span class="tank-badge tank-ab" id="fert-tank-badge" style="display: none;">Tank A/B</span>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="fert-preset" onchange="applyFertPreset()">
+<option selected="" value="custom">직접 입력 (Custom)</option>
+<option value="calcium_nitrate">질산칼슘 (Calcium Nitrate - N 15.5%)</option>
+<option value="potassium_nitrate">질산칼륨 (Potassium Nitrate - N 13.0%)</option>
+<option value="mkp">제일인산칼륨 (MKP - P 22.7%)</option>
+<option value="potassium_sulfate">황산칼륨 (Potassium Sulfate - K 41.5%)</option>
+<option value="magnesium_sulfate">황산마그네슘 (Magnesium Sulfate - Mg 9.8%)</option>
+<option value="ammonium_sulfate">황산암모늄 (Ammonium Sulfate - N 21.0%)</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="fert-target">목표 원소 농도</label>
+</div>
+<div class="input-control-wrapper">
+<input id="fert-target" oninput="calculateFertEngine()" step="5" type="number" value="150"/>
+<span class="suffix">ppm (mg/L)</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="fert-vol">원액탱크 용량</label>
+</div>
+<div class="input-control-wrapper">
+<input id="fert-vol" oninput="calculateFertEngine()" step="50" type="number" value="1000"/>
+<span class="suffix" id="fert-vol-suffix">Liters</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="fert-ratio">희석 주입 비율 (1:X)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="fert-ratio" oninput="calculateFertEngine()" step="10" type="number" value="100"/>
+<span class="suffix">Ratio</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="fert-purity">비료 내 원소 순도(함량)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="fert-purity" oninput="calculateFertEngine()" step="0.1" type="number" value="15.5"/>
+<span class="suffix">% Purity</span>
+</div>
+</div>
+<!-- Bicarbonate Neutralizer Accordion -->
+<div class="accordion" id="acid-estimator-accordion">
+<div class="accordion-header" onclick="toggleAccordion('acid-estimator-accordion')">
+<span id="lbl-acid-title">원수 중탄산(pH) 중화 계산기</span>
+<span class="icon">▼</span>
+</div>
+<div class="accordion-body">
+<div class="estimator-grid">
+<div class="input-group">
+<div class="input-header">
+<label for="acid-raw" id="lbl-acid-raw">원수 중탄산 (HCO₃⁻)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="acid-raw" oninput="runAcidEngine()" step="5" type="number" value="120"/>
+<span class="suffix">ppm</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="acid-target" id="lbl-acid-target">목표 중탄산 농도</label>
+</div>
+<div class="input-control-wrapper">
+<input id="acid-target" oninput="runAcidEngine()" step="5" type="number" value="50"/>
+<span class="suffix">ppm</span>
+</div>
+</div>
+<div class="input-group" style="grid-column: span 2;">
+<div class="input-header">
+<label for="acid-select" id="lbl-acid-select">사용할 강산 종류</label>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="acid-select" onchange="runAcidEngine()">
+<option id="opt-acid-nitric" selected="" value="nitric">질산 60% (HNO₃ 13.0 M)</option>
+<option id="opt-acid-phosphoric" value="phosphoric">인산 85% (H₃PO₄ 14.6 M)</option>
+</select>
+</div>
+</div>
+</div>
+<div class="input-group" style="margin-top: 1rem; margin-bottom: 0;">
+<div class="input-header">
+<span id="lbl-acid-result">산 필요 투입량</span>
+<span id="acid-result-value" style="font-weight: 800; color: var(--cyan); font-size: 1.1rem;">0.0 L</span>
+</div>
+</div>
+<p id="acid-explanation" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.8rem; line-height: 1.5; border-top: 1px solid var(--border-card); padding-top: 0.8rem;">
+                        원액탱크에 투입해야 하는 강산의 양입니다.
+                    </p>
+</div>
+</div>
+<!-- Fertigation Chemical SEO Guide Accordion -->
+<div class="accordion academic-guide" id="fert-academic-accordion">
+<div class="accordion-header" onclick="toggleAccordion('fert-academic-accordion')">
+<span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 양액 조제 가이드북 (비료 배합)</span>
+<span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Fertigation Guide (Fertilizer Compounding)</span>
+<span class="icon" style="color: var(--primary);">▼</span>
+</div>
+<div class="accordion-body">
+<div class="academic-guide-lang" data-lang="ko">
+<h3>📚 수경재배(하이드로포닉스) 양액 조제를 위한 단용비료 희석 계산 및 배합 안전 가이드</h3>
+<p>수경재배는 토양을 사용하지 않고 작물이 필요로 하는 필수 영양 원소를 물에 녹여 공급하는 정밀 농업 기술입니다. 배양액 조제 시 각 단용비료의 성분량과 원수(Irrigation Source Water)의 화학적 특성을 완벽히 이해해야 비료 이용 효율을 극대화하고 생리 장해를 방지할 수 있습니다.</p>
+<h4>1. PPM 농도 및 비료 소요량 산출식</h4>
+<p>PPM(Parts Per Million)은 <code>mg/L</code> 단위와 동일한 물리적 의미를 지닙니다. 공급액 내 특정 비료 원소의 목표 ppm 농도를 구현하기 위해 원액탱크에 투입해야 하는 비료의 실량은 비료 내 해당 원소의 성분 함량(순도, Purity%)과 원액 희석 비율(주입 배수)에 의해 계산됩니다:</p>
+<ul>
+<li>필요 비료량: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
+<li>이 공식은 비료 내 순수 성분이 용해되었을 때의 질량 보존을 기반으로 유도되었으며, 분모의 10,000 인자는 퍼센트(%) 단위를 ppm의 역수로 스케일링하는 보정 상수입니다.</li>
+</ul>
+<h4>2. 화학적 침전 리스크와 탱크 이원화(Tank A &amp; B) 원리</h4>
+<p>고농도의 원액(Stock Solution)을 조제할 때 가장 주의해야 할 물리화학적 현상은 비료 이온 간의 결합에 의한 <strong>난용성 염(침전) 생성</strong>입니다. 
+                        특히 <strong>칼슘(Ca²⁺) 이온</strong>이 <strong>황산염(SO₄²⁻) 이온</strong> 또는 <strong>인산염(H₂PO₄⁻) 이온</strong>과 고농도에서 접촉하면 백색 침전물인 석고(Calcium Sulfate, <code>CaSO_4</code>)나 인산칼슘(Calcium Phosphate)이 생성되어 배관 내부와 미세 노즐(Drip Emitter)을 물리적으로 영구 폐쇄하게 됩니다.
+                        이를 원천적으로 차단하기 위해 원액 조제 시 칼슘(질산칼슘 등)은 <strong>A탱크</strong>에, 인산과 황산계 비료(제일인산칼륨, 황산마그네슘 등)는 <strong>B탱크</strong>에 나누어 격리 조제하여 보관하며, 실제 급액 시 두 탱크의 원액을 물과 함께 100배 이상 희석한 후에 최종 결합시킵니다.</p>
+<h4>3. 원수 중탄산(HCO₃⁻) 중화 원리 및 산(Acid) dosing</h4>
+<p>지하수 등 원수 내부에는 탄산수소이온(중탄산, <code>HCO_3^-</code>)이 잔존하여 pH 완충 역할을 합니다. 중탄산이 과도하게 높을 경우(100 ppm 초과 시) 양액의 pH가 급격히 상승하여 철(Fe), 아연(Zn) 등 미량원소의 침전과 흡수 차단을 유발합니다. 
+                        이를 해결하기 위해 질산(<code>HNO_3</code>)이나 인산(<code>H_3PO_4</code>) 등 강산을 투입하여 중탄산을 적정 수준(50 ppm 내외)으로 파괴하고 pH를 5.5 ~ 6.5의 최적 흡수 대역으로 조정합니다. 중화 반응식은 다음과 같습니다:</p>
+<ul>
+<li><code>HCO_3^- + H^+ -&gt; H_2O + CO_2↑</code></li>
+</ul>
+</div>
+<div class="academic-guide-lang" data-lang="en">
+<h3>📚 Fertigation Dilution Solvers and Chemical Compatibility Guidelines for Hydroponics</h3>
+<p>Hydroponics and fertigation require precise dosing of mineral fertilizers to establish the optimal EC and pH environment in the root zone. A deep understanding of ion dynamics, solubility margins, and source water chemistry is vital to prevent systemic plant nutrient locking and physical irrigation failures.</p>
+<h4>1. Volumetric Calculations for Target PPM and Fertilizer Mass</h4>
+<p>PPM (Parts Per Million) equals <code>mg/L</code> in metric units. The mass of fertilizer needed to achieve a target elemental concentration in a specific stock tank volume under a set injector ratio is determined by the element's mass fraction (Purity%):</p>
+<ul>
+<li>Required Fertilizer Mass: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
+<li>This formula derives from mass conservation, correcting for elemental weight fractions and dilution multipliers, where 10,000 is the scaling factor converting percentage purity into ppm equivalent values.</li>
+</ul>
+<h4>2. Solubility Limits and the Chemistry of A/B Tank Separation</h4>
+<p>When compounding high-concentration stock solutions (often 100x to 200x concentration), preventing ionic precipitation is the single most critical task. 
+                        Free <strong>Calcium (Ca²⁺)</strong> ions must never meet <strong>Sulfates (SO₄²⁻)</strong> or <strong>Phosphates (H₂PO₄⁻)</strong> at high concentrations. If combined, they react to form highly insoluble compounds like gypsum (calcium sulfate, <code>CaSO_4</code>) or calcium phosphate, resulting in white crystalline precipitates that clog drip emitters. 
+                        Hence, calcium sources (e.g., Calcium Nitrate) are isolated in <strong>Tank A</strong>, while phosphates and sulfates (e.g., MKP, Magnesium Sulfate) are stored in <strong>Tank B</strong>. They are only mixed downstream in the fresh water stream where concentrations are dilute enough to remain well below solubility products.</p>
+<h4>3. Alkalinity Control: Bicarbonate (HCO₃⁻) Neutralization</h4>
+<p>Source water alkalinity is primarily governed by bicarbonate (<code>HCO_3^-</code>) ions, which act as a pH buffer. Excessive bicarbonate (&gt;100 ppm) maintains an alkaline root zone, reducing the bioavailability of key trace minerals like iron and manganese. 
+                        Dosing mineral acids (nitric or phosphoric acid) decomposes bicarbonates into carbon dioxide and water, stabilizing the pH in the critical absorption window of 5.5 to 6.5:</p>
+<ul>
+<li><code>HCO_3^- + H^+ -&gt; H_2O + CO_2 (gas)</code></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="result-header">비료 필요량</div>
+<div class="big-number" id="fert-value">96.8</div>
+<div class="status-pill optimal" id="fert-status-pill">조제 준비 완료</div>
+<p class="result-desc" id="fert-explanation">비료 용해량 계산 중...</p>
+<div class="info-card">
+<h4>원액탱크 안전 수칙</h4>
+<p>칼슘계 비료와 인산/황산계 비료는 화학적 침전 및 노즐 막힘을 방지하기 위해 반드시 A통과 B통으로 나누어 조제해야 합니다.</p>
+</div>
+</div>
+</div>
+<footer>
+<div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; font-size: 0.9rem;">
+<a href="index.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600; hover: { color: var(--primary); }">Home</a>
+<a href="about.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">About</a>
+<a href="contact.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Contact</a>
+<a href="terms.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Terms</a>
+<a href="privacy.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Privacy Policy</a>
+</div>
+<p>© 2026 Smart Farm Engineering Lab. All rights reserved.</p>
+<p>Built for zero-cost static hosting. Designed by Inwoovation</p>
+<p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.5; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;">
+<!-- Rendered dynamically by JS disclaimer text -->
+</p>
+</footer>
+</div>
+<!-- Floating Inquiry Button (FAB) -->
+<a class="feedback-fab" href="https://forms.gle/SC3ehhA4r6sPEZxV7" id="btn-feedback" onclick="handleFeedbackClick(event)" target="_blank">
+<span class="icon">📩</span>
+<span class="text" id="lbl-feedback-text">Inquiry &amp; Request</span>
+</a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="common.js"></script></body></html>

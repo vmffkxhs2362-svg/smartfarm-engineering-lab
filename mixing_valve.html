@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator</title>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." name="description"/>
+<meta content="스마트팜, 스마트팜 계산기, VPD 계산기, 엽면포차, 양액 희석, 혼합 밸브, 온실 열손실, 농업 계산기, AgTech, Smart Farm, Greenhouse Calculator" name="keywords"/>
+<meta content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" name="google-site-verification"/>
+<link href="https://smartfarm.inwoovation.com/" rel="canonical"/>
+<!-- Open Graph / Facebook -->
+<meta content="website" property="og:type">
+<meta content="https://smartfarm.inwoovation.com/" property="og:url"/>
+<meta content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator" property="og:title"/>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." property="og:description"/>
+<meta content="https://smartfarm.inwoovation.com/cover.png" property="og:image"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://smartfarm.inwoovation.com/" name="twitter:url"/>
+<meta content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator" name="twitter:title"/>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." name="twitter:description"/>
+<meta content="https://smartfarm.inwoovation.com/cover.png" name="twitter:image"/>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V4RYJBMEDE');
+    </script>
+<!-- Google AdSense -->
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8597809158257497"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- SEO JSON-LD Structured Data -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AgTech Precision Calculator",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "browserRequirements": "Requires HTML5, Javascript, CSS3",
+      "softwareVersion": "2.0",
+      "description": "High-precision online engineering calculation suite for greenhouse climate and hydraulics, including Leaf Vapor Pressure Deficit, Heating Mixing Valve Sizing (Kv), and Fertigation Stock Tank Mixing Solver.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</meta><link href="style.css" rel="stylesheet"/></head>
+<body>
+<div class="container"><header>
+<div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;">
+<div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: June 18, 2026</div>
+<div style="display: flex; gap: 0.5rem; align-items: center;">
+<div class="lang-switch" style="margin-bottom: 0;">
+<button class="lang-btn" id="lang-ko" onclick="changeLanguage('ko')">KO</button>
+<button class="lang-btn active" id="lang-en" onclick="changeLanguage('en')">EN</button>
+</div>
+<div class="lang-switch" id="unit-switch" style="margin-bottom: 0; display: none;">
+<button class="lang-btn active" id="unit-metric" onclick="changeUnit('metric')">Metric</button>
+<button class="lang-btn" id="unit-imperial" onclick="changeUnit('imperial')">Imperial</button>
+</div>
+</div>
+</div>
+<h1 id="header-title" onclick="resetToHome()" style="cursor: pointer; display: inline-block;">스마트팜 엔지니어링 랩</h1>
+<p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
+</header><div class="nav-control-panel">
+<div class="search-box-wrapper">
+<span class="search-icon">🔍</span>
+<input id="calc-search" oninput="filterCalculators()" placeholder="필요한 계산기나 키워드를 입력하세요... (예: VPD, 난방, 양액, DLI)" type="text"/>
+</div>
+<div class="category-chips">
+<button class="chip active" id="chip-all" onclick="filterCategory('all')">전체 (All)</button>
+<button class="chip" id="chip-climate" onclick="filterCategory('climate')">기후/환경 (Climate)</button>
+<button class="chip" id="chip-facility" onclick="filterCategory('facility')">설비/에너지 (Facility)</button>
+<button class="chip" id="chip-fertigation" onclick="filterCategory('fertigation')">양액/생리 (Nutrient)</button>
+<button class="chip beta-only-chip" id="chip-beta" onclick="filterCategory('beta')" style="display: none; border-color: rgba(245, 158, 11, 0.3); color: var(--warning);">베타 검토 (Beta)</button>
+</div>
+</div><div class="tabs-container"><div class="tabs">
+<a class="tab-btn" href="index.html" id="btn-tab-dashboard">
+<span class="desktop-text">🏠 대시보드 홈</span>
+<span class="mobile-text">홈</span>
+</a>
+<a class="tab-btn" href="vpd.html" id="btn-tab-vpd">
+<span class="desktop-text">포차 계산기 (VPD)</span>
+<span class="mobile-text">VPD</span>
+</a>
+<a class="tab-btn active" href="mixing_valve.html" id="btn-tab-valve">
+<span class="desktop-text">난방 혼합 밸브</span>
+<span class="mobile-text">혼합 밸브</span>
+</a>
+<a class="tab-btn" href="fertigation.html" id="btn-tab-fert">
+<span class="desktop-text">원액 희석 계산기 (양액)</span>
+<span class="mobile-text">양액 희석</span>
+</a>
+<a class="tab-btn" href="heat_loss.html" id="btn-tab-heat-loss">
+<span class="desktop-text">온실 열손실 계산기</span>
+<span class="mobile-text">열손실</span>
+</a>
+<a class="tab-btn" href="roi_simulator.html" id="btn-tab-roi">
+<span class="desktop-text">보일러 vs 히트펌프 ROI</span>
+<span class="mobile-text">난방 ROI</span>
+</a>
+<a class="tab-btn" href="transpiration.html" id="btn-tab-transpiration">
+<span class="desktop-text">식물 증산량 추정기 (PM)</span>
+<span class="mobile-text">증산량 (PM)</span>
+</a>
+<a class="tab-btn" href="diagnosis.html" id="btn-tab-pollinator">
+<span class="desktop-text">🐝 병해충 자가진단 &amp; 수분벌</span>
+<span class="mobile-text">🐝 병해충/벌</span>
+</a>
+<a class="tab-btn" href="vertical_dli.html" id="btn-tab-vertical">
+<span class="desktop-text">🌱 수직농업 DLI 계산기</span>
+<span class="mobile-text">🌱 수직농업</span>
+</a>
+</div></div><div class="calc-wrapper active" id="section-valve">
+<div class="form-panel">
+<h2 class="panel-title">배관 유압 프로파일</h2>
+<div class="input-group">
+<div class="input-header">
+<label for="heat-power">총 열부하 / 난방부하</label>
+<div class="toggle-container">
+<button class="toggle-btn active" id="power-unit-kw" onclick="switchPowerUnit('kW')">kW</button>
+<button class="toggle-btn" id="power-unit-btu" onclick="switchPowerUnit('BTU')">BTU/h</button>
+</div>
+</div>
+<div class="input-control-wrapper">
+<input id="heat-power" oninput="calculateValveEngine()" step="1" type="number" value="120"/>
+<span class="suffix" id="power-suffix">kW</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="valve-dt">설계 온도 강하 (ΔT)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="valve-dt" oninput="calculateValveEngine()" step="0.5" type="number" value="20"/>
+<span class="suffix" id="dt-suffix">°C</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="valve-dp">목표 밸브 압력 강하 (ΔPv)</label>
+<div class="toggle-container">
+<button class="toggle-btn active" id="press-unit-kpa" onclick="switchPressUnit('kPa')">kPa</button>
+<button class="toggle-btn" id="press-unit-bar" onclick="switchPressUnit('bar')">bar</button>
+</div>
+</div>
+<div class="input-control-wrapper">
+<input id="valve-dp" oninput="calculateValveEngine()" step="0.5" type="number" value="10.0"/>
+<span class="suffix" id="press-suffix">kPa</span>
+</div>
+</div>
+<!-- Heat Load Estimator Accordion -->
+<div class="accordion" id="heat-estimator-accordion">
+<div class="accordion-header" onclick="toggleAccordion('heat-estimator-accordion')">
+<span id="lbl-estimator-title">온실 난방부하 간이 계산기</span>
+<span class="icon">▼</span>
+</div>
+<div class="accordion-body">
+<div class="estimator-grid">
+<div class="input-group">
+<div class="input-header">
+<label for="est-area" id="lbl-est-area">온실 바닥 면적</label>
+</div>
+<div class="input-control-wrapper">
+<input id="est-area" oninput="runEstimatorEngine()" step="50" type="number" value="1000"/>
+<span class="suffix" id="est-area-suffix">m²</span>
+</div>
+<div class="pyeong-helper" id="est-area-pyeong" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="est-cover" id="lbl-est-cover">피복재 종류</label>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="est-cover" onchange="runEstimatorEngine()">
+<option id="opt-cover-single" selected="" value="6.0">단동 비닐 (U=6.0)</option>
+<option id="opt-cover-double" value="3.5">이중 비닐 (U=3.5)</option>
+<option id="opt-cover-glass" value="5.5">유리 온실 (U=5.5)</option>
+<option id="opt-cover-pc" value="2.8">PC판 온실 (U=2.8)</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="est-temp-in" id="lbl-est-temp-in">희망 실내 온도</label>
+</div>
+<div class="input-control-wrapper">
+<input id="est-temp-in" oninput="runEstimatorEngine()" step="1" type="number" value="15"/>
+<span class="suffix">°C</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="est-temp-out" id="lbl-est-temp-out">설계 최저 외기온</label>
+</div>
+<div class="input-control-wrapper">
+<input id="est-temp-out" oninput="runEstimatorEngine()" step="1" type="number" value="-10"/>
+<span class="suffix">°C</span>
+</div>
+</div>
+</div>
+<div class="input-group" style="margin-top: 1rem; margin-bottom: 0;">
+<div class="input-header">
+<span id="lbl-est-result">추정 난방부하 결과</span>
+<span id="est-result-value" style="font-weight: 800; color: var(--cyan); font-size: 1.1rem;">131 kW</span>
+</div>
+</div>
+<button class="estimator-btn" id="btn-apply-est" onclick="applyEstimatedLoad()" type="button">추정부하 입력창에 적용하기</button>
+</div>
+</div>
+<!-- Mixing Valve Engineering SEO Guide Accordion -->
+<div class="accordion academic-guide" id="valve-academic-accordion">
+<div class="accordion-header" onclick="toggleAccordion('valve-academic-accordion')">
+<span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 배관 설계 가이드북 (혼합 밸브)</span>
+<span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Piping Sizing Guide (Mixing Valve)</span>
+<span class="icon" style="color: var(--primary);">▼</span>
+</div>
+<div class="accordion-body">
+<div class="academic-guide-lang" data-lang="ko">
+<h3>📚 온실 온수 난방 설계에서 3방향 혼합 밸브 사이징(Kv) 및 배관 유압 공학 가이드</h3>
+<p>시설원예 및 스마트팜 온실의 난방 시스템은 주로 온수를 순환하는 배관망과 3방향 혼합 밸브(3-way Mixing Valve)를 이용하여 내부 온도를 미세하게 조절합니다. 최적의 유압적 안정성과 제어성능을 확보하기 위해서는 열부하를 정확히 유량으로 환산하고 이에 적합한 밸브 용량 계수(Kv)를 산정하는 유압 사이징이 필수적입니다.</p>
+<h4>1. Kv 계수의 정의와 수리학적 해석</h4>
+<p>밸브 용량 계수 <code>Kv</code>는 온도가 5°C에서 40°C 사이인 물이 밸브를 통과하면서 <strong>1 bar(100 kPa)</strong>의 압력 손실(차압)이 발생할 때 흐르는 시간당 부피 유량(m³/h)으로 정의됩니다. 미국식 규격인 Cv 계수와는 <code>Cv = 1.156 * Kv</code>의 상관성을 가집니다. 계산 수식은 다음과 같습니다:</p>
+<ul>
+<li><code>Kv = Q / sqrt(ΔPv)</code></li>
+<li>여기서 <code>Q</code>는 온수 체적 유량 (m³/h), <code>ΔPv</code>는 밸브에 걸리는 설계 차압 (bar) 입니다.</li>
+</ul>
+<h4>2. 밸브 권한비(Valve Authority)와 압력강하 설계 기준</h4>
+<p>온실 난방 제어가 안정적으로 이루어지려면 혼합 밸브가 전체 유압 루프의 압력 변화를 능동적으로 지배해야 합니다. 이를 지표화한 것이 <strong>밸브 권한비(N)</strong>로, 전체 순환 계통의 총 압력손실(배관+피팅+온실 방열관+밸브) 중 밸브가 차지하는 차압의 비율입니다. 권한비가 너무 낮으면(N &lt; 0.25) 밸브가 열리기 시작해도 유량 변화가 일어나지 않아 제어가 헌팅(Hunting)하는 불안정 현상이 발생합니다. 
+                        따라서 혼합 밸브 설계 시 <strong>10 ~ 15 kPa (0.1 ~ 0.15 bar)</strong>의 목표 밸브 차압을 설정하여, 밸브가 충분한 제어 마진(N = 0.25 ~ 0.50)을 가질 수 있도록 규격을 설계합니다.</p>
+<h4>3. 온실 열부하에 의한 유량 산출 및 배관 구경(DN) 설계</h4>
+<p>온실 면적과 열관류율에 의해 결정된 총 난방 요구 열부하(<code>P</code>, kW)를 온수 루프로 전달하기 위한 필요 유량은 에너지 평형 방정식에 의해 유도됩니다:</p>
+<ul>
+<li>체적 유량 <code>Q = P / (C * ρ * ΔT) * 3600</code> (m³/h)</li>
+<li>비열 <code>C = 4.186 kJ/kg·K</code>, 밀도 <code>ρ = 980 kg/m³</code> (평균 80°C 온수 기준), 물의 엔탈피 변화율을 적용한 약식 산정식: <code>Q = (P * 0.86) / ΔT</code></li>
+<li>여기서 <code>ΔT</code>는 공급수와 환수 간의 설계 온도차(보통 15°C ~ 20°C 적용)입니다.</li>
+</ul>
+<p>계산된 유량을 바탕으로 온실 주배관의 이송관 유속을 **0.5 m/s ~ 1.0 m/s** 범위로 제한하여 배관 구경(DN, Nominal Diameter)을 결정하며, 이를 통해 압력 손실 및 마찰 소음을 억제합니다.</p>
+</div>
+<div class="academic-guide-lang" data-lang="en">
+<h3>📚 Hydraulic Engineering of 3-Way Mixing Valves (Kv) and Pipe Sizing in Greenhouse Heating</h3>
+<p>Modern commercial greenhouses utilize hot water circulating through pipe rail networks to maintain thermal homogeneity. A 3-way mixing valve acts as the central control actuator, blending high-temperature boiler supply water with cooler return water. Precise valve sizing (Kv calculations) is paramount to prevent control loop instability and system hunting.</p>
+<h4>1. Definition and Physical Derivation of Kv Value</h4>
+<p>The flow coefficient <code>Kv</code> is defined as the volume rate of water in cubic meters per hour (m³/h) that will flow through the mixing valve at a temperature between 5°C and 40°C with a pressure drop of exactly <strong>1 bar (100 kPa)</strong>. It is related to the American Cv index via the coefficient <code>Cv = 1.156 * Kv</code>. The governing hydraulic equation is:</p>
+<ul>
+<li><code>Kv = Q / sqrt(ΔPv)</code></li>
+<li>Where <code>Q</code> is the volumetric flow rate (m³/h) and <code>ΔPv</code> is the design pressure drop across the valve (bar).</li>
+</ul>
+<h4>2. Valve Authority (N) and Dynamic Pressure Management</h4>
+<p>For high-fidelity modulation of temperature, the mixing valve must hold dynamic authority over the hydraulic circuit. <strong>Valve Authority (N)</strong> is defined as the ratio of the valve pressure drop to the total dynamic pressure drop of the system at maximum flow. If the valve is undersized or oversized, causing the authority to drop below 0.25, the valve loses its linear flow characteristics, causing temperature oscillations (hunting). Designing mixing valves for a target pressure drop of <strong>10 to 15 kPa (0.10 to 0.15 bar)</strong> secures a healthy authority margin (0.25 to 0.50).</p>
+<h4>3. Volumetric Flow Rate Estimation and Pipe Nominal Diameter (DN)</h4>
+<p>The required mass flow rate of hot water to deliver the peak heating load (<code>P</code>, kW) to the greenhouse is calculated using the thermodynamic heat exchange formula:</p>
+<ul>
+<li>Volumetric Flow Rate: <code>Q = P / (C * ρ * ΔT) * 3600</code> (m³/h)</li>
+<li>Using water heat capacity parameters (specific heat <code>C = 4.186 kJ/kg·K</code>), this approximates to: <code>Q = (P * 0.86) / ΔT</code></li>
+<li>Where <code>ΔT</code> is the designed temperature delta between supply and return pipes (typically 15K to 20K).</li>
+</ul>
+<p>Once flow rate is solved, piping nominal diameters (DN) are sized to maintain fluid velocities within the erosion and friction boundary of **0.5 m/s to 1.0 m/s** to ensure quiet, energy-efficient circulation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="result-header">필요 밸브 용량 계수 (Kv)</div>
+<div class="big-number" id="valve-value">16.3</div>
+<div class="status-pill optimal" id="valve-status-pill">사이징 계산 완료</div>
+<p class="result-desc" id="valve-explanation">유량 계산 중...</p>
+<div class="info-card" id="pipe-suggestion-card">
+<h4>DN 배관 추천</h4>
+<p>배관 추천 계산 중...</p>
+</div>
+</div>
+</div>
+<footer>
+<div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; font-size: 0.9rem;">
+<a href="index.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600; hover: { color: var(--primary); }">Home</a>
+<a href="about.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">About</a>
+<a href="contact.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Contact</a>
+<a href="terms.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Terms</a>
+<a href="privacy.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Privacy Policy</a>
+</div>
+<p>© 2026 Smart Farm Engineering Lab. All rights reserved.</p>
+<p>Built for zero-cost static hosting. Designed by Inwoovation</p>
+<p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.5; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;">
+<!-- Rendered dynamically by JS disclaimer text -->
+</p>
+</footer>
+</div>
+<!-- Floating Inquiry Button (FAB) -->
+<a class="feedback-fab" href="https://forms.gle/SC3ehhA4r6sPEZxV7" id="btn-feedback" onclick="handleFeedbackClick(event)" target="_blank">
+<span class="icon">📩</span>
+<span class="text" id="lbl-feedback-text">Inquiry &amp; Request</span>
+</a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="common.js"></script></body></html>

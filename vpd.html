@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator</title>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." name="description"/>
+<meta content="스마트팜, 스마트팜 계산기, VPD 계산기, 엽면포차, 양액 희석, 혼합 밸브, 온실 열손실, 농업 계산기, AgTech, Smart Farm, Greenhouse Calculator" name="keywords"/>
+<meta content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" name="google-site-verification"/>
+<link href="https://smartfarm.inwoovation.com/" rel="canonical"/>
+<!-- Open Graph / Facebook -->
+<meta content="website" property="og:type">
+<meta content="https://smartfarm.inwoovation.com/" property="og:url"/>
+<meta content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator" property="og:title"/>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." property="og:description"/>
+<meta content="https://smartfarm.inwoovation.com/cover.png" property="og:image"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="https://smartfarm.inwoovation.com/" name="twitter:url"/>
+<meta content="스마트팜 정밀 계산기 (VPD, 양액 희석, 혼합 밸브) | AgTech Precision Calculator" name="twitter:title"/>
+<meta content="온실 기후 제어 및 유압 설계를 위한 무료 스마트팜 정밀 계산기. 엽면 포차(VPD), 비료 양액 희석 비율, 난방 혼합 밸브(Kv), 온실 열손실 계산기를 무료로 이용해 보세요." name="twitter:description"/>
+<meta content="https://smartfarm.inwoovation.com/cover.png" name="twitter:image"/>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V4RYJBMEDE');
+    </script>
+<!-- Google AdSense -->
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8597809158257497"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- SEO JSON-LD Structured Data -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AgTech Precision Calculator",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "browserRequirements": "Requires HTML5, Javascript, CSS3",
+      "softwareVersion": "2.0",
+      "description": "High-precision online engineering calculation suite for greenhouse climate and hydraulics, including Leaf Vapor Pressure Deficit, Heating Mixing Valve Sizing (Kv), and Fertigation Stock Tank Mixing Solver.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</meta><link href="style.css" rel="stylesheet"/></head>
+<body>
+<div class="container"><header>
+<div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;">
+<div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: June 18, 2026</div>
+<div style="display: flex; gap: 0.5rem; align-items: center;">
+<div class="lang-switch" style="margin-bottom: 0;">
+<button class="lang-btn" id="lang-ko" onclick="changeLanguage('ko')">KO</button>
+<button class="lang-btn active" id="lang-en" onclick="changeLanguage('en')">EN</button>
+</div>
+<div class="lang-switch" id="unit-switch" style="margin-bottom: 0; display: none;">
+<button class="lang-btn active" id="unit-metric" onclick="changeUnit('metric')">Metric</button>
+<button class="lang-btn" id="unit-imperial" onclick="changeUnit('imperial')">Imperial</button>
+</div>
+</div>
+</div>
+<h1 id="header-title" onclick="resetToHome()" style="cursor: pointer; display: inline-block;">스마트팜 엔지니어링 랩</h1>
+<p id="header-desc">현대식 온실 설계자, 재배자 및 농업 엔지니어를 위한 고정밀 온라인 계산기 스위트입니다.</p>
+</header><div class="nav-control-panel">
+<div class="search-box-wrapper">
+<span class="search-icon">🔍</span>
+<input id="calc-search" oninput="filterCalculators()" placeholder="필요한 계산기나 키워드를 입력하세요... (예: VPD, 난방, 양액, DLI)" type="text"/>
+</div>
+<div class="category-chips">
+<button class="chip active" id="chip-all" onclick="filterCategory('all')">전체 (All)</button>
+<button class="chip" id="chip-climate" onclick="filterCategory('climate')">기후/환경 (Climate)</button>
+<button class="chip" id="chip-facility" onclick="filterCategory('facility')">설비/에너지 (Facility)</button>
+<button class="chip" id="chip-fertigation" onclick="filterCategory('fertigation')">양액/생리 (Nutrient)</button>
+<button class="chip beta-only-chip" id="chip-beta" onclick="filterCategory('beta')" style="display: none; border-color: rgba(245, 158, 11, 0.3); color: var(--warning);">베타 검토 (Beta)</button>
+</div>
+</div><div class="tabs-container"><div class="tabs">
+<a class="tab-btn" href="index.html" id="btn-tab-dashboard">
+<span class="desktop-text">🏠 대시보드 홈</span>
+<span class="mobile-text">홈</span>
+</a>
+<a class="tab-btn active" href="vpd.html" id="btn-tab-vpd">
+<span class="desktop-text">포차 계산기 (VPD)</span>
+<span class="mobile-text">VPD</span>
+</a>
+<a class="tab-btn" href="mixing_valve.html" id="btn-tab-valve">
+<span class="desktop-text">난방 혼합 밸브</span>
+<span class="mobile-text">혼합 밸브</span>
+</a>
+<a class="tab-btn" href="fertigation.html" id="btn-tab-fert">
+<span class="desktop-text">원액 희석 계산기 (양액)</span>
+<span class="mobile-text">양액 희석</span>
+</a>
+<a class="tab-btn" href="heat_loss.html" id="btn-tab-heat-loss">
+<span class="desktop-text">온실 열손실 계산기</span>
+<span class="mobile-text">열손실</span>
+</a>
+<a class="tab-btn" href="roi_simulator.html" id="btn-tab-roi">
+<span class="desktop-text">보일러 vs 히트펌프 ROI</span>
+<span class="mobile-text">난방 ROI</span>
+</a>
+<a class="tab-btn" href="transpiration.html" id="btn-tab-transpiration">
+<span class="desktop-text">식물 증산량 추정기 (PM)</span>
+<span class="mobile-text">증산량 (PM)</span>
+</a>
+<a class="tab-btn" href="diagnosis.html" id="btn-tab-pollinator">
+<span class="desktop-text">🐝 병해충 자가진단 &amp; 수분벌</span>
+<span class="mobile-text">🐝 병해충/벌</span>
+</a>
+<a class="tab-btn" href="vertical_dli.html" id="btn-tab-vertical">
+<span class="desktop-text">🌱 수직농업 DLI 계산기</span>
+<span class="mobile-text">🌱 수직농업</span>
+</a>
+</div></div><div class="calc-wrapper active" id="section-vpd">
+<div class="form-panel">
+<h2 class="panel-title">환경 데이터 입력</h2>
+<div class="segmented-control">
+<button class="segment-btn active" id="stage-seedling" onclick="setVpdStage('seedling')">육묘/삽목기</button>
+<button class="segment-btn" id="stage-veg" onclick="setVpdStage('veg')">영양생장기</button>
+<button class="segment-btn" id="stage-flower" onclick="setVpdStage('flower')">개화/착과기</button>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="vpd-preset" id="lbl-vpd-preset">광원 및 환경 프리셋</label>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="vpd-preset" onchange="applyVpdPreset()">
+<option selected="" value="custom">직접 입력 (Custom)</option>
+<option value="led">LED 조명 온실 (엽온 편차 +1.0°C)</option>
+<option value="hps">고압나트륨등(HPS) 온실 (엽온 편차 -2.0°C)</option>
+<option value="sunlight">자연광 낮 (엽온 편차 -1.5°C)</option>
+<option value="night">야간/암기 (엽온 편차 0.0°C)</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="temp-air">대기 온도</label>
+<div class="toggle-container">
+<button class="toggle-btn active" id="temp-unit-c" onclick="switchTempUnit('C')">°C</button>
+<button class="toggle-btn" id="temp-unit-f" onclick="switchTempUnit('F')">°F</button>
+</div>
+</div>
+<div class="input-control-wrapper">
+<input id="temp-air" oninput="calculateVpdEngine()" step="0.1" type="number" value="25.0"/>
+<span class="suffix" id="temp-air-unit">°C</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="rh-air">상대 습도</label>
+</div>
+<div class="input-control-wrapper">
+<input id="rh-air" max="98" min="10" oninput="calculateVpdEngine()" step="1" type="number" value="65"/>
+<span class="suffix">%</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="offset-leaf">엽온 편차 (대기 대비)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="offset-leaf" oninput="calculateVpdEngine()" step="0.1" type="number" value="-2.0"/>
+<span class="suffix" id="offset-leaf-unit">°C</span>
+</div>
+</div>
+<!-- VPD Scientific SEO Guide Accordion -->
+<div class="accordion academic-guide" id="vpd-academic-accordion">
+<div class="accordion-header" onclick="toggleAccordion('vpd-academic-accordion')">
+<span class="academic-guide-lang" data-lang="ko" style="font-weight: 700; color: var(--primary);">📚 학술적 환경 제어 가이드북 (VPD)</span>
+<span class="academic-guide-lang" data-lang="en" style="font-weight: 700; color: var(--primary);">📚 Scientific Climate Control Guide (VPD)</span>
+<span class="icon" style="color: var(--primary);">▼</span>
+</div>
+<div class="accordion-body">
+<div class="academic-guide-lang" data-lang="ko">
+<h3>📚 VPD(포차압)의 원예생리학적 메커니즘과 환경 제어 가이드</h3>
+<p>엽면 포차압(Leaf-to-Air Vapor Pressure Deficit, VPD)은 단순한 대기 습도 지표를 넘어, 시설원예에서 식물의 증산 작용과 광합성 효율을 결정하는 핵심 환경 변수입니다. 공기가 보유할 수 있는 최대 수증기량과 실제 보유 수증기량의 차이를 압력 단위(kPa)로 표현하여 식물이 느끼는 건조도를 정밀하게 대변합니다.</p>
+<h4>1. VPD의 수학적 정의와 산출공식</h4>
+<p>VPD는 대기 온도(<code>T_air</code>)에서의 포화수증기압(<code>VPsat_air</code>)과 실제 수증기압(<code>VPact</code>)의 차이로 계산됩니다. 특히 엽면 VPD(Leaf-to-Air VPD)는 식물 잎 내부 기공(Stomata)이 수증기로 100% 포화되어 있다고 가정하고, 실제 엽온(<code>T_leaf</code>)을 기준으로 계산한 포화수증기압과 주변 대기 실제 수증기압의 편차를 구합니다. 계산 공식은 Tetens 식을 응용하여 다음과 같이 정의됩니다:</p>
+<ul>
+<li>대기 포화수증기압: <code>VPsat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3))</code> (kPa)</li>
+<li>대기 실제수증기압: <code>VPact = VPsat(T_air) * (RH / 100)</code> (kPa)</li>
+<li>엽면 VPD: <code>VPD_leaf = VPsat(T_leaf) - VPact</code> (kPa) (여기서 <code>T_leaf = T_air + Offset</code>)</li>
+</ul>
+<h4>2. 엽온 편차(Leaf Temperature Offset)의 생리적 가치</h4>
+<p>식물 잎은 활발한 증산 작용을 통해 주변 열을 흡수(증발잠열)하므로 일반적으로 대기 온도보다 1.5°C ~ 2.0°C 낮게 형성(음의 편차)됩니다. 그러나 광원에 따른 열복사 패턴의 차이로 인해 HPS(고압나트륨등) 조명은 잎에 직접적인 복사열을 가해 대기보다 엽온이 높아질 수 있으며, 복사열이 적은 LED 조명 온실에서는 엽온 편차가 상대적으로 적게 유지됩니다. 따라서 정확한 VPD 제어를 위해서는 단순 대기 측정치가 아닌 엽온 편차(Offset)를 반영한 엽면 VPD 산출이 필수적입니다.</p>
+<h4>3. 생육 단계별 최적 VPD 제어 및 생리장해 예방</h4>
+<ul>
+<li><strong>육묘 및 삽목기 (0.4 ~ 0.8 kPa)</strong>: 뿌리 발달이 완전하지 않은 생육 초기에는 증산을 억제하여 식물체의 탈수를 방지해야 합니다. 높은 습도와 낮은 VPD 관리를 통해 기공을 완만하게 열고 뿌리 생장을 유도합니다.</li>
+<li><strong>영양생장기 (0.8 ~ 1.1 kPa)</strong>: 이산화탄소 흡수를 위한 기공 개폐를 활성화하고, 증산 흐름을 통해 토양/배지로부터 질소, 칼륨 등의 양분 유입을 안정화합니다.</li>
+<li><strong>개화/착과기 및 생식생장기 (1.1 ~ 1.5 kPa)</strong>: 과도한 다습 환경은 병원균 포자의 발아를 촉진합니다. 다소 건조한 환경(높은 VPD)을 조성하여 식물의 세포벽을 튼튼하게 하고 증산을 통한 칼슘 흡수를 극대화함으로써 토마토 배꼽썩음병(Blossom-end rot)이나 상추 팁번(Tip-burn) 등의 생리 장해를 예방합니다.</li>
+</ul>
+</div>
+<div class="academic-guide-lang" data-lang="en">
+<h3>📚 Horticultural Physiology of Vapor Pressure Deficit (VPD) and Climate Control</h3>
+<p>Vapor Pressure Deficit (VPD) is a critical climate variable in CEA (Controlled Environment Agriculture) that directly governs plant transpiration rates, nutrient uptake, and photosynthetic efficiency. Unlike Relative Humidity (RH), VPD reflects the true drying power of the air by calculating the difference between the saturation vapor pressure and actual vapor pressure in kilopascals (kPa).</p>
+<h4>1. Mathematical Definition and Formulas</h4>
+<p>VPD represents the pressure differential between the moisture inside the leaf's stomatal cavity (assumed to be 100% saturated at leaf temperature) and the surrounding air. The mathematical calculation uses the Tetens equation:</p>
+<ul>
+<li>Saturation Vapor Pressure: <code>VPsat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3))</code> (kPa)</li>
+<li>Actual Vapor Pressure of Air: <code>VPact = VPsat(T_air) * (RH / 100)</code> (kPa)</li>
+<li>Leaf-to-Air VPD: <code>VPD_leaf = VPsat(T_leaf) - VPact</code> (kPa) (where <code>T_leaf = T_air + Offset</code>)</li>
+</ul>
+<h4>2. The Biophysical Role of Leaf Temperature Offset</h4>
+<p>Due to evaporative cooling during transpiration, active crop leaves are typically 1.5°C to 2.0°C cooler than the ambient air (negative temperature offset). However, artificial lighting heavily skews this dynamic. HPS lamps emit intensive infrared radiation, often heating the leaves above ambient temperatures, while LED lighting lacks this radiant heat, keeping the leaf temperature closer to or below the room temperature. Accounting for this Leaf Temperature Offset is crucial for high-precision climate control.</p>
+<h4>3. Target Ranges &amp; Preventative Physiology</h4>
+<ul>
+<li><strong>Propagating &amp; Rooting (0.4 - 0.8 kPa)</strong>: Low VPD prevents dehydration in rootless cuttings by keeping transpiration low, fostering cellular turgor and rapid rooting.</li>
+<li><strong>Vegetative Stage (0.8 - 1.1 kPa)</strong>: A moderate VPD keeps stomata open for optimal CO2 assimilation while ensuring a steady transpirational stream for major mobile nutrients.</li>
+<li><strong>Flowering &amp; Fruiting (1.1 - 1.5 kPa)</strong>: Higher VPD rates facilitate transpirational pull for calcium, a non-mobile element essential for cell wall structure, effectively preventing blossom-end rot in tomatoes and tip-burn in leafy greens. It also suppresses fungal spore germination.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="result-header">엽면 포차 (Leaf-to-Air VPD)</div>
+<!-- Dynamic Gauge SVG -->
+<div class="gauge-svg-wrapper">
+<svg height="110" viewbox="0 0 200 110" width="200">
+<defs>
+<lineargradient id="cyan-green-grad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#ef4444"></stop> <!-- Red (dry) -->
+<stop offset="40%" stop-color="#f59e0b"></stop> <!-- Yellow -->
+<stop offset="60%" stop-color="#10b981"></stop> <!-- Green (opt) -->
+<stop offset="85%" stop-color="#06b6d4"></stop> <!-- Cyan -->
+<stop offset="100%" stop-color="#ef4444"></stop> <!-- Red (wet) -->
+</lineargradient>
+</defs>
+<!-- Arc (Radius 90, Center 100,100) -->
+<path class="gauge-meter gauge-bg" d="M 10 100 A 90 90 0 0 1 190 100"></path>
+<path class="gauge-meter gauge-fill" d="M 10 100 A 90 90 0 0 1 190 100" id="gauge-fill-arc"></path>
+</svg>
+<div class="gauge-indicator" id="gauge-hand"></div>
+<div class="gauge-center-dot"></div>
+</div>
+<div class="big-number" id="vpd-value">0.75</div>
+<div class="status-pill optimal" id="vpd-status-pill">최적 VPD</div>
+<p class="result-desc" id="vpd-explanation">현재 생육 단계에 완벽한 기후 조건입니다.</p>
+<div class="info-card">
+<h4>원예 과학 팁</h4>
+<p id="vpd-tip">적절한 엽면 VPD를 유지하는 것은 식물의 정상적인 증산 작용과 칼슘 흡수를 촉진하여 배꼽썩음병 등의 생리장해를 예방하는 데 필수적입니다.</p>
+</div>
+<div class="info-card" id="vpd-actions-card" style="border-left: 4px solid var(--primary);">
+<h4 id="lbl-vpd-actions-title">실시간 환경 제어 지침</h4>
+<ul id="vpd-actions-list" style="list-style-type: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
+<!-- Populated dynamically -->
+</ul>
+</div>
+</div>
+</div>
+<footer>
+<div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; font-size: 0.9rem;">
+<a href="index.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600; hover: { color: var(--primary); }">Home</a>
+<a href="about.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">About</a>
+<a href="contact.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Contact</a>
+<a href="terms.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Terms</a>
+<a href="privacy.html" style="color: var(--text-gray); text-decoration: none; font-weight: 600;">Privacy Policy</a>
+</div>
+<p>© 2026 Smart Farm Engineering Lab. All rights reserved.</p>
+<p>Built for zero-cost static hosting. Designed by Inwoovation</p>
+<p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.5; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;">
+<!-- Rendered dynamically by JS disclaimer text -->
+</p>
+</footer>
+</div>
+<!-- Floating Inquiry Button (FAB) -->
+<a class="feedback-fab" href="https://forms.gle/SC3ehhA4r6sPEZxV7" id="btn-feedback" onclick="handleFeedbackClick(event)" target="_blank">
+<span class="icon">📩</span>
+<span class="text" id="lbl-feedback-text">Inquiry &amp; Request</span>
+</a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="common.js"></script></body></html>
