@@ -626,7 +626,15 @@
     // Real-time search and category filtering engine
     function filterCategory(category) {
         const dashboardSec = document.getElementById('section-dashboard');
-        if (dashboardSec && !dashboardSec.classList.contains('active')) {
+        
+        // If we're on a sub-page (no dashboard section), redirect to index.html with category
+        if (!dashboardSec) {
+            window.location.href = 'index.html?cat=' + category;
+            return;
+        }
+        
+        // If dashboard exists but isn't active, switch to it
+        if (!dashboardSec.classList.contains('active')) {
             switchTab('dashboard');
         }
 
@@ -776,6 +784,17 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         checkBetaMode();
+        
+        // Handle URL parameters for tab and category switching
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        const catParam = urlParams.get('cat');
+        if (tabParam) {
+            setTimeout(() => switchTab(tabParam), 100);
+        }
+        if (catParam) {
+            setTimeout(() => filterCategory(catParam), 150);
+        }
         
         // Dynamically add Reset buttons to all input panels
         document.querySelectorAll('.panel-title').forEach(titleEl => {
