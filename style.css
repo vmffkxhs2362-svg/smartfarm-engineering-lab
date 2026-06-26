@@ -1331,9 +1331,7 @@
             font-size: 0.8rem;
             color: var(--text-light);
         }
-        .academic-guide-lang {
-            display: none;
-        }
+
         
         /* Dashboard Home Layout */
         .dashboard-grid {
