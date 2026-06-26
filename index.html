@@ -260,14 +260,14 @@
 
             <div class="metrics-grid" id="metrics-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;"></div>
 
-            <div class="chart-container" style="position: relative; height: 400px; width: 100%; background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+            <div class="chart-container" style="position: relative; height: 400px; width: 100%; box-sizing: border-box; background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
                 <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;" id="agri-chart-title">🍅 Agricultural Commodities</div>
-                <canvas id="agriChart"></canvas></canvas>
+                <canvas id="agriChart"></canvas>
             </div>
 
-            <div class="chart-container" id="energy-chart-wrapper" style="position: relative; height: 300px; width: 100%;" style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+            <div class="chart-container" id="energy-chart-wrapper" style="position: relative; height: 300px; width: 100%; box-sizing: border-box; background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
                 <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">⚡ Energy Impact (Natural Gas TTF)</div>
-                <canvas id="energyChart"></canvas></canvas>
+                <canvas id="energyChart"></canvas>
             </div>
             
             <div style="text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 2rem; padding-right: 0.5rem;">
