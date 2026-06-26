@@ -625,6 +625,11 @@
 
     // Real-time search and category filtering engine
     function filterCategory(category) {
+        const dashboardSec = document.getElementById('section-dashboard');
+        if (dashboardSec && !dashboardSec.classList.contains('active')) {
+            switchTab('dashboard');
+        }
+
         currentCategory = category;
         document.querySelectorAll('.category-chips .chip').forEach(chip => {
             chip.classList.remove('active');
