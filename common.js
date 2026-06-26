@@ -782,8 +782,33 @@
             }
         });
 
-        // Add keyboard navigation for search input
+        // Search input clear button logic
+        const searchWrapper = document.querySelector('.search-box-wrapper');
         const searchInput = document.getElementById('calc-search');
+        
+        if (searchWrapper && searchInput) {
+            const clearBtn = document.createElement('span');
+            clearBtn.className = 'search-clear-btn';
+            clearBtn.innerHTML = '✖';
+            searchWrapper.appendChild(clearBtn);
+            
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.length > 0) {
+                    clearBtn.style.display = 'block';
+                } else {
+                    clearBtn.style.display = 'none';
+                }
+            });
+            
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filterCalculators();
+                clearBtn.style.display = 'none';
+                searchInput.focus();
+            });
+        }
+
+        // Add keyboard navigation for search input
         if (searchInput) {
             searchInput.addEventListener('keydown', (e) => {
                 const dropdown = document.getElementById('search-dropdown');
