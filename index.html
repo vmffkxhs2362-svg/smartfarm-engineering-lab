@@ -318,6 +318,14 @@
                 if (!globalData.markets && globalData.datasets) {
                     globalData = { markets: { "EU": { name: "EU", datasets: globalData.datasets } } };
                 }
+                
+                // Override backend legacy name directly in frontend
+                if (globalData.markets && globalData.markets['EU']) {
+                    if (globalData.markets['EU'].name.includes("NL/ES")) {
+                        globalData.markets['EU'].name = "European Union (DE)";
+                    }
+                }
+                
                 updateDashboard();
             } catch (e) {
                 console.error(e);
