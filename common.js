@@ -643,11 +643,15 @@
         applyFilters();
     }
 
+    let currentDropdownIndex = -1;
+
     function applyFilters() {
         const query = document.getElementById('calc-search').value.toLowerCase().trim();
         const tabButtons = document.querySelectorAll('.tabs .tab-btn');
         const dashboardCards = document.querySelectorAll('.dashboard-card');
         
+        let dropdownResults = [];
+
         tabButtons.forEach(btn => {
             if (btn.id === 'btn-tab-dashboard') return; // Dashboard home button is always visible
             const btnCategory = btn.getAttribute('data-category');
@@ -662,6 +666,12 @@
             
             if (matchesCategory && matchesQuery && allowedBeta) {
                 btn.classList.remove('hide');
+                if (query !== '') {
+                    dropdownResults.push({
+                        text: btn.querySelector('.desktop-text') ? btn.querySelector('.desktop-text').textContent.trim() : btn.textContent.trim(),
+                        href: btn.getAttribute('href')
+                    });
+                }
             } else {
                 btn.classList.add('hide');
             }
@@ -686,6 +696,65 @@
                 card.style.display = 'none';
             }
         });
+        
+        updateSearchDropdown(query, dropdownResults);
+    }
+
+    function updateSearchDropdown(query, results) {
+        let dropdown = document.getElementById('search-dropdown');
+        if (!dropdown) {
+            const searchWrapper = document.querySelector('.search-box-wrapper');
+            if (searchWrapper) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'search-dropdown';
+                dropdown.className = 'search-dropdown';
+                searchWrapper.appendChild(dropdown);
+            } else {
+                return;
+            }
+        }
+
+        if (query === '') {
+            dropdown.classList.remove('active');
+            return;
+        }
+
+        dropdown.innerHTML = '';
+        currentDropdownIndex = -1;
+
+        if (results.length === 0) {
+            const emptyItem = document.createElement('div');
+            emptyItem.className = 'search-dropdown-empty';
+            emptyItem.textContent = 'No calculators found matching your query.';
+            dropdown.appendChild(emptyItem);
+        } else {
+            results.forEach((item, index) => {
+                const a = document.createElement('a');
+                a.className = 'search-dropdown-item';
+                a.href = item.href;
+                a.textContent = item.text;
+                a.setAttribute('data-index', index);
+                
+                a.addEventListener('mouseenter', () => {
+                    currentDropdownIndex = index;
+                    updateDropdownHighlight();
+                });
+
+                dropdown.appendChild(a);
+            });
+        }
+        dropdown.classList.add('active');
+    }
+
+    function updateDropdownHighlight() {
+        const items = document.querySelectorAll('.search-dropdown-item');
+        items.forEach((item, index) => {
+            if (index === currentDropdownIndex) {
+                item.classList.add('focused');
+            } else {
+                item.classList.remove('focused');
+            }
+        });
     }
 
     function checkBetaMode() {
@@ -702,6 +771,53 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         checkBetaMode();
+        
+        // Add click outside listener for dropdown
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('search-dropdown');
+            if (dropdown && dropdown.classList.contains('active')) {
+                if (!e.target.closest('.search-box-wrapper')) {
+                    dropdown.classList.remove('active');
+                }
+            }
+        });
+
+        // Add keyboard navigation for search input
+        const searchInput = document.getElementById('calc-search');
+        if (searchInput) {
+            searchInput.addEventListener('keydown', (e) => {
+                const dropdown = document.getElementById('search-dropdown');
+                if (!dropdown || !dropdown.classList.contains('active')) return;
+                
+                const items = dropdown.querySelectorAll('.search-dropdown-item');
+                if (items.length === 0) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    currentDropdownIndex = (currentDropdownIndex + 1) % items.length;
+                    updateDropdownHighlight();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    currentDropdownIndex = (currentDropdownIndex - 1 + items.length) % items.length;
+                    updateDropdownHighlight();
+                } else if (e.key === 'Enter') {
+                    if (currentDropdownIndex >= 0 && currentDropdownIndex < items.length) {
+                        e.preventDefault();
+                        window.location.href = items[currentDropdownIndex].href;
+                    }
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('active');
+                    searchInput.blur();
+                }
+            });
+            
+            // Re-open on focus if it has value
+            searchInput.addEventListener('focus', () => {
+                if (searchInput.value.trim() !== '') {
+                    filterCalculators();
+                }
+            });
+        }
     });
 
     
