@@ -2685,13 +2685,18 @@
             document.getElementById('section-roi') ? 'roi' :
             document.getElementById('section-transpiration') ? 'transpiration' :
             document.getElementById('section-pollinator') ? 'pollinator' :
-            document.getElementById('section-vertical') ? 'vertical' : 'dashboard';
+            document.getElementById('section-vertical') ? 'vertical' :
+            document.getElementById('section-market') ? 'market' : 'dashboard';
 
         const tabParam = urlParams.get('tab');
-        if (tabParam && ['vpd', 'valve', 'fert', 'heat-loss', 'roi', 'transpiration', 'pollinator', 'vertical'].includes(tabParam)) {
+        if (tabParam && ['vpd', 'valve', 'fert', 'heat-loss', 'roi', 'transpiration', 'pollinator', 'vertical', 'market'].includes(tabParam)) {
             switchTab(tabParam);
         } else {
-            switchTab(currentSection);
+            // Only switch to dashboard if we actually have the dashboard section on this page,
+            // which prevents redirect loops on info pages (about, contact, terms, privacy, greenpocket)
+            if (currentSection !== 'dashboard' || document.getElementById('section-dashboard')) {
+                switchTab(currentSection);
+            }
         }
 
         // Connect feedback button
