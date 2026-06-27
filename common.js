@@ -1104,6 +1104,20 @@
         if (targetBtn) targetBtn.classList.add('active');
         if (targetSec) targetSec.classList.add('active');
         
+        // Dynamically update URL without reload for local tab switches (SPA style)
+        if (window.history && window.history.replaceState && window.location.protocol.startsWith('http')) {
+            let newUrl = window.location.pathname;
+            if (target === 'market') {
+                newUrl += '?tab=market';
+            } else if (window.location.search) {
+                const params = new URLSearchParams(window.location.search);
+                params.delete('tab');
+                const searchStr = params.toString();
+                if (searchStr) newUrl += '?' + searchStr;
+            }
+            window.history.replaceState({ tab: target }, '', newUrl);
+        }
+        
         // Smooth scroll to top when changing tabs
         window.scrollTo({ top: 0, behavior: 'smooth' });
         
