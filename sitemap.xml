@@ -63,6 +63,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://smartfarm.inwoovation.com/greenpocket</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://smartfarm.inwoovation.com/about</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
