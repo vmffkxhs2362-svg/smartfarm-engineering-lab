@@ -803,6 +803,12 @@
         }
         checkBetaMode();
         
+        // Prevent Market Index tab from appending '#' to the URL on click
+        const btnTabMarket = document.getElementById('btn-tab-market');
+        if (btnTabMarket) {
+            btnTabMarket.setAttribute('href', 'javascript:void(0)');
+        }
+        
         // Handle URL parameters for tab and category switching
         const urlParams = new URLSearchParams(window.location.search);
         const tabParam = urlParams.get('tab');
