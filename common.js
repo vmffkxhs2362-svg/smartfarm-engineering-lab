@@ -810,6 +810,18 @@
         }
         checkBetaMode();
         
+        // Automatically scroll active tab into view in the horizontal scrolling container
+        setTimeout(() => {
+            const tabsContainer = document.querySelector('.tabs-container');
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (tabsContainer && activeTab) {
+                const containerRect = tabsContainer.getBoundingClientRect();
+                const tabRect = activeTab.getBoundingClientRect();
+                const scrollOffset = (tabRect.left - containerRect.left) - (containerRect.width / 2) + (tabRect.width / 2);
+                tabsContainer.scrollLeft += scrollOffset;
+            }
+        }, 50);
+        
         // Handle URL parameters for tab and category switching
         const urlParams = new URLSearchParams(window.location.search);
         const tabParam = urlParams.get('tab');
