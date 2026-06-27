@@ -9,8 +9,16 @@
 | 2026-06-13 | **GA4 추적 태그 연동** | 완료 | `G-V4RYJBMEDE` 추적 코드 적용 및 이벤트 바인딩 완료 |
 | 2026-06-13 | **Google Search Console 연동** | 완료 | URL 접두사 속성 매칭 및 GA4 웹스트림 최종 바인딩 완료 (`VERKNÜPFUNG ERSTELLT`) |
 | 2026-06-13 | **1차 한국어 메타데이터 최적화** | 완료 | 한/영 병기 타이틀 및 메타 디스크립션 국문 키워드 추가 완료 |
+| 2026-06-27 | **캐노니컬 및 사이트맵 최적화** | 완료 | 각 계산기 페이지의 Canonical Tag를 자기 참조로 복구하고, sitemap.xml의 index.html 중복 제거 및 동적 링크 리라이터 구현 완료 |
 
 ## 2. 📝 메타데이터 변경 이력
+
+### 2026-06-27 (구글 애드센스 대비 SEO 및 Canonical 최적화)
+* **목적**: 구글 애드센스 거절(콘텐츠 부족 등)을 방지하기 위해 크롤러가 각 계산기 페이지의 독립적인 고유 콘텐츠를 올바르게 색인하도록 교정.
+* **변경 내역**:
+  * **Canonical Tags**: 모든 서브 페이지(`vpd.html`, `mixing_valve.html`, `fertigation.html`, `heat_loss.html`, `roi_simulator.html`, `transpiration.html`, `diagnosis.html`, `vertical_dli.html`, `about.html`, `contact.html`, `terms.html`, `privacy.html`)의 캐노니컬 URL을 자기 자신을 가리키도록 정밀 교정 및 추가.
+  * **Sitemap**: `sitemap.xml` 내의 `index.html` 중복 엔트리를 제거하고 루트 `/`만 남김으로써 중복 콘텐츠 인덱싱 경고 해제.
+  * **Dynamic URL Rewrite**: 로컬 `file://` 오프라인 실행의 호환성을 해치지 않으면서 라이브 웹 환경에서 `/` 표준 경로를 서빙하기 위해, `common.js`에 웹 프로토콜(HTTP/HTTPS) 감지 시 모든 `index.html` 링크를 루트 `/`로 동적 치환하는 스크립트 적용.
 
 ### 2026-06-13 (1차 한국어 SEO 최적화)
 * **목적**: 국내 농업인 및 스마트팜 엔지니어 대상 검색 유입(VPD 계산기, 양액 희석, 혼합 밸브 등) 극대화.

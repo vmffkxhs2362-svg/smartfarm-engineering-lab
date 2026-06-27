@@ -629,7 +629,8 @@
         
         // If we're on a sub-page (no dashboard section), redirect to index.html with category
         if (!dashboardSec) {
-            window.location.href = 'index.html?cat=' + category;
+            const prefix = window.location.protocol.startsWith('http') ? '/' : 'index.html';
+            window.location.href = prefix + '?cat=' + category;
             return;
         }
         
@@ -783,6 +784,15 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Dynamic link rewriter: rewrite index.html links to "/" on HTTP/HTTPS protocol
+        if (window.location.protocol.startsWith('http')) {
+            document.querySelectorAll('a[href="index.html"]').forEach(a => {
+                a.setAttribute('href', '/');
+            });
+            document.querySelectorAll('a[href^="index.html?"]').forEach(a => {
+                a.setAttribute('href', a.getAttribute('href').replace('index.html', '/'));
+            });
+        }
         checkBetaMode();
         
         // Handle URL parameters for tab and category switching
@@ -1059,7 +1069,11 @@
         const targetSec = document.getElementById(`section-${target}`);
         if (!targetSec && targetPages[target]) {
             // Target section is not on this page, redirect to the page
-            window.location.href = targetPages[target];
+            let dest = targetPages[target];
+            if (window.location.protocol.startsWith('http')) {
+                dest = dest.replace('index.html', '/');
+            }
+            window.location.href = dest;
             return;
         }
 
