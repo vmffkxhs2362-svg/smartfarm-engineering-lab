@@ -784,6 +784,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Setup Market Index tab to link directly to market.html instead of inline script
+        const btnTabMarket = document.getElementById('btn-tab-market');
+        if (btnTabMarket) {
+            btnTabMarket.setAttribute('href', 'market.html');
+            btnTabMarket.removeAttribute('onclick');
+        }
+
         // Dynamic link rewriter: rewrite index.html links to "/" on HTTP/HTTPS protocol
         if (window.location.protocol.startsWith('http')) {
             document.querySelectorAll('a[href]').forEach(a => {
@@ -802,12 +809,6 @@
             });
         }
         checkBetaMode();
-        
-        // Prevent Market Index tab from appending '#' to the URL on click
-        const btnTabMarket = document.getElementById('btn-tab-market');
-        if (btnTabMarket) {
-            btnTabMarket.setAttribute('href', 'javascript:void(0)');
-        }
         
         // Handle URL parameters for tab and category switching
         const urlParams = new URLSearchParams(window.location.search);
@@ -1077,7 +1078,7 @@
             'pollinator': 'diagnosis.html',
             'vertical': 'vertical_dli.html',
             'gear': 'greenpocket.html',
-            'market': 'index.html?tab=market'
+            'market': 'market.html'
         };
 
         const targetSec = document.getElementById(`section-${target}`);
