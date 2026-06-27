@@ -208,7 +208,9 @@
 
         async function initMarketDashboard() {
             try {
-                const response = await fetch('data/global_prices.json?t=' + new Date().getTime());
+                const isHttp = window.location.protocol.startsWith('http');
+                const jsonPath = isHttp ? '/data/global_prices.json' : 'data/global_prices.json';
+                const response = await fetch(jsonPath + '?t=' + new Date().getTime());
                 globalData = await response.json();
                 document.getElementById('update-timestamp').innerText = `Last Checked: ${globalData.last_updated}`;
                 
