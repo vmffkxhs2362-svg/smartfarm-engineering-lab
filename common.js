@@ -786,11 +786,19 @@
     document.addEventListener('DOMContentLoaded', () => {
         // Dynamic link rewriter: rewrite index.html links to "/" on HTTP/HTTPS protocol
         if (window.location.protocol.startsWith('http')) {
-            document.querySelectorAll('a[href="index.html"]').forEach(a => {
-                a.setAttribute('href', '/');
-            });
-            document.querySelectorAll('a[href^="index.html?"]').forEach(a => {
-                a.setAttribute('href', a.getAttribute('href').replace('index.html', '/'));
+            document.querySelectorAll('a[href]').forEach(a => {
+                let href = a.getAttribute('href');
+                if (!href || href.startsWith('http') || href.startsWith('//') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+                
+                if (href === 'index.html') {
+                    a.setAttribute('href', '/');
+                } else if (href.startsWith('index.html?')) {
+                    a.setAttribute('href', href.replace('index.html', '/'));
+                } else if (href.endsWith('.html')) {
+                    a.setAttribute('href', href.slice(0, -5));
+                } else if (href.includes('.html?')) {
+                    a.setAttribute('href', href.replace('.html?', '?'));
+                }
             });
         }
         checkBetaMode();
@@ -1071,7 +1079,13 @@
             // Target section is not on this page, redirect to the page
             let dest = targetPages[target];
             if (window.location.protocol.startsWith('http')) {
-                dest = dest.replace('index.html', '/');
+                if (dest === 'index.html') {
+                    dest = '/';
+                } else if (dest.startsWith('index.html?')) {
+                    dest = dest.replace('index.html', '/');
+                } else if (dest.endsWith('.html')) {
+                    dest = dest.slice(0, -5);
+                }
             }
             window.location.href = dest;
             return;
