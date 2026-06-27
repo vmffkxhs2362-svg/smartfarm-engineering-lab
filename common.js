@@ -821,6 +821,17 @@
                 tabsContainer.scrollLeft += scrollOffset;
             }
         }, 50);
+
+        // Map vertical mouse wheel scroll to horizontal scrolling for desktop users with standard mice
+        const scrollableTabs = document.querySelector('.tabs-container');
+        if (scrollableTabs) {
+            scrollableTabs.addEventListener('wheel', (evt) => {
+                if (scrollableTabs.scrollWidth > scrollableTabs.clientWidth) {
+                    evt.preventDefault();
+                    scrollableTabs.scrollLeft += evt.deltaY;
+                }
+            }, { passive: false });
+        }
         
         // Handle URL parameters for tab and category switching
         const urlParams = new URLSearchParams(window.location.search);
