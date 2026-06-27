@@ -348,6 +348,11 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
+                layout: {
+                    padding: {
+                        bottom: 15
+                    }
+                },
                 scales: {
                     x: { type: 'time', time: { unit: currentDays > 90 ? 'month' : 'day' } },
                     y: { beginAtZero: false }
