@@ -24,7 +24,9 @@ except ImportError:
 
 # 절대 경로 기준 설정
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CREDENTIALS_PATH = os.path.join(BASE_DIR, "data", "gsc_ga4_credentials.json")
+# G: 드라이브 루트(Headquater)의 Feed 디렉터리에 사령관님이 업로드해주신 json을 우선 확인하고 없으면 로컬 데이터 디렉터리로 대체
+HEADQUATER_FEED_KEY = "g:\\My Drive\\Antigravity\\Headquater\\Feed\\antigravity-analytics-499311-fe5c33e529a8.json"
+CREDENTIALS_PATH = HEADQUATER_FEED_KEY if os.path.exists(HEADQUATER_FEED_KEY) else os.path.join(BASE_DIR, "data", "gsc_ga4_credentials.json")
 SEO_LOG_PATH = os.path.join(BASE_DIR, "SEO_LOG.md")
 
 # API 스코프 정의
@@ -115,10 +117,8 @@ def update_seo_log(period_str, users, sessions, top_queries):
     with open(SEO_LOG_PATH, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # 테이블에 새로 입력될 데이터 라인 빌드
     new_row = f"| {period_str} | {users} | {sessions} | {top_queries} | API 자동 수집 갱신 |"
     
-    # "## 3. 📊 키워드 유입 및 트래픽 분석 로그" 섹션 위치 파싱
     target_header = "## 3. 📊 키워드 유입 및 트래픽 분석 로그 (GA4 & GSC 연동 데이터)"
     
     if target_header not in content:
@@ -126,23 +126,45 @@ def update_seo_log(period_str, users, sessions, top_queries):
         return
         
     parts = content.split(target_header)
-    table_part = parts[1].split("\n\n")[0] # 헤더 뒤 테이블 내용 추출
+    sub_content = parts[1]
     
-    # 테이블 행 구조를 분리
-    table_lines = table_part.strip().split("\n")
+    # 테이블 행들만 추출 (줄 시작이 | 인 줄만 모음)
+    lines = sub_content.split("\n")
+    table_lines = []
+    other_lines_before = []
+    other_lines_after = []
     
-    # 만약 '대기 중' 행만 있다면 교체하고, 기존에 기록이 있다면 하단에 누적
-    if "대기 중" in table_part:
+    table_started = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("|"):
+            table_started = True
+            table_lines.append(line)
+        else:
+            if not table_started:
+                other_lines_before.append(line)
+            else:
+                other_lines_after.append(line)
+                
+    # 테이블 내용 가공
+    if "대기 중" in "".join(table_lines):
         # 헤더 2줄(칼럼명, 구분선) 뒤에 새로운 행 삽입
-        updated_table_lines = table_lines[:2] + [new_row]
+        table_lines = table_lines[:2] + [new_row]
     else:
-        # 기존 누적 데이터 끝에 새로운 수집 결과 추가
-        updated_table_lines = table_lines + [new_row]
-        
-    updated_table_part = "\n".join(updated_table_lines)
-    
+        # 이미 동일한 날짜 범위가 있으면 교환하거나 새로 덮어쓰기
+        existing_idx = -1
+        for idx, tbl_line in enumerate(table_lines):
+            if period_str in tbl_line:
+                existing_idx = idx
+                break
+        if existing_idx != -1:
+            table_lines[existing_idx] = new_row
+        else:
+            table_lines.append(new_row)
+            
     # 전체 파일 내용 조립
-    new_content = parts[0] + target_header + "\n" + updated_table_part + "\n\n" + "\n\n".join(parts[1].split("\n\n")[1:])
+    new_sub_content = "\n".join(other_lines_before) + "\n" + "\n".join(table_lines) + "\n" + "\n".join(other_lines_after)
+    new_content = parts[0] + target_header + new_sub_content
     
     with open(SEO_LOG_PATH, "w", encoding="utf-8") as f:
         f.write(new_content)
