@@ -145,11 +145,11 @@
 
 ## 📅 2026-06-29 추가 브레인스토밍 아이디어
 *   **신규 아이디어 8종 상세 기획**: [NEW_REVENUE_IDEAS_20260629.md](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/NEW_REVENUE_IDEAS_20260629.md) 참조
-    *   *15. 독일 아우스빌둥 Chancenkarte 점수 계산기 및 cold-mail 빌더*
-    *   *16. 온실 작물 증산량 및 실시간 관수량 계산기*
-    *   *17. EU 그린딜 CAP 농업 친환경 보조금 시뮬레이터*
-    *   *18. 온실 혼합 밸브 및 순환 펌프 수압 무결성 검증기*
-    *   *19. 순환식 수경재배 배액 UV 소독 안전성 계산기*
+    *   *15. 독일 아우스빌둥 Chancenkarte 점수 계산기 및 cold-mail 빌더* (세부 규격: [지원서/Anschreiben 템플릿](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Ausbildung_Initiativbewerbung_Template.md))
+    *   *16. 온실 작물 증산량 및 실시간 관수량 계산기* (세부 규격: [식물생리/PM 증산량 공식](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Greenhouse_Transpiration_Calculator_Formula.md))
+    *   *17. EU 그린딜 CAP 농업 친환경 보조금 시뮬레이터* (세부 규격: [독일 Öko-Regelungen 직불금 단가 사전](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/EU_CAP_Agri_Subsidy_Eco_Schemes_Details.md))
+    *   *18. 온실 혼합 밸브 및 순환 펌프 수압 무결성 검증기* (세부 규격: [수리학적 Kv/권한 수식](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Mixing_Valve_Sizing_Hydraulic_Formula.md))
+    *   *19. 순환식 수경재배 배액 UV 소독 안전성 계산기* (세부 규격: [살균 동역학/UVT 감쇄 매뉴얼](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Closed_Loop_UV_Sterilization_Parameters.md))
     *   *20. 글로벌 스마트팜 복합환경제어기 및 센서 호환성 사전*
     *   *21. 온실 난방 에너지 ROI 및 독일 탄소세 회수 시뮬레이터*
     *   *22. 생성형 AI 농업/스마트팜 특화 스톡 미디어 자동 태깅 툴*
