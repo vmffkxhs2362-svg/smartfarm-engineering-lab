@@ -179,7 +179,7 @@ def main():
     # 설정 상수 (GSC 및 GA4 연동 정보)
     # ※ 이 부분은 사령관님의 실제 GA4 Property ID 및 GSC URL로 설정하여 실행합니다.
     GSC_SITE_URL = "https://smartfarm.inwoovation.com/"
-    GA4_PROPERTY_ID = "449174092"  # 사령관님의 실제 GA4 속성 ID (설정 메뉴에서 조회 가능)
+    GA4_PROPERTY_ID = "541313375"  # 사령관님의 실제 GA4 속성 ID (설정 메뉴에서 조회 가능)
     
     print("[INFO] Google APIs 트래픽 실데이터 수집 시작...")
     
