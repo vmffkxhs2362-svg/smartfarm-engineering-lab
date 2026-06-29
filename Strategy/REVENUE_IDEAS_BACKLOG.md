@@ -107,7 +107,7 @@
 ---
 
 ## 🇩🇪 11. [Digital OS] 독일 아우스빌둥(Ausbildung) 준비 및 정착 올인원 노션 템플릿
-*   **핵심 가치**: 독일 아우스빌둥(특히 원예/농업 분야)을 목표로 하는 한국 청년들을 위해 이력서(Lebenslauf), 자기소개서(Anschreiben) 가이드라인, 어학 공부용 학습 트래커(Nicos Weg A1-B1 매핑), 지원 농장 및 면접 진행 상황 관리 데이터베이스를 패키징한 Notion 템플릿.
+*   **핵심 가치**: 독일 아우스빌둥(특히 원예/농업 분야)을 목표로 하는 한국 청년들을 위해 이력서(Lebenslauf), 자기소개서(Anschreiben) 가이드라인, 어학 공부용 학습 트래커(Nicos Weg A1-B1 매핑), 지원 농장 및 면접 진행 상황 관리 데이터베이스를 패키징한 Notion 템플릿. (세부 DB 설계안: [독일 아우스빌둥 및 정착 템플릿 설계도](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Assets_and_Templates/Ausbildung_Notion_Template_Design.md))
 *   **수익화 모델**:
     *   **크몽 / Gumroad 일시불 판매**: 템플릿 파일 단독 판매 ($19.99).
     *   **Premium Version**: 면접 실제 질의응답 예시집 PDF를 묶어 번들 판매 ($29.99).
