@@ -97,7 +97,7 @@
 ---
 
 ## 🐛 10. [B2C / Interactive Web App] 스마트 온실 병해충 및 결핍 자가진단 가이드 (Interactive Crop Diagnoser)
-*   **핵심 가치**: 재배사나 홈가드너가 식물의 잎 색 변화, 반점, 시듦 등 증상을 선택형(Decision Tree)으로 클릭하면 영양 결핍(N-P-K-Ca-Mg 등)이나 예상 병해충을 진단하고 천적 방제 및 양액 조치 방법을 제시하는 정적 웹 도구.
+*   **핵심 가치**: 재배사나 홈가드너가 식물의 잎 색 변화, 반점, 시듦 등 증상을 선택형(Decision Tree)으로 클릭하면 영양 결핍(N-P-K-Ca-Mg 등)이나 예상 병해충을 진단하고 천적 방제 및 양액 조치 방법을 제시하는 정적 웹 도구. (세부 진단 경로 규격: [자가진단 의사결정 나무 및 방제 매트릭스](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Interactive_Crop_Diagnoser_Tree.md))
 *   **수익화 모델**:
     *   **Google AdSense**: 진단 결과 페이지 내 타겟 광고 노출.
     *   **Affiliate Matching**: 추천 친환경 약제, 비료 원료, 황산마그네슘 등 구매 링크 연동.
@@ -150,7 +150,7 @@
     *   *17. EU 그린딜 CAP 농업 친환경 보조금 시뮬레이터* (세부 규격: [독일 Öko-Regelungen 직불금 단가 사전](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/EU_CAP_Agri_Subsidy_Eco_Schemes_Details.md))
     *   *18. 온실 혼합 밸브 및 순환 펌프 수압 무결성 검증기* (세부 규격: [수리학적 Kv/권한 수식](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Mixing_Valve_Sizing_Hydraulic_Formula.md))
     *   *19. 순환식 수경재배 배액 UV 소독 안전성 계산기* (세부 규격: [살균 동역학/UVT 감쇄 매뉴얼](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Closed_Loop_UV_Sterilization_Parameters.md))
-    *   *20. 글로벌 스마트팜 복합환경제어기 및 센서 호환성 사전*
+    *   *20. 글로벌 스마트팜 복합환경제어기 및 센서 호환성 사전* (세부 규격: [센서 결선/신호 인터페이스 규격](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Global_Smart_Farm_Sensor_Compatibility.md))
     *   *21. 온실 난방 에너지 ROI 및 독일 탄소세 회수 시뮬레이터*
     *   *22. 생성형 AI 농업/스마트팜 특화 스톡 미디어 자동 태깅 툴*
 
