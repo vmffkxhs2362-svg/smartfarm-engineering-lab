@@ -153,4 +153,5 @@
     *   *20. 글로벌 스마트팜 복합환경제어기 및 센서 호환성 사전* (세부 규격: [센서 결선/신호 인터페이스 규격](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Global_Smart_Farm_Sensor_Compatibility.md))
     *   *21. 온실 난방 에너지 ROI 및 독일 탄소세 회수 시뮬레이터* (세부 규격: [에너지 열손실/탄소세 상각 수식](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Greenhouse_Energy_ROI_Carbon_Tax_Amortization.md))
     *   *22. 생성형 AI 농업/스마트팜 특화 스톡 미디어 자동 태깅 툴* (세부 규격: [스톡 메타데이터/키워드 매핑 스키마](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/AI_Agri_Stock_Photo_Metadata_Schema.md))
+    *   *23. 온실 다중 차광 스크린 조합식 광선 투과율 및 엽온 제어 모델* (세부 규격: [다중 차광/VPD 보정 수리 모델](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Greenhouse_Shading_Screen_Microclimate_Calculator.md))
 
