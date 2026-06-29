@@ -26,7 +26,7 @@
 ---
 
 ## 🌾 3. [B2B Market Intelligence] 주간 농산물 가격 예측 및 도매 유통 트렌드 Substack 구독
-*   **핵심 가치**: KAMIS(한국농수산식품유통공사) 공공 API 시세 데이터 분석 및 주간 변동 트렌드를 외식업 자영업자, 식자재 유통 벤더사, 마트 바이어 대상 리포트로 가공하여 발송.
+*   **핵심 가치**: KAMIS(한국농수산식품유통공사) 공공 API 시세 데이터 분석 및 주간 변동 트렌드를 외식업 자영업자, 식자재 유통 벤더사, 마트 바이어 대상 리포트로 가공하여 발송. (세부 API/예측식 설계안: [KAMIS API 연동 및 표준편차 시세 예측 모델](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Weekly_Agri_Market_Intelligence_Details.md))
 *   **수익화 모델**:
     *   **Substack Paid Newsletter**: 월 구독료 **$9.99 / 월** 또는 **$99 / 년** 설정.
     *   **리드 마그넷**: 무료 구독자에게 '농산물 시세 급락/급등 핵심 알림' 주 1회 발송 후 유료 프리미엄 심층 보고서로 유도.
