@@ -126,7 +126,7 @@
 ---
 
 ## 📈 13. [Premium Spreadsheet] 원예 스마트팜 창업 예타성 및 감가상각 시뮬레이션 시트 (CapEx & EBITDA Solver)
-*   **핵심 가치**: 온실 신축(CapEx), 자동 제어 및 관수 시설 비용, 연간 비료/배지 소모품비, 겨울철 면세유 난방 비용과 예상 수확 단가를 입력하면 10년간의 현금흐름, EBITDA, 투자비 회수 기간(Payback Period)을 대시보드로 시각화해 주는 정밀 엑셀 템플릿.
+*   **핵심 가치**: 온실 신축(CapEx), 자동 제어 및 관수 시설 비용, 연간 비료/배지 소모품비, 겨울철 면세유 난방 비용과 예상 수확 단가를 입력하면 10년간의 현금흐름, EBITDA, 투자비 회수 기간(Payback Period)을 대시보드로 시각화해 주는 정밀 엑셀 템플릿. (세부 타당성 예측 설계안: [스마트팜 예타성 및 EBITDA 분석 모델 구조](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Smart_Farm_Financial_Feasibility_Model.md))
 *   **수익화 모델**:
     *   **농업 창업 컨설팅 템플릿 판매**: 예비농업창업패키지 지원 및 B2B 농가 제출용 서식으로 판매 ($49 ~ $79).
 *   **사령관님 자산 레버리지**:
