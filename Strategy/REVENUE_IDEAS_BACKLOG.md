@@ -5,7 +5,7 @@
 ---
 
 ## 📊 1. [Micro-SaaS] 수경재배용 A/B액 양액 배합 비율 및 EC/pH 보정 시뮬레이터
-*   **핵심 가치**: 수경재배 입문 농가나 스마트팜 운영자가 비료 원료를 입력하면 자동으로 A/B액 조제 농도를 계산하고, 현장 센서 오차에 따른 EC/pH 보정값을 처방해 주는 마이크로 웹 계산기.
+*   **핵심 가치**: 수경재배 입문 농가나 스마트팜 운영자가 비료 원료를 입력하면 자동으로 A/B액 조제 농도를 계산하고, 현장 센서 오차에 따른 EC/pH 보정값을 처방해 주는 마이크로 웹 계산기. (세부 화학식 규격: [양액 배합 및 중탄산 중화 동역학 수식](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Hydroponic_Fertilizer_Mixing_Kinetics.md))
 *   **수익화 모델**:
     *   **Google AdSense**: 양액 조제 계산기 하단 및 결과 페이지 광고 노출.
     *   **Premium PDF**: "초보자를 위한 수경재배 비료 원료 배합 매뉴얼 및 성분표"를 유료 판매 ($9.99).
