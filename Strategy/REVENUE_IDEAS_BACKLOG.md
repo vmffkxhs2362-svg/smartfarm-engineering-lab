@@ -78,7 +78,7 @@
 ---
 
 ## 📐 8. [CAD / 3D Asset] 온실 기자재 CAD 도면 블록 및 3D 모델 에셋 스톡 판매
-*   **핵심 가치**: 온실 구조 설계 회사나 농학 전공 학생들이 설계 시 사용하는 유리온실 프레임, 팬, 난방 배관, 양액 배드 등의 표준 규격 CAD 도면 블록 및 3D 그래픽 모델링 에셋 라이브러리.
+*   **핵심 가치**: 온실 구조 설계 회사나 농학 전공 학생들이 설계 시 사용하는 유리온실 프레임, 팬, 난방 배관, 양액 배드 등의 표준 규격 CAD 도면 블록 및 3D 그래픽 모델링 에셋 라이브러리. (세부 카탈로그 설계안: [온실 표준 기자재 3D/CAD 에셋 카탈로그](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Greenhouse_CAD_3D_Asset_Library_Catalog.md))
 *   **수익화 모델**:
     *   **CGTrader / TurboSquid / CADBlocks**: 3D 에셋 및 도면 블록 업로드 후 전 세계 바이어 다운로드 시 건당 로열티 정산.
 *   **사령관님 자산 레버리지**:
