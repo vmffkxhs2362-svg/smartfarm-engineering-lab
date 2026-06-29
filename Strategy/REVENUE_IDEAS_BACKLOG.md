@@ -88,7 +88,7 @@
 ---
 
 ## 🔗 9. [Affiliate Directory] 스마트 홈가드닝/수경재배 자재 제휴 링크 매칭 포털
-*   **핵심 가치**: 아파트나 가정에서 쉽게 시작할 수 있는 미니 수경재배기, 가정용 LED 식물등, 소형 pH/EC 측정기, 가정용 양액 비료 등 검증된 홈가드닝 자재들을 분석하여 평점과 구매 링크를 매칭해 둔 정적 디렉토리 웹사이트. (배포 후 유지보수 0%)
+*   **핵심 가치**: 아파트나 가정에서 쉽게 시작할 수 있는 미니 수경재배기, 가정용 LED 식물등, 소형 pH/EC 측정기, 가정용 양액 비료 등 검증된 홈가드닝 자재들을 분석하여 평점과 구매 링크를 매칭해 둔 정적 디렉토리 웹사이트. (배포 후 유지보수 0%) (세부 큐레이션 및 SEO 설계안: [홈가드닝 및 가정용 수경재배 제휴 매칭 구조](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/Strategy/Home_Gardening_Affiliate_Directory.md))
 *   **수익화 모델**:
     *   **Amazon / AliExpress / Coupang Partners Affiliate**: 제휴 파트너스 구매 링크 연동을 통한 판매액의 3% ~ 10% 자동 제휴 수수료 수취.
 *   **사령관님 자산 레버리지**:
