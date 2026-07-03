@@ -92,3 +92,10 @@
     *   **국문:** `정밀 수경재배`, `스마트팜 자동 양액 공급 장치`, `온실 히트펌프 난방 에너지 절감`, `온실 다중 피복 단열재`, `상업용 유리온실 환경제어 시스템`
     *   **독문 (향후 독일 로컬라이징 대비):** `Präzisions-Fertigation`, `Gewächshaus-Heizung Energieeinsparung`, `Klimacomputer für Gewächshäuser`, `Hydroponik Nährstoffdosierung`
     *   **영문 (글로벌 타겟):** `Precision Fertigation System`, `Greenhouse HVAC energy conservation`, `Smart greenhouse climate control sensor`, `Hydroponic dosing automation`
+
+---
+
+## 🛡️ 4. 구글 애드센스 공식 정책 및 계산기 사이트 승인 가이드라인
+*   **'가치 낮은 콘텐츠(Low-Value Content)' 거절 예방**: 단순히 계산만 수행하는 일회성 유틸리티 도구는 구글 애드센스 승인 시 가치가 낮다고 거절될 확률이 높습니다. 따라서 모든 계산기 탭 하단에 풍부한 학술 가이드(Scientific Guide), 유저 매뉴얼, FAQ 텍스트를 필수적으로 배치하여 검색 엔진 인덱싱 가치를 극대화합니다.
+*   **부정 클릭(Invalid Click) 정책 준수**: 광고 단가와 클릭률을 올리기 위해 입력 폼이나 계산 버튼 근처에 광고를 무리하게 배치해 오클릭을 유도하는 행위는 구글 정책 위반으로 계정 정지를 유발할 수 있습니다. 광고 슬롯 영역에는 명확히 `Advertisement` 또는 `Anzeige(광고)`를 표기하고, 결과창 사이에 합리적인 여백(Padding)을 확보해야 합니다.
+*   **다이내믹 리스폰시브 레이아웃**: 모바일 유저의 이탈률을 막기 위해 모든 광고 슬롯은 `data-full-width-responsive="false"` 또는 모바일 맞춤형 규격(`320x100` 배너)을 강제 적용해 모바일 레이아웃 붕괴를 원천 방어합니다.
