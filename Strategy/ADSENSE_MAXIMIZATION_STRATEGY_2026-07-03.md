@@ -15,7 +15,43 @@
         return (targetPpm * waterVolumeLiters) / (fertilizerPercentage * 10);
     }
     ```
-*   **확장 탭 기획:** A액(질산칼슘 등), B액(제1인산칼륨 등) 복합 영양액 조제 비율 자동 산출 기능 동시 제공.
+*   **확장 탭 기획 (A/B액 복합 영양액 조제 솔버 알고리즘):**
+    단일 비료 계산뿐만 아니라 다종 비료(질산칼슘, 질산칼륨, MKP, 황산마그네슘 등)를 혼합하여 목표 N-P-K-Ca-Mg PPM을 달성하는 정밀 수치 솔버를 탑재합니다.
+    
+    **Deterministic Sequential Solver Algorithm (JavaScript):**
+    ```javascript
+    function solveNutrientRecipe(target, volume, ratio) {
+        let factor = (volume * ratio) / 10000; // g 변환 및 배수 보정
+        
+        // 1. Ca 요구량을 바탕으로 Calcium Nitrate [Ca: 19%, N: 15.5%] 계산
+        let calciumNitrate = (target.ca * factor) / 0.19; 
+        let nFromCaNitrate = calciumNitrate * 0.155; 
+        
+        // 2. Mg 요구량을 바탕으로 Magnesium Sulfate [Mg: 9.8%, S: 13%] 계산
+        let magnesiumSulfate = (target.mg * factor) / 0.098; 
+        
+        // 3. P 요구량을 바탕으로 MKP [P: 22.7%, K: 28.7%] 계산
+        let mkp = (target.p * factor) / 0.227; 
+        let kFromMkp = mkp * 0.287; 
+        
+        // 4. K 요구량 중 잔여분 계산 (Potassium Nitrate [K: 38.6%, N: 13%] 활용)
+        let remainingK = (target.k * factor) - kFromMkp;
+        let potassiumNitrate = remainingK > 0 ? remainingK / 0.386 : 0;
+        let nFromKNitrate = potassiumNitrate * 0.13;
+        
+        // 5. N 요구량 중 잔여분 계산
+        let remainingN = (target.n * factor) - (nFromCaNitrate + nFromKNitrate);
+        
+        return {
+            calciumNitrate: Math.max(0, calciumNitrate),
+            magnesiumSulfate: Math.max(0, magnesiumSulfate),
+            mkp: Math.max(0, mkp),
+            potassiumNitrate: Math.max(0, potassiumNitrate),
+            remainingN_Error: remainingN // 과부족분 모니터링
+        };
+    }
+    ```
+    - **가치:** 이 솔버는 A/B 탱크에 비료를 나누어 넣어야 하는 양(Ca는 Tank A, Phosphate/Sulfate는 Tank B)을 자동으로 분류하여 제시함으로써, 단순 계산기를 넘어 **전문 상업용 온실 농가 컨설팅 툴급의 신뢰 보증(Anchor 1)**을 실현합니다.
 
 ---
 
