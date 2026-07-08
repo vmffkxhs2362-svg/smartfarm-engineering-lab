@@ -1709,6 +1709,21 @@
         }
         expEl.innerHTML = exp;
         updatePyeongHelpers();
+
+        const actionsCard = document.getElementById('hl-actions-card');
+        const actionsList = document.getElementById('hl-actions-list');
+        if (actionsCard && actionsList) {
+            let advise = `Your greenhouse is losing <strong>${qLossKw.toFixed(1)} kW</strong> of heat. `;
+            if (U > 5.0) {
+                advise += `Because your cladding's U-value is high (${U}), heat is hemorrhaging. Installing a double thermal screen could cut this energy demand by 40%. `;
+            } else {
+                advise += `Your cladding provides excellent insulation. `;
+            }
+            if (deltaT > 25) {
+                advise += `The massive temperature difference of ${deltaT.toFixed(1)}°C puts extreme stress on your boiler. Ensure you have a backup heating source ready for winter nights.`;
+            }
+            actionsList.innerHTML = advise;
+        }
     }
 
     let currentRoiCurrency = 'KRW';
