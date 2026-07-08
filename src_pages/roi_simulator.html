@@ -1,0 +1,96 @@
+<!-- TITLE: Smart Farm Precision Calculator | AgTech Precision Suite -->
+<!-- DESC: Free agricultural engineering and greenhouse climate precision calculators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss. -->
+<!-- KEYWORDS: smart farm, greenhouse calculator, VPD calculator, fertigation, mixing valve, heat loss, agriculture, engineering -->
+<!-- ACTIVE_TAB: btn-tab-roi -->
+<!-- ACTIVE_CHIP: chip-all -->
+<div class="calc-wrapper active" id="section-roi">
+<div class="form-panel">
+<h2 class="panel-title" id="lbl-roi-title-ui">Energy Price &amp; Equipment Specs</h2>
+<div class="input-group">
+<div class="input-header">
+<label id="lbl-roi-currency">Base Currency Setting</label>
+<div class="toggle-container">
+<button class="toggle-btn active" id="roi-curr-krw" onclick="switchRoiCurrency('KRW')">KRW (₩)</button>
+<button class="toggle-btn" id="roi-curr-eur" onclick="switchRoiCurrency('EUR')">EUR (€)</button>
+<button class="toggle-btn" id="roi-curr-usd" onclick="switchRoiCurrency('USD')">USD ($)</button>
+</div>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-demand" id="lbl-roi-demand">Annual Heating Demand</label>
+</div>
+<div class="input-control-wrapper">
+<input id="roi-demand" oninput="calculateRoiEngine()" step="5000" type="number" value="150000"/>
+<span class="suffix">kWh</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-boiler-type" id="lbl-roi-boiler-type">Existing Boiler Fuel Type</label>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="roi-boiler-type" onchange="onBoilerTypeChange()">
+<option selected="" value="gas">Natural Gas</option>
+<option value="oil">Heating Oil (Kerosene)</option>
+<option value="lpg">LPG</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-boiler-price" id="lbl-roi-boiler-price">Existing Fuel Price</label>
+</div>
+<div class="input-control-wrapper">
+<input id="roi-boiler-price" oninput="calculateRoiEngine()" step="10" type="number" value="1000"/>
+<span class="suffix" id="roi-boiler-price-unit">₩/m³</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-boiler-eff" id="lbl-roi-boiler-eff">Boiler Efficiency</label>
+</div>
+<div class="input-control-wrapper">
+<input id="roi-boiler-eff" max="100" min="50" oninput="calculateRoiEngine()" step="1" type="number" value="85"/>
+<span class="suffix">%</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-hp-cop" id="lbl-roi-hp-cop">Heat Pump Average COP</label>
+</div>
+<div class="input-control-wrapper">
+<input id="roi-hp-cop" oninput="calculateRoiEngine()" step="0.1" type="number" value="3.5"/>
+<span class="suffix">COP</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-hp-price" id="lbl-roi-hp-price">Agricultural Electricity Price</label>
+</div>
+<div class="input-control-wrapper">
+<input id="roi-hp-price" oninput="calculateRoiEngine()" step="1" type="number" value="80"/>
+<span class="suffix" id="roi-hp-price-unit">₩/kWh</span>
+</div>
+</div>
+<div class="input-group">
+<div class="input-header">
+<label for="roi-capex" id="lbl-roi-capex">Additional HP Investment (CapEx)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="roi-capex" oninput="calculateRoiEngine()" step="100000" type="number" value="15000000"/>
+<span class="suffix" id="roi-capex-unit">₩</span>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="result-header" id="lbl-roi-result-hdr">Annual Savings &amp; Payback</div>
+<div class="big-number" id="roi-value">0.0 Yrs</div>
+<div class="status-pill optimal" id="roi-status-pill">ROI Analysis Complete</div>
+<p class="result-desc" id="roi-explanation">Ready...</p>
+<div class="info-card">
+<h3 id="lbl-roi-tip-title">COP Performance Factor</h4>
+<p id="roi-tip-desc">Heat pumps move heat instead of generating it, producing multiple times the energy they consume. A COP of 3.5 delivers 3.5 kW of heat per 1 kW of electrical input.</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,161 @@
+<!-- TITLE: Smart Farm Precision Calculator | AgTech Precision Suite -->
+<!-- DESC: Free agricultural engineering and greenhouse climate precision calculators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss. -->
+<!-- KEYWORDS: smart farm, greenhouse calculator, VPD calculator, fertigation, mixing valve, heat loss, agriculture, engineering -->
+<!-- ACTIVE_TAB: btn-tab-pollinator -->
+<!-- ACTIVE_CHIP: chip-all -->
+<div class="calc-wrapper active" id="section-pollinator">
+<div class="segmented-control" style="grid-column: span 2; margin-bottom: 2rem;">
+<button class="segment-btn active" id="btn-subtab-diagnosis" onclick="switchPollinatorTab('diagnosis')">Pest &amp; Disease Diagnosis</button>
+<button class="segment-btn" id="btn-subtab-pesticide" onclick="switchPollinatorTab('pesticide')">Pesticide REI Diagnosis</button>
+<button class="segment-btn" id="btn-subtab-density" onclick="switchPollinatorTab('density')">Optimal Density Math</button>
+<button class="segment-btn" id="btn-subtab-activity" onclick="switchPollinatorTab('activity')">Foraging Simulator</button>
+</div>
+<!-- Subtab 0: Disease & Pest Diagnosis -->
+<div class="tab-content active" id="subtab-diagnosis">
+<div class="form-panel">
+<h2 class="panel-title" id="lbl-diag-input-title">Symptom Scouting Variables</h2>
+<div class="input-group">
+<label for="diag-crop" id="lbl-select-crop">Select Crop</label>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="diag-crop">
+<option id="opt-crop-placeholder" value="">-- Select Option --</option>
+<option value="tomato">Tomato</option>
+<option value="strawberry">Strawberry</option>
+<option value="blueberry">Blueberry</option>
+<option value="melon">Melon</option>
+<option value="pepper">Pepper / Paprika</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<label for="diag-part" id="lbl-select-part">Affected Plant Part</label>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select disabled="" id="diag-part">
+<option value="">-- Select Option --</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<label for="diag-symptom" id="lbl-select-symptom">Scouted Symptom details</label>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select disabled="" id="diag-symptom">
+<option value="">-- Select Option --</option>
+</select>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="panel-title" id="lbl-diag-result-title">Diagnostic &amp; Remedial Report</div>
+<div id="diag-result-content" style="width: 100%;">
+<p style="color: var(--text-gray); font-style: italic;">Select crop, plant part, and symptoms to view real-time diagnostic reports.</p>
+</div>
+</div>
+</div>
+<!-- Subtab 1: Pesticide REI Diagnosis -->
+<div class="tab-content" id="subtab-pesticide">
+<div class="form-panel">
+<h2 class="panel-title" id="lbl-pest-input-title">Pesticide Database Search</h2>
+<div class="input-group">
+<label for="pest-search" id="lbl-pest-search-label">Enter active pesticide ingredient (e.g. Imidacloprid, Boscalid)</label>
+<div class="input-control-wrapper search-container">
+<input autocomplete="off" id="pest-search" placeholder="Search ingredient..." type="text"/>
+<div class="autocomplete-list" id="autocomplete-list"></div>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="panel-title" id="lbl-pest-result-title">Bee Safety Diagnosis Result</div>
+<div id="pest-result-content" style="width: 100%; display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
+<p style="color: var(--text-gray); font-style: italic;">Enter a pesticide ingredient above to display safety guidelines.</p>
+</div>
+</div>
+</div>
+<!-- Subtab 2: Optimal Density Math -->
+<div class="tab-content" id="subtab-density">
+<div class="form-panel">
+<h2 class="panel-title" id="lbl-density-input-title">Greenhouse Metrics</h2>
+<div class="input-group">
+<label for="crop-type" id="lbl-crop-type">Target Crop Category</label>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="crop-type" onchange="calculateDensity()">
+<option value="tomato">Tomatoes (Buzz Pollination Required)</option>
+<option value="strawberry">Strawberries (Deformity Prevention, Check Over-visitation)</option>
+<option value="melon">Melons/Watermelons (Pollen rich, requires sugar syrup)</option>
+<option value="blueberry">Blueberries (Bell-shaped bloom expert)</option>
+<option value="pepper">Peppers / Paprikas (Self-pollinating boost)</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<label for="area" id="lbl-area">Crop Area (㎡)</label>
+<div class="input-control-wrapper">
+<input id="area" min="50" oninput="calculateDensity()" step="50" type="number" value="3300"/>
+<span class="suffix" id="area-suffix">㎡</span>
+</div>
+<div class="pyeong-helper" id="area-pyeong" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
+</div>
+<div class="input-group">
+<label for="season" id="lbl-season">Deployment Season</label>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="season" onchange="calculateDensity()">
+<option value="spring_autumn">Spring / Autumn (Standard Temp)</option>
+<option value="summer">Summer (Heat mitigation required)</option>
+<option value="winter">Winter (Insulation required)</option>
+</select>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="panel-title" id="lbl-density-result-title">Recommended Stocking</div>
+<div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+<div>
+<span class="result-header" id="lbl-req-hives-title">Recommended Hive Count</span>
+<div class="big-number" id="hives-value">3 Hives</div>
+</div>
+<div>
+<span class="result-header" id="lbl-expected-lifespan-title">Expected Hive Lifespan</span>
+<div class="status-pill optimal" id="lifespan-value" style="margin-bottom: 0;">8-10 Weeks</div>
+</div>
+<div class="info-card" style="border-left: 4px solid var(--primary); text-align: left;">
+<h3 id="lbl-density-desc-title">Placement Guidelines</h3>
+<p id="density-guide-text">Calculating optimal stocking density...</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Subtab 3: Foraging Activity Simulator -->
+<div class="tab-content" id="subtab-activity">
+<div class="form-panel">
+<h2 class="panel-title" id="lbl-act-input-title">Temperature Simulator</h2>
+<div class="input-group">
+<label for="max-temp" id="lbl-max-temp">Forecasted Max Greenhouse Temp (℃)</label>
+<div class="input-control-wrapper">
+<input id="max-temp" max="50" min="-10" oninput="simulateActivity()" step="1" type="number" value="23"/>
+<span class="suffix">℃</span>
+</div>
+</div>
+<div class="input-group">
+<label for="min-temp" id="lbl-min-temp">Forecasted Min Greenhouse Temp (℃)</label>
+<div class="input-control-wrapper">
+<input id="min-temp" max="40" min="-20" oninput="simulateActivity()" step="1" type="number" value="14"/>
+<span class="suffix">℃</span>
+</div>
+</div>
+</div>
+<div class="result-panel">
+<div class="panel-title" id="lbl-act-result-title">Estimated Foraging Score</div>
+<div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
+<div>
+<span class="result-header" id="lbl-act-status-title">Foraging Activity Level</span>
+<div class="big-number" id="activity-score-large">100%</div>
+<div class="status-pill optimal" id="activity-status-pill" style="margin-top: 0.6rem; margin-bottom: 0;">Optimal Foraging</div>
+</div>
+<p class="result-desc" id="activity-score-desc">Calculating bee activity index based on temperature data...</p>
+<div class="info-card" style="border-left: 4px solid var(--cyan); text-align: left;">
+<h3 id="lbl-act-guide-title">Microclimate Control Guide</h3>
+<p id="activity-guide-text">Analyzing bee foraging patterns...</p>
+</div>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,109 @@
+<!-- TITLE: Smart Farm Precision Calculator | AgTech Precision Suite -->
+<!-- DESC: Free agricultural engineering and greenhouse climate precision calculators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss. -->
+<!-- KEYWORDS: smart farm, greenhouse calculator, VPD calculator, fertigation, mixing valve, heat loss, agriculture, engineering -->
+<!-- ACTIVE_TAB: btn-tab-dashboard -->
+<!-- ACTIVE_CHIP: chip-all -->
+<div class="calc-wrapper active" id="section-dashboard" style="grid-template-columns: 1fr; background: transparent; border: none; box-shadow: none; padding: 0;">
+<h2 style="margin-bottom: 1.5rem; font-size: 1.4rem;">🛠️ Engineering Tools & Calculators</h2>
+    <div class="dashboard-grid">
+<div class="dashboard-card" data-category="market"  data-keywords="market, price, global, natural gas, tomato, cucumber, pepper, index"  onclick="switchTab('market')"  style="border: 1px solid rgba(234, 179, 8, 0.5); background: linear-gradient(145deg, rgba(15,23,42,0.9) 0%, rgba(30,41,59,0.9) 100%);">
+<div class="card-icon">📈</div>
+<h3>
+<span style="color: #facc15;">Global Agri-Market Index</span>
+</h3>
+<p>
+<span style="color: #e2e8f0; font-weight: 500;">Live market dashboard tracking EU wholesale prices for tomato, cucumber, bell pepper, and natural gas (TTF).</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="climate" data-keywords="vpd, vpd, air temperature, relative humidity, leaf temp offset, climate, humidity" onclick="switchTab('vpd')">
+<div class="card-icon">🌬️</div>
+<h3>
+
+<span>Vapor Pressure Deficit (VPD)</span>
+</h3>
+<p>
+
+<span>Calculates the optimal leaf-to-air VPD based on air temp, relative humidity, and leaf temperature offset.</span>
+</p>
+</div>
+
+
+<div class="dashboard-card" data-category="facility" data-keywords="valve, heating, mixing, 3-way, flow rate, kv, piping, heating" onclick="switchTab('valve')">
+<div class="card-icon">🎛️</div>
+<h3>
+
+<span>Heating Mixing Valve</span>
+</h3>
+<p>
+
+<span>Sizes the appropriate Kv capacity coefficient and DN pipe diameter for greenhouse 3-way mixing valves.</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="fertigation" data-keywords="fert, fertigation, dilution, fertilizer, compounding, bicarbonate, acid, concentration, ppm, nutrition" onclick="switchTab('fert')">
+<div class="card-icon">🧪</div>
+<h3>
+
+<span>Stock Tank Fertigation</span>
+</h3>
+<p>
+
+<span>Calculates raw fertilizer weight compounding and acid neutralization for bicarbonate control.</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="facility" data-keywords="heat loss, heat loss, heating load, cover, outdoor temp, u-value, greenhouse" onclick="switchTab('heat-loss')">
+<div class="card-icon">📉</div>
+<h3>
+
+<span>Greenhouse Heat Loss</span>
+</h3>
+<p>
+
+<span>Estimates maximum heating load based on cover materials, wind friction, and temperature delta.</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="facility" data-keywords="roi, boiler, heat pump, economics, energy cost, lpg, boiler, heat pump" onclick="switchTab('roi')">
+<div class="card-icon">📊</div>
+<h3>
+
+<span>Boiler vs Heat Pump ROI</span>
+</h3>
+<p>
+
+<span>Analyzes economic feasibility, comparing heating fuels against heat pump transition savings.</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="fertigation" data-keywords="transpiration, transpiration, penman, penman, radiation, wind, temperature, pm, crop" onclick="switchTab('transpiration')">
+<div class="card-icon">🍃</div>
+<h3>
+
+<span>Plant Transpiration (PM)</span>
+</h3>
+<p>
+
+<span>Calculates dynamic crop transpiration rates using the biophysical Penman-Monteith model.</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="climate" data-keywords="pollinator, pests, pollinators, diagnosis, bees, safety, green peach aphid, mites" onclick="switchTab('pollinator')">
+<div class="card-icon">🐝</div>
+<h3>
+
+<span>Crop Diagnosis &amp; Bees</span>
+</h3>
+<p>
+
+<span>Diagnoses pest/disease symptoms and assesses insecticide bee safety intervals (REI).</span>
+</p>
+</div>
+<div class="dashboard-card" data-category="climate" data-keywords="vertical, vertical farming, dli, dli, led, ppfd, photoperiod, photoperiod" onclick="switchTab('vertical')">
+<div class="card-icon">🌱</div>
+<h3>
+
+<span>Vertical Farming DLI</span>
+</h3>
+<p>
+
+<span>Calculates Daily Light Integral (DLI) and thermal outputs for vertical farming LED grow lights.</span>
+</p>
+</div>
+</div>
+    </div> <!-- Close section-dashboard -->
