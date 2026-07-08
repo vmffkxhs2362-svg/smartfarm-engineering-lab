@@ -2822,7 +2822,6 @@
         
         // Load farm profile first to populate values before initial calculations
         if (typeof loadFarmProfile === 'function') loadFarmProfile();
-        if (typeof autofillInputsFromProfile === 'function') autofillInputsFromProfile();
         currentLang = 'en';
 
         // Restore Saved Preferences (with defensive guards)
@@ -2887,6 +2886,9 @@
         if (diagCrop && typeof updatePartOptions === 'function') diagCrop.addEventListener('change', updatePartOptions);
         if (diagPart && typeof updateSymptomOptions === 'function') diagPart.addEventListener('change', updateSymptomOptions);
         if (diagSymptom && typeof performDiagnosis === 'function') diagSymptom.addEventListener('change', performDiagnosis);
+
+        // Autofill inputs from farm profile before initial calculations run
+        if (typeof autofillInputsFromProfile === 'function') autofillInputsFromProfile();
 
         // Run initial calculations for whichever sections are present on this page
         if (document.getElementById('section-vpd')) {
@@ -3101,6 +3103,23 @@
             if (document.getElementById('section-vertical')) {
                 fillInput('led-bars', Math.round(profile.area / 10)); // estimation
                 fillInput('elec-rate', (profile.elecRate / 1300).toFixed(2));
+            }
+
+            // 8. Crop Diagnosis & Pollinator Page
+            if (document.getElementById('section-pollinator')) {
+                const selectDiagCrop = document.getElementById('diag-crop');
+                if (selectDiagCrop) {
+                    selectDiagCrop.value = profile.crop;
+                    selectDiagCrop.dispatchEvent(new Event('change'));
+                }
+                
+                const selectCropType = document.getElementById('crop-type');
+                if (selectCropType) {
+                    selectCropType.value = profile.crop;
+                    selectCropType.dispatchEvent(new Event('change'));
+                }
+
+                fillInput('area', profile.area);
             }
         } catch (e) {
             console.error("Error autofilling inputs: ", e);
