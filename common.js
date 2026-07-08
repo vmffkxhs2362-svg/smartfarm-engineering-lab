@@ -1457,7 +1457,11 @@
         let Q = parseFloat(document.getElementById('heat-power').value);
         let dT = parseFloat(document.getElementById('valve-dt').value);
         let dPv = parseFloat(document.getElementById('valve-dp').value);
-        if (isNaN(Q) || isNaN(dT) || isNaN(dPv) || dT <= 0 || dPv <= 0) return;
+        if (isNaN(Q) || isNaN(dT) || isNaN(dPv) || dT <= 0 || dPv <= 0) {
+            const actionsList = document.getElementById('valve-actions-list');
+            if (actionsList) actionsList.innerHTML = "Please enter valid system inputs (Temperature Drop and Valve Pressure Drop must be greater than 0).";
+            return;
+        }
         if (currentPowerUnit === 'BTU') {
             Q = Q / 3412.14;
         }
@@ -1567,7 +1571,11 @@
         const tankVolume = parseFloat(document.getElementById('fert-vol').value);
         const dilution = parseFloat(document.getElementById('fert-ratio').value);
         const purity = parseFloat(document.getElementById('fert-purity').value);
-        if (isNaN(targetPpm) || isNaN(tankVolume) || isNaN(dilution) || isNaN(purity) || purity <= 0) return;
+        if (isNaN(targetPpm) || isNaN(tankVolume) || isNaN(dilution) || isNaN(purity) || purity <= 0) {
+            const actionsList = document.getElementById('fert-actions-list');
+            if (actionsList) actionsList.innerHTML = "Please enter valid stock tank parameters (Purity must be greater than 0%).";
+            return;
+        }
 
         const tankVolume_L = currentUnit === 'imperial' ? tankVolume * 3.78541 : tankVolume;
         const mass_kg = (targetPpm * tankVolume_L * dilution) / (purity * 10000);
@@ -1660,6 +1668,8 @@
             document.getElementById('hl-status-pill').className = "status-pill optimal";
             document.getElementById('hl-status-pill').innerText = "No Heat Needed";
             updatePyeongHelpers();
+            const actionsList = document.getElementById('hl-actions-list');
+            if (actionsList) actionsList.innerHTML = "No heating load detected. Outdoor temperature is higher than or equal to target indoor temperature.";
             return;
         }
 
@@ -1672,6 +1682,8 @@
             document.getElementById('hl-status-pill').className = "status-pill danger";
             document.getElementById('hl-status-pill').innerText = "Calculation Blocked";
             updatePyeongHelpers();
+            const actionsList = document.getElementById('hl-actions-list');
+            if (actionsList) actionsList.innerHTML = "Calculation blocked due to extreme wind speed (>25m/s). Focus on structural reinforcement rather than heating.";
             return;
         }
 
@@ -1865,6 +1877,10 @@
             statusPill.className = "status-pill danger";
             statusPill.innerText = "No ROI";
             expEl.innerHTML = `Under current tariff specs, Heat Pump operating cost exceeds the existing boiler. No savings generated.`;
+            const actionsList = document.getElementById('roi-actions-list');
+            if (actionsList) {
+                actionsList.innerHTML = "No financial benefit under current settings. Heat pump electricity cost exceeds boiler fuel cost.";
+            }
             return;
         }
 
@@ -1944,7 +1960,11 @@
         const rs = parseFloat(document.getElementById('tr-rs').value);
         const u = parseFloat(document.getElementById('tr-wind').value);
 
-        if (isNaN(T) || isNaN(RH) || isNaN(Rg) || isNaN(LAI) || isNaN(rs) || isNaN(u) || u <= 0 || LAI <= 0) return;
+        if (isNaN(T) || isNaN(RH) || isNaN(Rg) || isNaN(LAI) || isNaN(rs) || isNaN(u) || u <= 0 || LAI <= 0) {
+            const actionsList = document.getElementById('trans-actions-list');
+            if (actionsList) actionsList.innerHTML = "Please enter valid environmental inputs (Wind speed and Leaf Area Index must be greater than 0).";
+            return;
+        }
 
         const T_c = currentUnit === 'imperial' ? (T - 32) / 1.8 : T;
         const u_ms = currentUnit === 'imperial' ? u / 2.23694 : u;
