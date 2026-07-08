@@ -1306,7 +1306,131 @@
                  <li>⚠️ <strong>Deploy Shading</strong>: Cover with screens to decrease solar load, leaf temp, and transpiration pressure.</li>
                  <li>⚠️ <strong>Reduce Vents</strong>: Keep vents slightly closed to prevent dry outdoor air swap.</li>`;
         }
+
+        // Dew Point Calculation (Magnus-Tetens)
+        const alpha = Math.log(RH / 100) + (17.625 * T_air) / (243.04 + T_air);
+        const T_dp = (243.04 * alpha) / (17.625 - alpha);
+        let displayT_dp = T_dp;
+        if (currentTempUnit === 'F') {
+            displayT_dp = T_dp * 1.8 + 32;
+        }
+        const dewPointValEl = document.getElementById('vpd-dewpoint-value');
+        const dewPointStatusEl = document.getElementById('vpd-dewpoint-status');
+        if (dewPointValEl && dewPointStatusEl) {
+            dewPointValEl.innerText = `Dew Point: ${displayT_dp.toFixed(1)}°${currentTempUnit}`;
+            
+            // Condensation alarm: Leaf temperature vs Dew Point
+            const T_leaf_actual = T_air + dT; // in Celsius
+            const diff = T_leaf_actual - T_dp;
+            if (diff <= 1.0) {
+                dewPointStatusEl.innerHTML = `<span style="color: var(--danger); font-weight: 700;">🚨 CONDENSATION RISK!</span> Leaf temp is only ${diff.toFixed(1)}°C above dew point. Increase air temp, lower humidity, or run air circulation fans.`;
+                document.getElementById('vpd-dewpoint-card').style.borderLeft = "4px solid var(--danger)";
+            } else if (diff <= 3.0) {
+                dewPointStatusEl.innerHTML = `<span style="color: var(--warning); font-weight: 600;">⚠️ High Condensation Risk</span> Leaf temp is ${diff.toFixed(1)}°C above dew point. Watch for cold air drafts and dead zones.`;
+                document.getElementById('vpd-dewpoint-card').style.borderLeft = "4px solid var(--warning)";
+            } else {
+                dewPointStatusEl.innerHTML = `<span style="color: var(--success); font-weight: 600;">✅ Stable (No Dew)</span> Leaf temp is ${diff.toFixed(1)}°C above dew point. Condensation is unlikely.`;
+                document.getElementById('vpd-dewpoint-card').style.borderLeft = "4px solid var(--success)";
+            }
+        }
+
+        // Generate matrix table
+        if (typeof generateVpdMatrix === 'function') generateVpdMatrix();
     }
+    function generateVpdMatrix() {
+        const matrixTarget = document.getElementById('vpd-matrix-target');
+        if (!matrixTarget) return;
+
+        // Collect inputs to account for offsets and active ranges
+        let dT = parseFloat(document.getElementById('offset-leaf').value);
+        if (isNaN(dT)) dT = 0.0;
+        if (currentTempUnit === 'F') {
+            dT = dT / 1.8;
+        }
+
+        // Get limits based on active stage
+        let minOpt = 0.8;
+        let maxOpt = 1.2;
+        if (currentVpdStage === 'seedling') {
+            minOpt = 0.4;
+            maxOpt = 0.8;
+        } else if (currentVpdStage === 'veg') {
+            minOpt = 0.8;
+            maxOpt = 1.1;
+        } else if (currentVpdStage === 'flower') {
+            minOpt = 1.1;
+            maxOpt = 1.5;
+        }
+
+        // Set up temperature ranges
+        let tempRange = [];
+        if (currentTempUnit === 'F') {
+            // 60°F to 92°F, steps of 4°F
+            for (let t = 60; t <= 92; t += 4) {
+                tempRange.push(t);
+            }
+        } else {
+            // 16°C to 34°C, steps of 2°C
+            for (let t = 16; t <= 34; t += 2) {
+                tempRange.push(t);
+            }
+        }
+
+        // Relative humidity columns
+        const rhRange = [50, 55, 60, 65, 70, 75, 80, 85, 90, 95];
+
+        let html = `<table class="vpd-matrix-table">`;
+        
+        // Header
+        html += `<thead><tr><th>Temp \\ RH</th>`;
+        rhRange.forEach(rh => {
+            html += `<th>${rh}%</th>`;
+        });
+        html += `</tr></thead><tbody>`;
+
+        // Rows
+        tempRange.forEach(tDisp => {
+            // Convert to Celsius for Tetens calculation
+            let tAirC = tDisp;
+            if (currentTempUnit === 'F') {
+                tAirC = (tDisp - 32) / 1.8;
+            }
+            
+            const tLeafC = tAirC + dT;
+
+            // Calculate Saturation Vapor Pressure for leaf
+            const VPsat_leaf = 0.61078 * Math.exp((17.27 * tLeafC) / (tLeafC + 237.3));
+            // Calculate Saturation Vapor Pressure for air
+            const VPsat_air = 0.61078 * Math.exp((17.27 * tAirC) / (tAirC + 237.3));
+
+            html += `<tr><th>${tDisp}°${currentTempUnit}</th>`;
+            
+            rhRange.forEach(rh => {
+                const VPact_air = VPsat_air * (rh / 100);
+                let cellVpd = VPsat_leaf - VPact_air;
+                if (cellVpd < 0) cellVpd = 0;
+
+                // Color coding logic
+                let colorClass = '';
+                if (cellVpd < minOpt) {
+                    colorClass = 'vpd-cell-too-low'; // Too humid
+                } else if (cellVpd >= minOpt && cellVpd <= maxOpt) {
+                    colorClass = 'vpd-cell-optimal'; // Optimal
+                } else if (cellVpd > maxOpt && cellVpd <= maxOpt + 0.3) {
+                    colorClass = 'vpd-cell-warning'; // Too dry
+                } else {
+                    colorClass = 'vpd-cell-danger'; // Extreme dry
+                }
+
+                html += `<td class="${colorClass}">${cellVpd.toFixed(2)}</td>`;
+            });
+            html += `</tr>`;
+        });
+
+        html += `</tbody></table>`;
+        matrixTarget.innerHTML = html;
+    }
+
     function runEstimatorEngine() {
         const area = parseFloat(document.getElementById('est-area').value);
         const U = parseFloat(document.getElementById('est-cover').value);

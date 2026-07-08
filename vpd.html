@@ -235,13 +235,45 @@
 <h4>Horticulture Tip</h4>
 <p id="vpd-tip">Maintaining proper leaf-to-air VPD is essential for normal plant transpiration and calcium uptake, preventing physiological disorders like blossom-end rot.</p>
 </div>
-<div class="info-card" id="vpd-actions-card" style="border-left: 4px solid var(--primary);">
-<h4 id="lbl-vpd-actions-title">Live Climate Action Guide</h4>
-<ul id="vpd-actions-list" style="list-style-type: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
-<!-- Populated dynamically -->
-</ul>
-</div>
-</div>
+    <div class="info-card" id="vpd-dewpoint-card" style="border-left: 4px solid var(--cyan);">
+        <h4>Dew Point &amp; Condensation Alarm</h4>
+        <p id="vpd-dewpoint-value" style="font-weight: 700; color: var(--text-light); font-size: 1rem; margin-top: 0.2rem;">Dew Point: --</p>
+        <p id="vpd-dewpoint-status" style="font-size: 0.85rem; color: var(--text-gray); margin-top: 0.2rem; line-height: 1.4;"></p>
+    </div>
+    <div class="info-card" id="vpd-actions-card" style="border-left: 4px solid var(--primary);">
+        <h4 id="lbl-vpd-actions-title">Live Climate Action Guide</h4>
+        <ul id="vpd-actions-list" style="list-style-type: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
+        <!-- Populated dynamically -->
+        </ul>
+    </div>
+    </div>
+    
+    <!-- Interactive VPD Matrix Section -->
+    <div class="vpd-matrix-container">
+        <h3 class="vpd-matrix-title">Interactive VPD Matrix Chart</h3>
+        <p class="vpd-matrix-subtitle">This chart displays calculated Leaf VPD values (kPa). The color coding dynamically shifts to highlight optimal zones matching your selected crop stage, leaf offset, and temperature unit settings.</p>
+        <div class="vpd-matrix-table-wrapper">
+            <div id="vpd-matrix-target"></div>
+        </div>
+        <div class="vpd-legend">
+            <div class="vpd-legend-item">
+                <div class="vpd-legend-color vpd-cell-too-low"></div>
+                <span>Too Humid (Low VPD)</span>
+            </div>
+            <div class="vpd-legend-item">
+                <div class="vpd-legend-color vpd-cell-optimal"></div>
+                <span>Optimal Range</span>
+            </div>
+            <div class="vpd-legend-item">
+                <div class="vpd-legend-color vpd-cell-warning"></div>
+                <span>Too Dry (High VPD)</span>
+            </div>
+            <div class="vpd-legend-item">
+                <div class="vpd-legend-color vpd-cell-danger"></div>
+                <span>Extreme Dry (Risk)</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -263,7 +295,7 @@
 <span class="icon">📩</span>
 <span class="text" id="lbl-feedback-text">Inquiry &amp; Request</span>
 </a>
-<script src="common.js?v=2.8"></script><script type="text/javascript">
+<script src="common.js?v=2.9"></script><script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
