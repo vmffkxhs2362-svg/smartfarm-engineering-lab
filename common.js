@@ -1327,6 +1327,22 @@
             qEstKw = (1.4 * area * U * deltaT * 1.25) / 1000;
         }
         document.getElementById('est-result-value').innerText = qEstKw.toFixed(0) + " kW";
+
+        const actionsCard = document.getElementById('hl-actions-card');
+        const actionsList = document.getElementById('hl-actions-list');
+        if (actionsCard && actionsList) {
+            let advise = `Your greenhouse is losing <strong>${qEstKw.toFixed(1)} kW</strong> of heat. `;
+            if (U > 5.0) {
+                advise += `Because your cladding's U-value is high (${U}), heat is hemorrhaging. Installing a double thermal screen could cut this energy demand by 40%. `;
+            } else {
+                advise += `Your cladding provides excellent insulation. `;
+            }
+            if (deltaT > 25) {
+                advise += `The massive temperature difference of ${deltaT}°C puts extreme stress on your boiler. Ensure you have a backup heating source ready for winter nights.`;
+            }
+            actionsList.innerHTML = advise;
+        }
+
     }
     function applyEstimatedLoad() {
         const resultVal = parseFloat(document.getElementById('est-result-value').innerText);
@@ -1568,7 +1584,26 @@
         }
         expEl.innerHTML = exp;
             
+
+        const actionsCard = document.getElementById('fert-actions-card');
+        const actionsList = document.getElementById('fert-actions-list');
+        if (actionsCard && actionsList) {
+            let advise = `To achieve your target of <strong>${targetPpm} ppm</strong>, you must accurately weigh ${displayMass.toFixed(1)} ${massUnit} of the raw salt. `;
+            if (targetPpm < 100) {
+                advise += `Since the target concentration is relatively low, ensure this is for a vegetative stage or micro-nutrient. `;
+            } else if (targetPpm > 300) {
+                advise += `This is a highly concentrated dose. Ensure you have sufficient run-off in your substrate to prevent EC buildup and root burn. `;
+            }
+            if (purity < 80) {
+                advise += `Your fertilizer has a low purity (${purity}%). Be prepared for insoluble fillers settling at the bottom of Tank A/B. Agitation is required.`;
+            } else {
+                advise += `With a high purity of ${purity}%, solubility should be excellent.`;
+            }
+            actionsList.innerHTML = advise;
+        }
+        
         runAcidEngine();
+
     }
 
     const hlPresetDb = {
