@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausbildung Netto & Survival Calculator | Inwoovation</title>
+    <meta name="description" content="Calculate your Netto salary and survival budget for Ausbildung in Germany.">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border-color: #e2e8f0;
+            --safe: #10b981;
+            --tight: #f59e0b;
+            --danger: #ef4444;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+        }
+        .container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            color: var(--text-main);
+        }
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .input-group input {
+            width: 100%;
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            color: var(--text-main);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-group input:focus {
+            background: #ffffff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 25px 0;
+        }
+        .result-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .result-row:last-child {
+            margin-bottom: 0;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+        .result-label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .result-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .final-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .status-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+        }
+        .ad-space {
+            margin-top: 25px;
+            text-align: center;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .ad-space:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+        .ad-highlight {
+            color: var(--accent);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Ausbildung Survival Calculator</h1>
+        <p class="subtitle">Calculate Netto & Living Costs (inwoovation.com)</p>
+
+        <div class="input-group">
+            <label for="brutto">Monthly Brutto Salary (€)</label>
+            <input type="number" id="brutto" placeholder="e.g. 1000" min="0" step="50" value="1000">
+        </div>
+        
+        <div class="divider"></div>
+
+        <div class="input-group">
+            <label for="rent">Monthly Rent / WG (€)</label>
+            <input type="number" id="rent" placeholder="e.g. 400" min="0" step="10" value="400">
+        </div>
+
+        <div class="input-group">
+            <label for="food">Groceries & Insurance (€)</label>
+            <input type="number" id="food" placeholder="e.g. 250" min="0" step="10" value="250">
+        </div>
+
+        <div class="result-box">
+            <div class="result-row">
+                <span class="result-label">Estimated Netto (Tax Class 1):</span>
+                <span class="result-value" id="netto-val">0.00 €</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Total Living Costs:</span>
+                <span class="result-value" style="color: var(--danger)" id="costs-val">0.00 €</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Disposable Income:</span>
+                <span class="final-value" id="surplus-val">0.00 €</span>
+            </div>
+            <div id="status-badge" class="status-badge">Calculating...</div>
+        </div>
+
+        <div class="ad-space" onclick="window.open('https://n26.com', '_blank')">
+            <span class="ad-highlight">Need a German Bank Account?</span>
+            Open an N26 Account online in 8 minutes. No Anmeldebestätigung needed immediately.
+            <br><span style="font-size: 0.75rem;">(Affiliate Link)</span>
+        </div>
+    </div>
+
+    <script>
+        const bruttoInput = document.getElementById('brutto');
+        const rentInput = document.getElementById('rent');
+        const foodInput = document.getElementById('food');
+        
+        const nettoVal = document.getElementById('netto-val');
+        const costsVal = document.getElementById('costs-val');
+        const surplusVal = document.getElementById('surplus-val');
+        const statusBadge = document.getElementById('status-badge');
+
+        function calculateSurvival() {
+            const brutto = parseFloat(bruttoInput.value) || 0;
+            const rent = parseFloat(rentInput.value) || 0;
+            const food = parseFloat(foodInput.value) || 0;
+            
+            // Simplified Netto Calculation for Ausbildung (approx. 20% deduction for social security, negligible income tax for low brackets)
+            // This is a rough estimation for Tax Class 1 below 1200 euros.
+            let deductions = 0;
+            if (brutto > 538) { // Minijob limit
+                deductions = brutto * 0.20; // approx 20% for KV, RV, AV, PV
+            }
+            const netto = brutto - deductions;
+            
+            const totalCosts = rent + food;
+            const surplus = netto - totalCosts;
+
+            nettoVal.textContent = netto.toFixed(2) + ' €';
+            costsVal.textContent = '-' + totalCosts.toFixed(2) + ' €';
+            surplusVal.textContent = surplus.toFixed(2) + ' €';
+
+            // Update color and badge
+            if (surplus >= 200) {
+                surplusVal.style.color = 'var(--safe)';
+                statusBadge.style.backgroundColor = 'var(--safe)';
+                statusBadge.textContent = 'Safe Budget 🟢';
+            } else if (surplus >= 50 && surplus < 200) {
+                surplusVal.style.color = 'var(--tight)';
+                statusBadge.style.backgroundColor = 'var(--tight)';
+                statusBadge.textContent = 'Tight, but Doable 🟡';
+            } else {
+                surplusVal.style.color = 'var(--danger)';
+                statusBadge.style.backgroundColor = 'var(--danger)';
+                statusBadge.textContent = 'Danger: Need side job 🔴';
+            }
+        }
+
+        bruttoInput.addEventListener('input', calculateSurvival);
+        rentInput.addEventListener('input', calculateSurvival);
+        foodInput.addEventListener('input', calculateSurvival);
+        
+        // Initial Calculation
+        calculateSurvival();
+    </script>
+</body>
+</html>

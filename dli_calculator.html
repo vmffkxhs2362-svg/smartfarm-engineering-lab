@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLI & PPFD Calculator | SmartFarm Engineering Lab</title>
+    <meta name="description" content="Calculate Daily Light Integral (DLI) from PPFD to optimize crop growth in your smart farm or indoor garden.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
+        }
+        .calculator-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-align: center;
+            background: linear-gradient(135deg, #34d399, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+        .input-group {
+            margin-bottom: 24px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .input-group input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+        .result-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 32px;
+            transition: transform 0.3s ease;
+        }
+        .result-box:hover {
+            transform: scale(1.02);
+        }
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .result-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        .crop-guide {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .crop-guide span {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        .ad-space {
+            margin-top: 32px;
+            text-align: center;
+            padding: 20px;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .ad-space:hover {
+            border-color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>DLI & PPFD Calculator</h1>
+        <p class="subtitle">Optimize light for indoor farming (smartfarm.inwoovation.com)</p>
+
+        <div class="input-group">
+            <label for="ppfd">PPFD (µmol/m²/s)</label>
+            <input type="number" id="ppfd" placeholder="e.g. 500" min="0" step="10">
+        </div>
+
+        <div class="input-group">
+            <label for="hours">Photoperiod (Hours/Day)</label>
+            <input type="number" id="hours" placeholder="e.g. 16" min="0" max="24" step="0.5">
+        </div>
+
+        <div class="result-box">
+            <div class="result-label">Daily Light Integral</div>
+            <div class="result-value" id="dli-result">0.00</div>
+            <div class="result-unit">mol/m²/day</div>
+        </div>
+
+        <div class="crop-guide" id="crop-guide">
+            Enter values to see suitable crops.
+        </div>
+
+        <div class="ad-space" onclick="window.open('https://amazon.com', '_blank')">
+            [Affiliate Ad] High-Yield LED Grow Lights (Spider Farmer / Mars Hydro) 
+            <br><span style="font-size: 0.75rem; color: #10b981;">Click to explore top B2B lighting solutions</span>
+        </div>
+    </div>
+
+    <script>
+        const ppfdInput = document.getElementById('ppfd');
+        const hoursInput = document.getElementById('hours');
+        const resultDisplay = document.getElementById('dli-result');
+        const guideDisplay = document.getElementById('crop-guide');
+
+        function calculateDLI() {
+            const ppfd = parseFloat(ppfdInput.value) || 0;
+            const hours = parseFloat(hoursInput.value) || 0;
+            
+            // DLI Formula: PPFD * (Hours * 3600) / 1,000,000
+            // Simplified: PPFD * Hours * 0.0036
+            const dli = ppfd * hours * 0.0036;
+            resultDisplay.textContent = dli.toFixed(2);
+            updateCropGuide(dli);
+        }
+
+        function updateCropGuide(dli) {
+            if (dli === 0) {
+                guideDisplay.innerHTML = "Enter values to see suitable crops.";
+                return;
+            }
+            
+            let suitable = "";
+            if (dli < 5) {
+                suitable = "Low light plants (Ferns, Orchids, Microgreens)";
+            } else if (dli >= 5 && dli < 12) {
+                suitable = "Leafy greens (Lettuce, Spinach, Herbs)";
+            } else if (dli >= 12 && dli < 20) {
+                suitable = "Fruiting crops (Strawberries, Peppers, Cucumbers)";
+            } else if (dli >= 20 && dli <= 30) {
+                suitable = "High-light fruiting (Tomatoes, Cannabis veg stage)";
+            } else {
+                suitable = "Very high-light (Cannabis flowering, intense full-sun crops)";
+            }
+
+            guideDisplay.innerHTML = `Current DLI is optimal for: <span>${suitable}</span>`;
+        }
+
+        ppfdInput.addEventListener('input', calculateDLI);
+        hoursInput.addEventListener('input', calculateDLI);
+        
+        // Initial Calculation
+        calculateDLI();
+    </script>
+</body>
+</html>
