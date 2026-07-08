@@ -135,25 +135,33 @@
         }
 
         function aggregateData(dataArray, interval) {
-            if (interval === 'day') return dataArray;
-            
-            const grouped = {};
-            dataArray.forEach(d => {
-                let key;
-                const m = moment(d.date);
-                if (interval === 'week') key = m.clone().startOf('isoWeek').format('YYYY-MM-DD');
-                else if (interval === 'month' || interval === 'all') key = m.clone().startOf('month').format('YYYY-MM-DD');
-                else if (interval === 'quarter') key = m.clone().startOf('quarter').format('YYYY-MM-DD');
+            let result;
+            if (interval === 'day') {
+                result = dataArray;
+            } else {
+                const grouped = {};
+                dataArray.forEach(d => {
+                    let key;
+                    const m = moment(d.date);
+                    if (interval === 'week') key = m.clone().startOf('isoWeek').format('YYYY-MM-DD');
+                    else if (interval === 'month' || interval === 'all') key = m.clone().startOf('month').format('YYYY-MM-DD');
+                    else if (interval === 'quarter') key = m.clone().startOf('quarter').format('YYYY-MM-DD');
+                    
+                    if (!grouped[key]) grouped[key] = [];
+                    grouped[key].push(d.price);
+                });
                 
-                if (!grouped[key]) grouped[key] = [];
-                grouped[key].push(d.price);
-            });
-            
-            return Object.keys(grouped).sort().map(dateStr => {
-                const prices = grouped[dateStr];
-                const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
-                return { date: dateStr, price: avg };
-            });
+                result = Object.keys(grouped).sort().map(dateStr => {
+                    const prices = grouped[dateStr];
+                    const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+                    return { date: dateStr, price: avg };
+                });
+            }
+
+            if (interval !== 'all') {
+                return result.slice(-30);
+            }
+            return result;
         }
 
         function updateDashboard() {
