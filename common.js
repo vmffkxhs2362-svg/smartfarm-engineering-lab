@@ -2076,7 +2076,6 @@
             }
 
             const matches = pesticideDB.filter(p => 
-                p.nameKo.toLowerCase().includes(query) || 
                 p.nameEn.toLowerCase().includes(query)
             );
 
@@ -2084,7 +2083,7 @@
                 matches.forEach(item => {
                     const li = document.createElement('div');
                     li.className = 'autocomplete-item';
-                    li.innerText = `${item.nameEn} (${item.nameKo})`;
+                    li.innerText = item.nameEn;
                     li.addEventListener('click', () => {
                         searchInput.value = item.nameEn;
                         autocompleteList.style.display = 'none';
@@ -2109,7 +2108,7 @@
 
     function selectPesticide(item) {
         selectedPesticideData = item;
-        localStorage.setItem('pollinator_selected_pest', item.nameKo);
+        localStorage.setItem('pollinator_selected_pest', item.nameEn);
         updatePesticideUI();
     }
 
@@ -2274,7 +2273,7 @@
         // Lookup multilingual names in pesticide database (pesticideDB)
         let chemicalNameToShow = null;
         if (d.suggestedChemical) {
-            const chemObj = pesticideDB.find(c => c.nameKo === d.suggestedChemical || c.nameEn.toLowerCase() === d.suggestedChemical.toLowerCase());
+            const chemObj = pesticideDB.find(c => c.nameEn.toLowerCase() === d.suggestedChemical.toLowerCase());
             if (chemObj) {
                 chemicalNameToShow = chemObj.nameEn;
             } else {
@@ -2328,7 +2327,7 @@
         switchPollinatorTab('pesticide');
         document.getElementById('pest-search').value = chemicalName;
         
-        const item = pesticideDB.find(p => p.nameKo === chemicalName || p.nameEn.toLowerCase() === chemicalName.toLowerCase());
+        const item = pesticideDB.find(p => p.nameEn.toLowerCase() === chemicalName.toLowerCase());
         if (item) {
             selectPesticide(item);
         } else {
@@ -2717,7 +2716,7 @@
         const savedPest = localStorage.getItem('pollinator_selected_pest');
         if (savedPest) {
             if (typeof pesticideDB !== 'undefined') {
-                const pestItem = pesticideDB.find(p => p.nameKo === savedPest);
+                const pestItem = pesticideDB.find(p => p.nameEn.toLowerCase() === savedPest.toLowerCase());
                 if (pestItem) {
                     selectedPesticideData = pestItem;
                     const searchInput = document.getElementById('pest-search');
