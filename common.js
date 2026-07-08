@@ -3077,14 +3077,15 @@
             if (document.getElementById('section-roi')) {
                 const demand = Math.round(profile.area * 100);
                 fillInput('roi-demand', demand);
-                fillInput('roi-boiler-price', profile.boilerPrice);
-                fillInput('roi-hp-price', profile.elecRate);
                 
                 const selectBoiler = document.getElementById('roi-boiler-type');
                 if (selectBoiler) {
                     selectBoiler.value = profile.boiler;
                     selectBoiler.dispatchEvent(new Event('change'));
                 }
+                
+                fillInput('roi-boiler-price', profile.boilerPrice);
+                fillInput('roi-hp-price', profile.elecRate);
             }
 
             // 6. Transpiration Page
