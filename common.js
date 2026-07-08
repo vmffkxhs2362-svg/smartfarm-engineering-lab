@@ -204,7 +204,7 @@
     const i18n = {
     ko: {
         headerTitle: "Smart Farm Engineering Lab",
-            headerDesc: "High-precision online calculator suite designed for modern greenhouse designers, growers, and agricultural engineers.",
+            headerDesc: "High-precision online simulation & modeling suite designed for modern greenhouse designers, growers, and agricultural engineers.",
             tabVpdDeskt: "Vapor Pressure Deficit (VPD)",
             tabVpdMobil: "VPD",
             tabValveDeskt: "Heating Mixing Valve",
@@ -255,7 +255,7 @@
             pipeRecommendationDesc: "Based on water flow, a <strong>{dn}</strong> pipe is recommended to keep water velocity within the safe 0.5 to 1.0 m/s range. To maintain control authority (with 25% authority margin), it is highly recommended to select a standard commercial valve with <strong>Kvs {kvsMargin}</strong>.",
             fertStatusPill: "Ready to Dissolve",
             fertExplanation: "Dissolve exactly <strong>{mass} kg</strong> of fertilizer into the {tankVolume}L stock tank. When your injector draws at a 1:{dilution} ratio, the irrigation emitter delivers a precise {targetPpm} ppm of the target nutrient.",
-            disclaimer: "<strong>Disclaimer:</strong> The calculations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these calculators. Always double-check calculations and consult certified professionals before applying changes to commercial greenhouses.",
+            disclaimer: "<strong>Disclaimer:</strong> The simulations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these simulators. Always double-check simulation results and consult certified professionals before applying changes to commercial greenhouses.",
             
             // Heat Loss
             heatLossTitle: "Structure & Climate Data",
@@ -411,7 +411,7 @@
     },
     en: {
         headerTitle: "Smart Farm Engineering Lab",
-            headerDesc: "High-precision online calculator suite designed for modern greenhouse designers, growers, and agricultural engineers.",
+            headerDesc: "High-precision online simulation & modeling suite designed for modern greenhouse designers, growers, and agricultural engineers.",
             tabVpdDeskt: "Vapor Pressure Deficit (VPD)",
             tabVpdMobil: "VPD",
             tabValveDeskt: "Heating Mixing Valve",
@@ -462,7 +462,7 @@
             pipeRecommendationDesc: "Based on water flow, a <strong>{dn}</strong> pipe is recommended to keep water velocity within the safe 0.5 to 1.0 m/s range. To maintain control authority (with 25% authority margin), it is highly recommended to select a standard commercial valve with <strong>Kvs {kvsMargin}</strong>.",
             fertStatusPill: "Ready to Dissolve",
             fertExplanation: "Dissolve exactly <strong>{mass} kg</strong> of fertilizer into the {tankVolume}L stock tank. When your injector draws at a 1:{dilution} ratio, the irrigation emitter delivers a precise {targetPpm} ppm of the target nutrient.",
-            disclaimer: "<strong>Disclaimer:</strong> The calculations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these calculators. Always double-check calculations and consult certified professionals before applying changes to commercial greenhouses.",
+            disclaimer: "<strong>Disclaimer:</strong> The simulations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these simulators. Always double-check simulation results and consult certified professionals before applying changes to commercial greenhouses.",
             
             // Heat Loss
             heatLossTitle: "Structure & Climate Data",
@@ -653,14 +653,14 @@
         applyFilters();
     }
 
-    function filterCalculators() {
+    function filterSimulators() {
         applyFilters();
     }
 
     let currentDropdownIndex = -1;
 
     function applyFilters() {
-        const query = document.getElementById('calc-search').value.toLowerCase().trim();
+        const query = document.getElementById('sim-search').value.toLowerCase().trim();
         const tabButtons = document.querySelectorAll('.tabs .tab-btn');
         const dashboardCards = document.querySelectorAll('.dashboard-card');
         
@@ -739,7 +739,7 @@
         if (results.length === 0) {
             const emptyItem = document.createElement('div');
             emptyItem.className = 'search-dropdown-empty';
-            emptyItem.textContent = 'No calculators found matching your query.';
+            emptyItem.textContent = 'No simulators found matching your query.';
             dropdown.appendChild(emptyItem);
         } else {
             results.forEach((item, index) => {
@@ -849,7 +849,7 @@
             const panel = titleEl.parentElement;
             if (!panel) return;
             
-            const inputs = panel.querySelectorAll('input:not([readonly]):not([type="hidden"]):not([id="calc-search"]), select');
+            const inputs = panel.querySelectorAll('input:not([readonly]):not([type="hidden"]):not([id="sim-search"]), select');
             if (inputs.length === 0) return;
             
             if (titleEl.querySelector('.panel-reset-btn')) return;
@@ -893,7 +893,7 @@
 
         // Search input clear button logic
         const searchWrapper = document.querySelector('.search-box-wrapper');
-        const searchInput = document.getElementById('calc-search');
+        const searchInput = document.getElementById('sim-search');
         
         if (searchWrapper && searchInput) {
             const clearBtn = document.createElement('span');
@@ -911,7 +911,7 @@
             
             clearBtn.addEventListener('click', () => {
                 searchInput.value = '';
-                filterCalculators();
+                filterSimulators();
                 clearBtn.style.display = 'none';
                 searchInput.focus();
             });
@@ -948,7 +948,7 @@
             // Re-open on focus if it has value
             searchInput.addEventListener('focus', () => {
                 if (searchInput.value.trim() !== '') {
-                    filterCalculators();
+                    filterSimulators();
                 }
             });
         }
@@ -1083,7 +1083,7 @@
     }
     
     function resetToHome() {
-        const searchInput = document.getElementById('calc-search');
+        const searchInput = document.getElementById('sim-search');
         if (searchInput) searchInput.value = '';
         filterCategory('all');
         switchTab('dashboard');
@@ -1147,7 +1147,7 @@
         
         // Google Analytics 4 Custom Event for Tab Switches
         if (typeof gtag === 'function') {
-            gtag('event', 'calculator_tab_switch', {
+            gtag('event', 'simulator_tab_switch', {
                 'tab_name': target
             });
         }
@@ -2433,7 +2433,7 @@
                     <div style="font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-top: 0.3rem;">
                         💊 ${chemicalNameToShow}
                     </div>
-                    <button class="estimator-btn" style="margin-top: 0.8rem; font-size: 0.85rem; padding: 0.5rem 1rem; width: auto;" onclick="jumpToReiCalculator('${d.suggestedChemical}')">
+                    <button class="estimator-btn" style="margin-top: 0.8rem; font-size: 0.85rem; padding: 0.5rem 1rem; width: auto;" onclick="jumpToReiSimulator('${d.suggestedChemical}')">
                         ${i18n[currentLang].btnGoToRei}
                     </button>
                 </div>
@@ -2467,7 +2467,7 @@
         `;
     }
 
-    function jumpToReiCalculator(chemicalName) {
+    function jumpToReiSimulator(chemicalName) {
         switchPollinatorTab('pesticide');
         document.getElementById('pest-search').value = chemicalName;
         
@@ -2819,6 +2819,10 @@
     // INIT with URL parameters support
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
+        
+        // Load farm profile first to populate values before initial calculations
+        if (typeof loadFarmProfile === 'function') loadFarmProfile();
+        if (typeof autofillInputsFromProfile === 'function') autofillInputsFromProfile();
         currentLang = 'en';
 
         // Restore Saved Preferences (with defensive guards)
@@ -2942,3 +2946,228 @@
             btnFeedback.addEventListener('click', handleFeedbackClick);
         }
     });
+
+
+    // ==========================================
+    // FARM PROFILE MANAGEMENT LOGIC (GDPR Compliant)
+    // ==========================================
+
+    window.toggleFarmProfileDrawer = function() {
+        const drawer = document.getElementById('farm-profile-drawer');
+        if (drawer) {
+            drawer.style.display = drawer.style.display === 'none' ? 'flex' : 'none';
+        }
+    };
+
+    window.onProfileBoilerChange = function() {
+        const boilerType = document.getElementById('prof-boiler').value;
+        const suffix = document.getElementById('prof-boiler-price-suffix');
+        const priceInput = document.getElementById('prof-boiler-price');
+        if (suffix && priceInput) {
+            if (boilerType === 'gas') {
+                suffix.innerText = '₩/m³';
+                if (priceInput.value === '1400' || priceInput.value === '1000') priceInput.value = '1000';
+            } else {
+                suffix.innerText = '₩/L';
+                if (priceInput.value === '1000' || priceInput.value === '1400') priceInput.value = '1400';
+            }
+        }
+    };
+
+    window.saveFarmProfile = function() {
+        const profile = {
+            area: parseFloat(document.getElementById('prof-area').value) || 1500,
+            cladding: parseFloat(document.getElementById('prof-cladding').value) || 5.5,
+            crop: document.getElementById('prof-crop').value || 'tomato',
+            tank: parseFloat(document.getElementById('prof-tank').value) || 1000,
+            injector: parseFloat(document.getElementById('prof-injector').value) || 100,
+            boiler: document.getElementById('prof-boiler').value || 'gas',
+            boilerPrice: parseFloat(document.getElementById('prof-boiler-price').value) || 1000,
+            elecRate: parseFloat(document.getElementById('prof-elec-rate').value) || 80
+        };
+
+        localStorage.setItem('farmProfile', JSON.stringify(profile));
+        
+        // Trigger autofill on the active page
+        window.autofillInputsFromProfile();
+        
+        // Re-calculate the active page simulator
+        window.recalculateActiveSimulator();
+
+        alert("Profile saved locally! All simulators have been updated with your farm specs.");
+        window.toggleFarmProfileDrawer();
+    };
+
+    window.loadFarmProfile = function() {
+        const data = localStorage.getItem('farmProfile');
+        if (!data) return;
+
+        try {
+            const profile = JSON.parse(data);
+            
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            };
+
+            setVal('prof-area', profile.area);
+            setVal('prof-cladding', profile.cladding);
+            setVal('prof-crop', profile.crop);
+            setVal('prof-tank', profile.tank);
+            setVal('prof-injector', profile.injector);
+            setVal('prof-boiler', profile.boiler);
+            
+            // Trigger boiler suffix change
+            window.onProfileBoilerChange();
+            
+            setVal('prof-boiler-price', profile.boilerPrice);
+            setVal('prof-elec-rate', profile.elecRate);
+        } catch (e) {
+            console.error("Error parsing farm profile: ", e);
+        }
+    };
+
+    window.autofillInputsFromProfile = function() {
+        const data = localStorage.getItem('farmProfile');
+        if (!data) return;
+
+        try {
+            const profile = JSON.parse(data);
+
+            const fillInput = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = val;
+                    // Trigger input event to let JS controllers know the value changed
+                    el.dispatchEvent(new Event('input'));
+                }
+            };
+
+            // 1. VPD Page
+            if (document.getElementById('section-vpd')) {
+                // If crop is strawberry/herbs/etc., set crop stage/defaults
+                if (profile.crop === 'strawberry') {
+                    const btn = document.getElementById('stage-flower');
+                    if (btn) btn.click();
+                } else if (profile.crop === 'herbs') {
+                    const btn = document.getElementById('stage-seedling');
+                    if (btn) btn.click();
+                }
+            }
+
+            // 2. Mixing Valve Page
+            if (document.getElementById('section-valve')) {
+                fillInput('est-area', profile.area);
+                fillInput('est-cover', profile.cladding);
+            }
+
+            // 3. Fertigation Page
+            if (document.getElementById('section-fert')) {
+                fillInput('fert-vol', profile.tank);
+                fillInput('fert-ratio', profile.injector);
+            }
+
+            // 4. Heat Loss Page
+            if (document.getElementById('section-heat-loss')) {
+                fillInput('hl-area', profile.area);
+                fillInput('hl-uvalue', profile.cladding);
+            }
+
+            // 5. ROI Page
+            if (document.getElementById('section-roi')) {
+                const demand = Math.round(profile.area * 100);
+                fillInput('roi-demand', demand);
+                fillInput('roi-boiler-price', profile.boilerPrice);
+                fillInput('roi-hp-price', profile.elecRate);
+                
+                const selectBoiler = document.getElementById('roi-boiler-type');
+                if (selectBoiler) {
+                    selectBoiler.value = profile.boiler;
+                    selectBoiler.dispatchEvent(new Event('change'));
+                }
+            }
+
+            // 6. Transpiration Page
+            if (document.getElementById('section-transpiration')) {
+                const selectCrop = document.getElementById('tr-crop');
+                if (selectCrop) {
+                    selectCrop.value = profile.crop;
+                    selectCrop.dispatchEvent(new Event('change'));
+                }
+            }
+
+            // 7. Vertical Farming Page
+            if (document.getElementById('section-vertical')) {
+                fillInput('led-bars', Math.round(profile.area / 10)); // estimation
+                fillInput('elec-rate', (profile.elecRate / 1300).toFixed(2));
+            }
+        } catch (e) {
+            console.error("Error autofilling inputs: ", e);
+        }
+    };
+
+    window.recalculateActiveSimulator = function() {
+        if (document.getElementById('section-vpd') && typeof calculateVpdEngine === 'function') calculateVpdEngine();
+        if (document.getElementById('section-valve') && typeof calculateValveEngine === 'function') calculateValveEngine();
+        if (document.getElementById('section-fert')) {
+            if (typeof calculateFertEngine === 'function') calculateFertEngine();
+            if (typeof runAcidEngine === 'function') runAcidEngine();
+        }
+        if (document.getElementById('section-heat-loss') && typeof calculateHeatLossEngine === 'function') calculateHeatLossEngine();
+        if (document.getElementById('section-roi') && typeof calculateRoiEngine === 'function') calculateRoiEngine();
+        if (document.getElementById('section-transpiration') && typeof calculateTranspirationEngine === 'function') calculateTranspirationEngine();
+        if (document.getElementById('section-vertical')) {
+            if (typeof calculateLight === 'function') calculateLight();
+            if (typeof calculateThermal === 'function') calculateThermal();
+        }
+    };
+
+    window.exportFarmProfile = function() {
+        const data = localStorage.getItem('farmProfile');
+        if (!data) {
+            alert("No farm profile saved yet. Please fill and save the profile first.");
+            return;
+        }
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'my-farm-profile.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    window.triggerProfileImport = function() {
+        const fileInput = document.getElementById('prof-import-file');
+        if (fileInput) fileInput.click();
+    };
+
+    window.importFarmProfile = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const profile = JSON.parse(e.target.result);
+                
+                if (!profile.area || !profile.crop) {
+                    alert("Invalid profile file format.");
+                    return;
+                }
+
+                localStorage.setItem('farmProfile', JSON.stringify(profile));
+                window.loadFarmProfile();
+                window.autofillInputsFromProfile();
+                window.recalculateActiveSimulator();
+                
+                alert("Profile successfully imported! All simulators have been updated.");
+                window.toggleFarmProfileDrawer();
+            } catch (err) {
+                alert("Failed to parse JSON file: " + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };

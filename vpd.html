@@ -4,22 +4,22 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Smart Farm Precision Calculator | AgTech Precision Suite</title>
-<meta content="Free agricultural engineering and greenhouse climate precision calculators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss." name="description"/>
-<meta content="smart farm, greenhouse calculator, VPD calculator, fertigation, mixing valve, heat loss, agriculture, engineering" name="keywords"/>
+<title>Smart Farm Precision Simulator | AgTech Precision Suite</title>
+<meta content="Free agricultural engineering and greenhouse climate precision simulators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss." name="description"/>
+<meta content="smart farm, greenhouse simulator, VPD simulator, fertigation, mixing valve, heat loss, agriculture, engineering" name="keywords"/>
 <meta content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8" name="google-site-verification"/>
 <link href="https://smartfarm.inwoovation.com/vpd" rel="canonical"/>
 <!-- Open Graph / Facebook -->
 <meta content="website" property="og:type"/>
 <meta content="https://smartfarm.inwoovation.com/vpd" property="og:url">
-<meta content="Smart Farm Precision Calculator | AgTech Precision Suite" property="og:title"/>
-<meta content="Free agricultural engineering and greenhouse climate precision calculators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss." property="og:description"/>
+<meta content="Smart Farm Precision Simulator | AgTech Precision Suite" property="og:title"/>
+<meta content="Free agricultural engineering and greenhouse climate precision simulators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss." property="og:description"/>
 <meta content="https://smartfarm.inwoovation.com/cover.png" property="og:image"/>
 <!-- Twitter Card -->
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="https://smartfarm.inwoovation.com/vpd" name="twitter:url"/>
-<meta content="Smart Farm Precision Calculator | AgTech Precision Suite" name="twitter:title"/>
-<meta content="Free agricultural engineering and greenhouse climate precision calculators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss." name="twitter:description"/>
+<meta content="Smart Farm Precision Simulator | AgTech Precision Suite" name="twitter:title"/>
+<meta content="Free agricultural engineering and greenhouse climate precision simulators, including Leaf Vapor Pressure Deficit (VPD), fertilizer compounding, mixing valves, and heat loss." name="twitter:description"/>
 <meta content="https://smartfarm.inwoovation.com/cover.png" name="twitter:image"/>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
@@ -40,7 +40,7 @@
   {
    "@context": "https://schema.org",
    "@type": "SoftwareApplication",
-   "name": "AgTech Precision Calculator",
+   "name": "AgTech Precision Simulator & Engineering Lab",
    "operatingSystem": "All",
    "applicationCategory": "BusinessApplication",
    "browserRequirements": "Requires HTML5, Javascript, CSS3",
@@ -53,13 +53,15 @@
    }
   }
   </script>
-</meta><link href="style.css?v=2.9" rel="stylesheet"/></head>
+</meta><link href="style.css?v=3.0" rel="stylesheet"/></head>
 <body>
 <main class="container"><header>
 <div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;">
 <div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: July 8, 2026</div>
 <div style="display: flex; gap: 0.5rem; align-items: center;">
-
+    <button class="lang-btn" id="btn-farm-profile" onclick="toggleFarmProfileDrawer()" style="border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 10px; cursor: pointer; background: transparent; border: 1px solid;">
+        📋 <span class="lang-text-en">My Farm</span><span class="lang-text-ko" style="display:none;">내 농장</span>
+    </button>
 <div class="lang-switch" id="unit-switch" style="margin-bottom: 0; display: flex;">
 <button class="lang-btn active" id="unit-metric" onclick="changeUnit('metric')">Metric</button>
 <button class="lang-btn" id="unit-imperial" onclick="changeUnit('imperial')">Imperial</button>
@@ -67,11 +69,11 @@
 <div id="google_translate_element" style="display: inline-block; margin-left: 0.5rem; vertical-align: middle;"></div></div>
 </div>
 <h1 id="header-title" onclick="resetToHome()" style="cursor: pointer; display: inline-block;">Smart Farm Engineering Lab</h1>
-<p id="header-desc">High-precision online engineering calculator suite for modern greenhouse designers, growers, and agricultural engineers.</p>
+<p id="header-desc">High-precision online engineering simulation & modeling suite for modern greenhouse designers, growers, and agricultural engineers.</p>
 </header><div class="nav-control-panel">
 <div class="search-box-wrapper">
 <span class="search-icon">🔍</span>
-<input id="calc-search" oninput="filterCalculators()" placeholder="Search calculators or keywords... (e.g. VPD, heating, nutrient, DLI)" type="text"/>
+<input id="sim-search" oninput="filterSimulators()" placeholder="Search simulators or keywords... (e.g. VPD, heating, nutrient, DLI)" type="text"/>
 </div>
 <div class="category-chips">
 <button class="chip active" id="chip-all" onclick="filterCategory('all')">All</button>
@@ -287,7 +289,7 @@
 </div>
 <p>© 2026 Smart Farm Engineering Lab. All rights reserved.</p>
 <p>Built for zero-cost static hosting. Designed by Inwoovation</p>
-<p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.75; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;"><strong>Disclaimer:</strong> The calculations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these calculators. Always double-check calculations and consult certified professionals before applying changes to commercial greenhouses.</p>
+<p id="footer-disclaimer" style="font-size: 0.75rem; color: var(--text-gray); opacity: 0.75; max-width: 800px; margin: 1.2rem auto 0 auto; line-height: 1.5; font-weight: 500; text-align: center;"><strong>Disclaimer:</strong> The simulations provided by this tool are for educational and informational purposes only. Inwoovation is not liable for any crop damage, equipment failure, or financial loss resulting from the use of these simulators. Always double-check simulation results and consult certified professionals before applying changes to commercial greenhouses.</p>
 </footer>
 </div>
 <!-- Floating Inquiry Button (FAB) -->
@@ -295,7 +297,113 @@
 <span class="icon">📩</span>
 <span class="text" id="lbl-feedback-text">Inquiry &amp; Request</span>
 </a>
-<script src="common.js?v=2.9"></script><script type="text/javascript">
+
+<!-- My Farm Profile Drawer -->
+<div class="farm-profile-drawer" id="farm-profile-drawer" style="display: none;">
+    <div class="drawer-overlay" onclick="toggleFarmProfileDrawer()"></div>
+    <div class="drawer-content">
+        <div class="drawer-header">
+            <h3>📋 <span class="lang-text-en">My Farm Profile</span><span class="lang-text-ko" style="display:none;">내 농장 프로필</span></h3>
+            <button class="drawer-close-btn" onclick="toggleFarmProfileDrawer()">✕</button>
+        </div>
+        <p class="drawer-subtitle" style="font-size: 0.78rem; color: var(--text-gray); margin-bottom: 1.2rem; line-height: 1.4;">
+            <span class="lang-text-en">🔒 GDPR Compliant: Your profile is stored 100% locally on your browser. We collect zero data on our servers.</span>
+            <span class="lang-text-ko" style="display:none;">🔒 개인정보보호: 입력한 농가 프로필은 브라우저(로컬)에만 안전하게 저장되며, 서버로 전혀 전송되지 않습니다.</span>
+        </p>
+        <div class="drawer-form" style="display: flex; flex-direction: column; gap: 0.9rem; text-align: left;">
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-area" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Greenhouse Floor Area</span><span class="lang-text-ko" style="display:none;">온실 바닥 면적</span></label>
+                <div class="input-control-wrapper" style="margin-top: 0.3rem;">
+                    <input type="number" id="prof-area" value="1500" step="100" style="width: 100%;" />
+                    <span class="suffix" id="prof-area-suffix">m²</span>
+                </div>
+            </div>
+            
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-cladding" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Cladding Material</span><span class="lang-text-ko" style="display:none;">온실 피복재</span></label>
+                <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
+                    <select id="prof-cladding" style="width: 100%;">
+                        <option value="5.5">Single Glass / PE Film (U = 5.5)</option>
+                        <option value="3.5">Double PE / Polycarbonate (U = 3.5)</option>
+                        <option value="1.8">Triple Glass / High Insulated (U = 1.8)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-crop" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Main Cultivated Crop</span><span class="lang-text-ko" style="display:none;">주요 재배 작물</span></label>
+                <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
+                    <select id="prof-crop" style="width: 100%;">
+                        <option value="tomato">Tomato (토마토)</option>
+                        <option value="strawberry">Strawberry (딸기)</option>
+                        <option value="pepper">Bell Pepper (파프리카)</option>
+                        <option value="cucumber">Cucumber (오이)</option>
+                        <option value="herbs">Medicinal Herbs / Basil</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-tank" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Fertigation Tank A/B Vol</span><span class="lang-text-ko" style="display:none;">액비 탱크 A/B 용량</span></label>
+                <div class="input-control-wrapper" style="margin-top: 0.3rem;">
+                    <input type="number" id="prof-tank" value="1000" step="100" style="width: 100%;" />
+                    <span class="suffix" id="prof-tank-suffix">L</span>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-injector" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Injector Dilution Ratio (1:X)</span><span class="lang-text-ko" style="display:none;">양액기 관수 희석 비율 (1:X)</span></label>
+                <div class="input-control-wrapper" style="margin-top: 0.3rem;">
+                    <input type="number" id="prof-injector" value="100" step="10" style="width: 100%;" />
+                    <span class="suffix">Ratio</span>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-boiler" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Boiler Fuel Type</span><span class="lang-text-ko" style="display:none;">난방용 보일러 연료</span></label>
+                <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
+                    <select id="prof-boiler" style="width: 100%;" onchange="onProfileBoilerChange()">
+                        <option value="gas">Natural Gas (도시가스)</option>
+                        <option value="oil">Heating Oil / Kerosene (등유)</option>
+                        <option value="lpg">LPG</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-boiler-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Boiler Fuel Unit Price</span><span class="lang-text-ko" style="display:none;">연료 단가</span></label>
+                <div class="input-control-wrapper" style="margin-top: 0.3rem;">
+                    <input type="number" id="prof-boiler-price" value="1000" step="10" style="width: 100%;" />
+                    <span class="suffix" id="prof-boiler-price-suffix">₩/m³</span>
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 0;">
+                <label for="prof-elec-rate" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Agricultural Electricity Rate</span><span class="lang-text-ko" style="display:none;">농업용 전기 요금 단가</span></label>
+                <div class="input-control-wrapper" style="margin-top: 0.3rem;">
+                    <input type="number" id="prof-elec-rate" value="80" step="1" style="width: 100%;" />
+                    <span class="suffix" id="prof-elec-rate-suffix">₩/kWh</span>
+                </div>
+            </div>
+            
+            <button class="estimator-btn" onclick="saveFarmProfile()" style="margin-top: 0.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%); color: var(--text-dark); border: none; font-weight: 700; width: 100%;">
+                <span class="lang-text-en">💾 Save Profile</span><span class="lang-text-ko" style="display:none;">💾 프로필 저장</span>
+            </button>
+
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.2rem;">
+                <button class="estimator-btn" onclick="exportFarmProfile()" style="font-size: 0.8rem; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); color: var(--text-light); flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.2rem; margin: 0; padding: 0.6rem 0;">
+                    📤 Export
+                </button>
+                <button class="estimator-btn" onclick="triggerProfileImport()" style="font-size: 0.8rem; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); color: var(--text-light); flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.2rem; margin: 0; padding: 0.6rem 0;">
+                    📥 Import
+                </button>
+                <input type="file" id="prof-import-file" style="display: none;" onchange="importFarmProfile(event)" accept=".json" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="common.js?v=3.0"></script><script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
