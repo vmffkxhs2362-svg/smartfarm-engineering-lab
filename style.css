@@ -1507,8 +1507,21 @@
         }
 
         .vpd-legend-color {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+        }
+        .vpd-legend-color.vpd-cell-too-low {
+            background: rgba(2, 132, 199, 0.2) !important;
+        }
+        .vpd-legend-color.vpd-cell-optimal {
+            background: rgba(5, 150, 105, 0.3) !important;
+        }
+        .vpd-legend-color.vpd-cell-warning {
+            background: rgba(217, 119, 6, 0.2) !important;
+        }
+        .vpd-legend-color.vpd-cell-danger {
+            background: rgba(220, 38, 38, 0.2) !important;
         }
     
