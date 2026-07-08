@@ -1514,6 +1514,18 @@
                 .replace('{kv}', kv.toFixed(2))
                 .replace('{kvsMargin}', recommendedKvs.toFixed(1))}</p>
         `;
+
+        const actionsCard = document.getElementById('valve-actions-card');
+        const actionsList = document.getElementById('valve-actions-list');
+        if (actionsCard && actionsList) {
+            let advise = `To maintain proper control authority over the <strong>${Q.toFixed(1)} kW</strong> heat load, you need a valve Kv of <strong>${kv.toFixed(2)}</strong>. `;
+            if (kv > 15) {
+                advise += `This requires a relatively large mixing valve. Consider splitting the heating circuit into two separate loops to reduce the load on a single pump and valve.`;
+            } else {
+                advise += `A standard threaded brass mixing valve will suffice for this flow rate. Ensure your pump head can overcome the ${dPv.toFixed(1)} ${currentPressUnit} pressure drop across the valve.`;
+            }
+            actionsList.innerHTML = advise;
+        }
     }
     const fertDb = {
         custom: { purity: 15.5, tank: 'none' },
@@ -1882,6 +1894,24 @@
             .replace('{demand}', demand.toLocaleString())
             .replace('{savings}', formattedSavings)
             .replace('{payback}', paybackPeriod.toFixed(1));
+
+        const actionsCard = document.getElementById('roi-actions-card');
+        const actionsList = document.getElementById('roi-actions-list');
+        if (actionsCard && actionsList) {
+            if (annualSavings <= 0) {
+                actionsList.innerHTML = `No financial benefit under current settings. Heat pump electricity cost exceeds boiler fuel cost.`;
+            } else {
+                let advise = `Upgrading to a heat pump will save you <strong>${formattedSavings}</strong> annually. `;
+                if (paybackPeriod < 3) {
+                    advise += `With a payback period of just ${paybackPeriod.toFixed(1)} years, this is a highly lucrative investment. It is strongly recommended to proceed with the CapEx upgrade.`;
+                } else if (paybackPeriod > 7) {
+                    advise += `A payback period of ${paybackPeriod.toFixed(1)} years is quite long. This might not be economically viable unless government agricultural subsidies or carbon credits are applied to the CapEx.`;
+                } else {
+                    advise += `The payback period of ${paybackPeriod.toFixed(1)} years is typical for agricultural infrastructure. Factor this into your 5-year depreciation schedule.`;
+                }
+                actionsList.innerHTML = advise;
+            }
+        }
     }
 
     const cropRsDb = {
@@ -1978,6 +2008,20 @@
                      .replace(' L/m²·day', ' gal/1000 ft²·day');
         }
         expEl.innerHTML = exp;
+
+        const actionsCard = document.getElementById('trans-actions-card');
+        const actionsList = document.getElementById('trans-actions-list');
+        if (actionsCard && actionsList) {
+            let advise = `The crop is transpiring at <strong>${displayEt.toFixed(2)} ${etUnit}</strong>. `;
+            if (etHr > 0.5) {
+                advise += `This is a very high evaporation rate driven by strong radiation. <strong>Increase irrigation frequency immediately</strong> to prevent wilting. `;
+            } else if (etHr < 0.1) {
+                advise += `Transpiration is sluggish. The roots are not pulling water or calcium. Consider raising the greenhouse temperature or lowering humidity to stimulate water movement. `;
+            } else {
+                advise += `Transpiration is moderate and healthy. Maintain your current irrigation shot volumes. `;
+            }
+            actionsList.innerHTML = advise;
+        }
     }
 
     // ==========================================
