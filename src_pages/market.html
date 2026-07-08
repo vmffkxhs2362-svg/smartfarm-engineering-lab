@@ -23,7 +23,7 @@
                 <button class="toggle-btn" data-interval="week" onclick="setTimeframe('week')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1W</button>
                 <button class="toggle-btn" data-interval="month" onclick="setTimeframe('month')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1M</button>
                 <button class="toggle-btn" data-interval="quarter" onclick="setTimeframe('quarter')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">3M</button>
-                <button class="toggle-btn" data-interval="year" onclick="setTimeframe('year')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1Y</button>
+                <button class="toggle-btn" data-interval="all" onclick="setTimeframe('all')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">ALL</button>
             </div>
         </div>
 
@@ -142,9 +142,8 @@
                 let key;
                 const m = moment(d.date);
                 if (interval === 'week') key = m.clone().startOf('isoWeek').format('YYYY-MM-DD');
-                else if (interval === 'month') key = m.clone().startOf('month').format('YYYY-MM-DD');
+                else if (interval === 'month' || interval === 'all') key = m.clone().startOf('month').format('YYYY-MM-DD');
                 else if (interval === 'quarter') key = m.clone().startOf('quarter').format('YYYY-MM-DD');
-                else if (interval === 'year') key = m.clone().startOf('year').format('YYYY-MM-DD');
                 
                 if (!grouped[key]) grouped[key] = [];
                 grouped[key].push(d.price);
@@ -196,7 +195,7 @@
                 const color = change >= 0 ? '#10b981' : '#ef4444';
                 const arrow = change >= 0 ? '▲' : '▼';
 
-                const timeframeLabels = { 'day': '1D', 'week': '1W', 'month': '1M', 'quarter': '3M', 'year': '1Y' };
+                const timeframeLabels = { 'day': '1D', 'week': '1W', 'month': '1M', 'quarter': '3M', 'all': 'ALL' };
                 const timeframeText = timeframeLabels[currentInterval] || currentInterval;
 
                 container.innerHTML += `
@@ -254,7 +253,7 @@
                     x: { 
                         type: 'time', 
                         time: { 
-                            unit: currentInterval === 'quarter' ? 'month' : currentInterval 
+                            unit: (currentInterval === 'quarter' || currentInterval === 'all') ? 'month' : currentInterval 
                         } 
                     },
                     y: { beginAtZero: false }
