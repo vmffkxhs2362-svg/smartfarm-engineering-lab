@@ -191,7 +191,17 @@
 <option id="opt-cover-double" value="3.5">Double Poly Film (U=3.5)</option>
 <option id="opt-cover-glass" value="5.5">Glass Greenhouse (U=5.5)</option>
 <option id="opt-cover-pc" value="2.8">PC Sheet Greenhouse (U=2.8)</option>
+<option id="opt-cover-custom" value="custom">Custom U-Value</option>
 </select>
+</div>
+</div>
+<div class="input-group" id="est-cover-custom-wrapper" style="display: none;">
+<div class="input-header">
+<label for="est-cover-custom">Custom Cover U-Value</label>
+</div>
+<div class="input-control-wrapper">
+<input id="est-cover-custom" oninput="runEstimatorEngine()" step="0.1" type="number" value="5.5"/>
+<span class="suffix">W/m²·K</span>
 </div>
 </div>
 <div class="input-group">
@@ -313,11 +323,16 @@
             <div class="input-group" style="margin-bottom: 0;">
                 <label for="prof-cladding" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Cladding Material</span><span class="lang-text-ko" style="display:none;">온실 피복재</span></label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
-                    <select id="prof-cladding" style="width: 100%;">
+                    <select id="prof-cladding" style="width: 100%;" onchange="onProfileCladdingChange()">
                         <option value="5.5">Single Glass / PE Film (U = 5.5)</option>
                         <option value="3.5">Double PE / Polycarbonate (U = 3.5)</option>
                         <option value="1.8">Triple Glass / High Insulated (U = 1.8)</option>
+                        <option value="custom">Other (Custom U-Value)</option>
                     </select>
+                </div>
+                <div class="input-control-wrapper" id="prof-cladding-custom-wrapper" style="display: none; margin-top: 0.5rem;">
+                    <input type="number" id="prof-cladding-custom" value="2.5" step="0.1" style="width: 100%;" />
+                    <span class="suffix">W/m²·K</span>
                 </div>
             </div>
 

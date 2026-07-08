@@ -1433,7 +1433,16 @@
 
     function runEstimatorEngine() {
         const area = parseFloat(document.getElementById('est-area').value);
-        const U = parseFloat(document.getElementById('est-cover').value);
+        let U_val = document.getElementById('est-cover').value;
+        let U = 5.5;
+        const customWrapper = document.getElementById('est-cover-custom-wrapper');
+        if (U_val === 'custom') {
+            if (customWrapper) customWrapper.style.display = '';
+            U = parseFloat(document.getElementById('est-cover-custom').value) || 5.5;
+        } else {
+            if (customWrapper) customWrapper.style.display = 'none';
+            U = parseFloat(U_val) || 5.5;
+        }
         const tempIn = parseFloat(document.getElementById('est-temp-in').value);
         const tempOut = parseFloat(document.getElementById('est-temp-out').value);
         if (isNaN(area) || isNaN(U) || isNaN(tempIn) || isNaN(tempOut)) return;
@@ -2976,10 +2985,26 @@
         }
     };
 
+    window.onProfileCladdingChange = function() {
+        const val = document.getElementById('prof-cladding').value;
+        const wrapper = document.getElementById('prof-cladding-custom-wrapper');
+        if (wrapper) {
+            wrapper.style.display = (val === 'custom') ? 'block' : 'none';
+        }
+    };
+
     window.saveFarmProfile = function() {
+        let claddingVal = document.getElementById('prof-cladding').value;
+        let finalCladding = 5.5;
+        if (claddingVal === 'custom') {
+            finalCladding = parseFloat(document.getElementById('prof-cladding-custom').value) || 2.5;
+        } else {
+            finalCladding = parseFloat(claddingVal) || 5.5;
+        }
+
         const profile = {
             area: parseFloat(document.getElementById('prof-area').value) || 1500,
-            cladding: parseFloat(document.getElementById('prof-cladding').value) || 5.5,
+            cladding: finalCladding,
             crop: document.getElementById('prof-crop').value || 'tomato',
             tank: parseFloat(document.getElementById('prof-tank').value) || 1000,
             injector: parseFloat(document.getElementById('prof-injector').value) || 100,
@@ -3013,7 +3038,22 @@
             };
 
             setVal('prof-area', profile.area);
-            setVal('prof-cladding', profile.cladding);
+            
+            const claddingSelect = document.getElementById('prof-cladding');
+            let found = false;
+            for (let i = 0; i < claddingSelect.options.length; i++) {
+                if (parseFloat(claddingSelect.options[i].value) === profile.cladding) {
+                    found = true;
+                    setVal('prof-cladding', claddingSelect.options[i].value);
+                    break;
+                }
+            }
+            if (!found) {
+                setVal('prof-cladding', 'custom');
+                setVal('prof-cladding-custom', profile.cladding);
+            }
+            window.onProfileCladdingChange();
+
             setVal('prof-crop', profile.crop);
             setVal('prof-tank', profile.tank);
             setVal('prof-injector', profile.injector);
@@ -3060,7 +3100,23 @@
             // 2. Mixing Valve Page
             if (document.getElementById('section-valve')) {
                 fillInput('est-area', profile.area);
-                fillInput('est-cover', profile.cladding);
+                const selectCover = document.getElementById('est-cover');
+                if (selectCover) {
+                    let found = false;
+                    for (let i = 0; i < selectCover.options.length; i++) {
+                        if (parseFloat(selectCover.options[i].value) === profile.cladding) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        selectCover.value = profile.cladding;
+                    } else {
+                        selectCover.value = 'custom';
+                        fillInput('est-cover-custom', profile.cladding);
+                    }
+                    selectCover.dispatchEvent(new Event('change'));
+                }
             }
 
             // 3. Fertigation Page
@@ -3073,6 +3129,21 @@
             if (document.getElementById('section-heat-loss')) {
                 fillInput('hl-area', profile.area);
                 fillInput('hl-uvalue', profile.cladding);
+                const selectPreset = document.getElementById('hl-preset');
+                if (selectPreset) {
+                    let found = false;
+                    for (let i = 0; i < selectPreset.options.length; i++) {
+                        if (parseFloat(selectPreset.options[i].value) === profile.cladding) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        selectPreset.value = profile.cladding;
+                    } else {
+                        selectPreset.value = 'custom';
+                    }
+                }
             }
 
             // 5. ROI Page
@@ -3094,7 +3165,18 @@
             if (document.getElementById('section-transpiration')) {
                 const selectCrop = document.getElementById('tr-crop');
                 if (selectCrop) {
-                    selectCrop.value = profile.crop;
+                    let optionExists = false;
+                    for (let i = 0; i < selectCrop.options.length; i++) {
+                        if (selectCrop.options[i].value === profile.crop) {
+                            optionExists = true;
+                            break;
+                        }
+                    }
+                    if (optionExists) {
+                        selectCrop.value = profile.crop;
+                    } else {
+                        selectCrop.selectedIndex = 0;
+                    }
                     selectCrop.dispatchEvent(new Event('change'));
                 }
             }
@@ -3103,6 +3185,23 @@
             if (document.getElementById('section-vertical')) {
                 fillInput('led-bars', Math.round(profile.area / 10)); // estimation
                 fillInput('elec-rate', (profile.elecRate / 1300).toFixed(2));
+                
+                const selectCrop = document.getElementById('crop-select');
+                if (selectCrop) {
+                    let optionExists = false;
+                    for (let i = 0; i < selectCrop.options.length; i++) {
+                        if (selectCrop.options[i].value === profile.crop) {
+                            optionExists = true;
+                            break;
+                        }
+                    }
+                    if (optionExists) {
+                        selectCrop.value = profile.crop;
+                    } else {
+                        selectCrop.selectedIndex = 0;
+                    }
+                    selectCrop.dispatchEvent(new Event('change'));
+                }
             }
 
             // 8. Crop Diagnosis & Pollinator Page

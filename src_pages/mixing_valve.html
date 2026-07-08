@@ -69,7 +69,17 @@
 <option id="opt-cover-double" value="3.5">Double Poly Film (U=3.5)</option>
 <option id="opt-cover-glass" value="5.5">Glass Greenhouse (U=5.5)</option>
 <option id="opt-cover-pc" value="2.8">PC Sheet Greenhouse (U=2.8)</option>
+<option id="opt-cover-custom" value="custom">Custom U-Value</option>
 </select>
+</div>
+</div>
+<div class="input-group" id="est-cover-custom-wrapper" style="display: none;">
+<div class="input-header">
+<label for="est-cover-custom">Custom Cover U-Value</label>
+</div>
+<div class="input-control-wrapper">
+<input id="est-cover-custom" oninput="runEstimatorEngine()" step="0.1" type="number" value="5.5"/>
+<span class="suffix">W/m²·K</span>
 </div>
 </div>
 <div class="input-group">
