@@ -302,12 +302,15 @@
                 const color = change >= 0 ? '#10b981' : '#ef4444';
                 const arrow = change >= 0 ? '▲' : '▼';
 
+                const timeframeLabels = { 7: '1W', 30: '1M', 90: '3M', 365: '1Y' };
+                const timeframeText = timeframeLabels[currentDays] || `${currentDays}d`;
+
                 container.innerHTML += `
                     <div style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
                         <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">${item.name}</div>
                         <div style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary);">${latest.toFixed(2)} <span style="font-size: 0.8rem; color: var(--text-secondary);">${item.unit}</span></div>
                         <div style="font-size: 0.85rem; margin-top: 0.25rem; font-weight: 500; color: ${color};">
-                            ${arrow} ${Math.abs(change)}% <span style="color: var(--text-secondary); font-weight: normal; font-size: 0.75rem;">(${currentDays}d)</span>
+                            ${arrow} ${Math.abs(change)}% <span style="color: var(--text-secondary); font-weight: normal; font-size: 0.75rem;">(${timeframeText})</span>
                         </div>
                     </div>
                 `;
