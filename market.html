@@ -140,6 +140,7 @@
             </div>
             
             <div class="toggle-group" id="time-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
+                <button class="toggle-btn" data-days="2" onclick="setTimeframe(2)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1D</button>
                 <button class="toggle-btn" data-days="7" onclick="setTimeframe(7)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1W</button>
                 <button class="toggle-btn active" data-days="30" onclick="setTimeframe(30)" style="background: var(--primary); border: none; color: var(--bg-dark); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1M</button>
                 <button class="toggle-btn" data-days="90" onclick="setTimeframe(90)" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">3M</button>
@@ -302,7 +303,7 @@
                 const color = change >= 0 ? '#10b981' : '#ef4444';
                 const arrow = change >= 0 ? '▲' : '▼';
 
-                const timeframeLabels = { 7: '1W', 30: '1M', 90: '3M', 365: '1Y' };
+                const timeframeLabels = { 2: '1D', 7: '1W', 30: '1M', 90: '3M', 365: '1Y' };
                 const timeframeText = timeframeLabels[currentDays] || `${currentDays}d`;
 
                 container.innerHTML += `
