@@ -67,6 +67,10 @@ def build_site():
         out_html = out_html.replace('{{BODY}}', body_html)
         out_html = out_html.replace('{{EXTRA_SCRIPTS}}', extra_scripts)
         out_html = out_html.replace('{{URL}}', url)
+        
+        import datetime
+        last_updated = datetime.datetime.now().strftime("%B %d, %Y")
+        out_html = out_html.replace('{{LAST_UPDATED}}', last_updated)
 
         # Set active classes
         if active_tab:
