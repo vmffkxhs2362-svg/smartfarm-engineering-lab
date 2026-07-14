@@ -17,6 +17,7 @@ def build_site():
     with open(template_path, "r", encoding="utf-8") as f:
         template = f.read()
 
+    built_urls = []
     files = glob.glob(os.path.join(src_dir, "*.html"))
     for f in files:
         filename = os.path.basename(f)
@@ -98,7 +99,42 @@ def build_site():
         with open(out_path, "w", encoding="utf-8") as out_f:
             out_f.write(out_html)
         
+        built_urls.append((url, "1.0" if filename == "index.html" else "0.8"))
         print(f"Built {filename}")
+
+    # Generate sitemap.xml
+    import datetime
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    sitemap_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    ]
+    
+    # Add built pages
+    for url, priority in built_urls:
+        sitemap_lines.append('  <url>')
+        sitemap_lines.append(f'    <loc>{url}</loc>')
+        sitemap_lines.append(f'    <lastmod>{today}</lastmod>')
+        sitemap_lines.append('    <changefreq>monthly</changefreq>')
+        sitemap_lines.append(f'    <priority>{priority}</priority>')
+        sitemap_lines.append('  </url>')
+        
+    # Add extra static pages in root if they exist
+    extra_pages = [('greenpocket', '0.8'), ('privacy', '0.3')]
+    for page, priority in extra_pages:
+        if os.path.exists(os.path.join(base_dir, f"{page}.html")):
+            sitemap_lines.append('  <url>')
+            sitemap_lines.append(f'    <loc>https://smartfarm.inwoovation.com/{page}</loc>')
+            sitemap_lines.append(f'    <lastmod>{today}</lastmod>')
+            sitemap_lines.append('    <changefreq>monthly</changefreq>')
+            sitemap_lines.append(f'    <priority>{priority}</priority>')
+            sitemap_lines.append('  </url>')
+
+    sitemap_lines.append('</urlset>')
+    
+    with open(os.path.join(base_dir, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write('\n'.join(sitemap_lines))
+    print("Generated sitemap.xml")
 
 if __name__ == "__main__":
     build_site()
