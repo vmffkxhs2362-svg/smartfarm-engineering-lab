@@ -2534,8 +2534,17 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
     window.downloadDiagnosisPDF = function() {
         if (!activeDiagnosisData) return;
 
-        // Log download action
+        // Log download action to Google Sheet
         sendDiagnosisToSheet('PDF Download');
+
+        // Log GA4 custom event for conversion tracking
+        if (typeof gtag === 'function') {
+            gtag('event', 'pdf_report_download', {
+                event_category: 'diagnosis',
+                event_label: activeDiagnosisData.diseaseEn || 'unknown',
+                value: 1
+            });
+        }
 
         const d = activeDiagnosisData;
         
