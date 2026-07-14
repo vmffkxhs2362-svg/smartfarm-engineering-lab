@@ -1,3 +1,4 @@
+window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
 
     // Pesticide Database
     const pesticideDB = [
@@ -313,6 +314,7 @@
             lblDiagRemedy: "Remedial Agronomic Guide",
             lblDiagChemical: "Recommended Active Ingredient",
             btnGoToRei: "👉 Calculate Bee Re-entry Interval (REI) for this Chemical",
+            btnPdfReport: "📄 PDF 진단 리포트 다운로드 (이메일 없음)",
             msgDiagNoSearch: "Select a crop, part, and symptoms to view real-time diagnosis.",
             msgDiagNoSymptom: "No symptoms registered for the selected plant part. Try selecting another plant part.",
             lblSelectPlaceholder: "-- Select Option --",
@@ -520,6 +522,7 @@
             lblDiagRemedy: "Remedial Agronomic Guide",
             lblDiagChemical: "Recommended Active Ingredient",
             btnGoToRei: "👉 Calculate Bee Re-entry Interval (REI) for this Chemical",
+            btnPdfReport: "📄 Download PDF Diagnosis Report (No Email)",
             msgDiagNoSearch: "Select a crop, part, and symptoms to view real-time diagnosis.",
             msgDiagNoSymptom: "No symptoms registered for the selected plant part. Try selecting another plant part.",
             lblSelectPlaceholder: "-- Select Option --",
@@ -2472,9 +2475,350 @@
                 </div>
 
                 ${chemicalSectionHtml}
+
+                <div style="margin-top: 1rem;">
+                    <button class="estimator-btn" id="btn-diag-pdf" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.8rem 1.5rem; font-size: 1rem;" onclick="downloadDiagnosisPDF()">
+                        📄 ${i18n[currentLang].btnPdfReport || "Download PDF Diagnosis Report (No Email)"}
+                    </button>
+                </div>
             </div>
         `;
     }
+
+    function sendDiagnosisToSheet(actionType) {
+        if (!activeDiagnosisData) return;
+        
+        const configUrl = window.DIAGNOSIS_COLLECTOR_URL || "";
+        if (!configUrl || configUrl === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+            console.log("Data collection skipped: Web App URL not configured.");
+            return;
+        }
+
+        const selectCrop = document.getElementById('diag-crop');
+        const selectPart = document.getElementById('diag-part');
+        const selectSymptom = document.getElementById('diag-symptom');
+        
+        const crop = selectCrop ? selectCrop.value : "";
+        const part = selectPart ? selectPart.value : "";
+        const symptomId = selectSymptom ? selectSymptom.value : "";
+
+        const payload = {
+            timestamp: new Date().toISOString(),
+            lang: currentLang,
+            crop: crop,
+            part: part,
+            symptomId: symptomId,
+            symptomText: activeDiagnosisData.symptomEn || "",
+            disease: activeDiagnosisData.diseaseEn || "",
+            remedy: activeDiagnosisData.remedyEn || "",
+            chemical: activeDiagnosisData.suggestedChemical || "N/A",
+            actionType: actionType || "Scout"
+        };
+
+        fetch(configUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            console.log("Diagnosis data logged successfully. Action: " + actionType);
+        })
+        .catch(err => {
+            console.error("Error logging diagnosis data:", err);
+        });
+    }
+
+    window.downloadDiagnosisPDF = function() {
+        if (!activeDiagnosisData) return;
+
+        // Log download action
+        sendDiagnosisToSheet('PDF Download');
+
+        const d = activeDiagnosisData;
+        
+        const selectCrop = document.getElementById('diag-crop');
+        const cropName = selectCrop ? selectCrop.options[selectCrop.selectedIndex].text : "";
+        const selectPart = document.getElementById('diag-part');
+        const partName = selectPart ? selectPart.options[selectPart.selectedIndex].text : "";
+        const selectSymptom = document.getElementById('diag-symptom');
+        const symptomName = selectSymptom ? selectSymptom.options[selectSymptom.selectedIndex].text : d.symptomEn;
+        
+        const diseaseName = d.diseaseEn;
+        const remedyText = d.remedyEn;
+        
+        let chemicalName = "N/A";
+        let toxicityText = "N/A (Non-chemical / physical control suggested)";
+        let safeGuideline = "N/A";
+        let reiDaysText = "N/A";
+
+        if (d.suggestedChemical) {
+            chemicalName = d.suggestedChemical;
+            const chemObj = pesticideDB.find(c => c.nameEn.toLowerCase() === d.suggestedChemical.toLowerCase());
+            if (chemObj) {
+                chemicalName = chemObj.nameEn;
+                reiDaysText = chemObj.reiDays + " Days";
+                safeGuideline = chemObj.descEn;
+                
+                if (chemObj.toxicity === 'high') {
+                    toxicityText = "🔴 Highly Toxic (Danger to Bees)";
+                } else if (chemObj.toxicity === 'medium') {
+                    toxicityText = "🟡 Moderately Toxic (Warning)";
+                } else {
+                    toxicityText = "🟢 Relatively Bee-Safe (Green)";
+                }
+            }
+        }
+
+        const now = new Date();
+        const formattedDate = now.getFullYear() + "-" + 
+            String(now.getMonth() + 1).padStart(2, '0') + "-" + 
+            String(now.getDate()).padStart(2, '0') + " " + 
+            String(now.getHours()).padStart(2, '0') + ":" + 
+            String(now.getMinutes()).padStart(2, '0') + ":" + 
+            String(now.getSeconds()).padStart(2, '0');
+
+        const labels = currentLang === 'ko' ? {
+            title: "스마트팜 정밀 작물 자가진단 리포트",
+            subtitle: "Smart Farm Precision Diagnosis & Treatment Report",
+            metaTitle: "1. 예찰 및 진단 메타데이터 (Metadata)",
+            time: "진단 일시",
+            crop: "대상 작물 / 부위",
+            symptom: "관찰된 이상 증상",
+            resultTitle: "2. 진단 결과 및 분석 (Diagnosis)",
+            disease: "의심되는 병해충/생리장해",
+            remedyTitle: "3. 처방 및 조치 방안 (Remedy)",
+            chemicalTitle: "4. 추천 농약 성분 및 꿀벌 안전 가이드 (Chemical Safety)",
+            chemical: "추천 방제 성분",
+            toxicity: "꿀벌 독성 등급",
+            rei: "안전 재진입 대기기간 (REI)",
+            guideline: "SOP 대응 및 살포 가이드라인",
+            footer: "본 리포트는 Inwoovation 스마트팜 엔지니어링 랩(smartfarm.inwoovation.com)에서 실시간으로 발행되었습니다.",
+            verified: "자가진단 무결성 인증됨"
+        } : {
+            title: "Smart Farm Precision Diagnosis Report",
+            subtitle: "Horticultural Health & Pest Treatment Guidelines",
+            metaTitle: "1. Scouting & Diagnostic Metadata",
+            time: "Scouting Timestamp",
+            crop: "Target Crop / Part",
+            symptom: "Scouted Symptom Details",
+            resultTitle: "2. Diagnostic Diagnosis Results",
+            disease: "Suspected Disease / Pest / Deficit",
+            remedyTitle: "3. Recommended Agronomic Remedies",
+            chemicalTitle: "4. Chemical Treatment & Bee Safety Guidelines",
+            chemical: "Active Ingredient",
+            toxicity: "Bee Toxicity Level",
+            rei: "Re-entry Interval (REI)",
+            guideline: "SOP Hive Action Guidelines",
+            footer: "Issued in real-time by Inwoovation Smart Farm Lab (smartfarm.inwoovation.com).",
+            verified: "Self-Diagnosis Verified"
+        };
+
+        const printHtml = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <title>${labels.title}</title>
+                <style>
+                    body {
+                        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                        color: #111827;
+                        line-height: 1.6;
+                        margin: 0;
+                        padding: 40px;
+                        background-color: #ffffff;
+                    }
+                    .report-container {
+                        max-width: 800px;
+                        margin: 0 auto;
+                        border: 1px solid #e5e7eb;
+                        padding: 40px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                    }
+                    header {
+                        border-bottom: 2px solid #10b981;
+                        padding-bottom: 20px;
+                        margin-bottom: 30px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    .header-title h1 {
+                        margin: 0;
+                        font-size: 24px;
+                        color: #064e3b;
+                        font-weight: 800;
+                    }
+                    .header-title p {
+                        margin: 5px 0 0 0;
+                        font-size: 14px;
+                        color: #6b7280;
+                    }
+                    .badge-verified {
+                        background-color: #d1fae5;
+                        color: #065f46;
+                        font-size: 12px;
+                        font-weight: 700;
+                        padding: 6px 12px;
+                        border-radius: 50px;
+                        border: 1px solid #a7f3d0;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                    h2 {
+                        font-size: 16px;
+                        color: #064e3b;
+                        border-bottom: 1px solid #e5e7eb;
+                        padding-bottom: 8px;
+                        margin-top: 30px;
+                        margin-bottom: 15px;
+                        font-weight: 700;
+                    }
+                    .grid-meta {
+                        display: grid;
+                        grid-template-columns: 180px 1fr;
+                        gap: 10px;
+                        margin-bottom: 20px;
+                        background-color: #f9fafb;
+                        padding: 15px;
+                        border-radius: 6px;
+                        border: 1px solid #f3f4f6;
+                    }
+                    .grid-meta .label {
+                        font-weight: 600;
+                        color: #4b5563;
+                        font-size: 14px;
+                    }
+                    .grid-meta .value {
+                        color: #111827;
+                        font-size: 14px;
+                    }
+                    .info-card {
+                        background-color: #fffbeb;
+                        border-left: 4px solid #f59e0b;
+                        padding: 15px;
+                        margin-bottom: 20px;
+                        border-radius: 0 6px 6px 0;
+                    }
+                    .info-card p {
+                        margin: 0;
+                        font-size: 14px;
+                        color: #78350f;
+                    }
+                    .chem-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 10px;
+                    }
+                    .chem-table th, .chem-table td {
+                        border: 1px solid #e5e7eb;
+                        padding: 12px;
+                        text-align: left;
+                        font-size: 14px;
+                    }
+                    .chem-table th {
+                        background-color: #f3f4f6;
+                        color: #374151;
+                        font-weight: 600;
+                    }
+                    footer {
+                        margin-top: 50px;
+                        border-top: 1px solid #e5e7eb;
+                        padding-top: 15px;
+                        text-align: center;
+                        font-size: 12px;
+                        color: #9ca3af;
+                    }
+                    @media print {
+                        body {
+                            padding: 0;
+                        }
+                        .report-container {
+                            border: none;
+                            box-shadow: none;
+                            padding: 0;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="report-container">
+                    <header>
+                        <div class="header-title">
+                            <h1>${labels.title}</h1>
+                            <p>${labels.subtitle}</p>
+                        </div>
+                        <div class="badge-verified">✓ ${labels.verified}</div>
+                    </header>
+
+                    <h2>${labels.metaTitle}</h2>
+                    <div class="grid-meta">
+                        <div class="label">${labels.time}</div>
+                        <div class="value">${formattedDate}</div>
+                        
+                        <div class="label">${labels.crop}</div>
+                        <div class="value">${cropName} / ${partName}</div>
+                        
+                        <div class="label">${labels.symptom}</div>
+                        <div class="value">${symptomName}</div>
+                    </div>
+
+                    <h2>${labels.resultTitle}</h2>
+                    <div class="info-card">
+                        <div style="font-weight: 700; font-size: 16px; color: #b45309; margin-bottom: 5px;">${labels.disease}: ${diseaseName}</div>
+                    </div>
+
+                    <h2>${labels.remedyTitle}</h2>
+                    <div style="font-size: 14px; background-color: #f0fdf4; border-left: 4px solid #10b981; padding: 15px; border-radius: 0 6px 6px 0; color: #065f46; margin-bottom: 20px;">
+                        ${remedyText}
+                    </div>
+
+                    <h2>${labels.chemicalTitle}</h2>
+                    <table class="chem-table">
+                        <tr>
+                            <th style="width: 30%;">${labels.chemical}</th>
+                            <td style="font-weight: 600; color: #064e3b;">${chemicalName}</td>
+                        </tr>
+                        <tr>
+                            <th>${labels.toxicity}</th>
+                            <td>${toxicityText}</td>
+                        </tr>
+                        <tr>
+                            <th>${labels.rei}</th>
+                            <td style="font-weight: 600; color: #b45309;">${reiDaysText}</td>
+                        </tr>
+                        <tr>
+                            <th>${labels.guideline}</th>
+                            <td style="font-size: 13px; color: #4b5563;">${safeGuideline}</td>
+                        </tr>
+                    </table>
+
+                    <footer>
+                        <p>${labels.footer}</p>
+                    </footer>
+                </div>
+                <script>
+                    window.onload = function() {
+                        window.print();
+                    }
+                </script>
+            </body>
+            </html>
+        `;
+
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+            printWindow.document.open();
+            printWindow.document.write(printHtml);
+            printWindow.document.close();
+        } else {
+            alert("Please allow popups to download/print the PDF report.");
+        }
+    };
 
     function jumpToReiSimulator(chemicalName) {
         switchPollinatorTab('pesticide');
@@ -2894,7 +3238,10 @@
         const diagSymptom = document.getElementById('diag-symptom');
         if (diagCrop && typeof updatePartOptions === 'function') diagCrop.addEventListener('change', updatePartOptions);
         if (diagPart && typeof updateSymptomOptions === 'function') diagPart.addEventListener('change', updateSymptomOptions);
-        if (diagSymptom && typeof performDiagnosis === 'function') diagSymptom.addEventListener('change', performDiagnosis);
+        if (diagSymptom && typeof performDiagnosis === 'function') diagSymptom.addEventListener('change', () => {
+            performDiagnosis();
+            if (typeof sendDiagnosisToSheet === 'function') sendDiagnosisToSheet('Scout');
+        });
 
         // Autofill inputs from farm profile before initial calculations run
         if (typeof autofillInputsFromProfile === 'function') autofillInputsFromProfile();
