@@ -141,4 +141,6 @@ def build_site():
     print("Generated sitemap.xml")
 
 if __name__ == "__main__":
+    import build_library
+    build_library.build_library()
     build_site()
