@@ -79,30 +79,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartfarm.inwoovation.com/library_vpd_optimization_tomato</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/library_penman_monteith_greenhouse</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/library_greenhouse_u_value_analysis</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/library</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://smartfarm.inwoovation.com/greenpocket</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
