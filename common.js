@@ -1985,8 +1985,8 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
             actionsList.innerHTML = advise;
         }
 
-        // Generate German Angebote (Quotation Request) Email
-        generateGermanQuotation(A, U, qLossKw, screenName, (qLossKw - qLossKwWithScreen));
+        // Generate Quotation Request Email
+        generateQuotationEmail(A, U, qLossKw, screenName, (qLossKw - qLossKwWithScreen));
     }
     window.calculateHeatLossEngine = calculateHeatLossEngine;
 
@@ -2007,32 +2007,76 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
     }
     window.onHlScreenTypeChange = onHlScreenTypeChange;
 
-    let currentHlCurrency = 'KRW';
+    window.eurToUsdRate = 1.09; // fallback default
+    async function fetchExchangeRates() {
+        try {
+            const response = await fetch('https://open.er-api.com/v6/latest/EUR');
+            if (response.ok) {
+                const data = await response.json();
+                if (data && data.rates && data.rates.USD) {
+                    window.eurToUsdRate = data.rates.USD;
+                    console.log("Real-time EUR to USD rate loaded:", window.eurToUsdRate);
+                    // Update any active calculation engine
+                    if (document.getElementById('section-heat-loss')) {
+                        calculateHeatLossEngine();
+                    }
+                    if (document.getElementById('section-roi')) {
+                        calculateRoiEngine();
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Failed to fetch exchange rates, using fallback 1.09:", e);
+        }
+    }
+    window.fetchExchangeRates = fetchExchangeRates;
+
+    let currentHlCurrency = 'EUR';
     function switchHlCurrency(currency) {
+        const oldCurrency = currentHlCurrency;
         if (currentHlCurrency === currency) return;
         currentHlCurrency = currency;
 
-        const krwBtn = document.getElementById('hl-curr-krw');
         const eurBtn = document.getElementById('hl-curr-eur');
         const usdBtn = document.getElementById('hl-curr-usd');
         const capexSuffix = document.getElementById('hl-screen-capex-unit');
         const capexInput = document.getElementById('hl-screen-capex');
+        const priceInput = document.getElementById('hl-boiler-price');
 
-        [krwBtn, eurBtn, usdBtn].forEach(btn => {
+        [eurBtn, usdBtn].forEach(btn => {
             if (btn) btn.classList.remove('active');
         });
-        if (currency === 'KRW') {
-            if (krwBtn) krwBtn.classList.add('active');
-            if (capexSuffix) capexSuffix.innerText = '₩';
-            if (capexInput) capexInput.value = "15000000";
-        } else if (currency === 'EUR') {
+        
+        if (currency === 'EUR') {
             if (eurBtn) eurBtn.classList.add('active');
             if (capexSuffix) capexSuffix.innerText = '€';
-            if (capexInput) capexInput.value = "10000";
+            if (capexInput && !isNaN(parseFloat(capexInput.value))) {
+                if (oldCurrency === 'USD') {
+                    capexInput.value = Math.round(parseFloat(capexInput.value) / window.eurToUsdRate);
+                }
+            } else if (capexInput) {
+                capexInput.value = "10000";
+            }
+            if (priceInput && !isNaN(parseFloat(priceInput.value))) {
+                if (oldCurrency === 'USD') {
+                    priceInput.value = (parseFloat(priceInput.value) / window.eurToUsdRate).toFixed(4);
+                }
+            }
         } else if (currency === 'USD') {
             if (usdBtn) usdBtn.classList.add('active');
             if (capexSuffix) capexSuffix.innerText = '$';
-            if (capexInput) capexInput.value = "12000";
+            if (capexInput && !isNaN(parseFloat(capexInput.value))) {
+                if (oldCurrency === 'EUR') {
+                    capexInput.value = Math.round(parseFloat(capexInput.value) * window.eurToUsdRate);
+                }
+            } else if (capexInput) {
+                capexInput.value = "12000";
+            }
+            if (priceInput && !isNaN(parseFloat(priceInput.value))) {
+                if (oldCurrency === 'EUR') {
+                    priceInput.value = (parseFloat(priceInput.value) * window.eurToUsdRate).toFixed(4);
+                }
+            }
         }
 
         onHlBoilerTypeChange();
@@ -2055,55 +2099,44 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
             if (type === 'gas') priceInput.value = "0.09";
             else if (type === 'oil') priceInput.value = "0.13";
             else if (type === 'lpg') priceInput.value = "0.16";
-        } else {
-            if (type === 'gas') {
-                priceSuffix.innerText = '₩/m³';
-                priceInput.value = "1000";
-            } else if (type === 'oil') {
-                priceSuffix.innerText = '₩/L';
-                priceInput.value = "1300";
-            } else if (type === 'lpg') {
-                priceSuffix.innerText = '₩/kg';
-                priceInput.value = "2000";
-            }
         }
         calculateHeatLossEngine();
     }
     window.onHlBoilerTypeChange = onHlBoilerTypeChange;
 
-    function generateGermanQuotation(area, uValue, peakLoad, screenName, savingsLoad) {
+    function generateQuotationEmail(area, uValue, peakLoad, screenName, savingsLoad) {
         const quoteTextEl = document.getElementById('hl-quotation-text');
         if (!quoteTextEl) return;
 
         const coverMaterialName = getCoverMaterialNameByU(uValue);
         const formattedArea = currentUnit === 'imperial' ? Math.round(area).toLocaleString() + " sq ft" : Math.round(area).toLocaleString() + " m²";
 
-        const text = `Sehr geehrte Damen und Herren,
+        const text = `Dear Sales and Estimating Team,
 
-wir planen die energetische Optimierung unseres Gewächshauses und bitten hiermit um ein unverbindliches Angebot für die Lieferung und Installation eines Energieschirms.
+We are planning to optimize the energy efficiency of our greenhouse facility and would like to request a non-binding quotation for the delivery and installation of a thermal/energy screening system.
 
-Hier sind die wichtigsten technischen Projektdaten zur Auslegung:
-- Gewächshaus-Hüllfläche (Dach und Stehwände): ${formattedArea}
-- Eindeckungsmaterial (Cladding): ${coverMaterialName} (U-Wert: ${uValue} W/m²·K)
-- Maximaler Heizlast-Bedarf (ohne Schirm): ${peakLoad.toFixed(1)} kW
-- Gewünschter Schirmtyp: ${screenName}
-- Berechnete Heizlasteinsparung: ${savingsLoad.toFixed(1)} kW
+Below are the technical specifications for our facility:
+- Greenhouse Envelope Surface Area: ${formattedArea}
+- Cladding Material: ${coverMaterialName} (U-value: ${uValue} W/m²·K)
+- Design Maximum Heating Load (Without Screen): ${peakLoad.toFixed(1)} kW
+- Requested Screen Type: ${screenName}
+- Estimated Peak Load Reduction: ${savingsLoad.toFixed(1)} kW
 
-Bitte teilen Sie uns die Lieferzeiten für das Gewebe sowie eine grobe Schätzung der Montagekosten mit. Für Rückfragen oder eine detaillierte technische Abstimmung stehen wir Ihnen gerne zur Verfügung.
+Please provide us with estimated lead times for the screening materials, along with a rough cost estimate for the installation. We are available for further technical discussions or clarifications.
 
-Mit freundlichen Grüßen,
-[Ihr Name / My Farm Profile]`;
+Best regards,
+[Your Name / Company]`;
 
         quoteTextEl.value = text;
     }
-    window.generateGermanQuotation = generateGermanQuotation;
+    window.generateQuotationEmail = generateQuotationEmail;
 
     function getCoverMaterialNameByU(u) {
-        if (u >= 5.8) return "Einfachfolie (Single Poly)";
-        if (u >= 5.0 && u < 5.8) return "Einfachglas (Single Glass)";
-        if (u >= 3.2 && u < 4.0) return "Doppelstegplatte / Doppelfolie (Double Poly/PC)";
-        if (u >= 2.0 && u < 3.2) return "Dreifachstegplatte (Triple PC Sheet)";
-        return "Hochisoliertes Eindeckungsmaterial (Custom High Insulated)";
+        if (u >= 5.8) return "Single Poly Film";
+        if (u >= 5.0 && u < 5.8) return "Single Glass";
+        if (u >= 3.2 && u < 4.0) return "Double Poly / Polycarbonate";
+        if (u >= 2.0 && u < 3.2) return "Triple PC / High Insulation";
+        return "High Insulation Cladding (Custom)";
     }
     window.getCoverMaterialNameByU = getCoverMaterialNameByU;
 
@@ -2125,13 +2158,13 @@ Mit freundlichen Grüßen,
     window.copyQuotationToClipboard = copyQuotationToClipboard;
 
 
-    let currentRoiCurrency = 'KRW';
+    let currentRoiCurrency = 'EUR';
     
     function switchRoiCurrency(currency) {
+        const oldCurrency = currentRoiCurrency;
         if (currentRoiCurrency === currency) return;
         currentRoiCurrency = currency;
         
-        const krwBtn = document.getElementById('roi-curr-krw');
         const eurBtn = document.getElementById('roi-curr-eur');
         const usdBtn = document.getElementById('roi-curr-usd');
         const boilerPriceSuffix = document.getElementById('roi-boiler-price-unit');
@@ -2143,38 +2176,65 @@ Mit freundlichen Grüßen,
         const hpPriceInput = document.getElementById('roi-hp-price');
 
         // Toggle active button styling
-        [krwBtn, eurBtn, usdBtn].forEach(btn => {
+        [eurBtn, usdBtn].forEach(btn => {
             if (btn) btn.classList.remove('active');
         });
-        if (currency === 'KRW') krwBtn.classList.add('active');
-        else if (currency === 'EUR') eurBtn.classList.add('active');
-        else if (currency === 'USD') usdBtn.classList.add('active');
-
         if (currency === 'EUR') {
-            boilerPriceSuffix.innerText = 'EUR/kWh';
-            elecPriceSuffix.innerText = 'EUR/kWh';
-            capexSuffix.innerText = 'EUR';
+            if (eurBtn) eurBtn.classList.add('active');
+            if (boilerPriceSuffix) boilerPriceSuffix.innerText = 'EUR/kWh';
+            if (elecPriceSuffix) elecPriceSuffix.innerText = 'EUR/kWh';
+            if (capexSuffix) capexSuffix.innerText = 'EUR';
             
-            capexInput.value = "10000";
-            hpPriceInput.value = "0.15";
+            if (capexInput && !isNaN(parseFloat(capexInput.value))) {
+                if (oldCurrency === 'USD') {
+                    capexInput.value = Math.round(parseFloat(capexInput.value) / window.eurToUsdRate);
+                }
+            } else if (capexInput) {
+                capexInput.value = "10000";
+            }
+            if (hpPriceInput && !isNaN(parseFloat(hpPriceInput.value))) {
+                if (oldCurrency === 'USD') {
+                    hpPriceInput.value = (parseFloat(hpPriceInput.value) / window.eurToUsdRate).toFixed(4);
+                }
+            } else if (hpPriceInput) {
+                hpPriceInput.value = "0.15";
+            }
+            if (boilerPriceInput && !isNaN(parseFloat(boilerPriceInput.value))) {
+                if (oldCurrency === 'USD') {
+                    boilerPriceInput.value = (parseFloat(boilerPriceInput.value) / window.eurToUsdRate).toFixed(4);
+                }
+            } else if (boilerPriceInput) {
+                boilerPriceInput.value = "0.08";
+            }
             
             onBoilerTypeChange();
         } else if (currency === 'USD') {
-            boilerPriceSuffix.innerText = 'USD/kWh';
-            elecPriceSuffix.innerText = 'USD/kWh';
-            capexSuffix.innerText = 'USD';
+            if (usdBtn) usdBtn.classList.add('active');
+            if (boilerPriceSuffix) boilerPriceSuffix.innerText = 'USD/kWh';
+            if (elecPriceSuffix) elecPriceSuffix.innerText = 'USD/kWh';
+            if (capexSuffix) capexSuffix.innerText = 'USD';
             
-            capexInput.value = "12000";
-            hpPriceInput.value = "0.12";
-            
-            onBoilerTypeChange();
-        } else {
-            boilerPriceSuffix.innerText = '₩/m³';
-            elecPriceSuffix.innerText = '₩/kWh';
-            capexSuffix.innerText = '₩';
-            
-            capexInput.value = "15000000";
-            hpPriceInput.value = "80";
+            if (capexInput && !isNaN(parseFloat(capexInput.value))) {
+                if (oldCurrency === 'EUR') {
+                    capexInput.value = Math.round(parseFloat(capexInput.value) * window.eurToUsdRate);
+                }
+            } else if (capexInput) {
+                capexInput.value = "12000";
+            }
+            if (hpPriceInput && !isNaN(parseFloat(hpPriceInput.value))) {
+                if (oldCurrency === 'EUR') {
+                    hpPriceInput.value = (parseFloat(hpPriceInput.value) * window.eurToUsdRate).toFixed(4);
+                }
+            } else if (hpPriceInput) {
+                hpPriceInput.value = "0.16";
+            }
+            if (boilerPriceInput && !isNaN(parseFloat(boilerPriceInput.value))) {
+                if (oldCurrency === 'EUR') {
+                    boilerPriceInput.value = (parseFloat(boilerPriceInput.value) * window.eurToUsdRate).toFixed(4);
+                }
+            } else if (boilerPriceInput) {
+                boilerPriceInput.value = "0.09";
+            }
             
             onBoilerTypeChange();
         }
@@ -3419,6 +3479,9 @@ Mit freundlichen Grüßen,
     
     // INIT with URL parameters support
     document.addEventListener('DOMContentLoaded', () => {
+        // Fetch real-time exchange rates (EUR/USD)
+        if (typeof fetchExchangeRates === 'function') fetchExchangeRates();
+
         const urlParams = new URLSearchParams(window.location.search);
         
         // Load farm profile first to populate values before initial calculations
@@ -3558,10 +3621,33 @@ Mit freundlichen Grüßen,
     // FARM PROFILE MANAGEMENT LOGIC (GDPR Compliant)
     // ==========================================
 
+    window.syncProfileDrawerCurrency = function() {
+        let activeCurrency = 'EUR';
+        if (typeof currentHlCurrency !== 'undefined' && document.getElementById('section-heat-loss')) {
+            activeCurrency = currentHlCurrency;
+        } else if (typeof currentRoiCurrency !== 'undefined' && document.getElementById('section-roi')) {
+            activeCurrency = currentRoiCurrency;
+        }
+
+        const elecRateSuffix = document.getElementById('prof-elec-rate-suffix');
+        if (elecRateSuffix) {
+            elecRateSuffix.innerText = activeCurrency + '/kWh';
+        }
+        
+        const boilerPriceSuffix = document.getElementById('prof-boiler-price-suffix');
+        if (boilerPriceSuffix) {
+            boilerPriceSuffix.innerText = activeCurrency + '/kWh';
+        }
+    };
+
     window.toggleFarmProfileDrawer = function() {
         const drawer = document.getElementById('farm-profile-drawer');
         if (drawer) {
-            drawer.style.display = drawer.style.display === 'none' ? 'flex' : 'none';
+            const isOpening = drawer.style.display === 'none';
+            drawer.style.display = isOpening ? 'flex' : 'none';
+            if (isOpening) {
+                syncProfileDrawerCurrency();
+            }
         }
     };
 
@@ -3569,13 +3655,23 @@ Mit freundlichen Grüßen,
         const boilerType = document.getElementById('prof-boiler').value;
         const suffix = document.getElementById('prof-boiler-price-suffix');
         const priceInput = document.getElementById('prof-boiler-price');
+        
+        let activeCurrency = 'EUR';
+        if (typeof currentHlCurrency !== 'undefined' && document.getElementById('section-heat-loss')) {
+            activeCurrency = currentHlCurrency;
+        } else if (typeof currentRoiCurrency !== 'undefined' && document.getElementById('section-roi')) {
+            activeCurrency = currentRoiCurrency;
+        }
+
         if (suffix && priceInput) {
-            if (boilerType === 'gas') {
-                suffix.innerText = '₩/m³';
-                if (priceInput.value === '1400' || priceInput.value === '1000') priceInput.value = '1000';
-            } else {
-                suffix.innerText = '₩/L';
-                if (priceInput.value === '1000' || priceInput.value === '1400') priceInput.value = '1400';
+            suffix.innerText = activeCurrency + '/kWh';
+            const currentVal = parseFloat(priceInput.value);
+            if (isNaN(currentVal) || currentVal === 1000 || currentVal === 1400 || currentVal === 0.08 || currentVal === 0.12 || currentVal === 0.09 || currentVal === 0.13) {
+                if (activeCurrency === 'EUR') {
+                    priceInput.value = (boilerType === 'gas') ? '0.08' : '0.12';
+                } else {
+                    priceInput.value = (boilerType === 'gas') ? '0.09' : '0.13';
+                }
             }
         }
     };
