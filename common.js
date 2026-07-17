@@ -1800,6 +1800,13 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
         const deltaT = tempIn - tempOut;
         if (deltaT <= 0) {
             document.getElementById('hl-value').innerText = currentUnit === 'imperial' ? "0.0 BTU/h" : "0.0 kW";
+            const hlScreenValEl = document.getElementById('hl-screen-value');
+            if (hlScreenValEl) hlScreenValEl.innerText = currentUnit === 'imperial' ? "0.0 BTU/h" : "0.0 kW";
+            const hlSavingsValEl = document.getElementById('hl-savings-value');
+            if (hlSavingsValEl) hlSavingsValEl.innerText = getHlCurrencySymbol(currentHlCurrency) + "0 / yr";
+            const hlPaybackValEl = document.getElementById('hl-payback-value');
+            if (hlPaybackValEl) hlPaybackValEl.innerText = "0.0 Yrs";
+            
             document.getElementById('hl-explanation').innerText = "Outdoor temperature is higher than or equal to indoor. Heating not required.";
             document.getElementById('hl-status-pill').className = "status-pill optimal";
             document.getElementById('hl-status-pill').innerText = "No Heat Needed";
@@ -1814,6 +1821,13 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
         
         if (windSpeedMs >= 25.0) {
             document.getElementById('hl-value').innerText = "N/A";
+            const hlScreenValEl = document.getElementById('hl-screen-value');
+            if (hlScreenValEl) hlScreenValEl.innerText = "N/A";
+            const hlSavingsValEl = document.getElementById('hl-savings-value');
+            if (hlSavingsValEl) hlSavingsValEl.innerText = "N/A";
+            const hlPaybackValEl = document.getElementById('hl-payback-value');
+            if (hlPaybackValEl) hlPaybackValEl.innerText = "N/A";
+
             document.getElementById('hl-explanation').innerHTML = "<strong style='color:var(--danger);'>🚨 Warning: Extreme Wind Speed</strong><br>At >25m/s, structural failure (e.g., torn plastic, collapsed frame) is the primary concern before heat loss. Heating calculation is invalid.";
             document.getElementById('hl-status-pill').className = "status-pill danger";
             document.getElementById('hl-status-pill').innerText = "Calculation Blocked";
@@ -1837,22 +1851,104 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
             qLossBtu = qLossKw * 3412.14;
         }
 
+        // Screen reduction factor
+        const screenSelect = document.getElementById('hl-screen-type');
+        const screenType = screenSelect ? screenSelect.value : 'none';
+        let rScreen = 0.0;
+        let screenName = "No Screen";
+        if (screenType === 'single_energy') {
+            rScreen = 0.35;
+            screenName = "Single Energy Screen (Svensson Tempa/Solaro)";
+        } else if (screenType === 'double_alu') {
+            rScreen = 0.48;
+            screenName = "Double Aluminium Screen (Svensson Luxous/Tempa)";
+        } else if (screenType === 'triple_ins') {
+            rScreen = 0.60;
+            screenName = "Triple High-Insulation Screen (Svensson Obscura Double)";
+        } else if (screenType === 'custom') {
+            const customScreenInput = document.getElementById('hl-screen-custom');
+            rScreen = ((customScreenInput ? parseFloat(customScreenInput.value) : 40) || 0.0) / 100;
+            screenName = `Custom Screen (${Math.round(rScreen * 100)}%)`;
+        }
+
+        // Peak load with screen (kW)
+        const qLossKwWithScreen = qLossKw * (1 - rScreen);
+        const qLossBtuWithScreen = qLossKwWithScreen * 3412.14;
+
         if (currentUnit === 'imperial') {
             document.getElementById('hl-value').innerText = Math.round(qLossBtu).toLocaleString() + " BTU/h";
+            const hlScreenValEl = document.getElementById('hl-screen-value');
+            if (hlScreenValEl) hlScreenValEl.innerText = Math.round(qLossBtuWithScreen).toLocaleString() + " BTU/h";
         } else {
             document.getElementById('hl-value').innerText = qLossKw.toFixed(1) + " kW";
+            const hlScreenValEl = document.getElementById('hl-screen-value');
+            if (hlScreenValEl) hlScreenValEl.innerText = qLossKwWithScreen.toFixed(1) + " kW";
+        }
+
+        // ROI Calculations
+        const annualHours = 1500;
+        const loadFactor = 0.42; // Equivalent full-load modifier
+        const annualEnergyNoScreen = qLossKw * annualHours * loadFactor;
+        const annualEnergyWithScreen = qLossKwWithScreen * annualHours * loadFactor;
+
+        const boilerTypeEl = document.getElementById('hl-boiler-type');
+        const boilerType = boilerTypeEl ? boilerTypeEl.value : 'gas';
+        const boilerPriceEl = document.getElementById('hl-boiler-price');
+        const boilerPrice = boilerPriceEl ? (parseFloat(boilerPriceEl.value) || 0) : 0;
+        const boilerEffEl = document.getElementById('hl-boiler-eff');
+        const boilerEff = (boilerEffEl ? (parseFloat(boilerEffEl.value) || 85) : 85) / 100;
+
+        let costNoScreen = 0;
+        let costWithScreen = 0;
+
+        if (currentHlCurrency === 'EUR' || currentHlCurrency === 'USD') {
+            // Price is directly per kWh in Western energy tariffs
+            costNoScreen = (annualEnergyNoScreen / boilerEff) * boilerPrice;
+            costWithScreen = (annualEnergyWithScreen / boilerEff) * boilerPrice;
+        } else {
+            // Price is per unit (m³, L, kg), require energy density conversion for KRW tariffs
+            let density = 10.5; // Natural Gas (kWh/m³)
+            if (boilerType === 'oil') density = 10.0; // Heating Oil (kWh/L)
+            else if (boilerType === 'lpg') density = 12.8; // LPG (kWh/kg)
+
+            costNoScreen = (annualEnergyNoScreen / (density * boilerEff)) * boilerPrice;
+            costWithScreen = (annualEnergyWithScreen / (density * boilerEff)) * boilerPrice;
+        }
+
+        const annualSavings = costNoScreen - costWithScreen;
+        const capexEl = document.getElementById('hl-screen-capex');
+        const capex = capexEl ? (parseFloat(capexEl.value) || 0) : 0;
+        let payback = 0;
+        if (annualSavings > 0) {
+            payback = capex / annualSavings;
+        }
+
+        // Display Savings & Payback
+        const symbol = getHlCurrencySymbol(currentHlCurrency);
+        const hlSavingsValEl = document.getElementById('hl-savings-value');
+        const hlPaybackValEl = document.getElementById('hl-payback-value');
+
+        if (annualSavings <= 0) {
+            if (hlSavingsValEl) hlSavingsValEl.innerText = symbol + "0 / yr";
+            if (hlPaybackValEl) hlPaybackValEl.innerText = "N/A";
+        } else {
+            if (hlSavingsValEl) hlSavingsValEl.innerText = symbol + Math.round(annualSavings).toLocaleString() + " / yr";
+            if (hlPaybackValEl) hlPaybackValEl.innerText = payback.toFixed(1) + " Yrs";
         }
 
         const statusPill = document.getElementById('hl-status-pill');
-        if (qLossKw < 50) {
+        if (annualSavings <= 0) {
+            statusPill.className = "status-pill danger";
+            statusPill.innerText = "No ROI Savings";
+        } else if (payback <= 3.0) {
             statusPill.className = "status-pill optimal";
-            statusPill.innerText = "Low Heat Demand";
-        } else if (qLossKw >= 50 && qLossKw < 200) {
+            statusPill.innerText = "Highly Viable";
+        } else if (payback > 3.0 && payback <= 7.0) {
             statusPill.className = "status-pill warning";
-            statusPill.innerText = "Medium Heat Demand";
+            statusPill.innerText = "Moderately Viable";
         } else {
             statusPill.className = "status-pill danger";
-            statusPill.innerText = "High Heat Demand";
+            statusPill.innerText = "Long Payback";
         }
 
         const expEl = document.getElementById('hl-explanation');
@@ -1866,6 +1962,10 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
         if (currentUnit === 'imperial') {
             exp = exp.replace('°C', '°F').replace('°C', '°F');
             exp = exp.replace(/<strong>(.*?) kW<\/strong> \((.*?) BTU\/h\)/, '<strong>$2 BTU/h</strong> ($1 kW)');
+        }
+
+        if (annualSavings > 0) {
+            exp += `<br><span style="color: var(--primary); font-weight: 700;">☀️ Thermal Screen ROI:</span> Installing a <strong>${screenName}</strong> reduces peak heating load by <strong>${(qLossKw - qLossKwWithScreen).toFixed(1)} kW</strong>. This generates <strong>${symbol}${Math.round(annualSavings).toLocaleString()}</strong> in annual heating savings, paying back the installation CapEx of <strong>${symbol}${capex.toLocaleString()}</strong> in <strong>${payback.toFixed(1)} years</strong>.`;
         }
         expEl.innerHTML = exp;
         updatePyeongHelpers();
@@ -1884,7 +1984,146 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
             }
             actionsList.innerHTML = advise;
         }
+
+        // Generate German Angebote (Quotation Request) Email
+        generateGermanQuotation(A, U, qLossKw, screenName, (qLossKw - qLossKwWithScreen));
     }
+    window.calculateHeatLossEngine = calculateHeatLossEngine;
+
+    function getHlCurrencySymbol(curr) {
+        if (curr === 'EUR') return '€';
+        if (curr === 'USD') return '$';
+        return '₩';
+    }
+    window.getHlCurrencySymbol = getHlCurrencySymbol;
+
+    function onHlScreenTypeChange() {
+        const type = document.getElementById('hl-screen-type').value;
+        const wrapper = document.getElementById('hl-screen-custom-wrapper');
+        if (wrapper) {
+            wrapper.style.display = (type === 'custom') ? 'block' : 'none';
+        }
+        calculateHeatLossEngine();
+    }
+    window.onHlScreenTypeChange = onHlScreenTypeChange;
+
+    let currentHlCurrency = 'KRW';
+    function switchHlCurrency(currency) {
+        if (currentHlCurrency === currency) return;
+        currentHlCurrency = currency;
+
+        const krwBtn = document.getElementById('hl-curr-krw');
+        const eurBtn = document.getElementById('hl-curr-eur');
+        const usdBtn = document.getElementById('hl-curr-usd');
+        const capexSuffix = document.getElementById('hl-screen-capex-unit');
+        const capexInput = document.getElementById('hl-screen-capex');
+
+        [krwBtn, eurBtn, usdBtn].forEach(btn => {
+            if (btn) btn.classList.remove('active');
+        });
+        if (currency === 'KRW') {
+            if (krwBtn) krwBtn.classList.add('active');
+            if (capexSuffix) capexSuffix.innerText = '₩';
+            if (capexInput) capexInput.value = "15000000";
+        } else if (currency === 'EUR') {
+            if (eurBtn) eurBtn.classList.add('active');
+            if (capexSuffix) capexSuffix.innerText = '€';
+            if (capexInput) capexInput.value = "10000";
+        } else if (currency === 'USD') {
+            if (usdBtn) usdBtn.classList.add('active');
+            if (capexSuffix) capexSuffix.innerText = '$';
+            if (capexInput) capexInput.value = "12000";
+        }
+
+        onHlBoilerTypeChange();
+    }
+    window.switchHlCurrency = switchHlCurrency;
+
+    function onHlBoilerTypeChange() {
+        const type = document.getElementById('hl-boiler-type').value;
+        const priceSuffix = document.getElementById('hl-boiler-price-unit');
+        const priceInput = document.getElementById('hl-boiler-price');
+        if (!priceSuffix || !priceInput) return;
+
+        if (currentHlCurrency === 'EUR') {
+            priceSuffix.innerText = 'EUR/kWh';
+            if (type === 'gas') priceInput.value = "0.08";
+            else if (type === 'oil') priceInput.value = "0.12";
+            else if (type === 'lpg') priceInput.value = "0.15";
+        } else if (currentHlCurrency === 'USD') {
+            priceSuffix.innerText = 'USD/kWh';
+            if (type === 'gas') priceInput.value = "0.09";
+            else if (type === 'oil') priceInput.value = "0.13";
+            else if (type === 'lpg') priceInput.value = "0.16";
+        } else {
+            if (type === 'gas') {
+                priceSuffix.innerText = '₩/m³';
+                priceInput.value = "1000";
+            } else if (type === 'oil') {
+                priceSuffix.innerText = '₩/L';
+                priceInput.value = "1300";
+            } else if (type === 'lpg') {
+                priceSuffix.innerText = '₩/kg';
+                priceInput.value = "2000";
+            }
+        }
+        calculateHeatLossEngine();
+    }
+    window.onHlBoilerTypeChange = onHlBoilerTypeChange;
+
+    function generateGermanQuotation(area, uValue, peakLoad, screenName, savingsLoad) {
+        const quoteTextEl = document.getElementById('hl-quotation-text');
+        if (!quoteTextEl) return;
+
+        const coverMaterialName = getCoverMaterialNameByU(uValue);
+        const formattedArea = currentUnit === 'imperial' ? Math.round(area).toLocaleString() + " sq ft" : Math.round(area).toLocaleString() + " m²";
+
+        const text = `Sehr geehrte Damen und Herren,
+
+wir planen die energetische Optimierung unseres Gewächshauses und bitten hiermit um ein unverbindliches Angebot für die Lieferung und Installation eines Energieschirms.
+
+Hier sind die wichtigsten technischen Projektdaten zur Auslegung:
+- Gewächshaus-Hüllfläche (Dach und Stehwände): ${formattedArea}
+- Eindeckungsmaterial (Cladding): ${coverMaterialName} (U-Wert: ${uValue} W/m²·K)
+- Maximaler Heizlast-Bedarf (ohne Schirm): ${peakLoad.toFixed(1)} kW
+- Gewünschter Schirmtyp: ${screenName}
+- Berechnete Heizlasteinsparung: ${savingsLoad.toFixed(1)} kW
+
+Bitte teilen Sie uns die Lieferzeiten für das Gewebe sowie eine grobe Schätzung der Montagekosten mit. Für Rückfragen oder eine detaillierte technische Abstimmung stehen wir Ihnen gerne zur Verfügung.
+
+Mit freundlichen Grüßen,
+[Ihr Name / My Farm Profile]`;
+
+        quoteTextEl.value = text;
+    }
+    window.generateGermanQuotation = generateGermanQuotation;
+
+    function getCoverMaterialNameByU(u) {
+        if (u >= 5.8) return "Einfachfolie (Single Poly)";
+        if (u >= 5.0 && u < 5.8) return "Einfachglas (Single Glass)";
+        if (u >= 3.2 && u < 4.0) return "Doppelstegplatte / Doppelfolie (Double Poly/PC)";
+        if (u >= 2.0 && u < 3.2) return "Dreifachstegplatte (Triple PC Sheet)";
+        return "Hochisoliertes Eindeckungsmaterial (Custom High Insulated)";
+    }
+    window.getCoverMaterialNameByU = getCoverMaterialNameByU;
+
+    function copyQuotationToClipboard() {
+        const textEl = document.getElementById('hl-quotation-text');
+        if (!textEl) return;
+
+        textEl.select();
+        textEl.setSelectionRange(0, 99999);
+
+        try {
+            navigator.clipboard.writeText(textEl.value);
+            alert("Quotation request email template copied to clipboard! (Angebotsanfrage in die Zwischenablage kopiert!)");
+        } catch (err) {
+            document.execCommand('copy');
+            alert("Quotation request email template copied to clipboard! (Angebotsanfrage in die Zwischenablage kopiert!)");
+        }
+    }
+    window.copyQuotationToClipboard = copyQuotationToClipboard;
+
 
     let currentRoiCurrency = 'KRW';
     
@@ -3485,6 +3724,14 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
             if (document.getElementById('section-heat-loss')) {
                 fillInput('hl-area', profile.area);
                 fillInput('hl-uvalue', profile.cladding);
+                
+                const selectBoiler = document.getElementById('hl-boiler-type');
+                if (selectBoiler) {
+                    selectBoiler.value = profile.boiler;
+                    if (typeof onHlBoilerTypeChange === 'function') onHlBoilerTypeChange();
+                }
+                fillInput('hl-boiler-price', profile.boilerPrice);
+
                 const selectPreset = document.getElementById('hl-preset');
                 if (selectPreset) {
                     let found = false;

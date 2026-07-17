@@ -1,11 +1,12 @@
-<!-- TITLE: Greenhouse Heat Loss Calculator | Heating Load & Cover U-Value Estimator -->
-<!-- DESC: Estimate maximum greenhouse heating load based on cover material U-values, wind speed friction, and indoor/outdoor temperature differentials. Supports single glass, double poly, and polycarbonate covers. -->
-<!-- KEYWORDS: greenhouse heat loss, heating load calculator, U-value, cover material, greenhouse heating, wind friction, temperature delta, boiler sizing, greenhouse insulation, heating capacity kW -->
+<!-- TITLE: Greenhouse Heat Loss & Thermal Screen ROI Calculator -->
+<!-- DESC: Estimate greenhouse heating load under design conditions and calculate the annual heating cost savings and payback period (ROI) of installing thermal screens (Svensson). Supports energy loss analysis and automatic German quote request generation. -->
+<!-- KEYWORDS: greenhouse heat loss, thermal screen ROI, heating load calculator, U-value, cover material, greenhouse heating, wind friction, payback period, Svensson screen, energy saving screen, Angebotsanfrage -->
 <!-- ACTIVE_TAB: btn-tab-heat-loss -->
 <!-- ACTIVE_CHIP: chip-all -->
 <div class="calc-wrapper active" id="section-heat-loss">
 <div class="form-panel">
-<h1 class="panel-title" id="lbl-heat-loss-title-ui">Structure &amp; Climate Data</h1>
+<h1 class="panel-title" id="lbl-heat-loss-title-ui">Greenhouse Envelope & Climate</h1>
+
 <div class="input-group">
 <div class="input-header">
 <label for="hl-preset" id="lbl-hl-preset">Cover Material U-Value Preset</label>
@@ -22,6 +23,7 @@
 </select>
 </div>
 </div>
+
 <div class="input-group">
 <div class="input-header">
 <label for="hl-area" id="lbl-hl-area">Cover Surface Area (A)</label>
@@ -32,6 +34,7 @@
 </div>
 <div class="pyeong-helper" id="hl-area-pyeong" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
 </div>
+
 <div class="input-group">
 <div class="input-header">
 <label for="hl-uvalue" id="lbl-hl-uvalue">Heat Transfer Coeff (U-value)</label>
@@ -41,6 +44,7 @@
 <span class="suffix" id="hl-uvalue-suffix">W/m²·K</span>
 </div>
 </div>
+
 <div class="input-group">
 <div class="input-header">
 <label for="hl-temp-in" id="lbl-hl-temp-in">Target Indoor Temp (Ti)</label>
@@ -50,6 +54,7 @@
 <span class="suffix" id="hl-temp-in-suffix">°C</span>
 </div>
 </div>
+
 <div class="input-group">
 <div class="input-header">
 <label for="hl-temp-out" id="lbl-hl-temp-out">Design Outdoor Temp (To)</label>
@@ -59,6 +64,7 @@
 <span class="suffix" id="hl-temp-out-suffix">°C</span>
 </div>
 </div>
+
 <div class="input-group">
 <div class="input-header">
 <label for="hl-wind" id="lbl-hl-wind">Outdoor Wind Speed</label>
@@ -68,24 +74,125 @@
 <span class="suffix" id="hl-wind-suffix">m/s</span>
 </div>
 </div>
+
+<h2 class="panel-subtitle" style="margin-top: 2rem; margin-bottom: 1rem; font-size: 1.15rem; border-bottom: 1px solid var(--border-card); padding-bottom: 0.4rem; color: var(--primary); font-weight: 700;">☀️ Thermal Screen &amp; ROI Specs</h2>
+
+<div class="input-group">
+<div class="input-header">
+<label id="lbl-hl-currency">Base Currency Setting</label>
+<div class="toggle-container">
+<button class="toggle-btn active" id="hl-curr-krw" onclick="switchHlCurrency('KRW')">KRW (₩)</button>
+<button class="toggle-btn" id="hl-curr-eur" onclick="switchHlCurrency('EUR')">EUR (€)</button>
+<button class="toggle-btn" id="hl-curr-usd" onclick="switchHlCurrency('USD')">USD ($)</button>
 </div>
+</div>
+</div>
+
+<div class="input-group">
+<div class="input-header">
+<label for="hl-screen-type" id="lbl-hl-screen-type">Thermal Screen Option</label>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="hl-screen-type" onchange="onHlScreenTypeChange()">
+<option value="none">No Thermal Screen</option>
+<option selected="" value="single_energy">Single Energy Screen (35% Savings)</option>
+<option value="double_alu">Double Aluminium Screen (48% Savings)</option>
+<option value="triple_ins">Triple High-Insulation Screen (60% Savings)</option>
+<option value="custom">Custom Screen Savings (%)</option>
+</select>
+</div>
+</div>
+
+<div class="input-group" id="hl-screen-custom-wrapper" style="display: none;">
+<div class="input-header">
+<label for="hl-screen-custom" id="lbl-hl-screen-custom">Custom Screen Savings</label>
+</div>
+<div class="input-control-wrapper">
+<input id="hl-screen-custom" oninput="calculateHeatLossEngine()" max="95" min="0" step="1" type="number" value="40"/>
+<span class="suffix">%</span>
+</div>
+</div>
+
+<div class="input-group">
+<div class="input-header">
+<label for="hl-screen-capex" id="lbl-hl-screen-capex">Screen Installation Cost (CapEx)</label>
+</div>
+<div class="input-control-wrapper">
+<input id="hl-screen-capex" oninput="calculateHeatLossEngine()" step="100000" type="number" value="15000000"/>
+<span class="suffix" id="hl-screen-capex-unit">₩</span>
+</div>
+</div>
+
+<div class="input-group">
+<div class="input-header">
+<label for="hl-boiler-type" id="lbl-hl-boiler-type">Existing Boiler Fuel Type</label>
+</div>
+<div class="input-control-wrapper select-arrow-wrapper">
+<select id="hl-boiler-type" onchange="onHlBoilerTypeChange()">
+<option selected="" value="gas">Natural Gas</option>
+<option value="oil">Heating Oil (Kerosene)</option>
+<option value="lpg">LPG</option>
+</select>
+</div>
+</div>
+
+<div class="input-group">
+<div class="input-header">
+<label for="hl-boiler-price" id="lbl-hl-boiler-price">Fuel Unit Price</label>
+</div>
+<div class="input-control-wrapper">
+<input id="hl-boiler-price" oninput="calculateHeatLossEngine()" step="10" type="number" value="1000"/>
+<span class="suffix" id="hl-boiler-price-unit">₩/m³</span>
+</div>
+</div>
+
+<div class="input-group">
+<div class="input-header">
+<label for="hl-boiler-eff" id="lbl-hl-boiler-eff">Boiler Efficiency</label>
+</div>
+<div class="input-control-wrapper">
+<input id="hl-boiler-eff" max="100" min="50" oninput="calculateHeatLossEngine()" step="1" type="number" value="85"/>
+<span class="suffix">%</span>
+</div>
+</div>
+</div>
+
 <div class="result-panel">
-<div class="result-header" id="lbl-hl-result-hdr">Required Heating Capacity</div>
+<div class="result-header" id="lbl-hl-result-hdr">Required Capacity (Without Screen)</div>
 <div class="big-number" id="hl-value">0.0 kW</div>
-<div class="status-pill optimal" id="hl-status-pill">Heat Loss Calculated</div>
+
+<div class="result-header" id="lbl-hl-screen-result-hdr" style="margin-top: 1rem;">Required Capacity (With Screen)</div>
+<div class="big-number" id="hl-screen-value" style="font-size: 2.2rem; color: var(--cyan);">0.0 kW</div>
+
+<div class="result-header" id="lbl-hl-savings-hdr" style="margin-top: 1rem;">Estimated Annual Savings</div>
+<div class="big-number" id="hl-savings-value" style="font-size: 2.2rem; color: var(--primary);">₩0 / yr</div>
+
+<div class="result-header" id="lbl-hl-payback-hdr" style="margin-top: 1rem;">Payback Period (ROI)</div>
+<div class="big-number" id="hl-payback-value" style="font-size: 2rem;">0.0 Yrs</div>
+
+<div class="status-pill optimal" id="hl-status-pill">Analysis Ready</div>
 <p class="result-desc" id="hl-explanation">Ready...</p>
+
 <div class="info-card" id="hl-actions-card" style="border-left: 4px solid var(--primary); margin-top: 1.5rem;">
 <h4 id="lbl-hl-actions-title">Live Diagnostic Report</h4>
 <p id="hl-actions-list" style="font-size: 0.9rem; color: var(--text-gray); margin-top: 0.5rem; line-height: 1.6;"></p>
 </div>
+
+<div class="info-card" id="hl-quotation-card" style="border-left: 4px solid var(--warning); margin-top: 1.5rem; background: rgba(245, 158, 11, 0.03);">
+<h4 id="lbl-hl-quotation-title" style="color: var(--warning); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">🇩🇪 Angebotsanfrage (German Quotation Request)</h4>
+<p style="font-size: 0.82rem; color: var(--text-gray); margin-top: 0.4rem; line-height: 1.5;">Auto-generated German quote request for screen installation (e.g. Svensson screens). Ready to send to European installers:</p>
+<textarea id="hl-quotation-text" readonly style="width: 100%; height: 180px; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; background: rgba(15, 23, 42, 0.5); color: var(--text-light); border: 1px solid var(--border-card); border-radius: 8px; padding: 0.6rem; margin-top: 0.6rem; resize: none; line-height: 1.4;"></textarea>
+<button class="estimator-btn" onclick="copyQuotationToClipboard()" style="margin-top: 0.6rem; width: 100%; font-size: 0.85rem; padding: 0.6rem 0; font-weight: 700; background: var(--warning); color: var(--text-dark); border: none;">📋 Copy Quotation Email</button>
+</div>
+
 <div class="info-card">
-<h3 id="lbl-hl-tip-title">Wind Friction Effects</h4>
+<h3 id="lbl-hl-tip-title">Wind Friction Effects</h3>
 <p id="hl-tip-desc">High wind speed increases convective heat loss from the cover. This calculator applies up to a 1.4x modifier based on wind speed.</p>
 </div>
+
 <div class="info-card" style="border-left: 4px solid var(--cyan); background: rgba(6, 182, 212, 0.05);">
 <h4>🔗 Related Tools</h4>
 <p style="font-size: 0.85rem; color: var(--text-gray); line-height: 1.6; margin-top: 0.3rem;">Is your calculated heating load too high? Use the <a href="roi_simulator.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Boiler vs Heat Pump ROI Simulator</a> to evaluate whether a heat pump transition can reduce your annual heating costs. Or, size the correct <a href="mixing_valve.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">3-Way Mixing Valve (Kv)</a> for your hot water piping loop.</p>
 </div>
 </div>
 </div>
-

@@ -8,3 +8,13 @@ Thumbs.db
 
 # Git locks
 *.lock
+
+# Google Drive shortcuts
+*.gdoc
+*.gsheet
+*.gslides
+
+# Temporary assets/screenshots
+Strategy/*.png
+*.png
+
