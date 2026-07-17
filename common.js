@@ -2240,6 +2240,7 @@ Best regards,
         }
         calculateRoiEngine();
     }
+    window.switchRoiCurrency = switchRoiCurrency;
 
     function onBoilerTypeChange() {
         const type = document.getElementById('roi-boiler-type').value;
