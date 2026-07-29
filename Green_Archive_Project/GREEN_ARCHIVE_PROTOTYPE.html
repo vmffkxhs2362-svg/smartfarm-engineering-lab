@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GREEN ARCHIVE | B2B Planterior Recipe Portal Prototype</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #06110a;
+            --bg-card: rgba(15, 34, 23, 0.7);
+            --bg-card-hover: rgba(22, 48, 33, 0.9);
+            --border-color: rgba(52, 211, 153, 0.2);
+            --accent-primary: #10b981;
+            --accent-neon: #34d399;
+            --accent-gold: #f59e0b;
+            --text-main: #f0fdf4;
+            --text-muted: #9ca3af;
+            --glass-blur: blur(16px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: var(--glass-blur);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 17, 10, 0.85);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-gold));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-neon);
+        }
+
+        .lang-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* HERO PROTOTYPE HEADER */
+        .hero {
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            color: var(--accent-neon);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .hero-h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 40%, var(--accent-neon) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .hero-p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 760px;
+            margin: 0 auto 36px;
+        }
+
+        /* FILTER & SEARCH BAR */
+        .filter-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-primary);
+            color: #000;
+            border-color: var(--accent-primary);
+        }
+
+        /* RECIPE CARDS GRID */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 28px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            border-color: rgba(52, 211, 153, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(16, 185, 129, 0.15);
+        }
+
+        .card-img-wrapper {
+            height: 220px;
+            background: linear-gradient(135deg, #10291c 0%, #08160e 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-neon);
+        }
+
+        .card-price-tag {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: var(--accent-gold);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+
+        .card-body {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .spec-list {
+            list-style: none;
+            font-size: 0.85rem;
+            color: #d1d5db;
+            margin-bottom: 20px;
+        }
+
+        .spec-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .card-btn {
+            margin-top: auto;
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-primary), #059669);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-align: center;
+        }
+
+        .card-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* DETAIL MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #091a10;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-grid { grid-template-columns: 1fr; }
+            .hero-h1 { font-size: 2.2rem; }
+        }
+
+        .bom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .bom-table th, .bom-table td {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .bom-table th {
+            color: var(--accent-neon);
+            font-weight: 700;
+        }
+
+        .affiliate-link-btn {
+            background: var(--accent-gold);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .science-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-primary);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .qr-demo-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .qr-placeholder {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            padding: 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 900;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        /* FOUNDERS FOOTER INFO */
+        .founders-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="container">
+        <a href="#" class="logo">
+            <div class="logo-icon">🌿</div>
+            <span>GREEN ARCHIVE</span>
+        </a>
+        <div class="nav-links">
+            <a href="#recipes" class="nav-link active">공간 레시피</a>
+            <a href="#" class="nav-link" onclick="openModal('quoteModal')" style="color: var(--accent-gold); font-weight: 700;">1:1 맞춤 견적 의뢰 📋</a>
+            <a href="#about" class="nav-link">소개</a>
+            <select class="lang-select" onchange="alert('다국어 모드 (KOR / ENG / DEU) 전환 예시입니다.')">
+                <option>🇰🇷 한국어 (KOR)</option>
+                <option>🇺🇸 English (ENG)</option>
+                <option>🇩🇪 Deutsch (DEU)</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header class="hero container">
+        <div class="tag-badge">B2B COMMERCIAL PLANTERIOR RECIPE PORTAL</div>
+        <h1 class="hero-h1">조경 견적 300만 원을 30만 원으로,<br>검증된 공간 플랜테리어 레시피</h1>
+        <p class="hero-p">독립 카페 사장님과 에어비앤비 호스트를 위한 100% 식물학 생존 매뉴얼 + 이케아/아마존 장바구니 조합 프로토타입</p>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar" id="recipes">
+            <div class="filter-group">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">공간 유형:</span>
+                <button class="filter-btn active" onclick="filterRecipes('all')">전체보기</button>
+                <button class="filter-btn" onclick="filterRecipes('airbnb')">에어비앤비</button>
+                <button class="filter-btn" onclick="filterRecipes('cafe')">카페 매장</button>
+                <button class="filter-btn" onclick="filterRecipes('office')">공유 오피스</button>
+            </div>
+            <div class="filter-group">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">예산대:</span>
+                <span style="font-size: 0.9rem; color: var(--accent-neon); font-weight: 700;">30만 원 ~ 50만 원선</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN RECIPES GRID -->
+    <main class="container">
+        <div class="recipe-grid">
+
+            <!-- RECIPE CARD 1 -->
+            <div class="card" data-category="airbnb">
+                <div class="card-img-wrapper">
+                    <div class="card-badge">에어비앤비 추천</div>
+                    <div style="font-size: 4rem;">🏡🌿</div>
+                    <div class="card-price-tag">총 34만 원</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">#01. 자판디(Japandi) 우드 몬스테라 룩</h3>
+                    <p class="card-desc">슈퍼호스트 평점 4.9점을 완성하는 북유럽 원목 선반과 대형 몬스테라의 따뜻한 감성 조화</p>
+                    <ul class="spec-list">
+                        <li>🧱 <strong>가구</strong>: 이케아 IVAR 원목 선반 시스템</li>
+                        <li>💡 <strong>조명</strong>: 아마존 Sansi 36W LED 식물등</li>
+                        <li>🌱 <strong>식물</strong>: 몬스테라 델리시오사 + 이태리 토분</li>
+                        <li>🔬 <strong>생존성</strong>: 실내 반음지 가능 (주 1회 관리)</li>
+                    </ul>
+                    <button class="card-btn" onclick="openModal('modal1')">레시피 및 장바구니 보기 ➔</button>
+                </div>
+            </div>
+
+            <!-- RECIPE CARD 2 -->
+            <div class="card" data-category="cafe">
+                <div class="card-img-wrapper" style="background: linear-gradient(135deg, #1b382b 0%, #0d2217 100%);">
+                    <div class="card-badge" style="color: var(--accent-gold);">카페 매장 추천</div>
+                    <div style="font-size: 4rem;">☕🪴</div>
+                    <div class="card-price-tag">총 42만 원</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">#02. 코펜하겐 온실 캐비닛 룩</h3>
+                    <p class="card-desc">인스타그램 포토존을 만드는 유리 캐비닛 기반 미니 온실과 희귀 안스리움 파티션</p>
+                    <ul class="spec-list">
+                        <li>🧱 <strong>가구</strong>: 이케아 MILSBO 유리 진열장</li>
+                        <li>💡 <strong>조명</strong>: 아마존 Barrina T5 방수 방열 LED</li>
+                        <li>🌱 <strong>식물</strong>: 안스리움 클라리네비움 + 필로덴드론</li>
+                        <li>🔬 <strong>생존성</strong>: 밀폐 습도 70% 유지 (자동팬 장착)</li>
+                    </ul>
+                    <button class="card-btn" onclick="openModal('modal2')">레시피 및 장바구니 보기 ➔</button>
+                </div>
+            </div>
+
+            <!-- RECIPE CARD 3 -->
+            <div class="card" data-category="office">
+                <div class="card-img-wrapper" style="background: linear-gradient(135deg, #182838 0%, #0e1724 100%);">
+                    <div class="card-badge" style="color: #6366f1;">공유 오피스 추천</div>
+                    <div style="font-size: 4rem;">🏢🌵</div>
+                    <div class="card-price-tag">총 28만 원</div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">#03. 미니멀 데스크 서큘런트 파티션</h3>
+                    <p class="card-desc">업무 집중도를 높이고 공기를 정화하는 데스크 사이드 다육식물 & 스마트 라이트 포켓</p>
+                    <ul class="spec-list">
+                        <li>🧱 <strong>가구</strong>: 이케아 KALLAX 책장 모듈</li>
+                        <li>💡 <strong>조명</strong>: Soltech 패브릭 펜던트 식물등</li>
+                        <li>🌱 <strong>식물</strong>: 스투키 + 아가베 + 특수 서큘런트</li>
+                        <li>🔬 <strong>생존성</strong>: 극건조 가능, 월 1회 수분 공급</li>
+                    </ul>
+                    <button class="card-btn" onclick="openModal('modal3')">레시피 및 장바구니 보기 ➔</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOUNDERS & CREDENTIALS BAR -->
+        <div class="founders-bar" id="about">
+            <div>
+                <h4 style="font-size: 1.1rem; color: #fff; margin-bottom: 4px;">GREEN ARCHIVE 공동 창업팀</h4>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">식물자원학과 전공 전문성을 기반으로 한 B2B 셀프 조경 솔루션</p>
+            </div>
+            <div style="display: flex; gap: 24px; font-size: 0.9rem;">
+                <div>
+                    <strong style="color: var(--accent-neon);">황인우</strong>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">식물 생존 과학 & 기술 총괄</p>
+                </div>
+                <div>
+                    <strong style="color: var(--accent-gold);">정지혜</strong>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">트렌드 분석 & 비주얼 디자인 총괄</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL 1: RECIPE DETAIL -->
+    <div class="modal-overlay" id="modal1">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('modal1')">✕</button>
+            <div class="tag-badge">RECIPE BLUEPRINT #01</div>
+            <h2 style="font-size: 1.8rem; color: #fff; margin-top: 4px;">#01. 자판디(Japandi) 우드 몬스테라 룩</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">에어비앤비 공간 평점 상승을 위한 34만 원 셀프 플랜테리어 패키지</p>
+
+            <div class="modal-grid">
+                <div>
+                    <h4 style="color: var(--accent-neon); margin-bottom: 10px;">📋 장바구니 명세서 (BOM)</h4>
+                    <table class="bom-table">
+                        <thead>
+                            <tr>
+                                <th>품목명</th>
+                                <th>추천처</th>
+                                <th>가격</th>
+                                <th>링크</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>IVAR 원목 선반 89x30cm</td>
+                                <td>이케아</td>
+                                <td>120,000원</td>
+                                <td><a href="#" class="affiliate-link-btn" onclick="alert('이케아 제휴 마케팅 구매 페이지로 이동합니다.')">구매하기 🔗</a></td>
+                            </tr>
+                            <tr>
+                                <td>Sansi 36W 풀스펙트럼 LED</td>
+                                <td>아마존</td>
+                                <td>45,000원</td>
+                                <td><a href="#" class="affiliate-link-btn" style="background:#f59e0b;" onclick="alert('아마존 어소시에이트 구매 페이지로 이동합니다.')">구매하기 🔗</a></td>
+                            </tr>
+                            <tr>
+                                <td>대형 몬스테라 델리시오사</td>
+                                <td>쿠팡/농원</td>
+                                <td>55,000원</td>
+                                <td><a href="#" class="affiliate-link-btn" style="background:#10b981; color:#fff;" onclick="alert('쿠팡 파트너스 구매 페이지로 이동합니다.')">구매하기 🔗</a></td>
+                            </tr>
+                            <tr>
+                                <td>이태리 토분 30cm + 받침</td>
+                                <td>쿠팡</td>
+                                <td>30,000원</td>
+                                <td><a href="#" class="affiliate-link-btn" style="background:#10b981; color:#fff;" onclick="alert('쿠팡 파트너스 구매 페이지로 이동합니다.')">구매하기 🔗</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button style="margin-top: 16px; width: 100%; padding: 12px; background: var(--accent-gold); color: #000; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;" onclick="alert('장바구니 전체 제휴 링크가 일괄 복사되었습니다.')">🛒 전체 준비물 일괄 장바구니 담기</button>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--accent-neon); margin-bottom: 10px;">🔬 식물학 생존 매뉴얼 (황인우 검수)</h4>
+                    <div class="science-box">
+                        <ul style="list-style: none; font-size: 0.85rem; color: #e5e7eb;">
+                            <li style="margin-bottom: 8px;">☀️ <strong>광량 조건</strong>: 1,500 ~ 3,000 Lux (실내 반음지 가능, LED 식물등 일 8시간 조명 권장)</li>
+                            <li style="margin-bottom: 8px;">💧 <strong>관수 주기</strong>: 겉흙 3cm 마르면 종이컵 4컵 분량 관수 (주 1회)</li>
+                            <li style="margin-bottom: 8px;">🌬️ <strong>주의사항</strong>: 에어컨/히터 직풍 노출 금지. 잎 끝 갈변 시 분무기 엽면 시비.</li>
+                        </ul>
+                    </div>
+
+                    <!-- PHASE 3 SAAS PREVIEW -->
+                    <div class="qr-demo-box">
+                        <div class="qr-placeholder">QR CODE</div>
+                        <div>
+                            <strong style="font-size: 0.85rem; color: #fff;">Phase 3: B2B 케어 SaaS 데모</strong>
+                            <p style="font-size: 0.75rem; color: var(--text-muted);">객실 투숙객이 스캔하면 식물 스토리 및 관리 알림을 자동 전송하는 QR 태그 제공</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: 1:1 CUSTOM QUOTE REQUEST -->
+    <div class="modal-overlay" id="quoteModal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal('quoteModal')">✕</button>
+            <div class="tag-badge" style="background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border-color: rgba(245, 158, 11, 0.3);">1:1 CUSTOM B2B CONSULTATION</div>
+            <h2 style="font-size: 1.8rem; color: #fff; margin-top: 4px;">1:1 맞춤 공간 셀프 조경 견적 의뢰</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">사장님 매장/숙소 사진을 보내주시면 황인우 & 정지혜 공동 창업팀이 전용 레시피와 구매 BOM을 구성해 드립니다.</p>
+
+            <form onsubmit="event.preventDefault(); alert('1:1 맞춤 견적 요청이 접수되었습니다! 황인우 & 정지혜 공동 창업팀이 24시간 이내에 분석 견적서를 전달해 드립니다.'); closeModal('quoteModal');" style="margin-top: 24px; display: grid; gap: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">공간 분류</label>
+                        <select style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                            <option>카페 / 베이커리 매장</option>
+                            <option>에어비앤비 / 독채 숙소</option>
+                            <option>공유 오피스 / 프라이빗 룸</option>
+                            <option>기타 상업 공간</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">예상 공간 면적</label>
+                        <select style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                            <option>10평 미만 (소형 파티션/코너)</option>
+                            <option>10평 ~ 30평 (중형 포토존)</option>
+                            <option>30평 이상 (대형 메인 홀)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">희망 예산 범위</label>
+                        <select style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                            <option>30만 원 ~ 50만 원 (실속형)</option>
+                            <option>50만 원 ~ 100만 원 (스탠다드)</option>
+                            <option>100만 원 이상 (고급형)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">선호 스타일 테마</label>
+                        <select style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                            <option>🇩🇰 코펜하겐 온실 카페 룩</option>
+                            <option>🇯🇵 도쿄 자판디 미니멀 룩</option>
+                            <option>🇫🇷 파리 비스트로 테라스 룩</option>
+                            <option>🌴 발리 트로피컬 정글 룩</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">매장 현장 사진 또는 도면 첨부 (선택)</label>
+                    <input type="file" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px dashed var(--border-color); color: var(--text-muted); border-radius: 8px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">의뢰자 성함</label>
+                        <input type="text" placeholder="예: 홍길동 사장님" required style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">연락처 또는 이메일</label>
+                        <input type="text" placeholder="010-0000-0000 / example@email.com" required style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #fff; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <button type="submit" style="margin-top: 10px; padding: 14px; background: linear-gradient(135deg, var(--accent-gold), #b45309); color: #000; border: none; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer;">📋 1:1 맞춤 견적서 분석 요청하기 (무료)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+        function filterRecipes(category) {
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

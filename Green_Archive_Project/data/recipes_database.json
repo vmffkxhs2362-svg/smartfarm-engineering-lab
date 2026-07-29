@@ -1,0 +1,68 @@
+{
+  "system_info": {
+    "project": "GREEN ARCHIVE",
+    "version": "1.0.0",
+    "founders": ["황인우", "정지혜"],
+    "last_updated": "2026-07-22"
+  },
+  "recipes": [
+    {
+      "recipe_id": "RECIPE-001",
+      "title": "#01. 자판디(Japandi) 우드 몬스테라 룩",
+      "category": "airbnb",
+      "cultural_theme": "Tokyo Japandi",
+      "target_space": "에어비앤비 / 카페 코너",
+      "estimated_cost_krw": 340000,
+      "estimated_cost_usd": 250,
+      "visual_rendering": "visual_japandi_01.png",
+      "hardware_bom": [
+        {"item": "IVAR 원목 선반 89x30cm", "vendor": "IKEA", "sku": "IK-IVAR-8930", "price": 120000, "affiliate_url": "https://ikea.kr/ivar-8930"},
+        {"item": "Sansi 36W 풀스펙트럼 LED 식물등", "vendor": "Amazon", "sku": "AMZ-SANSI-36W", "price": 45000, "affiliate_url": "https://amazon.com/dp/B07BRKT73D"}
+      ],
+      "botanical_bom": [
+        {"item": "대형 몬스테라 델리시오사", "vendor": "Coupang/Local", "sku": "CP-MONSTERA-LG", "price": 55000, "affiliate_url": "https://coupang.com/vp/products/monstera"},
+        {"item": "이태리 토분 30cm + 받침", "vendor": "Coupang", "sku": "CP-POT-ITALY-30", "price": 30000, "affiliate_url": "https://coupang.com/vp/products/pot"}
+      ],
+      "botanical_science": {
+        "inspector": "황인우",
+        "min_lux": 1500,
+        "max_lux": 3000,
+        "watering_cycle_days": 7,
+        "humidity_min": 40,
+        "airflow_note": "에어컨/히터 직풍 노출 금지. 엽면 시비 권장."
+      }
+    },
+    {
+      "recipe_id": "RECIPE-002",
+      "title": "#02. 코펜하겐 온실 캐비닛 룩",
+      "category": "cafe",
+      "cultural_theme": "Copenhagen Greenhouse",
+      "target_space": "카페 메인 포토존",
+      "estimated_cost_krw": 420000,
+      "estimated_cost_usd": 310,
+      "visual_rendering": "visual_copenhagen_02.png",
+      "hardware_bom": [
+        {"item": "MILSBO 유리 진열장 73x175cm", "vendor": "IKEA", "sku": "IK-MILSBO-73175", "price": 220000, "affiliate_url": "https://ikea.kr/milsbo-73175"},
+        {"item": "Barrina T5 방수 LED 식물 조명 4개입", "vendor": "Amazon", "sku": "AMZ-BARRINA-T5", "price": 55000, "affiliate_url": "https://amazon.com/dp/B08298711"}
+      ],
+      "botanical_bom": [
+        {"item": "안스리움 클라리네비움", "vendor": "Coupang/Nursery", "sku": "CP-ANTHURIUM-CLARI", "price": 85000, "affiliate_url": "https://coupang.com/vp/products/anthurium"}
+      ],
+      "botanical_science": {
+        "inspector": "황인우",
+        "min_lux": 2000,
+        "max_lux": 4000,
+        "watering_cycle_days": 5,
+        "humidity_min": 70,
+        "airflow_note": "밀폐 온실 내부 USB 소형 팬 장착 필수."
+      }
+    }
+  ],
+  "botanical_species_db": [
+    {"species_name": "Monstera deliciosa", "common_name": "몬스테라", "light_lux": "1500-3000", "toxicity_pets": true, "difficulty": "Low"},
+    {"species_name": "Ficus elastica", "common_name": "멜라닌 고무나무", "light_lux": "2000-5000", "toxicity_pets": true, "difficulty": "Low"},
+    {"species_name": "Olea europaea", "common_name": "올리브나무", "light_lux": "5000-10000", "toxicity_pets": false, "difficulty": "Medium"},
+    {"species_name": "Anthurium clarinervium", "common_name": "안스리움 클라리네비움", "light_lux": "1800-3500", "toxicity_pets": true, "difficulty": "Medium"}
+  ],
+  "custom_quote_queue": []
+}

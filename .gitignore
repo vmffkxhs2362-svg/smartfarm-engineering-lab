@@ -5,6 +5,9 @@ TF-Epsilon_Echo/
 # OS/System files
 .DS_Store
 Thumbs.db
+*.gdoc
+*.gslides
+*.gsheet
 
 # Git locks
 *.lock
