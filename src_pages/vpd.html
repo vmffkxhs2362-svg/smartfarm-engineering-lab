@@ -154,5 +154,17 @@
             </div>
         </div>
     </div>
+    <div id="amazon-vpd-widget"></div>
 </div>
+
+<!-- SCRIPTS_START -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderAmazonEquipmentCards === "function") {
+            renderAmazonEquipmentCards("amazon-vpd-widget", "vpd");
+        }
+    });
+</script>
+<!-- SCRIPTS_END -->
+
 

@@ -39,13 +39,20 @@
 <script type="application/ld+json">
   {
    "@context": "https://schema.org",
-   "@type": "SoftwareApplication",
+   "@type": "WebApplication",
    "name": "Leaf VPD Calculator | Vapor Pressure Deficit for Greenhouse Climate Control",
    "operatingSystem": "All",
-   "applicationCategory": "BusinessApplication",
+   "applicationCategory": "EducationalApplication",
    "browserRequirements": "Requires HTML5, Javascript, CSS3",
-   "softwareVersion": "2.0",
+   "softwareVersion": "2.1",
+   "inLanguage": ["ko", "en"],
    "description": "Calculate leaf-to-air Vapor Pressure Deficit (VPD) in real-time using the Tetens equation. Optimize greenhouse climate for seedling, vegetative, and flowering stages with interactive VPD matrix charts.",
+   "url": "https://smartfarm.inwoovation.com/vpd",
+   "publisher": {
+     "@type": "Organization",
+     "name": "Inwoovation Smart Farm Lab",
+     "url": "https://smartfarm.inwoovation.com/"
+   },
    "offers": {
     "@type": "Offer",
     "price": "0",
@@ -276,7 +283,11 @@
             </div>
         </div>
     </div>
+    <div id="amazon-vpd-widget"></div>
 </div>
+
+
+
 
 
 <footer>
@@ -417,5 +428,11 @@
       }, 'google_translate_element');
     }
     </script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderAmazonEquipmentCards === "function") {
+            renderAmazonEquipmentCards("amazon-vpd-widget", "vpd");
+        }
+    });
+</script>
 </body></html>

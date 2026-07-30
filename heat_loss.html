@@ -39,13 +39,20 @@
 <script type="application/ld+json">
   {
    "@context": "https://schema.org",
-   "@type": "SoftwareApplication",
+   "@type": "WebApplication",
    "name": "Greenhouse Heat Loss Calculator | Heating Load & Cover U-Value Estimator",
    "operatingSystem": "All",
-   "applicationCategory": "BusinessApplication",
+   "applicationCategory": "EducationalApplication",
    "browserRequirements": "Requires HTML5, Javascript, CSS3",
-   "softwareVersion": "2.0",
+   "softwareVersion": "2.1",
+   "inLanguage": ["ko", "en"],
    "description": "Estimate maximum greenhouse heating load based on cover material U-values, wind speed friction, and indoor/outdoor temperature differentials. Supports single glass, double poly, and polycarbonate covers.",
+   "url": "https://smartfarm.inwoovation.com/heat_loss",
+   "publisher": {
+     "@type": "Organization",
+     "name": "Inwoovation Smart Farm Lab",
+     "url": "https://smartfarm.inwoovation.com/"
+   },
    "offers": {
     "@type": "Offer",
     "price": "0",
@@ -208,8 +215,12 @@
 <h4>🔗 Related Tools</h4>
 <p style="font-size: 0.85rem; color: var(--text-gray); line-height: 1.6; margin-top: 0.3rem;">Is your calculated heating load too high? Use the <a href="roi_simulator.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Boiler vs Heat Pump ROI Simulator</a> to evaluate whether a heat pump transition can reduce your annual heating costs. Or, size the correct <a href="mixing_valve.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">3-Way Mixing Valve (Kv)</a> for your hot water piping loop.</p>
 </div>
+<div id="amazon-heatloss-widget"></div>
 </div>
 </div>
+
+
+
 
 
 <footer>
@@ -350,5 +361,11 @@
       }, 'google_translate_element');
     }
     </script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderAmazonEquipmentCards === "function") {
+            renderAmazonEquipmentCards("amazon-heatloss-widget", "heat_loss");
+        }
+    });
+</script>
 </body></html>

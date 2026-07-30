@@ -167,6 +167,18 @@ Additionally, synchronizing irrigation intervals with solar radiation levels and
 <h4>Stock Tank Safety Rule</h4>
 <p>Calcium Nitrate and Phosphate/Sulfate-based fertilizers must be separated into tank A and B to prevent chemical precipitation and clogging.</p>
 </div>
+<div id="amazon-fert-widget"></div>
 </div>
 </div>
+
+<!-- SCRIPTS_START -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderAmazonEquipmentCards === "function") {
+            renderAmazonEquipmentCards("amazon-fert-widget", "fertigation");
+        }
+    });
+</script>
+<!-- SCRIPTS_END -->
+
 

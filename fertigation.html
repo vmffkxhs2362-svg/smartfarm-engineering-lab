@@ -39,13 +39,20 @@
 <script type="application/ld+json">
   {
    "@context": "https://schema.org",
-   "@type": "SoftwareApplication",
+   "@type": "WebApplication",
    "name": "Fertigation Stock Tank Calculator | Fertilizer Dilution & Bicarbonate Neutralization",
    "operatingSystem": "All",
-   "applicationCategory": "BusinessApplication",
+   "applicationCategory": "EducationalApplication",
    "browserRequirements": "Requires HTML5, Javascript, CSS3",
-   "softwareVersion": "2.0",
+   "softwareVersion": "2.1",
+   "inLanguage": ["ko", "en"],
    "description": "Calculate precise raw fertilizer compounding weights and acid neutralization dosages for greenhouse stock tank fertigation. Supports multiple dilution ratios and bicarbonate alkalinity control.",
+   "url": "https://smartfarm.inwoovation.com/fertigation",
+   "publisher": {
+     "@type": "Organization",
+     "name": "Inwoovation Smart Farm Lab",
+     "url": "https://smartfarm.inwoovation.com/"
+   },
    "offers": {
     "@type": "Offer",
     "price": "0",
@@ -289,8 +296,12 @@ Additionally, synchronizing irrigation intervals with solar radiation levels and
 <h4>Stock Tank Safety Rule</h4>
 <p>Calcium Nitrate and Phosphate/Sulfate-based fertilizers must be separated into tank A and B to prevent chemical precipitation and clogging.</p>
 </div>
+<div id="amazon-fert-widget"></div>
 </div>
 </div>
+
+
+
 
 
 <footer>
@@ -431,5 +442,11 @@ Additionally, synchronizing irrigation intervals with solar radiation levels and
       }, 'google_translate_element');
     }
     </script><script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderAmazonEquipmentCards === "function") {
+            renderAmazonEquipmentCards("amazon-fert-widget", "fertigation");
+        }
+    });
+</script>
 </body></html>
