@@ -3660,19 +3660,22 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
                     name: "Klein Tools IR1 Infrared Thermometer (-4 to 752°F)",
                     desc: "Essential precision IR temperature gun to measure exact leaf temperature offset for accurate VPD calculations.",
                     link: "https://www.amazon.com/dp/B07V77G39C?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "Top Seller"
+                    badge: "Top Seller",
+                    icon: "🌡️"
                 },
                 {
                     name: "Apera Instruments AI208 pH & EC Pocket Tester Kit",
                     desc: "High-precision dual meter for irrigation water, EC, and leaf sap pH monitoring.",
                     link: "https://www.amazon.com/dp/B01ENFOIQE?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "High Precision"
+                    badge: "High Precision",
+                    icon: "🧪"
                 },
                 {
                     name: "Inkbird Digital Humidity Controller (IHC-200)",
                     desc: "Dual-relay humidification & dehumidification controller for precise VPD target automation.",
                     link: "https://www.amazon.com/dp/B01J1E5LWM?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "Automation"
+                    badge: "Automation",
+                    icon: "🎛️"
                 }
             ],
             fertigation: [
@@ -3680,13 +3683,15 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
                     name: "Bluelab PENPH pH Pen for Water",
                     desc: "Industry-standard waterproof pH pen with temperature compensation for stock tank mixing.",
                     link: "https://www.amazon.com/dp/B005POOJHG?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "Grower Favorite"
+                    badge: "Grower Favorite",
+                    icon: "🖊️"
                 },
                 {
                     name: "Apera Instruments AI311 Premium EC Conductivity Pen",
                     desc: "Pro-grade EC/TDS tester for precise fertilizer concentration checks.",
                     link: "https://www.amazon.com/dp/B01ENFOHN8?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "High Precision"
+                    badge: "High Precision",
+                    icon: "⚡"
                 }
             ],
             vertical: [
@@ -3694,13 +3699,15 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
                     name: "Spider Farmer SF1000D LED Grow Light (Full Spectrum)",
                     desc: "High-efficiency Samsung LM301B LED board for optimal vertical farming DLI photoperiods.",
                     link: "https://www.amazon.com/dp/B084L1Y754?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "High Efficiency"
+                    badge: "High Efficiency",
+                    icon: "💡"
                 },
                 {
                     name: "Photobio Quantum PAR Meter for Plant Lighting",
                     desc: "Accurate PPFD μmol/m²/s measurement tool for commercial horticulture.",
                     link: "https://www.amazon.com/dp/B07RZMZB5W?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "Commercial Grade"
+                    badge: "Commercial Grade",
+                    icon: "📊"
                 }
             ],
             heat_loss: [
@@ -3708,13 +3715,15 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
                     name: "BTMETER BT-100 Digital Anemometer Wind Speed Meter",
                     desc: "Handheld wind velocity tester for outdoor greenhouse heat loss infiltration modeling.",
                     link: "https://www.amazon.com/dp/B01J141XNO?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "Field Tool"
+                    badge: "Field Tool",
+                    icon: "💨"
                 },
                 {
                     name: "FLIR ONE Gen 3 Thermal Imaging Camera for Smartphones",
                     desc: "Instantly detect greenhouse curtain leaks, draft gaps, and insulation cold spots.",
                     link: "https://www.amazon.com/dp/B0728C7KNC?tag=" + window.AMAZON_ASSOCIATES_TAG,
-                    badge: "Diagnostic Tools"
+                    badge: "Diagnostic Tools",
+                    icon: "📷"
                 }
             ]
         };
@@ -3722,23 +3731,25 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
         const products = amazonProducts[pageType] || amazonProducts['vpd'];
         
         let html = '<div class="amazon-affiliate-section" style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 16px; text-align: left;">';
-        html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem; flex-wrap:wrap; gap:0.5rem;">';
-        html += '<h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-light); margin:0;">🛒 Recommended Precision Tools & Equipment (Amazon)</h3>';
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.2rem; flex-wrap:wrap; gap:0.5rem;">';
+        html += '<h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-light); margin:0; display:flex; align-items:center; gap:0.5rem;">🛒 Recommended Precision Tools & Equipment (Amazon)</h3>';
         html += '<span style="font-size: 0.72rem; color: var(--text-gray); opacity: 0.8;">Affiliate Link Disclosure: Purchases support free tool hosting.</span>';
         html += '</div>';
-        html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">';
+        html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">';
         
         products.forEach(p => {
-            html += `<div class="amazon-card" style="background: rgba(15, 23, 42, 0.03); border: 1px solid var(--border-card); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            html += `<div class="amazon-card" style="background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border-card); border-radius: 14px; padding: 1.2rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, border-color 0.2s;">
                 <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-                        <span style="font-size:0.68rem; background: rgba(234, 179, 8, 0.15); color: #eab308; padding: 0.2rem 0.5rem; border-radius: 6px; font-weight:700;">${p.badge}</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                        <span style="font-size: 1.8rem; display: inline-block; padding: 0.3rem 0.6rem; background: var(--bg-body); border-radius: 10px; border: 1px solid var(--border-card);">${p.icon || "🛠️"}</span>
+                        <span style="font-size:0.68rem; background: rgba(234, 179, 8, 0.15); color: #eab308; padding: 0.25rem 0.6rem; border-radius: 6px; font-weight:700; border: 1px solid rgba(234, 179, 8, 0.3);">${p.badge}</span>
                     </div>
-                    <h4 style="font-size: 0.92rem; font-weight: 700; margin: 0 0 0.4rem 0; color: var(--text-light); line-height: 1.3;">${p.name}</h4>
-                    <p style="font-size: 0.78rem; color: var(--text-gray); margin: 0 0 0.8rem 0; line-height: 1.4;">${p.desc}</p>
+                    <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0.4rem 0; color: var(--text-light); line-height: 1.35;">${p.name}</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-gray); margin: 0 0 1rem 0; line-height: 1.45;">${p.desc}</p>
                 </div>
-                <a href="${p.link}" target="_blank" rel="noopener sponsored" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; background: linear-gradient(135deg, #ff9900 0%, #ffac31 100%); color: #111; font-weight: 700; font-size: 0.82rem; padding: 0.5rem 0.8rem; border-radius: 8px; text-decoration: none; transition: transform 0.2s;">
-                    View on Amazon ↗
+                <a href="${p.link}" target="_blank" rel="noopener sponsored" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: linear-gradient(135deg, #ff9900 0%, #ffac31 100%); color: #111; font-weight: 700; font-size: 0.85rem; padding: 0.65rem 1rem; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 12px rgba(255, 153, 0, 0.25); transition: all 0.2s;">
+                    <span>View on Amazon</span>
+                    <span style="font-size: 1rem;">↗</span>
                 </a>
             </div>`;
         });
@@ -3746,4 +3757,5 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
         html += '</div></div>';
         container.innerHTML = html;
     };
+
 
