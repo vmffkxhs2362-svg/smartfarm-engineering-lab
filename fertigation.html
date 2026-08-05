@@ -64,7 +64,7 @@
 <body>
 <main class="container"><header>
 <div class="header-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;">
-<div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: August 02, 2026</div>
+<div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: August 05, 2026</div>
 <div style="display: flex; gap: 0.5rem; align-items: center;">
     <button class="lang-btn" id="btn-farm-profile" onclick="toggleFarmProfileDrawer()" style="border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 10px; cursor: pointer; background: transparent; border: 1px solid;">
         📋 <span class="lang-text-en">My Farm</span><span class="lang-text-ko" style="display:none;">내 농장</span>
@@ -267,6 +267,15 @@
 <p>Modern commercial greenhouses integrate the <strong>hydroponic dosing automation</strong> system with a central <strong>greenhouse climate control sensor</strong> network (such as a <strong>Klimacomputer für Gewächshäuser</strong>). 
 To optimize yields and reduce operational overhead, growers deploy a dedicated <strong>precision fertigation system</strong> that dynamically manages EC and pH dosing. 
 Additionally, synchronizing irrigation intervals with solar radiation levels and managing <strong>greenhouse HVAC energy conservation</strong> parameters ensures maximum plant transpiration efficiency while minimizing heating utility costs.</p>
+<h4>5. PubChem Chemical Database & Raw Compound Specifications</h4>
+<p>To support high-precision nutrient compounding, our solver cross-references physical compound properties indexed in the National Institutes of Health (NIH) <strong>PubChem Database</strong>:</p>
+<ul>
+<li><strong>Calcium Nitrate [PubChem CID 24963]</strong>: Formula <code>Ca(NO3)2</code>, Anhydrous MW: 164.09 g/mol (Tetrahydrate <code>Ca(NO3)2·4H2O</code> MW: 236.15 g/mol). Dissociates into 1 Ca²⁺ and 2 NO₃⁻ ions (15.5% N, 19.0% Ca).</li>
+<li><strong>Potassium Nitrate [PubChem CID 24434]</strong>: Formula <code>KNO3</code>, MW: 101.10 g/mol. Provides 13.0% Nitrate-N and 38.2% K (46.0% K₂O equivalent).</li>
+<li><strong>Magnesium Sulfate [PubChem CID 24083]</strong>: Formula <code>MgSO4</code>, Anhydrous MW: 120.37 g/mol (Epsom Salt Heptahydrate <code>MgSO4·7H2O</code> MW: 246.47 g/mol). Supplies 9.8% Mg and 12.9% S without altering N-P-K balances.</li>
+<li><strong>Monopotassium Phosphate [PubChem CID 516951]</strong>: Formula <code>KH2PO4</code>, MW: 136.09 g/mol. Key phosphorus stock delivering 22.7% P (52.0% P₂O₅) and 28.7% K (34.5% K₂O).</li>
+<li><strong>Ammonium Nitrate [PubChem CID 22985]</strong>: Formula <code>NH4NO3</code>, MW: 80.04 g/mol. Delivers 35.0% total N (half ammonium NH₄⁺, half nitrate NO₃⁻) for vegetative pH control.</li>
+</ul>
 </div>
 </div>
 </div>
