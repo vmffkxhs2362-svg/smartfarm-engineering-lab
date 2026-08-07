@@ -1,6 +1,6 @@
 <!-- TITLE: Greenhouse Heat Loss Calculator | Heating Load & Cover U-Value Estimator -->
-<!-- DESC: Estimate maximum greenhouse heating load based on cover material U-values, wind speed friction, and indoor/outdoor temperature differentials. Supports single glass, double poly, and polycarbonate covers. -->
-<!-- KEYWORDS: greenhouse heat loss, heating load calculator, U-value, cover material, greenhouse heating, wind friction, temperature delta, boiler sizing, greenhouse insulation, heating capacity kW -->
+<!-- DESC: Calculate maximum greenhouse heating load in kW and BTU/h using Q=UAΔT heat transfer formulas, wind friction velocity modifiers, and cover U-values for single poly, glass, and polycarbonate structures. -->
+<!-- KEYWORDS: greenhouse heat loss calculator, heating load calculator BTU, Q=UAΔT heat transfer formula, glazing U-value table, greenhouse insulation, boiler capacity sizing kW, wind infiltration heat loss, 온실 난방 열손실 계산, 유리온실 난방부하 -->
 <!-- ACTIVE_TAB: btn-tab-heat-loss -->
 <!-- ACTIVE_CHIP: chip-all -->
 <div class="calc-wrapper active" id="section-heat-loss">
@@ -13,12 +13,12 @@
 <div class="input-control-wrapper select-arrow-wrapper">
 <select id="hl-preset" onchange="applyHlPreset()">
 <option selected="" value="custom">Custom Input</option>
-<option value="single_poly">Single Poly (U=6.0)</option>
-<option value="double_poly">Double Poly (U=3.5)</option>
-<option value="glass">Single Glass (U=5.5)</option>
-<option value="double_glass">Double Glass (U=3.0)</option>
-<option value="pc_8">PC Sheet 8mm (U=3.3)</option>
-<option value="pc_16">PC Sheet 16mm (U=2.3)</option>
+<option value="single_poly">Single Poly (U=6.0 W/m²·K)</option>
+<option value="double_poly">Double Poly (U=3.5 W/m²·K)</option>
+<option value="glass">Single Glass (U=5.5 W/m²·K)</option>
+<option value="double_glass">Double Glass (U=3.0 W/m²·K)</option>
+<option value="pc_8">PC Sheet 8mm (U=3.3 W/m²·K)</option>
+<option value="pc_16">PC Sheet 16mm (U=2.3 W/m²·K)</option>
 </select>
 </div>
 </div>
@@ -66,6 +66,36 @@
 <div class="input-control-wrapper">
 <input id="hl-wind" oninput="calculateHeatLossEngine()" step="0.5" type="number" value="3.0"/>
 <span class="suffix" id="hl-wind-suffix">m/s</span>
+</div>
+</div>
+<!-- Heat Loss Engineering SEO Guide Accordion -->
+<div class="accordion academic-guide" id="hl-academic-accordion">
+<div class="accordion-header" onclick="toggleAccordion('hl-academic-accordion')">
+<span class="academic-guide-lang" style="font-weight: 700; color: var(--primary);">📚 Heat Loss Formula &amp; Glazing U-Value Guide</span>
+<span class="icon" style="color: var(--primary);">▼</span>
+</div>
+<div class="accordion-body">
+<div class="academic-guide-lang">
+<h3>📚 Thermodynamic Principles of Greenhouse Heat Load Calculations</h3>
+<p>Estimating peak heating capacity for agricultural greenhouses relies on steady-state conductive and convective heat transfer principles. The peak thermal demand determines the sizing of hot water boilers, heat pumps, and pipe rail distribution loops.</p>
+<h4>1. Fundamental Heat Loss Equation (Q = A * U * ΔT)</h4>
+<p>The total heat flux transmitted through the greenhouse envelope is calculated using the classical Fourier conduction equation modified for overall heat transfer coefficients:</p>
+<ul>
+<li><code>Q = A * U * (Ti - To) * F_wind</code> (Watts or kW)</li>
+<li>Where <code>A</code> is total exposed surface area of roof and side walls (m²).</li>
+<li><code>U</code> is the thermal transmittance (W/m²·K) of the glazing material.</li>
+<li><code>ΔT = Ti - To</code> is the temperature differential between target indoor setpoint and lowest design outdoor temperature.</li>
+<li><code>F_wind</code> is the wind speed infiltration multiplier (1.0 at < 1 m/s up to 1.35 at > 7 m/s).</li>
+</ul>
+<h4>2. Typical Glazing Material U-Values</h4>
+<ul>
+<li><strong>Single PE Film</strong>: 6.0 W/m²·K (High transmission, high thermal loss)</li>
+<li><strong>Double Inflated PE Film</strong>: 3.5 W/m²·K (~40% thermal energy savings)</li>
+<li><strong>Single Float Glass (4mm)</strong>: 5.5 W/m²·K</li>
+<li><strong>Twin-Wall Polycarbonate (8mm)</strong>: 3.3 W/m²·K</li>
+<li><strong>Triple-Wall Polycarbonate (16mm)</strong>: 2.3 W/m²·K (Superior insulation)</li>
+</ul>
+</div>
 </div>
 </div>
 </div>

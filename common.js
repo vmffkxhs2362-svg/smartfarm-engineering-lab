@@ -3747,5 +3747,103 @@ window.DIAGNOSIS_COLLECTOR_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
         container.innerHTML = html;
     };
 
+    // ==========================================
+    // 💡 Step 4 Retention: LocalStorage & 1-Click Share
+    // ==========================================
+    function initLocalStoragePersistence() {
+        try {
+            const inputs = document.querySelectorAll('.form-panel input[id], .form-panel select[id]');
+            inputs.forEach(input => {
+                const storageKey = 'sf_sav_' + input.id;
+                const savedVal = localStorage.getItem(storageKey);
+                if (savedVal !== null && savedVal !== undefined && savedVal !== "") {
+                    input.value = savedVal;
+                }
+                const saveHandler = function() {
+                    try { localStorage.setItem(storageKey, input.value); } catch(e) {}
+                };
+                input.addEventListener('input', saveHandler);
+                input.addEventListener('change', saveHandler);
+            });
+        } catch(e) {
+            console.warn("LocalStorage Persistence Init Warning:", e);
+        }
+    }
+
+    window.copyResultSummary = function() {
+        let title = document.title || "Smart Farm Calculation Result";
+        let mainValEl = document.querySelector('.result-panel .big-number');
+        let statusPillEl = document.querySelector('.result-panel .status-pill');
+        let descEl = document.querySelector('.result-panel .result-desc');
+
+        let mainVal = mainValEl ? mainValEl.textContent.trim() : "N/A";
+        let statusPill = statusPillEl ? statusPillEl.textContent.trim() : "";
+        let desc = descEl ? descEl.textContent.trim() : "";
+
+        let currentUrl = window.location.href;
+        let summaryText = `[🌱 Smart Farm Lab] ${title}\n• Result: ${mainVal} (${statusPill})\n• Note: ${desc}\n• Link: ${currentUrl}`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(summaryText).then(() => {
+                showToast("📋 Result Summary Copied to Clipboard! (결과 요약 복사됨)");
+            }).catch(() => {
+                fallbackCopyText(summaryText);
+            });
+        } else {
+            fallbackCopyText(summaryText);
+        }
+    };
+
+    function fallbackCopyText(text) {
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast("📋 Result Summary Copied to Clipboard! (결과 요약 복사됨)");
+        } catch (err) {
+            alert("Copy failed. Text:\n" + text);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function showToast(msg) {
+        let existing = document.getElementById('sf-toast-msg');
+        if (existing) existing.remove();
+
+        let toast = document.createElement('div');
+        toast.id = 'sf-toast-msg';
+        toast.textContent = msg;
+        toast.style.cssText = 'position:fixed; bottom:20px; right:20px; z-index:9999; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; padding:12px 20px; border-radius:10px; box-shadow:0 10px 25px rgba(0,0,0,0.3); font-size:0.9rem; transition:all 0.3s ease;';
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        initLocalStoragePersistence();
+
+        // Inject 1-Click Copy Result Button into Result Panels if not present
+        const resultPanels = document.querySelectorAll('.result-panel');
+        resultPanels.forEach(panel => {
+            if (!panel.querySelector('.btn-copy-result')) {
+                let copyBtn = document.createElement('button');
+                copyBtn.className = 'btn-copy-result';
+                copyBtn.type = 'button';
+                copyBtn.innerHTML = '📋 Copy Result Summary (결과 요약 복사)';
+                copyBtn.style.cssText = 'margin-top:1rem; width:100%; padding:0.6rem 1rem; background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.4); color:var(--primary); font-weight:700; border-radius:10px; cursor:pointer; font-size:0.85rem; transition:all 0.2s;';
+                copyBtn.onmouseover = () => { copyBtn.style.background = 'rgba(16, 185, 129, 0.25)'; };
+                copyBtn.onmouseout = () => { copyBtn.style.background = 'rgba(16, 185, 129, 0.12)'; };
+                copyBtn.onclick = window.copyResultSummary;
+                panel.appendChild(copyBtn);
+            }
+        });
+    });
+
+
 
 
