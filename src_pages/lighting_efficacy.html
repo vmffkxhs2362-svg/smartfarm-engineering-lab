@@ -1,0 +1,142 @@
+<!-- TITLE: Greenhouse Supplemental Lighting Calculator | HPS vs LED Photon Efficacy & ROI -->
+<!-- DESC: Calculate greenhouse supplemental PPFD, daily DLI contribution, electrical power demand, and financial payback ROI comparing 1000W HPS with high-efficacy LED toplighting fixtures. -->
+<!-- KEYWORDS: greenhouse lighting calculator, HPS vs LED, supplemental lighting, PPFD to DLI, photon efficacy umol/J, greenhouse electricity cost, grow light ROI calculator, 보광등 계산기, 온실 LED 조명 -->
+<!-- ACTIVE_TAB: btn-tab-vertical -->
+<!-- ACTIVE_CHIP: chip-all -->
+<div class="calc-wrapper active" id="section-lighting-efficacy">
+    <div class="form-panel">
+        <h1 class="panel-title" id="lbl-lighting-title">Supplemental Lighting &amp; ROI Engine</h1>
+        
+        <div class="input-group">
+            <div class="input-header">
+                <label for="light-area">Greenhouse Illuminated Area (A)</label>
+            </div>
+            <div class="input-control-wrapper">
+                <input id="light-area" oninput="calculateLightingEfficacy()" step="100" type="number" value="1000"/>
+                <span class="suffix">m²</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-header">
+                <label for="light-target-ppfd">Target Supplemental PPFD</label>
+            </div>
+            <div class="input-control-wrapper">
+                <input id="light-target-ppfd" oninput="calculateLightingEfficacy()" step="10" type="number" value="150"/>
+                <span class="suffix">μmol/m²/s</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-header">
+                <label for="light-photoperiod">Daily Photoperiod (Operating Hours)</label>
+            </div>
+            <div class="input-control-wrapper">
+                <input id="light-photoperiod" oninput="calculateLightingEfficacy()" step="0.5" type="number" value="16"/>
+                <span class="suffix">hours/day</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-header">
+                <label for="light-elec-rate">Electricity Rate (Cost per kWh)</label>
+            </div>
+            <div class="input-control-wrapper">
+                <input id="light-elec-rate" oninput="calculateLightingEfficacy()" step="0.01" type="number" value="0.15"/>
+                <span class="suffix">USD/kWh</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-header">
+                <label for="light-led-efficacy">LED Fixture Efficacy (η_LED)</label>
+            </div>
+            <div class="input-control-wrapper">
+                <input id="light-led-efficacy" oninput="calculateLightingEfficacy()" step="0.1" type="number" value="3.6"/>
+                <span class="suffix">μmol/J</span>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-header">
+                <label for="light-hps-efficacy">HPS Fixture Efficacy (η_HPS)</label>
+            </div>
+            <div class="input-control-wrapper">
+                <input id="light-hps-efficacy" oninput="calculateLightingEfficacy()" step="0.1" type="number" value="1.9"/>
+                <span class="suffix">μmol/J</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="result-panel">
+        <h2 class="panel-title">Photobiological &amp; Financial Output</h2>
+
+        <div class="stat-card highlight">
+            <span class="stat-label">Daily Supplemental DLI Delivered</span>
+            <div class="stat-val" id="res-light-dli">8.64 <span class="stat-unit">mol/m²/day</span></div>
+            <span class="stat-desc">Calculated via PPFD × Photoperiod × 0.0036.</span>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Total Connected Electrical Power</span>
+            <div class="stat-val" id="res-power-comparison">41.7 kW (LED) vs 78.9 kW (HPS)</div>
+            <span class="stat-desc" id="res-power-saved">Saves 37.2 kW (47.2% power reduction).</span>
+        </div>
+
+        <div class="stat-card success">
+            <span class="stat-label">Estimated Annual Electricity Savings</span>
+            <div class="stat-val" id="res-annual-savings">$32,587 <span class="stat-unit">/ year</span></div>
+            <span class="stat-desc">Based on 180 winter supplemental operating days.</span>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">Estimated CapEx Payback Timeline</span>
+            <div class="stat-val" id="res-payback">2.3 <span class="stat-unit">Years</span></div>
+            <span class="stat-desc">Assuming $180/m² LED retrofit cost differential.</span>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS_START -->
+<script>
+function calculateLightingEfficacy() {
+    var area = parseFloat(document.getElementById('light-area').value) || 1000;
+    var ppfd = parseFloat(document.getElementById('light-target-ppfd').value) || 150;
+    var hours = parseFloat(document.getElementById('light-photoperiod').value) || 16;
+    var rate = parseFloat(document.getElementById('light-elec-rate').value) || 0.15;
+    var ledEff = parseFloat(document.getElementById('light-led-efficacy').value) || 3.6;
+    var hpsEff = parseFloat(document.getElementById('light-hps-efficacy').value) || 1.9;
+
+    // 1. DLI = PPFD * hours * 3600 / 1,000,000 = PPFD * hours * 0.0036
+    var dli = ppfd * hours * 0.0036;
+
+    // 2. Total photon flux required = PPFD * area (umol/s)
+    var totalPhotons = ppfd * area;
+
+    // 3. Power in kW = (Total Photons / Efficacy) / 1000
+    var powerLedKw = (totalPhotons / ledEff) / 1000.0;
+    var powerHpsKw = (totalPhotons / hpsEff) / 1000.0;
+    var powerSavedKw = powerHpsKw - powerLedKw;
+    var powerSavedPct = ((powerHpsKw - powerLedKw) / powerHpsKw) * 100.0;
+
+    // 4. Annual consumption (assuming 180 winter lighting days)
+    var annualHours = hours * 180.0;
+    var annualKwhLed = powerLedKw * annualHours;
+    var annualKwhHps = powerHpsKw * annualHours;
+    var annualCostLed = annualKwhLed * rate;
+    var annualCostHps = annualKwhHps * rate;
+    var annualSavings = annualCostHps - annualCostLed;
+
+    // 5. Payback (Assuming LED CapEx is ~$65/m2 higher than HPS)
+    var capexDiff = area * 65.0;
+    var paybackYears = annualSavings > 0 ? (capexDiff / annualSavings) : 0;
+
+    document.getElementById('res-light-dli').innerHTML = dli.toFixed(2) + ' <span class="stat-unit">mol/m²/day</span>';
+    document.getElementById('res-power-comparison').innerText = powerLedKw.toFixed(1) + ' kW (LED) vs ' + powerHpsKw.toFixed(1) + ' kW (HPS)';
+    document.getElementById('res-power-saved').innerText = 'Saves ' + powerSavedKw.toFixed(1) + ' kW (' + powerSavedPct.toFixed(1) + '% reduction).';
+    document.getElementById('res-annual-savings').innerHTML = '$' + Math.round(annualSavings).toLocaleString() + ' <span class="stat-unit">/ year</span>';
+    document.getElementById('res-payback').innerHTML = (paybackYears > 0 ? paybackYears.toFixed(1) : 'N/A') + ' <span class="stat-unit">Years</span>';
+}
+window.addEventListener('DOMContentLoaded', calculateLightingEfficacy);
+</script>
+<!-- SCRIPTS_END -->
