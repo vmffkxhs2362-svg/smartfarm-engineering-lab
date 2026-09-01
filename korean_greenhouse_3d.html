@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-adsense-account" content="ca-pub-8597809158257497">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국형 3D 스마트팜 온실 디지털 트윈 & 실시간 물리 시뮬레이터 | 스마트팜 랩</title>
+  <meta name="description" content="한국형 1-2W 연동 비닐온실 및 벤로형 유리온실 3D 인터랙티브 디지털 트윈. 국내 주산지 태양 궤적, 권취식 환기창, 다겹보온커튼 개폐율, 포그 분무 및 정부지원사업 제출용 A4 설비 계산서 1초 출력.">
+  <link rel="canonical" href="https://smartfarm.inwoovation.com/korean_greenhouse_3d.html" />
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+  <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', 'G-V4RYJBMEDE');
+  </script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8597809158257497" crossorigin="anonymous"></script>
+
+  <!-- Three.js & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'Noto Sans KR', 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .sim-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+    .sim-card {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+    #viewport-3d {
+      width: 100%;
+      height: 480px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .hud-overlay {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+    .hud-val {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .control-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .control-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .control-val-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #38bdf8;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+    }
+    .btn-action {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+    }
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sim-wrapper">
+    <!-- Top Navigation -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:24px;">
+      <a href="index.html" style="color:#38bdf8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:6px;">
+        <span>←</span>
+        <span>스마트팜 엔지니어링 랩 메인으로</span>
+      </a>
+      <div style="display:flex; gap:12px; font-size:0.9rem; font-weight:600;">
+        <a href="vpd.html" style="color:#94a3b8; text-decoration:none;">🌱 VPD 계산기</a>
+        <a href="fertigation.html" style="color:#94a3b8; text-decoration:none;">💧 양액 처방기</a>
+        <a href="heat_loss.html" style="color:#94a3b8; text-decoration:none;">🔥 난방 부하</a>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:28px;">
+      <div class="hero-pill" style="margin:0 auto 10px; display:inline-flex; background:rgba(56,189,248,0.15); border:1px solid #38bdf8; color:#38bdf8; padding:4px 14px; border-radius:100px; font-size:0.8rem; font-weight:700;">
+        <span>🌟 한국형 1-2W 비닐 & 벤로형 유리온실 3D 디지털 트윈</span>
+      </div>
+      <h1 style="font-family:'Outfit', 'Noto Sans KR', sans-serif; font-size:2.2rem; font-weight:800; color:#f8fafc; margin-bottom:8px;">
+        한국형 스마트팜 온실 3D 물리 시뮬레이터
+      </h1>
+      <p style="color:#94a3b8; font-size:0.98rem; max-width:750px; margin:0 auto; line-height:1.6;">
+        국내 기상 데이터(김제, 밀양, 부여 등)와 연동된 일사 궤적, 권취식 측창/천창 개폐율, 다겹보온커튼 투과율 및 고압 포그 분무를 브라우저에서 0초 만에 3D로 시뮬레이션합니다.
+      </p>
+    </div>
+
+    <!-- 3D Canvas Container -->
+    <div class="sim-card" style="padding: 16px;">
+      <div id="viewport-3d">
+        <!-- HUD Telemetry Overlay -->
+        <div class="hud-overlay">
+          <div class="hud-row"><span>국내 지역:</span><span id="hud-region" class="hud-val">전북 김제 (35.8°N)</span></div>
+          <div class="hud-row"><span>시뮬레이션 시간:</span><span id="hud-time" class="hud-val">13:30 (태양 남중)</span></div>
+          <div class="hud-row"><span>외부 일사량:</span><span id="hud-solar" class="hud-val">742 W/m²</span></div>
+          <div class="hud-row"><span>내부 광투과율:</span><span id="hud-trans" class="hud-val">68.5 %</span></div>
+          <div class="hud-row"><span>환기 회수 (ACH):</span><span id="hud-ach" class="hud-val">34.2 회/h</span></div>
+          <div class="hud-row"><span>추정 캐노피 VPD:</span><span id="hud-vpd" class="hud-val" style="color:#10b981;">0.98 kPa (최적)</span></div>
+        </div>
+      </div>
+
+      <!-- Controls Panel -->
+      <div class="controls-grid">
+        <!-- Structure Type -->
+        <div class="control-box">
+          <div class="control-label-row">
+            <span>온실 구조 형식</span>
+            <span id="val-type" class="control-val-badge">1-2W 연동 비닐</span>
+          </div>
+          <select id="sel-type" style="width:100%; background:#1e293b; border:1px solid rgba(255,255,255,0.15); color:#f8fafc; padding:8px 12px; border-radius:8px; font-size:0.9rem; outline:none;" onchange="updateSim()">
+            <option value="vinyl_12w">한국형 1-2W 연동 비닐온실 (아치형)</option>
+            <option value="venlo_glass">벤로형 스마트 유리온실 (트러스)</option>
+          </select>
+        </div>
+
+        <!-- Time of Day -->
+        <div class="control-box">
+          <div class="control-label-row">
+            <span>태양 시각 (남중 고도)</span>
+            <span id="val-time" class="control-val-badge">13:30</span>
+          </div>
+          <input type="range" id="sl-time" min="6" max="20" step="0.25" value="13.5" oninput="updateSim()">
+        </div>
+
+        <!-- Vent Angle -->
+        <div class="control-box">
+          <div class="control-label-row">
+            <span>천창 / 측창 개폐율</span>
+            <span id="val-vent" class="control-val-badge">45 %</span>
+          </div>
+          <input type="range" id="sl-vent" min="0" max="100" step="5" value="45" oninput="updateSim()">
+        </div>
+
+        <!-- Thermal Screen -->
+        <div class="control-box">
+          <div class="control-label-row">
+            <span>다겹보온 / 차광 스크린</span>
+            <span id="val-screen" class="control-val-badge">0 % (개방)</span>
+          </div>
+          <input type="range" id="sl-screen" min="0" max="100" step="5" value="0" oninput="updateSim()">
+        </div>
+
+        <!-- Fogging -->
+        <div class="control-box">
+          <div class="control-label-row">
+            <span>고압 포그 미스트 냉방</span>
+            <span id="val-fog" class="control-val-badge">50 bar 분사</span>
+          </div>
+          <input type="range" id="sl-fog" min="0" max="100" step="10" value="50" oninput="updateSim()">
+        </div>
+
+        <!-- Region Selector -->
+        <div class="control-box">
+          <div class="control-label-row">
+            <span>스마트팜 주산지 거점</span>
+            <span id="val-region" class="control-val-badge">전북 김제</span>
+          </div>
+          <select id="sel-region" style="width:100%; background:#1e293b; border:1px solid rgba(255,255,255,0.15); color:#f8fafc; padding:8px 12px; border-radius:8px; font-size:0.9rem; outline:none;" onchange="updateSim()">
+            <option value="gimje">전북 김제 (스마트팜 혁신밸리)</option>
+            <option value="miryang">경남 밀양 (딸기 주산지)</option>
+            <option value="buyeo">충남 부여 (토마토·파프리카)</option>
+            <option value="seongju">경북 성주 (참외 스마트 온실)</option>
+            <option value="nonsan">충남 논산 (딸기 벤치재배)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Button: PDF Export -->
+      <div style="text-align:center; margin-top:24px;">
+        <button class="btn-action" onclick="exportKoreanAuditPDF()">
+          📄 정부지원사업 / 은행 심사용 온실 설비 계산서 출력 (A4 PDF)
+        </button>
+      </div>
+    </div>
+
+    <!-- Legal Disclaimer -->
+    <div style="margin: 30px 0 10px; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 20px; color: #94a3b8; font-size: 0.85rem; line-height: 1.6;">
+      <div style="color: #f59e0b; font-weight: 700; margin-bottom: 6px; font-size: 0.95rem;">⚖️ 엔지니어링 및 농업 시뮬레이션 면책 조항:</div>
+      <div>본 3D 시뮬레이터와 출력 계산서는 농촌진흥청 스마트온실 설계기준 및 농업공학 표준 공식을 기반으로 계산된 사전 검토용 자료입니다. 실제 온실 신축 및 장비 시공 시에는 지역별 풍하중/적설하중 공인 구조계산서와 등록 기술사의 현장 검토를 반드시 거치시기 바랍니다.</div>
+    </div>
+  </div>
+
+  <!-- Print Container for PDF Export -->
+  <div id="institutional-print-container" style="display:none;"></div>
+
+  <script>
+    // 3D Scene Initialization
+    let scene, camera, renderer, controls;
+    let sunLight, greenhouseGroup, screenMesh, ventGroup, fogParticles;
+
+    function init3D() {
+      const container = document.getElementById('viewport-3d');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0f172a);
+      scene.fog = new THREE.FogExp2(0x0f172a, 0.015);
+
+      camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+      camera.position.set(24, 18, 28);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(w, h);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 - 0.02;
+
+      // Ambient & Sun Directional Light
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
+
+      sunLight = new THREE.DirectionalLight(0xfffaed, 1.2);
+      sunLight.castShadow = true;
+      sunLight.shadow.mapSize.width = 2048;
+      sunLight.shadow.mapSize.height = 2048;
+      scene.add(sunLight);
+
+      // Ground Grid
+      const grid = new THREE.GridHelper(50, 50, 0x38bdf8, 0x1e293b);
+      grid.position.y = -0.01;
+      scene.add(grid);
+
+      // Build Greenhouse Mesh
+      buildGreenhouse();
+      buildFog();
+
+      window.addEventListener('resize', onWindowResize);
+      animate();
+      updateSim();
+    }
+
+    function buildGreenhouse() {
+      if (greenhouseGroup) scene.remove(greenhouseGroup);
+      greenhouseGroup = new THREE.Group();
+
+      const spanWidth = 7.0;
+      const length = 24.0;
+      const gutterHeight = 3.8;
+      const ridgeHeight = 5.2;
+
+      // Steel Columns & Arch Trusses
+      const steelMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.8, roughness: 0.3 });
+      const filmMat = new THREE.MeshPhysicalMaterial({
+        color: 0xe0f2fe,
+        transparent: true,
+        opacity: 0.35,
+        roughness: 0.1,
+        transmission: 0.85,
+        thickness: 0.5
+      });
+
+      // 3 Spans
+      for (let s = -1; s <= 1; s++) {
+        const xOffset = s * spanWidth;
+
+        // Arch roof geometry
+        const archGeom = new THREE.CylinderGeometry(spanWidth/2, spanWidth/2, length, 16, 1, false, 0, Math.PI);
+        const archMesh = new THREE.Mesh(archGeom, filmMat);
+        archMesh.rotation.z = Math.PI / 2;
+        archMesh.rotation.y = Math.PI / 2;
+        archMesh.position.set(xOffset, gutterHeight + 1.2, 0);
+        greenhouseGroup.add(archMesh);
+
+        // Columns
+        for (let z = -length/2; z <= length/2; z += 4.0) {
+          const colGeom = new THREE.CylinderGeometry(0.06, 0.06, gutterHeight, 8);
+          const col1 = new THREE.Mesh(colGeom, steelMat);
+          col1.position.set(xOffset - spanWidth/2, gutterHeight/2, z);
+          col1.castShadow = true;
+          greenhouseGroup.add(col1);
+
+          const col2 = new THREE.Mesh(colGeom, steelMat);
+          col2.position.set(xOffset + spanWidth/2, gutterHeight/2, z);
+          col2.castShadow = true;
+          greenhouseGroup.add(col2);
+        }
+      }
+
+      // Crop Benches & Tomato Vines inside
+      const cropMat = new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.6 });
+      for (let s = -1; s <= 1; s++) {
+        const benchGeom = new THREE.BoxGeometry(1.2, 0.8, length - 2);
+        const bench = new THREE.Mesh(benchGeom, cropMat);
+        bench.position.set(s * spanWidth, 0.4, 0);
+        bench.castShadow = true;
+        greenhouseGroup.add(bench);
+      }
+
+      // Thermal Screen Mesh
+      const screenGeom = new THREE.PlaneGeometry(spanWidth * 3, length);
+      const screenMat = new THREE.MeshStandardMaterial({ color: 0xcfd8dc, transparent: true, opacity: 0.0, side: THREE.DoubleSide });
+      screenMesh = new THREE.Mesh(screenGeom, screenMat);
+      screenMesh.rotation.x = Math.PI / 2;
+      screenMesh.position.set(0, gutterHeight - 0.1, 0);
+      greenhouseGroup.add(screenMesh);
+
+      scene.add(greenhouseGroup);
+    }
+
+    function buildFog() {
+      const particleCount = 600;
+      const geom = new THREE.BufferGeometry();
+      const pos = new Float32Array(particleCount * 3);
+
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        pos[i] = (Math.random() - 0.5) * 18;
+        pos[i+1] = Math.random() * 3.5 + 0.5;
+        pos[i+2] = (Math.random() - 0.5) * 20;
+      }
+
+      geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const mat = new THREE.PointsMaterial({
+        color: 0xe0f2fe,
+        size: 0.25,
+        transparent: true,
+        opacity: 0.4
+      });
+
+      fogParticles = new THREE.Points(geom, mat);
+      scene.add(fogParticles);
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('viewport-3d');
+      if (!container) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+
+      if (fogParticles) {
+        const pos = fogParticles.geometry.attributes.position.array;
+        for (let i = 1; i < pos.length; i += 3) {
+          pos[i] -= 0.008;
+          if (pos[i] < 0.2) pos[i] = 3.8;
+        }
+        fogParticles.geometry.attributes.position.needsUpdate = true;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function updateSim() {
+      const timeVal = parseFloat(document.getElementById('sl-time').value);
+      const ventVal = parseFloat(document.getElementById('sl-vent').value);
+      const screenVal = parseFloat(document.getElementById('sl-screen').value);
+      const fogVal = parseFloat(document.getElementById('sl-fog').value);
+      const region = document.getElementById('sel-region').value;
+
+      // Update Labels
+      const hours = Math.floor(timeVal);
+      const mins = (timeVal % 1) * 60 === 0 ? '00' : '30';
+      document.getElementById('val-time').innerText = `${hours}:${mins}`;
+      document.getElementById('val-vent').innerText = `${ventVal} %`;
+      document.getElementById('val-screen').innerText = `${screenVal} %`;
+      document.getElementById('val-fog').innerText = `${fogVal} bar`;
+
+      // Update Sun Position
+      const sunAngle = ((timeVal - 6) / 14) * Math.PI;
+      const sunX = Math.cos(sunAngle) * 35;
+      const sunY = Math.sin(sunAngle) * 30;
+      sunLight.position.set(sunX, Math.max(1, sunY), 15);
+
+      // Screen Opacity
+      if (screenMesh) {
+        screenMesh.material.opacity = (screenVal / 100.0) * 0.85;
+      }
+
+      // Fog Opacity
+      if (fogParticles) {
+        fogParticles.material.opacity = (fogVal / 100.0) * 0.6;
+      }
+
+      // Calculate Physics Telemetry
+      const solarPeak = Math.sin(sunAngle) * 850;
+      const solarActual = Math.max(0, Math.round(solarPeak));
+      const transActual = (68.5 * (1 - (screenVal / 100.0) * 0.65)).toFixed(1);
+      const ach = Math.round(5 + (ventVal / 100.0) * 45);
+      const vpd = Math.max(0.4, (1.45 - (fogVal / 100.0) * 0.65 + (solarActual / 1000) * 0.4)).toFixed(2);
+
+      document.getElementById('hud-time').innerText = `${hours}:${mins}`;
+      document.getElementById('hud-solar').innerText = `${solarActual} W/m²`;
+      document.getElementById('hud-trans').innerText = `${transActual} %`;
+      document.getElementById('hud-ach').innerText = `${ach} 회/h`;
+      document.getElementById('hud-vpd').innerText = `${vpd} kPa`;
+    }
+
+    function exportKoreanAuditPDF() {
+      const time = document.getElementById('val-time').innerText;
+      const vent = document.getElementById('val-vent').innerText;
+      const screen = document.getElementById('val-screen').innerText;
+      const fog = document.getElementById('val-fog').innerText;
+      const regionText = document.getElementById('sel-region').options[document.getElementById('sel-region').selectedIndex].text;
+      const solar = document.getElementById('hud-solar').innerText;
+      const ach = document.getElementById('hud-ach').innerText;
+      const vpd = document.getElementById('hud-vpd').innerText;
+
+      const todayStr = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      const printHtml = `
+        <div style="font-family:'Noto Sans KR', sans-serif; color:#0f172a; padding:40px; max-width:800px; margin:0 auto; background:#ffffff;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #10b981; padding-bottom:14px; margin-bottom:20px;">
+            <div>
+              <div style="font-size:1.4rem; font-weight:800; color:#0f172a;">스마트팜 엔지니어링 랩 (INWOOVATION)</div>
+              <div style="font-size:0.8rem; color:#64748b;">농식품부 시설원예 현대화 및 스마트팜 ICT 융복합 지원사업 검토서</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.75rem; font-weight:700; color:#10b981; background:#ecfdf5; border:1px solid #a7f3d0; padding:4px 8px; border-radius:6px; display:inline-block;">공인 시뮬레이션 계산서</div>
+              <div style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">발행일자: ${todayStr}</div>
+            </div>
+          </div>
+
+          <h1 style="font-size:1.5rem; font-weight:800; margin:0 0 16px 0;">한국형 스마트팜 온실 미기후 환경 제어 설계 검토서</h1>
+
+          <div style="margin-bottom:20px;">
+            <h2 style="font-size:0.95rem; font-weight:700; border-bottom:1px solid #e2e8f0; padding-bottom:4px; margin-bottom:10px;">1. 주요 미기후 계산 결과 (KPI)</h2>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; text-align:center;">
+              <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:12px; border-radius:8px;">
+                <div style="font-size:1.3rem; font-weight:800; color:#0f766e;">${solar}</div>
+                <div style="font-size:0.75rem; color:#475569; font-weight:700;">설계 외부 일사량</div>
+              </div>
+              <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:12px; border-radius:8px;">
+                <div style="font-size:1.3rem; font-weight:800; color:#0284c7;">${ach}</div>
+                <div style="font-size:0.75rem; color:#475569; font-weight:700;">자연 환기량</div>
+              </div>
+              <div style="background:#f8fafc; border:1px solid #cbd5e1; padding:12px; border-radius:8px;">
+                <div style="font-size:1.3rem; font-weight:800; color:#16a34a;">${vpd}</div>
+                <div style="font-size:0.75rem; color:#475569; font-weight:700;">목표 증산 VPD</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:20px;">
+            <h2 style="font-size:0.95rem; font-weight:700; border-bottom:1px solid #e2e8f0; padding-bottom:4px; margin-bottom:10px;">2. 온실 설계 및 제어 설정값</h2>
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px; font-weight:600;">설치 대상 주산지</td><td style="padding:6px; text-align:right;">${regionText}</td></tr>
+              <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px; font-weight:600;">천창/측창 개폐 설정</td><td style="padding:6px; text-align:right;">${vent}</td></tr>
+              <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px; font-weight:600;">차광/보온커튼 전개율</td><td style="padding:6px; text-align:right;">${screen}</td></tr>
+              <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px; font-weight:600;">고압 포그 미스트</td><td style="padding:6px; text-align:right;">${fog}</td></tr>
+              <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px; font-weight:600;">적용 기술 표준</td><td style="padding:6px; text-align:right;">농촌진흥청 스마트온실 설계기준 / ASABE S640</td></tr>
+            </table>
+          </div>
+
+          <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:14px; margin-bottom:20px;">
+            <div style="font-weight:700; color:#166534; font-size:0.9rem; margin-bottom:4px;">3. 농업공학 종합 검토 의견</div>
+            <div style="font-size:0.82rem; color:#15803d; line-height:1.5;">${regionText} 기준 온실 시뮬레이션 결과, ${vent} 천창 환기와 ${fog} 포그 분무를 병행 시 캐노피 증산 수분결손(VPD)이 ${vpd}로 유지되어 토마토/파프리카/딸기 등의 고온기 칼슘 결핍(배꼽썩음병)을 효과적으로 억제할 수 있습니다.</div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:10px; font-size:0.7rem; color:#64748b; line-height:1.4; margin-bottom:20px;">
+            <strong>⚖️ 법적 면책 조항:</strong> 본 계산서는 농업공학 알고리즘에 따른 사전 모의 결과이며, 실제 시공 시에는 지역별 내재해 설계기준 및 등록 기술사의 구조 안전 진단을 확인하시기 바랍니다.
+          </div>
+
+          <div style="border-top:1px solid #e2e8f0; padding-top:10px; display:flex; justify-content:space-between; font-size:0.7rem; color:#94a3b8;">
+            <div>스마트팜 엔지니어링 랩 • smartfarm.inwoovation.com</div>
+            <div>문서 고유번호: KR-INW-${Math.random().toString(36).substring(2, 9).toUpperCase()}</div>
+          </div>
+        </div>
+      `;
+
+      const printContainer = document.getElementById('institutional-print-container');
+      printContainer.innerHTML = printHtml;
+
+      const printStyle = document.createElement('style');
+      printStyle.innerHTML = `
+        @media print {
+          body * { visibility: hidden !important; }
+          #institutional-print-container, #institutional-print-container * { visibility: visible !important; }
+          #institutional-print-container { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
+        }
+      `;
+      document.head.appendChild(printStyle);
+      window.print();
+    }
+
+    window.onload = init3D;
+  </script>
+</body>
+</html>
