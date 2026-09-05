@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://smartfarm.inwoovation.com/mixing_valve</loc>
+    <loc>https://smartfarm.inwoovation.com/</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/about</loc>
-    <lastmod>2026-09-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/smartfarm_layout_wfc</loc>
-    <lastmod>2026-09-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/contact</loc>
-    <lastmod>2026-09-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://smartfarm.inwoovation.com/vpd</loc>
@@ -31,13 +13,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartfarm.inwoovation.com/lighting_efficacy</loc>
-    <lastmod>2026-09-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://smartfarm.inwoovation.com/diagnosis</loc>
+    <loc>https://smartfarm.inwoovation.com/mixing_valve</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -67,6 +43,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://smartfarm.inwoovation.com/diagnosis</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartfarm.inwoovation.com/vertical_dli</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartfarm.inwoovation.com/about</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://smartfarm.inwoovation.com/contact</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://smartfarm.inwoovation.com/terms</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
@@ -79,13 +79,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartfarm.inwoovation.com/</loc>
+    <loc>https://smartfarm.inwoovation.com/lighting_efficacy</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://smartfarm.inwoovation.com/vertical_dli</loc>
+    <loc>https://smartfarm.inwoovation.com/smartfarm_layout_wfc</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

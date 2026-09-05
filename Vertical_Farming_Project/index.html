@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <script>
         // Redirect to main unified dashboard
@@ -9,15 +9,15 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>수직농업 DLI 계산기 & LED 방열량 시뮬레이터 | Vertical Farm Light & Power Analyzer</title>
-    <meta name="description" content="수직농장(식물공장) LED PPFD 대비 DLI 광조사 주기 계산기, 엽면 포차(VPD) 분석 및 LED 소자 접합부 최고 온도(Tj) 및 전기요금(OPEX) 시뮬레이션 툴킷.">
+    <title>Vertical Farm DLI & LED Thermal OPEX Simulator | Inwoovation Lab</title>
+    <meta name="description" content="Commercial vertical farm LED PPFD-to-DLI photoperiod calculator, canopy VPD analysis, and thermal heatsink junction temperature simulator.">
     <link rel="canonical" href="https://smartfarm.inwoovation.com/Vertical_Farming_Project/index.html" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://smartfarm.inwoovation.com/Vertical_Farming_Project/index.html">
-    <meta property="og:title" content="수직농업 DLI 계산기 & LED 방열량 시뮬레이터 | Vertical Farm Light & Power Analyzer">
-    <meta property="og:description" content="수직농장(식물공장) LED PPFD 대비 DLI 광조사 주기 계산기, 엽면 포차(VPD) 분석 및 LED 소자 접합부 최고 온도(Tj) 및 전기요금(OPEX) 시뮬레이션 툴킷.">
+    <meta property="og:title" content="Vertical Farm DLI & LED Thermal OPEX Simulator">
+    <meta property="og:description" content="Commercial vertical farm LED PPFD-to-DLI photoperiod calculator, canopy VPD analysis, and thermal heatsink junction temperature simulator.">
     <meta property="og:image" content="https://smartfarm.inwoovation.com/cover.png">
     
     <!-- Google tag (gtag.js) -->
@@ -560,8 +560,8 @@
     <!-- Language Toggle -->
     <div style="display: flex; justify-content: flex-end; width: 100%; max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 0 1.5rem; box-sizing: border-box;">
         <div class="lang-switch">
-            <button class="lang-btn active" id="lang-ko" onclick="setLanguage('ko')">한국어</button>
-            <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">English</button>
+            
+            
         </div>
     </div>
 
@@ -587,36 +587,36 @@
         <div class="global-tabs-container">
             <div class="global-tabs">
                 <a id="lnk-global-vpd" href="../index.html?tab=vpd" class="global-tab-btn">
-                    <span class="desktop-text">포차 계산기 (VPD)</span>
+                    <span class="desktop-text">VPD Calculator</span>
                     <span class="mobile-text">VPD</span>
                 </a>
                 <a id="lnk-global-valve" href="../index.html?tab=valve" class="global-tab-btn">
-                    <span class="desktop-text">난방 혼합 밸브</span>
-                    <span class="mobile-text">혼합 밸브</span>
+                    <span class="desktop-text">Mixing Valve</span>
+                    <span class="mobile-text">Mixing Valve</span>
                 </a>
                 <a id="lnk-global-fert" href="../index.html?tab=fert" class="global-tab-btn">
-                    <span class="desktop-text">원액 희석 계산기 (양액)</span>
-                    <span class="mobile-text">양액 희석</span>
+                    <span class="desktop-text">Nutrient Dilution</span>
+                    <span class="mobile-text">Nutrients</span>
                 </a>
                 <a id="lnk-global-heat-loss" href="../index.html?tab=heat-loss" class="global-tab-btn">
-                    <span class="desktop-text">온실 열손실 계산기</span>
-                    <span class="mobile-text">열손실</span>
+                    <span class="desktop-text">Heat Loss</span>
+                    <span class="mobile-text">Heat Loss</span>
                 </a>
                 <a id="lnk-global-roi" href="../index.html?tab=roi" class="global-tab-btn">
-                    <span class="desktop-text">보일러 vs 히트펌프 ROI</span>
-                    <span class="mobile-text">난방 ROI</span>
+                    <span class="desktop-text">Heating ROI</span>
+                    <span class="mobile-text">Heating ROI</span>
                 </a>
                 <a id="lnk-global-transpiration" href="../index.html?tab=transpiration" class="global-tab-btn">
-                    <span class="desktop-text">식물 증산량 추정기 (PM)</span>
-                    <span class="mobile-text">증산량 (PM)</span>
+                    <span class="desktop-text">Transpiration (PM)</span>
+                    <span class="mobile-text">Transpiration</span>
                 </a>
                 <a id="lnk-global-pollinator" href="../Pollinator_Safety_Project/index.html" class="global-tab-btn" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3);">
-                    <span class="desktop-text">🐝 병해충 자가진단 & 수분벌</span>
-                    <span class="mobile-text">🐝 병해충/벌</span>
+                    <span class="desktop-text">🐝 Diagnosis & Pollinators</span>
+                    <span class="mobile-text">🐝 Pollinators</span>
                 </a>
                 <a id="lnk-global-vertical" href="#" class="global-tab-btn active" style="background: rgba(5, 150, 105, 0.15); color: var(--color-primary); border: 1px solid rgba(5, 150, 105, 0.3);">
-                    <span class="desktop-text">🌱 수직농업 DLI 계산기</span>
-                    <span class="mobile-text">🌱 수직농업</span>
+                    <span class="desktop-text">🌱 Vertical DLI</span>
+                    <span class="mobile-text">🌱 Vertical DLI</span>
                 </a>
             </div>
         </div>
@@ -864,90 +864,90 @@
     <script>
         const i18n = {
             ko: {
-                headerTitle: "수직농장 광원 및 에너지 분석기",
-                tabLight: "PPFD & DLI 계산기",
-                tabVpd: "VPD & 습도 계산기",
-                tabThermal: "LED 발열 및 OPEX",
+                headerTitle: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA",
+                tabLight: "PPFD & DLI Commercial CEA",
+                tabVpd: "VPD & Commercial CEA Commercial CEA",
+                tabThermal: "LED Commercial CEA Commercial CEA OPEX",
                 
                 // Tab 1: DLI
-                lblLightTitle: "광합성 광량 및 DLI 최적화",
-                lblLightDesc: "대상 작물 프리셋을 선택하고, 필요한 광조사 시간(광주기)을 산출하며, 맞춤형 PAR 스펙트럼 배분을 설계합니다.",
-                lblCropSelect: "대상 작물 프로필",
-                optGreens: "엽채류 (목표 DLI: 16 mol)",
-                optStrawberry: "딸기 (목표 DLI: 22 mol)",
-                optHerbs: "허브류 및 바질 (목표 DLI: 12 mol)",
-                optCustom: "직접 입력 (Custom)",
-                lblTargetDli: "목표 DLI (mol/m²/일)",
-                lblMeasuredPpfd: "측정된 PPFD (μmol/m²/s)",
-                lblSliderRed: "적색광 (Red, 660 nm)",
-                lblSliderBlue: "청색광 (Blue, 450 nm)",
-                lblSliderGreen: "녹색/백색광 (Green/White, 550 nm)",
-                lblSliderFar: "원적색광 (Far-Red, 730 nm)",
-                lblDliOutputTitle: "산출된 DLI 결과값",
-                lblOptPhotoperiodTitle: "최적 일 광주기",
-                lblSpectralEnergyTitle: "PAR 스펙트럼 에너지 분포",
-                lblThColor: "파장 대역 (Color Band)",
-                lblThPct: "비율 (%)",
-                lblThFlux: "추정 광자속 (PPFD)",
-                lblTblRed: "● 적색광 (660nm)",
-                lblTblBlue: "● 청색광 (450nm)",
-                lblTblGreen: "● 녹색광 (550nm)",
-                lblTblFar: "● 원적색광 (730nm)",
-                dliUnit: "mol/m²/일",
-                hoursUnit: "시간",
-                ppfdTooLow: "<span style='color: var(--color-danger); font-weight: 600;'>PPFD 광량 수치 부족!</span> 일 광주기가 최대치인 24시간에 도달했습니다. LED 출력을 높이거나 설치 높이를 낮춰주십시오.",
-                lightHoursDesc: "목표 DLI를 달성하기 위해 하루 동안 조사해야 하는 최적의 LED 가동 시간입니다.",
+                lblLightTitle: "Commercial CEA Commercial CEA Commercial CEA DLI Commercial CEA",
+                lblLightDesc: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA, Commercial CEA Commercial CEA Commercial CEA(Commercial CEA)Commercial CEA Commercial CEA, Commercial CEA PAR Commercial CEA Commercial CEA Commercial CEA.",
+                lblCropSelect: "Commercial CEA Commercial CEA Commercial CEA",
+                optGreens: "Commercial CEA (Commercial CEA DLI: 16 mol)",
+                optStrawberry: "Commercial CEA (Commercial CEA DLI: 22 mol)",
+                optHerbs: "Commercial CEA Commercial CEA Commercial CEA (Commercial CEA DLI: 12 mol)",
+                optCustom: "Commercial CEA Commercial CEA (Custom)",
+                lblTargetDli: "Commercial CEA DLI (mol/m²/Commercial CEA)",
+                lblMeasuredPpfd: "Commercial CEA PPFD (μmol/m²/s)",
+                lblSliderRed: "Commercial CEA (Red, 660 nm)",
+                lblSliderBlue: "Commercial CEA (Blue, 450 nm)",
+                lblSliderGreen: "Commercial CEA/Commercial CEA (Green/White, 550 nm)",
+                lblSliderFar: "Commercial CEA (Far-Red, 730 nm)",
+                lblDliOutputTitle: "Commercial CEA DLI Commercial CEA",
+                lblOptPhotoperiodTitle: "Commercial CEA Commercial CEA Commercial CEA",
+                lblSpectralEnergyTitle: "PAR Commercial CEA Commercial CEA Commercial CEA",
+                lblThColor: "Commercial CEA Commercial CEA (Color Band)",
+                lblThPct: "Commercial CEA (%)",
+                lblThFlux: "Commercial CEA Commercial CEA (PPFD)",
+                lblTblRed: "● Commercial CEA (660nm)",
+                lblTblBlue: "● Commercial CEA (450nm)",
+                lblTblGreen: "● Commercial CEA (550nm)",
+                lblTblFar: "● Commercial CEA (730nm)",
+                dliUnit: "mol/m²/Commercial CEA",
+                hoursUnit: "Commercial CEA",
+                ppfdTooLow: "<span style='color: var(--color-danger); font-weight: 600;'>PPFD Commercial CEA Commercial CEA Commercial CEA!</span> Commercial CEA Commercial CEA Commercial CEA 24Commercial CEA Commercial CEA. LED Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA.",
+                lightHoursDesc: "Commercial CEA DLICommercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA LED Commercial CEA Commercial CEA.",
                 
                 // Tab 2: VPD
-                lblVpdTitle: "엽면 포차 (VPD) 계산기",
-                lblVpdDesc: "대기 온도와 대기 대비 엽온 편차 값을 적용하여 정밀 포화 수증기압 차이(VPD)를 계산합니다.",
-                lblVpdTempLabel: "대기 온도 T_air (°C)",
-                lblVpdRhLabel: "상대 습도 RH (%)",
-                lblVpdOffsetLabel: "엽온 편차 ΔT_leaf (°C)",
-                lblVpdValTitle: "엽면 포차 (VPD)",
-                lblVpdValDesc: "엽면 기공 경계층의 포화 수증기압 동역학 모델을 기준으로 자동 계산된 실시간 VPD 값입니다.",
-                lblVpdChartTitle: "온도별 VPD 안전 구역 맵",
-                vpdCurveLabel: "대기 온도 {tAir}°C 기준 VPD 곡선",
+                lblVpdTitle: "Commercial CEA Commercial CEA (VPD) Commercial CEA",
+                lblVpdDesc: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA(VPD)Commercial CEA Commercial CEA.",
+                lblVpdTempLabel: "Commercial CEA Commercial CEA T_air (°C)",
+                lblVpdRhLabel: "Commercial CEA Commercial CEA RH (%)",
+                lblVpdOffsetLabel: "Commercial CEA Commercial CEA ΔT_leaf (°C)",
+                lblVpdValTitle: "Commercial CEA Commercial CEA (VPD)",
+                lblVpdValDesc: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA VPD Commercial CEA.",
+                lblVpdChartTitle: "Commercial CEA VPD Commercial CEA Commercial CEA Commercial CEA",
+                vpdCurveLabel: "Commercial CEA Commercial CEA {tAir}°C Commercial CEA VPD Commercial CEA",
                 
                 // Tab 3: Thermal
-                lblThermalTitle: "LED 모듈 발열 및 운영비(OPEX) 분석기",
-                lblThermalDesc: "소자 접합부 최고 온도(T_j)의 한계 안전성을 예측하고, 다단 랙 가동 시 월 조명 전기 소비 요금을 실시간 모델링합니다.",
-                lblLedPowerLabel: "LED 바 개별 소비 전력 P_elec (W)",
-                lblLedBarsLabel: "Racking 내 총 LED 바 수량 (N)",
-                lblOptEfficiencyLabel: "광변환 효율 (η_opt)",
-                lblHeatsinkAreaLabel: "바당 방열판 표면적 (cm²)",
-                lblConvectiveHLabel: "대류 열전달 계수 (h, W/m²K)",
-                lblElecRateLabel: "전기 요금 단가 (원/kWh 또는 €/kWh)",
-                lblThermalTjTitle: "LED 소자 접합부 온도 (T_j)",
-                lblThermalCostTitle: "월별 랙당 조명 전기료 (OPEX)",
-                lblThermalChartTitle: "가동 광주기별 월 조명 전기료 분할 예측",
-                tjTooHigh: "<span style='color: var(--color-danger); font-weight:600;'>⚠️ 접합부 온도 초과!</span> 소자 광량의 빠른 노화 감쇠가 우려됩니다. 방열 면적을 키우십시오.",
-                tjDesc: "LED 접합부 발열 안전 경계: 85°C 미만으로 유지 시 열화 방지 및 칩 보호에 안전합니다.",
-                monthlyUnit: "원 / 월",
+                lblThermalTitle: "LED Commercial CEA Commercial CEA Commercial CEA Commercial CEA(OPEX) Commercial CEA",
+                lblThermalDesc: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA(T_j)Commercial CEA Commercial CEA Commercial CEA Commercial CEA, Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA.",
+                lblLedPowerLabel: "LED Commercial CEA Commercial CEA Commercial CEA Commercial CEA P_elec (W)",
+                lblLedBarsLabel: "Racking Commercial CEA Commercial CEA LED Commercial CEA Commercial CEA (N)",
+                lblOptEfficiencyLabel: "Commercial CEA Commercial CEA (η_opt)",
+                lblHeatsinkAreaLabel: "Commercial CEA Commercial CEA Commercial CEA (cm²)",
+                lblConvectiveHLabel: "Commercial CEA Commercial CEA Commercial CEA (h, W/m²K)",
+                lblElecRateLabel: "Commercial CEA Commercial CEA Commercial CEA (Commercial CEA/kWh Commercial CEA €/kWh)",
+                lblThermalTjTitle: "LED Commercial CEA Commercial CEA Commercial CEA (T_j)",
+                lblThermalCostTitle: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA (OPEX)",
+                lblThermalChartTitle: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA",
+                tjTooHigh: "<span style='color: var(--color-danger); font-weight:600;'>⚠️ Commercial CEA Commercial CEA Commercial CEA!</span> Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA. Commercial CEA Commercial CEA Commercial CEA.",
+                tjDesc: "LED Commercial CEA Commercial CEA Commercial CEA Commercial CEA: 85°C Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA.",
+                monthlyUnit: "Commercial CEA / Commercial CEA",
                 monthlyUnitEn: "/ Month",
-                opexDesc: "산출된 일일 광조사 시간에 기반한 월별 조명 전력 비용 시뮬레이션 결과입니다.",
+                opexDesc: "Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA.",
                 
                 // Global Navigation
-                gtVpdD: "포차 계산기 (VPD)",
+                gtVpdD: "VPD Calculator",
                 gtVpdM: "VPD",
-                gtValveD: "난방 혼합 밸브",
-                gtValveM: "혼합 밸브",
-                gtFertD: "원액 희석 계산기 (양액)",
-                gtFertM: "양액 희석",
-                gtHeatLossD: "온실 열손실 계산기",
-                gtHeatLossM: "열손실",
-                gtRoiD: "보일러 vs 히트펌프 ROI",
-                gtRoiM: "난방 ROI",
-                gtTransD: "식물 증산량 추정기 (PM)",
-                gtTransM: "증산량 (PM)",
-                gtPollinatorD: "🐝 병해충 자가진단 & 수분벌",
-                gtPollinatorM: "🐝 병해충/벌",
-                gtVerticalD: "🌱 수직농업 DLI 계산기",
-                gtVerticalM: "🌱 수직농업",
+                gtValveD: "Mixing Valve",
+                gtValveM: "Mixing Valve",
+                gtFertD: "Nutrient Dilution",
+                gtFertM: "Nutrients",
+                gtHeatLossD: "Heat Loss",
+                gtHeatLossM: "Heat Loss",
+                gtRoiD: "Heating ROI",
+                gtRoiM: "Heating ROI",
+                gtTransD: "Transpiration (PM)",
+                gtTransM: "Transpiration",
+                gtPollinatorD: "🐝 Diagnosis & Pollinators",
+                gtPollinatorM: "🐝 Pollinators",
+                gtVerticalD: "🌱 Vertical DLI",
+                gtVerticalM: "🌱 Vertical DLI",
                 
                 // Footer
-                lblFooterText1: "수직농장 분석 툴킷 • KDP 스마트팜 운영 실무 과정 교육용 설계",
-                lblFooterText2: "수직형 식물공장 및 LED 포토바이올로지 엔지니어링 매뉴얼 부속 프로그램입니다."
+                lblFooterText1: "Commercial CEA Commercial CEA Commercial CEA • KDP Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA",
+                lblFooterText2: "Commercial CEA Commercial CEA Commercial CEA LED Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA."
             },
             en: {
                 headerTitle: "Vertical Farm Light & Power Analyzer",
@@ -1037,7 +1037,7 @@
             }
         };
 
-        let currentLang = 'ko';
+        let currentLang = 'en';
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -1283,8 +1283,8 @@
             if (vpd < 0.5) {
                 statusZone.innerHTML = currentLang === 'ko' ? `
                     <div class="alert alert-danger">
-                        <strong>⚠️ 잎끝마름증(팁번) 위험 구역 (VPD < 0.5 kPa)</strong><br>
-                        습도가 너무 높습니다. 증산 작용이 억제되어 칼슘이 성장점까지 이동하지 못해 세포벽 붕괴 및 팁번을 유발합니다. 유동팬을 가동하고 환기율을 높이십시오.
+                        <strong>⚠️ Commercial CEA(Commercial CEA) Commercial CEA Commercial CEA (VPD < 0.5 kPa)</strong><br>
+                        Commercial CEA Commercial CEA Commercial CEA. Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA. Commercial CEA Commercial CEA Commercial CEA Commercial CEA.
                     </div>
                 ` : `
                     <div class="alert alert-danger">
@@ -1295,8 +1295,8 @@
             } else if (vpd > 1.4) {
                 statusZone.innerHTML = currentLang === 'ko' ? `
                     <div class="alert alert-danger" style="background-color: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: #fed7aa;">
-                        <strong>⚠️ 고증산 수분 스트레스 구역 (VPD > 1.4 kPa)</strong><br>
-                        대기가 너무 건조합니다. 식물이 수분 탈실을 막기 위해 기공을 닫아 CO₂ 흡수가 억제되며 생장이 정체됩니다. 포그 미스트 가동 시간을 늘려 가습하십시오.
+                        <strong>⚠️ Commercial CEA Commercial CEA Commercial CEA Commercial CEA (VPD > 1.4 kPa)</strong><br>
+                        Commercial CEA Commercial CEA Commercial CEA. Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA CO₂ Commercial CEA Commercial CEA Commercial CEA Commercial CEA. Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA.
                     </div>
                 ` : `
                     <div class="alert alert-danger" style="background-color: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.2); color: #fed7aa;">
@@ -1307,8 +1307,8 @@
             } else {
                 statusZone.innerHTML = currentLang === 'ko' ? `
                     <div class="alert alert-success">
-                        <strong>✅ 최적 작물 활성 창 (VPD 0.5 ~ 1.4 kPa)</strong><br>
-                        수분 흡수 및 광합성 활성의 균형이 매우 뛰어난 대기 환경입니다. 온실 미기후 제어가 매우 안정적으로 유지되고 있습니다.
+                        <strong>✅ Commercial CEA Commercial CEA Commercial CEA Commercial CEA (VPD 0.5 ~ 1.4 kPa)</strong><br>
+                        Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA. Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA Commercial CEA.
                     </div>
                 ` : `
                     <div class="alert alert-success">
@@ -1327,7 +1327,7 @@
                 });
 
                 if (vpdChart) {
-                    vpdChart.data.datasets[0].label = currentLang === 'ko' ? `대기 온도 = ${tAir}°C 기준 VPD 곡선` : `VPD Curve at T_air = ${tAir}°C`;
+                    vpdChart.data.datasets[0].label = currentLang === 'ko' ? `Commercial CEA Commercial CEA = ${tAir}°C Commercial CEA VPD Commercial CEA` : `VPD Curve at T_air = ${tAir}°C`;
                     vpdChart.data.datasets[0].data = vpdCurveData;
                     vpdChart.update();
                 } else {
@@ -1337,7 +1337,7 @@
                         data: {
                             labels: humiditySteps.map(h => h + '%'),
                             datasets: [{
-                                label: currentLang === 'ko' ? `대기 온도 = ${tAir}°C 기준 VPD 곡선` : `VPD Curve at T_air = ${tAir}°C`,
+                                label: currentLang === 'ko' ? `Commercial CEA Commercial CEA = ${tAir}°C Commercial CEA VPD Commercial CEA` : `VPD Curve at T_air = ${tAir}°C`,
                                 data: vpdCurveData,
                                 borderColor: 'rgba(16, 185, 129, 1)',
                                 backgroundColor: 'rgba(16, 185, 129, 0.15)',
@@ -1404,7 +1404,7 @@
             const monthlyCost = dailyKWh * 30.4 * rate;
             const displayCost = currentLang === 'ko' ? monthlyCost * 1400 : monthlyCost;
             const currencySymbol = currentLang === 'ko' ? '₩' : '&euro;';
-            const unitText = currentLang === 'ko' ? ' / 월' : ' / Month';
+            const unitText = currentLang === 'ko' ? ' / Commercial CEA' : ' / Month';
 
             // Update metrics
             document.getElementById('thermal-tj-val').innerHTML = `${tJunction.toFixed(1)} <span class="metric-unit">°C</span>`;
@@ -1426,18 +1426,18 @@
 
             if (typeof Chart !== 'undefined') {
                 if (thermalChart) {
-                    thermalChart.data.datasets[0].label = currentLang === 'ko' ? '월 조명 전력 요금 (₩)' : 'Monthly Energy Cost (€)';
+                    thermalChart.data.datasets[0].label = currentLang === 'ko' ? 'Commercial CEA Commercial CEA Commercial CEA Commercial CEA (₩)' : 'Monthly Energy Cost (€)';
                     thermalChart.data.datasets[0].data = costSplit;
-                    thermalChart.data.labels = hoursSplit.map(hrs => currentLang === 'ko' ? `${hrs}시간 가동/일` : `${hrs} Hours/Day`);
+                    thermalChart.data.labels = hoursSplit.map(hrs => currentLang === 'ko' ? `${hrs}Commercial CEA Commercial CEA/Commercial CEA` : `${hrs} Hours/Day`);
                     thermalChart.update();
                 } else {
                     const ctx = document.getElementById('thermalChart').getContext('2d');
                     thermalChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: hoursSplit.map(hrs => currentLang === 'ko' ? `${hrs}시간 가동/일` : `${hrs} Hours/Day`),
+                            labels: hoursSplit.map(hrs => currentLang === 'ko' ? `${hrs}Commercial CEA Commercial CEA/Commercial CEA` : `${hrs} Hours/Day`),
                             datasets: [{
-                                label: currentLang === 'ko' ? '월 조명 전력 요금 (₩)' : 'Monthly Energy Cost (€)',
+                                label: currentLang === 'ko' ? 'Commercial CEA Commercial CEA Commercial CEA Commercial CEA (₩)' : 'Monthly Energy Cost (€)',
                                 data: costSplit,
                                 backgroundColor: 'rgba(249, 115, 22, 0.75)',
                                 borderColor: 'rgba(249, 115, 22, 1)',
@@ -1468,7 +1468,7 @@
                     html += `
                         <div class="fallback-bar-row">
                             <div class="fallback-bar-label">
-                                <span>${hoursSplit[i]}${currentLang === 'ko' ? '시간 가동/일' : ' Hours/Day'}</span>
+                                <span>${hoursSplit[i]}${currentLang === 'ko' ? 'Commercial CEA Commercial CEA/Commercial CEA' : ' Hours/Day'}</span>
                                 <span>${currencySymbol}${Math.round(costSplit[i]).toLocaleString()}</span>
                             </div>
                             <div class="fallback-bar-track">

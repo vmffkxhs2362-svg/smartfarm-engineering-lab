@@ -45,7 +45,7 @@
    "applicationCategory": "EducationalApplication",
    "browserRequirements": "Requires HTML5, Javascript, CSS3",
    "softwareVersion": "2.1",
-   "inLanguage": ["ko", "en"],
+   "inLanguage": "en",
    "description": "Autonomous Wave Function Collapse (WFC) and A* pathfinding algorithm for smart farm greenhouse design. Automatically routes cultivation gutters, main supply/return hydronic headers, harvesting pathways, and computes instant Bill of Materials (BOM) & plant density.",
    "url": "https://smartfarm.inwoovation.com/smartfarm_layout_wfc",
    "publisher": {
@@ -67,7 +67,7 @@
 <div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: September 05, 2026</div>
 <div style="display: flex; gap: 0.5rem; align-items: center;">
     <button class="lang-btn" id="btn-farm-profile" onclick="toggleFarmProfileDrawer()" style="border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 10px; cursor: pointer; background: transparent; border: 1px solid;">
-        📋 <span class="lang-text-en">My Farm</span><span class="lang-text-ko" style="display:none;">내 농장</span>
+        📋 My Farm
     </button>
 <div class="lang-switch" id="unit-switch" style="margin-bottom: 0; display: flex;">
 <button class="lang-btn active" id="unit-metric" onclick="changeUnit('metric')">Metric</button>
@@ -148,18 +148,18 @@
       <span>📐 WFC Smartfarm Layout Planner</span>
     </h1>
     <p style="color: #94a3b8; font-size: 0.88rem; margin-bottom: 1.5rem; line-height: 1.5;">
-      Wave Function Collapse (WFC) 제약 충족 알고리즘과 A* 경로 탐색을 결합하여, 온실 내 작물 재배 베드, 급액/퇴수 주배관 매니폴드, 물류 통로를 최적 자동 설계하고 자재 명세서(BOM)를 산출합니다.
+      Autonomous Wave Function Collapse (WFC) constraint satisfaction and A* pathfinding algorithm for smart farm greenhouse architecture. Automatically generates optimal cultivation gutters, hydronic supply/return manifolds, harvesting corridors, and computes an instant Bill of Materials (BOM).
     </p>
 
     <!-- Crop System Selection -->
     <div class="input-group" style="margin-bottom: 1.2rem;">
-      <label for="wfc-crop-select" style="font-weight: 600; color: #e2e8f0; font-size: 0.85rem; margin-bottom: 6px; display: block;">재배 작물 및 수경 방식 (System Preset)</label>
+      <label for="wfc-crop-select" style="font-weight: 600; color: #e2e8f0; font-size: 0.85rem; margin-bottom: 6px; display: block;">Crop &amp; Hydroponic System Preset</label>
       <div class="input-control-wrapper select-arrow-wrapper">
         <select id="wfc-crop-select" onchange="applyWfcCropPreset(); runWfcSimulation();" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 10px; padding: 10px 14px; font-size: 0.9rem;">
-          <option value="tomato" selected>🍅 고측고 토마토/파프리카 (행잉 코코피트 슬래브, 1.6m 열간격)</option>
-          <option value="strawberry">🍓 딸기 고설베드 (코코피트 상토 베드, 1.2m 열간격)</option>
-          <option value="lettuce">🥬 샐러드 엽채류 (NFT/DFT 수경 재배 평면 베드)</option>
-          <option value="vertical">🌿 밀폐형 식물공장 3단 수직 랙 (Vertical Multi-Tier)</option>
+          <option value="tomato" selected>🍅 High-Wire Vine Crop (Hanging Gutter, 1.6m Spacing)</option>
+          <option value="strawberry">🍓 Elevated Strawberry Tabletop (Substrate Trough, 1.2m Spacing)</option>
+          <option value="lettuce">🥬 Leafy Greens NFT / DFT Hydroponic Benches</option>
+          <option value="vertical">🌿 CEA Vertical Farm 3-Tier Multi-Rack</option>
         </select>
       </div>
     </div>
@@ -167,26 +167,26 @@
     <!-- Dimensions -->
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
       <div class="input-group">
-        <label for="wfc-bay-width" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">단동 폭 / 베이 (m)</label>
+        <label for="wfc-bay-width" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">Bay / Trellis Width (m)</label>
         <select id="wfc-bay-width" onchange="runWfcSimulation()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.88rem;">
-          <option value="8.0">8.0m (한국형 1-2W 광폭)</option>
-          <option value="9.6" selected>9.6m (글로벌 표준 벤로형)</option>
-          <option value="12.8">12.8m (대형 초고측고 연동)</option>
+          <option value="8.0">8.0m (Wide Arch Multispan)</option>
+          <option value="9.6" selected>9.6m (Global Standard Venlo Truss)</option>
+          <option value="12.8">12.8m (High-Gutter Wide-Span)</option>
         </select>
       </div>
       <div class="input-group">
-        <label for="wfc-spans" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">연동 동수 (Spans)</label>
+        <label for="wfc-spans" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">Number of Spans</label>
         <input type="number" id="wfc-spans" min="1" max="10" value="4" oninput="runWfcSimulation()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; box-sizing: border-box;" />
       </div>
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
       <div class="input-group">
-        <label for="wfc-length" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">온실 길이 (m)</label>
+        <label for="wfc-length" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">Greenhouse Length (m)</label>
         <input type="number" id="wfc-length" min="20" max="150" step="5" value="60" oninput="runWfcSimulation()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; box-sizing: border-box;" />
       </div>
       <div class="input-group">
-        <label for="wfc-corridor" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">중앙 물류 통로 폭 (m)</label>
+        <label for="wfc-corridor" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">Central Logistics Corridor (m)</label>
         <input type="number" id="wfc-corridor" min="2.0" max="6.0" step="0.5" value="3.5" oninput="runWfcSimulation()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; box-sizing: border-box;" />
       </div>
     </div>
@@ -194,11 +194,11 @@
     <!-- Dripper Flow & Plant Density -->
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
       <div class="input-group">
-        <label for="wfc-emitter-rate" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">점적 단추 토출량 (L/h)</label>
+        <label for="wfc-emitter-rate" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">Dripper Flow Rate (L/h)</label>
         <input type="number" id="wfc-emitter-rate" min="1.0" max="4.0" step="0.2" value="2.0" oninput="runWfcSimulation()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; box-sizing: border-box;" />
       </div>
       <div class="input-group">
-        <label for="wfc-drippers-per-plant" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">주당 점적기 수 (개/주)</label>
+        <label for="wfc-drippers-per-plant" style="font-weight: 600; color: #cbd5e1; font-size: 0.82rem; display: block; margin-bottom: 4px;">Drippers per Plant Unit</label>
         <input type="number" id="wfc-drippers-per-plant" min="1" max="3" step="1" value="1" oninput="runWfcSimulation()" style="width: 100%; background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; box-sizing: border-box;" />
       </div>
     </div>
@@ -206,23 +206,23 @@
     <!-- Action Buttons -->
     <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
       <button onclick="runWfcSimulation()" style="flex: 1; background: linear-gradient(135deg, #0ea5e9, #2563eb); color: #fff; font-weight: 700; border: none; border-radius: 10px; padding: 12px 16px; cursor: pointer; transition: all 0.2s;">
-        ⚡ WFC 공간 재배치 연산
+        ⚡ Run WFC Spatial Layout
       </button>
       <button onclick="triggerLogisticsPathTest()" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; font-weight: 600; border-radius: 10px; padding: 12px 16px; cursor: pointer;">
-        🚚 물류 경로 A* 검증
+        🚚 Verify A* Logistics Path
       </button>
     </div>
 
     <!-- Legend -->
     <div style="background: #0f172a; border-radius: 12px; padding: 12px; font-size: 0.78rem; color: #94a3b8; line-height: 1.6;">
-      <strong style="color: #f1f5f9; display: block; margin-bottom: 4px;">🎨 배치 범례 (Layout Legend):</strong>
+      <strong style="color: #f1f5f9; display: block; margin-bottom: 4px;">🎨 Layout Legend:</strong>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-        <div><span style="color: #10b981; font-size: 1rem;">■</span> 작물 재배 베드 / 거터</div>
-        <div><span style="color: #38bdf8; font-size: 1rem;">■</span> 급액 공급 주배관 (Supply)</div>
-        <div><span style="color: #a855f7; font-size: 1rem;">■</span> 배액 회수 배관 (Drain)</div>
-        <div><span style="color: #f59e0b; font-size: 1rem;">■</span> 중앙 운반 통로 (Corridor)</div>
-        <div><span style="color: #ef4444; font-size: 1rem;">●</span> A* 물류 운반 카트 위치</div>
-        <div><span style="color: #64748b; font-size: 1rem;">■</span> 기둥 구조체 (Columns)</div>
+        <div><span style="color: #10b981; font-size: 1rem;">■</span> Cultivation Gutters / Benches</div>
+        <div><span style="color: #38bdf8; font-size: 1rem;">■</span> Irrigation Supply Manifold</div>
+        <div><span style="color: #a855f7; font-size: 1rem;">■</span> Drain / Leachate Return</div>
+        <div><span style="color: #f59e0b; font-size: 1rem;">■</span> Central Logistics Corridor</div>
+        <div><span style="color: #ef4444; font-size: 1rem;">●</span> A* Autonomous Cart Position</div>
+        <div><span style="color: #64748b; font-size: 1rem;">■</span> Structural Posts &amp; Columns</div>
       </div>
     </div>
   </div>
@@ -232,7 +232,7 @@
     <!-- 2D Plan Canvas -->
     <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 16px; position: relative; overflow: hidden;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span style="font-weight: 700; color: #f8fafc; font-size: 0.95rem;">🖥️ WFC 2D 평면 설계 &amp; A* 자율 경로 뷰</span>
+        <span style="font-weight: 700; color: #f8fafc; font-size: 0.95rem;">🖥️ WFC 2D Layout Plan &amp; A* Autonomous Path View</span>
         <span id="wfc-status-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600;">WFC Constraint Satisfied (100%)</span>
       </div>
       <canvas id="wfcCanvas" width="680" height="380" style="width: 100%; height: auto; background: #090d16; border-radius: 12px; border: 1px solid #1e293b; display: block;"></canvas>
@@ -241,41 +241,41 @@
     <!-- Quant & BOM Dashboard -->
     <div class="result-panel" style="background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 24px;">
       <h2 style="font-size: 1.15rem; color: #38bdf8; margin-top: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 6px;">
-        <span>📊 실시간 설비 수리학 &amp; 자재 명세서 (BOM)</span>
+        <span>📊 Real-Time Facility Hydraulics &amp; Bill of Materials (BOM)</span>
       </h2>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.5rem;">
         <div style="background: #0f172a; padding: 12px; border-radius: 12px; border: 1px solid #1e293b;">
-          <div style="font-size: 0.75rem; color: #94a3b8;">총 온실 면적</div>
+          <div style="font-size: 0.75rem; color: #94a3b8;">Total Greenhouse Area</div>
           <div id="res-total-area" style="font-size: 1.25rem; font-weight: 800; color: #f8fafc;">2,304 m²</div>
-          <div id="res-total-pyeong" style="font-size: 0.75rem; color: #64748b;">(약 697 평)</div>
+          <div id="res-total-pyeong" style="font-size: 0.75rem; color: #64748b;">(approx. 24,800 sq ft)</div>
         </div>
         <div style="background: #0f172a; padding: 12px; border-radius: 12px; border: 1px solid #1e293b;">
-          <div style="font-size: 0.75rem; color: #94a3b8;">유효 거터 총 연장</div>
+          <div style="font-size: 0.75rem; color: #94a3b8;">Total Cultivation Gutter Length</div>
           <div id="res-gutter-length" style="font-size: 1.25rem; font-weight: 800; color: #10b981;">1,356 m</div>
-          <div id="res-gutter-rows" style="font-size: 0.75rem; color: #64748b;">(24 개 라인)</div>
+          <div id="res-gutter-rows" style="font-size: 0.75rem; color: #64748b;">(24 Crop Rows)</div>
         </div>
         <div style="background: #0f172a; padding: 12px; border-radius: 12px; border: 1px solid #1e293b;">
-          <div style="font-size: 0.75rem; color: #94a3b8;">총 재배 주수 (식재량)</div>
-          <div id="res-plant-count" style="font-size: 1.25rem; font-weight: 800; color: #38bdf8;">5,760 주</div>
-          <div id="res-plant-density" style="font-size: 0.75rem; color: #64748b;">2.5 주/m²</div>
+          <div style="font-size: 0.75rem; color: #94a3b8;">Total Plant Capacity</div>
+          <div id="res-plant-count" style="font-size: 1.25rem; font-weight: 800; color: #38bdf8;">5,760 Plants</div>
+          <div id="res-plant-density" style="font-size: 0.75rem; color: #64748b;">2.5 plants/m²</div>
         </div>
         <div style="background: #0f172a; padding: 12px; border-radius: 12px; border: 1px solid #1e293b;">
-          <div style="font-size: 0.75rem; color: #94a3b8;">동시 급액 유량</div>
+          <div style="font-size: 0.75rem; color: #94a3b8;">Simultaneous Irrigation Demand</div>
           <div id="res-flow-rate" style="font-size: 1.25rem; font-weight: 800; color: #f59e0b;">11.52 m³/h</div>
-          <div id="res-pipe-dia" style="font-size: 0.75rem; color: #64748b;">권장 주배관: DN50 (50A)</div>
+          <div id="res-pipe-dia" style="font-size: 0.75rem; color: #64748b;">Recommended Header: DN50 (2")</div>
         </div>
       </div>
 
       <!-- CAPEX Estimation Box -->
       <div style="background: linear-gradient(145deg, rgba(15,23,42,0.9), rgba(30,41,59,0.7)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 16px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span style="font-weight: 700; color: #e2e8f0; font-size: 0.9rem;">💰 거터 및 관수 자동화 설비 CAPEX 추산:</span>
+          <span style="font-weight: 700; color: #e2e8f0; font-size: 0.9rem;">💰 Gutter &amp; Irrigation Automation CAPEX Estimate:</span>
           <span id="res-capex-usd" style="font-weight: 800; color: #38bdf8; font-size: 1.15rem;">$28,800 ~ $34,500</span>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #94a3b8;">
-          <span>원화 환산 견적 (USD 1,357원 기준):</span>
-          <span id="res-capex-krw" style="font-weight: 700; color: #f8fafc;">3,908만 ~ 4,681만 원</span>
+          <span>Estimated Turnkey Cost:</span>
+          <span id="res-capex-krw" style="font-weight: 700; color: #f8fafc;">Turnkey System: High-Yield Commercial</span>
         </div>
       </div>
     </div>
@@ -308,16 +308,15 @@
     <div class="drawer-overlay" onclick="toggleFarmProfileDrawer()"></div>
     <div class="drawer-content">
         <div class="drawer-header">
-            <h3>📋 <span class="lang-text-en">My Farm Profile</span><span class="lang-text-ko" style="display:none;">내 농장 프로필</span></h3>
+            <h3>📋 My Farm Profile</h3>
             <button class="drawer-close-btn" onclick="toggleFarmProfileDrawer()">✕</button>
         </div>
         <p class="drawer-subtitle" style="font-size: 0.78rem; color: var(--text-gray); margin-bottom: 1.2rem; line-height: 1.4;">
-            <span class="lang-text-en">🔒 GDPR Compliant: Your profile is stored 100% locally on your browser. We collect zero data on our servers.</span>
-            <span class="lang-text-ko" style="display:none;">🔒 개인정보보호: 입력한 농가 프로필은 브라우저(로컬)에만 안전하게 저장되며, 서버로 전혀 전송되지 않습니다.</span>
+            🔒 GDPR Compliant: Your profile is stored 100% locally on your browser. We collect zero data on our servers.
         </p>
         <div class="drawer-form" style="display: flex; flex-direction: column; gap: 0.9rem; text-align: left;">
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-area" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Greenhouse Floor Area</span><span class="lang-text-ko" style="display:none;">온실 바닥 면적</span></label>
+                <label for="prof-area" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Greenhouse Floor Area</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-area" value="1500" step="100" style="width: 100%;" />
                     <span class="suffix" id="prof-area-suffix">m²</span>
@@ -325,7 +324,7 @@
             </div>
             
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-cladding" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Cladding Material</span><span class="lang-text-ko" style="display:none;">온실 피복재</span></label>
+                <label for="prof-cladding" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Cladding Material</label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
                     <select id="prof-cladding" style="width: 100%;" onchange="onProfileCladdingChange()">
                         <option value="5.5">Single Glass / PE Film (U = 5.5)</option>
@@ -341,20 +340,20 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-crop" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Main Cultivated Crop</span><span class="lang-text-ko" style="display:none;">주요 재배 작물</span></label>
+                <label for="prof-crop" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Main Cultivated Crop</label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
                     <select id="prof-crop" style="width: 100%;">
-                        <option value="tomato">Tomato (토마토)</option>
-                        <option value="strawberry">Strawberry (딸기)</option>
-                        <option value="pepper">Bell Pepper (파프리카)</option>
-                        <option value="cucumber">Cucumber (오이)</option>
+                        <option value="tomato">Tomato</option>
+                        <option value="strawberry">Strawberry</option>
+                        <option value="pepper">Bell Pepper</option>
+                        <option value="cucumber">Cucumber</option>
                         <option value="herbs">Medicinal Herbs / Basil</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-tank" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Fertigation Tank A/B Vol</span><span class="lang-text-ko" style="display:none;">액비 탱크 A/B 용량</span></label>
+                <label for="prof-tank" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Fertigation Tank A/B Vol</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-tank" value="1000" step="100" style="width: 100%;" />
                     <span class="suffix" id="prof-tank-suffix">L</span>
@@ -362,7 +361,7 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-injector" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Injector Dilution Ratio (1:X)</span><span class="lang-text-ko" style="display:none;">양액기 관수 희석 비율 (1:X)</span></label>
+                <label for="prof-injector" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Injector Dilution Ratio (1:X)</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-injector" value="100" step="10" style="width: 100%;" />
                     <span class="suffix">Ratio</span>
@@ -370,18 +369,18 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-boiler" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Boiler Fuel Type</span><span class="lang-text-ko" style="display:none;">난방용 보일러 연료</span></label>
+                <label for="prof-boiler" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Boiler Fuel Type</label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
                     <select id="prof-boiler" style="width: 100%;" onchange="onProfileBoilerChange()">
-                        <option value="gas">Natural Gas (도시가스)</option>
-                        <option value="oil">Heating Oil / Kerosene (등유)</option>
+                        <option value="gas">Natural Gas</option>
+                        <option value="oil">Heating Oil / Kerosene</option>
                         <option value="lpg">LPG</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-boiler-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Boiler Fuel Unit Price</span><span class="lang-text-ko" style="display:none;">연료 단가</span></label>
+                <label for="prof-boiler-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Boiler Fuel Unit Price</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-boiler-price" value="1000" step="10" style="width: 100%;" />
                     <span class="suffix" id="prof-boiler-price-suffix">₩/m³</span>
@@ -389,7 +388,7 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-elec-rate" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Agricultural Electricity Rate</span><span class="lang-text-ko" style="display:none;">농업용 전기 요금 단가</span></label>
+                <label for="prof-elec-rate" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Agricultural Electricity Rate</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-elec-rate" value="80" step="1" style="width: 100%;" />
                     <span class="suffix" id="prof-elec-rate-suffix">₩/kWh</span>
@@ -397,7 +396,7 @@
             </div>
             
             <button class="estimator-btn" onclick="saveFarmProfile()" style="margin-top: 0.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%); color: var(--text-dark); border: none; font-weight: 700; width: 100%;">
-                <span class="lang-text-en">💾 Save Profile</span><span class="lang-text-ko" style="display:none;">💾 프로필 저장</span>
+                💾 Save Profile
             </button>
 
             <div style="display: flex; gap: 0.5rem; margin-top: 0.2rem;">
@@ -507,15 +506,15 @@ function runWfcSimulation() {
 
   // Update UI Elements
   document.getElementById("res-total-area").textContent = `${totalArea.toLocaleString()} m²`;
-  document.getElementById("res-total-pyeong").textContent = `(약 ${Math.round(pyeong).toLocaleString()} 평)`;
+  document.getElementById("res-total-pyeong").textContent = `(approx. ${Math.round(totalArea * 10.7639).toLocaleString()} sq ft)`;
   document.getElementById("res-gutter-length").textContent = `${Math.round(totalGutterLength).toLocaleString()} m`;
-  document.getElementById("res-gutter-rows").textContent = `(${totalRows} 개 작물 열)`;
-  document.getElementById("res-plant-count").textContent = `${totalPlants.toLocaleString()} 주`;
-  document.getElementById("res-plant-density").textContent = `${plantsPerSqM} 주/m²`;
+  document.getElementById("res-gutter-rows").textContent = `(${totalRows} Crop Rows)`;
+  document.getElementById("res-plant-count").textContent = `${totalPlants.toLocaleString()} Plants`;
+  document.getElementById("res-plant-density").textContent = `${plantsPerSqM} plants/m²`;
   document.getElementById("res-flow-rate").textContent = `${peakFlowM3h.toFixed(2)} m³/h`;
-  document.getElementById("res-pipe-dia").textContent = `권장 주배관: ${recommendedPipe}`;
+  document.getElementById("res-pipe-dia").textContent = `Recommended Header: ${recommendedPipe}`;
   document.getElementById("res-capex-usd").textContent = `$${capexLow.toLocaleString()} ~ $${capexHigh.toLocaleString()}`;
-  document.getElementById("res-capex-krw").textContent = `${krwLow.toLocaleString()}만 ~ ${krwHigh.toLocaleString()}만 원`;
+  document.getElementById("res-capex-krw").textContent = `Turnkey System: High-Yield Commercial`;
 
   // Draw on Canvas
   drawWfcCanvas(totalWidth, length, spans, rowsPerBay, corridorWidth);

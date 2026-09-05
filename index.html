@@ -45,7 +45,7 @@
    "applicationCategory": "EducationalApplication",
    "browserRequirements": "Requires HTML5, Javascript, CSS3",
    "softwareVersion": "2.1",
-   "inLanguage": ["ko", "en"],
+   "inLanguage": "en",
    "description": "Free online precision engineering tools for greenhouse growers: VPD calculator, fertigation solver, heat loss estimator, mixing valve sizer, crop diagnosis, and ROI analysis. Designed for CEA professionals and agricultural engineers.",
    "url": "https://smartfarm.inwoovation.com/",
    "publisher": {
@@ -67,7 +67,7 @@
 <div class="badge" id="header-badge" style="margin-bottom: 0;">Last Updated: September 05, 2026</div>
 <div style="display: flex; gap: 0.5rem; align-items: center;">
     <button class="lang-btn" id="btn-farm-profile" onclick="toggleFarmProfileDrawer()" style="border-color: var(--primary); color: var(--primary); display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 10px; cursor: pointer; background: transparent; border: 1px solid;">
-        📋 <span class="lang-text-en">My Farm</span><span class="lang-text-ko" style="display:none;">내 농장</span>
+        📋 My Farm
     </button>
 <div class="lang-switch" id="unit-switch" style="margin-bottom: 0; display: flex;">
 <button class="lang-btn active" id="unit-metric" onclick="changeUnit('metric')">Metric</button>
@@ -296,16 +296,15 @@
     <div class="drawer-overlay" onclick="toggleFarmProfileDrawer()"></div>
     <div class="drawer-content">
         <div class="drawer-header">
-            <h3>📋 <span class="lang-text-en">My Farm Profile</span><span class="lang-text-ko" style="display:none;">내 농장 프로필</span></h3>
+            <h3>📋 My Farm Profile</h3>
             <button class="drawer-close-btn" onclick="toggleFarmProfileDrawer()">✕</button>
         </div>
         <p class="drawer-subtitle" style="font-size: 0.78rem; color: var(--text-gray); margin-bottom: 1.2rem; line-height: 1.4;">
-            <span class="lang-text-en">🔒 GDPR Compliant: Your profile is stored 100% locally on your browser. We collect zero data on our servers.</span>
-            <span class="lang-text-ko" style="display:none;">🔒 개인정보보호: 입력한 농가 프로필은 브라우저(로컬)에만 안전하게 저장되며, 서버로 전혀 전송되지 않습니다.</span>
+            🔒 GDPR Compliant: Your profile is stored 100% locally on your browser. We collect zero data on our servers.
         </p>
         <div class="drawer-form" style="display: flex; flex-direction: column; gap: 0.9rem; text-align: left;">
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-area" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Greenhouse Floor Area</span><span class="lang-text-ko" style="display:none;">온실 바닥 면적</span></label>
+                <label for="prof-area" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Greenhouse Floor Area</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-area" value="1500" step="100" style="width: 100%;" />
                     <span class="suffix" id="prof-area-suffix">m²</span>
@@ -313,7 +312,7 @@
             </div>
             
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-cladding" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Cladding Material</span><span class="lang-text-ko" style="display:none;">온실 피복재</span></label>
+                <label for="prof-cladding" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Cladding Material</label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
                     <select id="prof-cladding" style="width: 100%;" onchange="onProfileCladdingChange()">
                         <option value="5.5">Single Glass / PE Film (U = 5.5)</option>
@@ -329,20 +328,20 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-crop" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Main Cultivated Crop</span><span class="lang-text-ko" style="display:none;">주요 재배 작물</span></label>
+                <label for="prof-crop" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Main Cultivated Crop</label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
                     <select id="prof-crop" style="width: 100%;">
-                        <option value="tomato">Tomato (토마토)</option>
-                        <option value="strawberry">Strawberry (딸기)</option>
-                        <option value="pepper">Bell Pepper (파프리카)</option>
-                        <option value="cucumber">Cucumber (오이)</option>
+                        <option value="tomato">Tomato</option>
+                        <option value="strawberry">Strawberry</option>
+                        <option value="pepper">Bell Pepper</option>
+                        <option value="cucumber">Cucumber</option>
                         <option value="herbs">Medicinal Herbs / Basil</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-tank" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Fertigation Tank A/B Vol</span><span class="lang-text-ko" style="display:none;">액비 탱크 A/B 용량</span></label>
+                <label for="prof-tank" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Fertigation Tank A/B Vol</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-tank" value="1000" step="100" style="width: 100%;" />
                     <span class="suffix" id="prof-tank-suffix">L</span>
@@ -350,7 +349,7 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-injector" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Injector Dilution Ratio (1:X)</span><span class="lang-text-ko" style="display:none;">양액기 관수 희석 비율 (1:X)</span></label>
+                <label for="prof-injector" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Injector Dilution Ratio (1:X)</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-injector" value="100" step="10" style="width: 100%;" />
                     <span class="suffix">Ratio</span>
@@ -358,18 +357,18 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-boiler" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Boiler Fuel Type</span><span class="lang-text-ko" style="display:none;">난방용 보일러 연료</span></label>
+                <label for="prof-boiler" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Boiler Fuel Type</label>
                 <div class="input-control-wrapper select-arrow-wrapper" style="margin-top: 0.3rem;">
                     <select id="prof-boiler" style="width: 100%;" onchange="onProfileBoilerChange()">
-                        <option value="gas">Natural Gas (도시가스)</option>
-                        <option value="oil">Heating Oil / Kerosene (등유)</option>
+                        <option value="gas">Natural Gas</option>
+                        <option value="oil">Heating Oil / Kerosene</option>
                         <option value="lpg">LPG</option>
                     </select>
                 </div>
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-boiler-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Boiler Fuel Unit Price</span><span class="lang-text-ko" style="display:none;">연료 단가</span></label>
+                <label for="prof-boiler-price" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Boiler Fuel Unit Price</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-boiler-price" value="1000" step="10" style="width: 100%;" />
                     <span class="suffix" id="prof-boiler-price-suffix">₩/m³</span>
@@ -377,7 +376,7 @@
             </div>
 
             <div class="input-group" style="margin-bottom: 0;">
-                <label for="prof-elec-rate" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);"><span class="lang-text-en">Agricultural Electricity Rate</span><span class="lang-text-ko" style="display:none;">농업용 전기 요금 단가</span></label>
+                <label for="prof-elec-rate" style="font-size: 0.8rem; font-weight: 600; color: var(--text-light);">Agricultural Electricity Rate</label>
                 <div class="input-control-wrapper" style="margin-top: 0.3rem;">
                     <input type="number" id="prof-elec-rate" value="80" step="1" style="width: 100%;" />
                     <span class="suffix" id="prof-elec-rate-suffix">₩/kWh</span>
@@ -385,7 +384,7 @@
             </div>
             
             <button class="estimator-btn" onclick="saveFarmProfile()" style="margin-top: 0.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--cyan) 100%); color: var(--text-dark); border: none; font-weight: 700; width: 100%;">
-                <span class="lang-text-en">💾 Save Profile</span><span class="lang-text-ko" style="display:none;">💾 프로필 저장</span>
+                💾 Save Profile
             </button>
 
             <div style="display: flex; gap: 0.5rem; margin-top: 0.2rem;">
