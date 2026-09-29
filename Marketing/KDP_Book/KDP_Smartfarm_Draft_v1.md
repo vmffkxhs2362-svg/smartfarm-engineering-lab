@@ -101,7 +101,7 @@ Correct valve sizing prevents cavitation—the formation and sudden collapse of 
 ## 📘 CHAPTER 5: High-Temperature Valve Modulating Control (Industrial Secrets)
 
 ### 5.1 Lessons from Industrial Steam Control
-Applying heavy industrial process control (e.g., Dawoovac valve designs) to greenhouse systems resolves the issue of "valve hunting."
+Applying heavy industrial process control (e.g., precision thermal vacuum valve designs) to greenhouse systems resolves the issue of "valve hunting."
 * **Chamber Design**: Use equal-percentage valve plugs rather than linear plugs for heating loop control. Equal-percentage characteristics ensure that small increments in valve lift at low flow rates result in highly precise flow adjustments, preventing rapid temperature swings.
 
 ### 5.2 PID Loop Tuning for Actuators

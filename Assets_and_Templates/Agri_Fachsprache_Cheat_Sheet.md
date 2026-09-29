@@ -91,7 +91,7 @@
 *   **DE**: "Durch mein eigenes Obsthandelsgeschäft habe ich gelernt, die Qualität von Früchten aus Kundensicht zu bewerten. Ich verstehe, dass jeder Fehler beim Anbau den Marktwert des Produkts direkt mindert. Diese unternehmerische Denkweise motiviert mich, während der Ausbildung höchste Sorgfalt bei der Pflanzenpflege und Qualitätskontrolle anzuwenden."
 *   **KO**: "직접 과일 유통 사업을 운영하면서 고객의 관점에서 과일의 품질을 평가하는 법을 배웠습니다. 재배 과정에서의 아주 작은 실수가 제품의 시장 가치를 직접적으로 떨어뜨린다는 것을 잘 알고 있습니다. 이러한 기업가적 마인드는 제가 교육을 받는 동안 식물 관리와 품질 관리에 최고의 정성을 쏟게 만드는 원동력이 될 것입니다."
 
-### ❓ Q4: "밸브 및 유체 정밀 제어 관련 경력(Dawoovac)이 원예 현장에서 어떻게 활용될 수 있습니까?"
+### ❓ Q4: "기계설계 및 유체 정밀 제어 관련 실무 경력이 원예 현장에서 어떻게 활용될 수 있습니까?"
 *   **DE**: "In der Hydrokultur ist die präzise Steuerung von Wasserdurchfluss und Mischventilen entscheidend. Meine Erfahrung mit hochtemperierten Fluidleitungen und 3-Wege-Mischventilen ermöglicht es mir, Heizungskreisläufe und Bewässerungssysteme im Gewächshaus mechanisch voll zu verstehen und Störungen an Ventilen oder Rohrleitungen selbstständig zu beheben."
 *   **KO**: "수경재배에서는 수량과 혼합 밸브의 정밀 제어가 매우 중요합니다. 고온 유체 배관 및 3방 혼합 밸브를 다룬 저의 경력은 온실 내 난방 배관과 관수 시스템의 작동 방식을 기계적으로 완벽히 이해하고, 밸브나 파이프라인의 고장을 스스로 해결하는 데 큰 도움이 될 것입니다."
 
