@@ -13,7 +13,7 @@
 본 에셋은 구글 스프레드시트와 무료 구글 앱스 스크립트(GAS)를 결합하여, 사용자가 구글 폼에 피드백이나 질문을 남기면 **Google Gemini API(무료 티어)**를 호출하여 최적의 학술적/엔지니어링 답변 이메일을 자동으로 생성 및 발송해 주는 자동화 솔루션입니다.
 
 *   **서버 유지비 $0**: 구글 클라우드에서 동작하므로 평생 무료로 작동합니다.
-*   **Gemini 1.5 Flash 무료 API**: Google AI Studio에서 무료 API 키를 연동해 작동하므로 비용이 발생하지 않습니다.
+*   **Gemini 4 Argon API**: Google AI Studio에서 API 키를 연동해 작동합니다.
 *   **B2B 리드 마그넷 연계**: 스마트팜 정밀 계산기 대시보드 하단 플로팅 버튼을 통해 수집된 사용자의 피드백에 대해 실시간 AI 기술 답변 서비스를 제공하여, 사이트 신뢰도를 극대화하고 고품질 B2B 잠재 고객의 이메일을 자동으로 수집합니다.
 
 ---
@@ -29,7 +29,7 @@
                 ▼ (On Form Submit 이벤트 트리거)
 [구글 앱스 스크립트(GAS) 구동]
                 │
-                ├─► [Gemini API (gemini-2.0-flash) 호출: 프롬프트 주입 및 답변 생성]
+                ├─► [Gemini API (gemini-4-argon) 호출: 프롬프트 주입 및 답변 생성]
                 │
                 ▼ (답변 이메일 자동 발송)
 [사용자 수신함: AI 작성 이메일] & [관리자 수신함: 알림 카피본 이메일]
@@ -99,14 +99,18 @@ function onFormSubmitTrigger(e) {
     const prompt = `User Email: ${userEmail}\nQuestion/Feedback:\n"${userQuestion}"`;
 
     // 3. Gemini API 요청 Payload 작성
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-4-argon:generateContent?key=${GEMINI_API_KEY}`;
     
     const payload = {
       contents: [{
         parts: [{
           text: `${systemInstruction}\n\n${prompt}`
         }]
-      }]
+      }],
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 4096
+      }
     };
 
     const options = {
