@@ -22,12 +22,9 @@ jobs:
       - name: Run Market Data Updater Script
         run: python scripts/update_market_data.py
 
-      - name: Run Static Build
-        run: python build.py
-
       - name: Commit and Push Changes
         run: |
           git config --global user.name "Antigravity Cloud Bot"
           git config --global user.email "bot@inwoovation.com"
-          git add data/global_prices.json sitemap.xml *.html
+          git add data/global_prices.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "auto: 24/7 cloud daily market data update" && git push)
