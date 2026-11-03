@@ -172,8 +172,8 @@
   <li><strong>Niche</strong>: Precision Agriculture, Advanced HVAC for Greenhouses, Modulating Fluid Dynamics, and PLC Automation.</li>
   <li><strong>Geographical Targets</strong>: United States (high Smart Farm adoption), Germany (leading European greenhouse market), Netherlands (world center of glasshouse tech), South Korea.</li>
   <li><strong>Pricing Strategy</strong>:</li>
-  <li><strong>Kindle E-book</strong>: $9.99 (Eligible for 70% royalty rate ➡️ Net $6.99 per copy).</li>
-  <li><strong>Paperback (POD)</strong>: $24.99 (60% royalty rate minus printing costs ➡️ Net ~$10.49 per copy).</li>
+  <li><strong>Kindle E-book</strong>: 9.99 (Eligible for 70% royalty rate ➡️ Net6.99 per copy).</li>
+  <li><strong>Paperback (POD)</strong>: 24.99 (60% royalty rate minus printing costs ➡️ Net ~10.49 per copy).</li>
   <li><strong>Kindle Unlimited (KU)</strong>: Enrolled for per-page read monetization (~$0.0045/page read).</li>
 </ul>
 <br/>
@@ -204,15 +204,15 @@
 </code></pre>
 <br/>
 <ul>
-  <li><strong>Optical Light Transmittance & Anti-Reflective (AR) Diffuse Glass</strong>: Standard float glass exhibits a light transmission rate of 88-90% at normal incidence. Venlo structures maximize photosynthetically active radiation (PAR, 400-700 nm) by utilizing anti-reflective (AR) coated, diffuse glass panels. The AR coating utilizes destructive interference (via a thin silicon dioxide film of refraction index $n_c = \sqrt{n_{glass}}$) to minimize Fresnel reflection losses at a single boundary:</li>
+  <li><strong>Optical Light Transmittance & Anti-Reflective (AR) Diffuse Glass</strong>: Standard float glass exhibits a light transmission rate of 88-90% at normal incidence. Venlo structures maximize photosynthetically active radiation (PAR, 400-700 nm) by utilizing anti-reflective (AR) coated, diffuse glass panels. The AR coating utilizes destructive interference (via a thin silicon dioxide film of refraction index n<sub>c</sub> = \sqrtn<sub>glass</sub>) to minimize Fresnel reflection losses at a single boundary:</li>
 </ul>
-<p>$$R = \left( \frac{n_{glass} - n_{air}}{n_{glass} + n_{air}} \right)^2$$</p>
-<p>Considering both front and back glass-to-air interfaces and neglecting absorption, the overall light transmittance ($T_{trans}$) including infinite internal reflections is precisely modeled as:</p>
-<p>$$T_{trans} = \frac{1 - R}{1 + R}$$</p>
+<p>R = ( \fracn<sub>glass</sub> - n<sub>air</sub>n<sub>glass</sub> + n<sub>air</sub> )<sup>2</sup></p>
+<p>Considering both front and back glass-to-air interfaces and neglecting absorption, the overall light transmittance (T<sub>trans</sub>) including infinite internal reflections is precisely modeled as:</p>
+<p>T<sub>trans</sub> = (1 - R)/(1 + R)</p>
 <p>Diffuse glass scatters direct sunlight, transforming it into diffuse PAR. This ensures light penetrates deep into the lower leaf canopy rather than casting harsh structural shadows from trusses. Diffuse light increases crop photosynthesis by up to 8-12% by mitigating light saturation in top leaves and lighting under-canopy leaves.</p>
 <ul>
   <li><strong>Structural Loading Calculations</strong>: The lattice girders carry heavy static and dynamic loads. A typical 1-hectare Venlo greenhouse girder must support:</li>
-  <li>Hanging cultivation gutters (carrying wet substrates like cocopeat/rockwool slabs and heavy tomato crops up to $15 \text{ kg/m}$).</li>
+  <li>Hanging cultivation gutters (carrying wet substrates like cocopeat/rockwool slabs and heavy tomato crops up to 15 kg/m).</li>
   <li>High-pressure fogging lines operating at 70-100 bar. *(Safety Warning: 70-100 bar is extremely high pressure, equivalent to 1,015-1,450 psi. All piping must be schedule-80 stainless steel or double-braided flexible hoses rated for a minimum burst pressure of 200 bar. A certified Pressure Relief Valve (PRV) must be installed immediately downstream of the pump, and manual bleed valves must be opened to depressurize the system before any maintenance is performed to prevent high-velocity fluid injection injuries.)*</li>
   <li>Automated thermal and shading screen rail systems.</li>
   <li>Dynamic wind and seasonal snow loads calculated per local DIN EN 1991-1-3 code.</li>
@@ -224,17 +224,17 @@
 <p>#### Vertical Thermal Stratification</p>
 <p>Warm air naturally accumulates at the ridge. However, when the floor heating rails are active, warm air at the floor expands and rises due to natural buoyancy, creating convective mixing.</p>
 <ul>
-  <li><strong>Physics of Convection & Rayleigh Number</strong>: The density difference $\Delta \rho$ between the hot floor and the cold ridge creates a buoyancy-driven pressure gradient $\Delta P$, governed by:</li>
+  <li><strong>Physics of Convection & Rayleigh Number</strong>: The density difference Δ ρ between the hot floor and the cold ridge creates a buoyancy-driven pressure gradient Δ P, governed by:</li>
 </ul>
-<p>$$\Delta P = \Delta \rho \cdot g \cdot H \approx \rho_0 \cdot \beta \cdot (T_{floor} - T_{ridge}) \cdot g \cdot H$$</p>
-<p>where $g$ is the gravitational acceleration ($9.81 \text{ m/s}^2$), $H$ is the vertical column height ($m$), $\beta$ is the thermal expansion coefficient of air ($1/T_{avg}$ in Kelvin), and $\rho_0$ is the reference air density. Convective instability and upward drafts occur when the dimensionless Rayleigh Number ($Ra$) exceeds the critical threshold ($Ra > 1708$ for horizontal layers):</p>
-<p>$$Ra = \frac{g \cdot \beta \cdot (T_{floor} - T_{ridge}) \cdot H^3}{\nu \cdot \alpha}$$</p>
-<p>where $\nu$ is the kinematic viscosity and $\alpha$ is the thermal diffusivity of air. In a 6-meter tall Venlo greenhouse, active floor rails quickly drive $Ra$ into the turbulent convection regime ($Ra > 10^8$), facilitating vertical thermal mixing.</p>
+<p>Δ P = Δ ρ · g · H ≈ ρ<sub>0</sub> · β · (T<sub>floor</sub> - T<sub>ridge</sub>) · g · H</p>
+<p>where g is the gravitational acceleration (9.81 m/s<sup>2</sup>), H is the vertical column height (m), β is the thermal expansion coefficient of air (1/T<sub>avg</sub> in Kelvin), and ρ<sub>0</sub> is the reference air density. Convective instability and upward drafts occur when the dimensionless Rayleigh Number (Ra) exceeds the critical threshold (Ra > 1708 for horizontal layers):</p>
+<p>Ra = \fracg · β · (T<sub>floor</sub> - T<sub>ridge</sub>) · H<sup>3</sup>ν · α</p>
+<p>where ν is the kinematic viscosity and α is the thermal diffusivity of air. In a 6-meter tall Venlo greenhouse, active floor rails quickly drive Ra into the turbulent convection regime (Ra > 10<sup>8</sup>), facilitating vertical thermal mixing.</p>
 <ul>
   <li><strong>1D Advection-Diffusion Governing Equation</strong>: The vertical temperature profile $T(z, t)$ is governed by:</li>
 </ul>
-<p>$$\frac{\partial T}{\partial t} + w \frac{\partial T}{\partial z} = \alpha \frac{\partial^2 T}{\partial z^2} + \frac{Q_{heat}}{\rho C_p}$$</p>
-<p>where $w$ is the vertical air velocity, $\alpha$ is the turbulent thermal diffusivity, and $Q_{heat}$ is the heat input from floor rails. Vertical mixing fans (destratification fans) are required to introduce mechanical turbulence, increasing $\alpha$ to achieve thermal homogeneity.</p>
+<p>(∂ T)/(∂ t) + w (∂ T)/(∂ z) = α (∂<sup>2</sup> T)/(∂ z<sup>2</sup>) + \fracQ<sub>heat</sub>ρ C<sub>p</sub></p>
+<p>where w is the vertical air velocity, α is the turbulent thermal diffusivity, and Q<sub>heat</sub> is the heat input from floor rails. Vertical mixing fans (destratification fans) are required to introduce mechanical turbulence, increasing α to achieve thermal homogeneity.</p>
 <br/>
 <p>#### Horizontal Spatial Gradients</p>
 <p>Heat dissipation occurs rapidly through the outer glass walls (especially during winter), while the center of the greenhouse retains heat. This boundary layer effect creates draft zones. To mitigate this, Sensor Grids must be deployed in a matrix (minimum 1 sensor box per 500m²) at canopy height, and the GMS (Greenhouse Management System) must calculate a moving average to drive ventilation and heating outputs.</p>
@@ -259,11 +259,11 @@
 <ul>
   <li><strong>Rack and Pinion Torque and Mechanical Shear Calculations</strong>:</li>
 </ul>
-<p>The push-pull drive motor must overcome the static friction coefficient ($\mu_s \approx 0.15$ for steel-on-nylon sliders) and the mass of the entire screen grid. For a 10,000 m² screen block of weight $M = 2,500 \text{ kg}$, the required linear force $F_{push}$ is:</p>
-<p>$$F_{push} = M \cdot g \cdot \mu_s = 2500 \cdot 9.81 \cdot 0.15 = 3,678.75 \text{ N}$$</p>
-<p>The pinion torque $T_{pinion}$ on a shaft of radius $r = 0.04 \text{ m}$ is:</p>
-<p>$$T_{pinion} = F_{push} \cdot r = 3,678.75 \cdot 0.04 = 147.15 \text{ N}\cdot\text{m}$$</p>
-<p>Applying a safety factor of 1.5, the motor must supply a minimum torque of $220.7 \text{ N}\cdot\text{m}$ to prevent mechanical shear of the rack teeth during startup.</p>
+<p>The push-pull drive motor must overcome the static friction coefficient (μ<sub>s</sub> ≈ 0.15 for steel-on-nylon sliders) and the mass of the entire screen grid. For a 10,000 m² screen block of weight M = 2,500 kg, the required linear force F<sub>push</sub> is:</p>
+<p>F<sub>push</sub> = M · g · μ<sub>s</sub> = 2500 · 9.81 · 0.15 = 3,678.75 N</p>
+<p>The pinion torque T<sub>pinion</sub> on a shaft of radius r = 0.04 m is:</p>
+<p>T<sub>pinion</sub> = F<sub>push</sub> · r = 3,678.75 · 0.04 = 147.15 N·m</p>
+<p>Applying a safety factor of 1.5, the motor must supply a minimum torque of 220.7 N·m to prevent mechanical shear of the rack teeth during startup.</p>
 <br/>
 <h3>2.2 Ventilation Logic & Windward/Leeward Control</h3>
 <p>Ventilation is achieved by opening automated roof vents. The direction and speed of the wind determine the vent-opening sequence to prevent crop shock and structure damage.</p>
@@ -271,10 +271,10 @@
 <ul>
   <li><strong>Leeward Vents (Vents facing away from the wind direction)</strong>: Always opened first. As wind flows over the ridge, it creates a low-pressure zone (venturi effect) over the leeward vent opening, drawing hot, humid air out of the greenhouse by suction.</li>
   <li><strong>Windward Vents (Vents facing into the wind)</strong>: Kept closed or only cracked open (1-5% limit) during cold weather. Opening windward vents directly exposes the crop canopy to cold, high-velocity air drafts, collapsing the leaf boundary layer and causing localized condensation (raising the risk of *Botrytis cinerea* / gray mold).</li>
-  <li><strong>Bernoulli Ventilation Flow Rate Model</strong>: The flow rate $Q_{vent}$ ($m^3/s$) through a vent opening of area $A$ is given by:</li>
+  <li><strong>Bernoulli Ventilation Flow Rate Model</strong>: The flow rate Q<sub>vent</sub> (m<sup>3</sup>/s) through a vent opening of area A is given by:</li>
 </ul>
-<p>$$Q_{vent} = C_d \cdot A \cdot \sqrt{\frac{2 \Delta P_{wind}}{\rho_{air}} + g \cdot H \frac{\Delta T}{T_{avg}}}$$</p>
-<p>where $C_d$ is the discharge coefficient (typically 0.6 to 0.65), and $\Delta P_{wind} = C_p \cdot \frac{1}{2} \rho_{air} V_{wind}^2$ is the wind-induced pressure difference ($C_p$ is the pressure coefficient).</p>
+<p>Q<sub>vent</sub> = C<sub>d</sub> · A · \sqrt\frac2 Δ P<sub>wind</sub>ρ<sub>air</sub> + g · H \fracΔ TT<sub>avg</sub></p>
+<p>where C<sub>d</sub> is the discharge coefficient (typically 0.6 to 0.65), and Δ P<sub>wind</sub> = C<sub>p</sub> · (1)/(2) ρ<sub>air</sub> V<sub>wind</sub><sup>2</sup> is the wind-induced pressure difference (C<sub>p</sub> is the pressure coefficient).</p>
 <br/>
 <p>---</p>
 <br/>
@@ -290,16 +290,16 @@
 </code></pre>
 <br/>
 <ul>
-  <li><strong>Modulating Mixing Valves & Volumetric Energy Balance</strong>: Water from the boiler is supplied at $T_{supply} = 80^\circ\text{C}$ to $90^\circ\text{C}$. However, introducing $90^\circ\text{C}$ water directly to the crop floor rails would scorch the roots (root zone threshold is $< 30^\circ\text{C}$) and cause rapid thermal expansion damage to the pipe supports. A 3-way modulating mixing valve blends the hot supply water with the cooler return water ($T_{return} \approx 30^\circ\text{C}$) to maintain a precise rail supply temperature ($T_{rail} = 40^\circ\text{C}$ to $45^\circ\text{C}$).</li>
+  <li><strong>Modulating Mixing Valves & Volumetric Energy Balance</strong>: Water from the boiler is supplied at T<sub>supply</sub> = 80°C to 90°C. However, introducing 90°C water directly to the crop floor rails would scorch the roots (root zone threshold is < 30°C) and cause rapid thermal expansion damage to the pipe supports. A 3-way modulating mixing valve blends the hot supply water with the cooler return water (T<sub>return</sub> ≈ 30°C) to maintain a precise rail supply temperature (T<sub>rail</sub> = 40°C to 45°C).</li>
 </ul>
 <p>The energy balance governing the mixed rail temperature is:</p>
-<p>$$\dot{m}_{rail} \cdot C_p \cdot T_{rail} = \dot{m}_{supply} \cdot C_p \cdot T_{supply} + \dot{m}_{recycle} \cdot C_p \cdot T_{return}$$</p>
-<p>Since $\dot{m}_{rail} = \dot{m}_{supply} + \dot{m}_{recycle}$, we solve for the required supply flow fraction:</p>
-<p>$$x_{supply} = \frac{\dot{m}_{supply}}{\dot{m}_{rail}} = \frac{T_{rail} - T_{return}}{T_{supply} - T_{return}}$$</p>
+<p>m&#775;<sub>rail</sub> · C<sub>p</sub> · T<sub>rail</sub> = m&#775;<sub>supply</sub> · C<sub>p</sub> · T<sub>supply</sub> + m&#775;<sub>recycle</sub> · C<sub>p</sub> · T<sub>return</sub></p>
+<p>Since m&#775;<sub>rail</sub> = m&#775;<sub>supply</sub> + m&#775;<sub>recycle</sub>, we solve for the required supply flow fraction:</p>
+<p>x<sub>supply</sub> = \fracm&#775;<sub>supply</sub>m&#775;<sub>rail</sub> = \fracT<sub>rail</sub> - T<sub>return</sub>T<sub>supply</sub> - T<sub>return</sub></p>
 <ul>
-  <li><strong>Piping Support & Thermal Expansion</strong>: Floor heating pipes expand physically when heated. A 100-meter run of carbon steel pipe heating rails heated from $10^\circ\text{C}$ to $50^\circ\text{C}$ expands by:</li>
+  <li><strong>Piping Support & Thermal Expansion</strong>: Floor heating pipes expand physically when heated. A 100-meter run of carbon steel pipe heating rails heated from 10°C to 50°C expands by:</li>
 </ul>
-<p>$$\Delta L = L_0 \cdot \alpha_L \cdot \Delta T = 100 \text{ m} \cdot (12 \times 10^{-6} \text{ K}^{-1}) \cdot 40 \text{ K} = 0.048 \text{ m} = 4.8 \text{ cm}$$</p>
+<p>Δ L = L<sub>0</sub> · α<sub>L</sub> · Δ T = 100 m · (12 × 10<sup>-6</sup> K<sup>-1</sup>) · 40 K = 0.048 m = 4.8 cm</p>
 <p>Expansion loops (U-bends) and sliding pipe hangers are mandatory to prevent joint rupture.</p>
 <br/>
 <h3>3.2 Substrate Steam Sterilization</h3>
@@ -309,13 +309,13 @@
   <li><strong>Temperature Target</strong>: To ensure complete pasteurization of pathogen DNA and weed seeds, the substrate core temperature must be held at a minimum of <strong>80°C for 30 minutes</strong>.</li>
   <li><strong>Thermodynamic Energy Equation</strong>:</li>
 </ul>
-<p>$$Q = m_{dry\_sub} \cdot C_{p\_sub} \cdot \Delta T + m_{water\_in\_sub} \cdot C_{p\_water} \cdot \Delta T + m_{steam\_condensed} \cdot L_v$$</p>
-<p>The injected steam must supply enough latent heat of vaporization ($L_v = 2260 \text{ kJ/kg}$) to raise both the water content and the dry organic substrate mass to the sterilization target without creating anaerobic, mud-like conditions.</p>
+<p>Q = m<sub>dry\<sub>sub</sub></sub> · C<sub>p\<sub>sub</sub></sub> · Δ T + m<sub>water\<sub>in</sub>\<sub>sub</sub></sub> · C<sub>p\<sub>water</sub></sub> · Δ T + m<sub>steam\<sub>condensed</sub></sub> · L<sub>v</sub></p>
+<p>The injected steam must supply enough latent heat of vaporization (L<sub>v</sub> = 2260 kJ/kg) to raise both the water content and the dry organic substrate mass to the sterilization target without creating anaerobic, mud-like conditions.</p>
 <ul>
   <li><strong>Fourier's Law of Heat Conduction in Substrates</strong>:</li>
 </ul>
-<p>$$\frac{\partial T_{sub}}{\partial t} = \alpha_{sub} \frac{\partial^2 T_{sub}}{\partial x^2}$$</p>
-<p>where $\alpha_{sub} = \frac{k}{\rho C_p}$ is the thermal diffusivity of the substrate. Cocopeat has a low thermal conductivity ($k \approx 0.08 \text{ W/m}\cdot\text{K}$), meaning steam must be injected slowly to allow uniform conduction throughout the core profile.</p>
+<p>\frac∂ T<sub>sub</sub>∂ t = α<sub>sub</sub> \frac∂<sup>2</sup> T<sub>sub</sub>∂ x<sup>2</sup></p>
+<p>where α<sub>sub</sub> = (k)/(ρ C<sub>p</sub>) is the thermal diffusivity of the substrate. Cocopeat has a low thermal conductivity (k ≈ 0.08 W/m·K), meaning steam must be injected slowly to allow uniform conduction throughout the core profile.</p>
 <br/>
 <p>---</p>
 <br/>
@@ -370,26 +370,26 @@
 <h3>4.2 Fluid Dynamics: Cavitation Prevention & Sizing</h3>
 <p>When sizing a control valve, installing a valve of the same size as the pipeline is a common and expensive mistake.</p>
 <ul>
-  <li><strong>Valve Coefficient ($C_v$ and $K_v$) Sizing</strong>:</li>
+  <li><strong>Valve Coefficient (C<sub>v</sub> and K<sub>v</sub>) Sizing</strong>:</li>
 </ul>
-<p>In US units, the flow coefficient $C_v$ determines the valve capacity in US gallons per minute (GPM) of water at $60^\circ\text{F}$ with a pressure drop of $1 \text{ psi}$:</p>
-<p>$$C_v = Q_{gpm} \sqrt{\frac{SG}{\Delta P_{psi}}}$$</p>
-<p>In European and Asian standards, the metric flow coefficient $K_v$ is utilized, defined as the flow rate in cubic meters per hour ($m^3/h$) of water with a pressure drop of $1 \text{ bar}$:</p>
-<p>$$K_v = Q_{m^3/h} \sqrt{\frac{SG}{\Delta P_{bar}}}$$</p>
+<p>In US units, the flow coefficient C<sub>v</sub> determines the valve capacity in US gallons per minute (GPM) of water at 60°F with a pressure drop of 1 psi:</p>
+<p>C<sub>v</sub> = Q<sub>gpm</sub> \sqrt\fracSGΔ P<sub>psi</sub></p>
+<p>In European and Asian standards, the metric flow coefficient K<sub>v</sub> is utilized, defined as the flow rate in cubic meters per hour (m<sup>3</sup>/h) of water with a pressure drop of 1 bar:</p>
+<p>K<sub>v</sub> = Q<sub>m<sup>3</sup>/h</sub> \sqrt\fracSGΔ P<sub>bar</sub></p>
 <p>To prevent dangerous oversizing errors when purchasing components from different regional suppliers, engineers must apply the exact mathematical conversions:</p>
-<p>$$C_v = 1.156 \cdot K_v$$</p>
-<p>$$K_v = 0.865 \cdot C_v$$</p>
+<p>C<sub>v</sub> = 1.156 · K<sub>v</sub></p>
+<p>K<sub>v</sub> = 0.865 · C<sub>v</sub></p>
 <ul>
   <li><strong>Valve Over-sizing</strong>: Leads to "hunting" (the valve operates near the closed seat, causing extreme oscillations and rapid wear).</li>
-  <li><strong>Cavitation Index ($\sigma$)</strong>:</li>
+  <li><strong>Cavitation Index (σ)</strong>:</li>
 </ul>
-<p>Cavitation occurs when fluid velocity through the valve constriction (vena contracta) increases to the point where local pressure drops below the fluid's vapor pressure, forming vapor bubbles. The cavitation index $\sigma$ is calculated as:</p>
-<p>$$\sigma = \frac{P_d - P_v}{P_u - P_d}$$</p>
-<p>where $P_u$ is upstream pressure, $P_d$ is downstream pressure, and $P_v$ is the vapor pressure of the fluid. If $\sigma < \sigma_{critical}$ (typically 0.3 for standard globe valves), cavitation will occur, violently collapsing vapor bubbles and pitting metal valve bodies.</p>
+<p>Cavitation occurs when fluid velocity through the valve constriction (vena contracta) increases to the point where local pressure drops below the fluid's vapor pressure, forming vapor bubbles. The cavitation index σ is calculated as:</p>
+<p>σ = (P<sub>d</sub> - P<sub>v</sub>)/(P<sub>u</sub> - P<sub>d</sub>)</p>
+<p>where P<sub>u</sub> is upstream pressure, P<sub>d</sub> is downstream pressure, and P<sub>v</sub> is the vapor pressure of the fluid. If σ < σ<sub>critical</sub> (typically 0.3 for standard globe valves), cavitation will occur, violently collapsing vapor bubbles and pitting metal valve bodies.</p>
 <ul>
   <li><strong>Prevention Rule</strong>: Always maintain a pressure drop ratio (PDR) across the control valve:</li>
 </ul>
-<p>$$PDR = \frac{\Delta P_{valve}}{\Delta P_{total\_loop}} \approx 0.3 \text{ to } 0.5$$</p>
+<p>PDR = \fracΔ P<sub>valve</sub>Δ P<sub>total\<sub>loop</sub></sub> ≈ 0.3 to 0.5</p>
 <br/>
 <p>---</p>
 <br/>
@@ -413,16 +413,16 @@
   <li><strong>Equal Percentage Plug</strong>: Flow capacity increases exponentially with valve travel. This characteristic compensates for the non-linear heat output curve, resulting in a linear, stable change in temperature relative to control inputs.</li>
 </ul>
 <p>The mathematical characteristic is defined by:</p>
-<p>$$Q = Q_0 \cdot e^{a \cdot x}$$</p>
-<p>where $x$ is the fractional valve lift, and $a$ is a constant.</p>
+<p>Q = Q<sub>0</sub> · e<sup>a · x</sup></p>
+<p>where x is the fractional valve lift, and a is a constant.</p>
 <br/>
 <h3>5.2 PID Loop Tuning & Discretization for Valve Actuators</h3>
 <p>Standard On/Off control creates continuous temperature swings (cycling). To achieve a steady temperature, the controller must run a Proportional-Integral-Derivative (PID) algorithm:</p>
-<p>$$u(t) = K_p \, e(t) + K_i \int_{0}^{t} e(\tau) \, d\tau + K_d \, \frac{de(t)}{dt}$$</p>
+<p>u(t) = K<sub>p</sub> e(t) + K<sub>i</sub> ∫<sub>0</sub><sup>t</sup> e(τ) dτ + K<sub>d</sub> (de(t))/(dt)</p>
 <br/>
 <p>#### Discretized PID Algorithm (Backward Euler)</p>
-<p>For digital execution inside a PLC with a loop sample time $T_s$, the PID equation is discretized:</p>
-<p>$$u(k) = K_p \cdot e(k) + K_i \cdot T_s \sum_{i=0}^{k} e(i) + \frac{K_d}{T_s} \cdot (e(k) - e(k-1))$$</p>
+<p>For digital execution inside a PLC with a loop sample time T<sub>s</sub>, the PID equation is discretized:</p>
+<p>u(k) = K<sub>p</sub> · e(k) + K<sub>i</sub> · T<sub>s</sub> ∑<sub>i=0</sub><sup>k</sup> e(i) + (K<sub>d</sub>)/(T<sub>s</sub>) · (e(k) - e(k-1))</p>
 <br/>
 <p>#### Structured Text (ST) Code with Anti-Windup Logic</p>
 <p>To prevent <strong>integral windup</strong> (where the accumulator continues to sum error when the valve is already fully open or closed, leading to massive overshoots), we implement a clamping anti-windup filter:</p>
@@ -510,17 +510,17 @@ END_FUNCTION_BLOCK
   <li><strong>Toroidal (Inductive) EC Sensors</strong>: Use dual magnetic coils sealed in a plastic body. One coil (drive coil) generates an alternating magnetic field which induces an AC current loop in the surrounding liquid. The second coil (receiver coil) measures this current.</li>
 </ul>
 <p>According to <strong>Faraday's Law of Induction</strong>:</p>
-<p>$$\mathcal{E} = - \frac{d\Phi_B}{dt}$$</p>
-<p>The induced voltage $\mathcal{E}$ in the receiver coil is directly proportional to the electrical conductivity of the liquid buffer. Toroidal sensors are virtually maintenance-free and preferred for high-salt fertilizer stocks.</p>
+<p>E = - (dΦ<sub>B</sub>)/(dt)</p>
+<p>The induced voltage E in the receiver coil is directly proportional to the electrical conductivity of the liquid buffer. Toroidal sensors are virtually maintenance-free and preferred for high-salt fertilizer stocks.</p>
 <br/>
 <h3>6.2 Clamp-On Ultrasonic Flow Meters</h3>
 <p>Commercial nutrient solutions contain nitric/phosphoric acids that corrode mechanical impeller flow meters.</p>
 <ul>
   <li><strong>Transit-Time Technology</strong>: Two ultrasonic transducers are clamped onto the exterior of the pipe. One transmits a sound wave upstream, the other downstream.</li>
-  <li><strong>Physics Principle</strong>: The transit time difference $\Delta t$ of the ultrasonic pulse is altered by the velocity of the liquid:</li>
+  <li><strong>Physics Principle</strong>: The transit time difference Δ t of the ultrasonic pulse is altered by the velocity of the liquid:</li>
 </ul>
-<p>$$v = \frac{D}{2 \cos \theta} \cdot \frac{t_{up} - t_{down}}{t_{up} \cdot t_{down}}$$</p>
-<p>where $D$ is the pipe diameter and $\theta$ is the acoustic path angle. Since the sensors are completely external to the pipe wall, there is no erosion risk, no pressure drop, and no chance of fluid leaks.</p>
+<p>v = (D)/(2 cos θ) · \fract<sub>up</sub> - t<sub>down</sub>t<sub>up</sub> · t<sub>down</sub></p>
+<p>where D is the pipe diameter and θ is the acoustic path angle. Since the sensors are completely external to the pipe wall, there is no erosion risk, no pressure drop, and no chance of fluid leaks.</p>
 <br/>
 <p>---</p>
 <br/>
@@ -539,8 +539,8 @@ END_FUNCTION_BLOCK
 <ul>
   <li><strong>Venturi Effect & Bernoulli Dosing Flow Rate</strong>:</li>
 </ul>
-<p>As water passes through a constricted section of pipe, its velocity increases, creating a localized vacuum (low pressure). The volumetric flow rate of nutrient stock sucked into the line ($Q_{inj}$) is governed by:</p>
-<p>$$Q_{inj} = C_d \cdot A_{inj} \cdot \sqrt{\frac{2(P_{main} - P_{constriction})}{\rho_{water}}}$$</p>
+<p>As water passes through a constricted section of pipe, its velocity increases, creating a localized vacuum (low pressure). The volumetric flow rate of nutrient stock sucked into the line (Q<sub>inj</sub>) is governed by:</p>
+<p>Q<sub>inj</sub> = C<sub>d</sub> · A<sub>inj</sub> · \sqrt\frac2(P<sub>main</sub> - P<sub>constriction</sub>)ρ<sub>water</sub></p>
 <ul>
   <li><strong>Dosing Solenoid Control</strong>: Proportional solenoid valves on the draw lines cycle on/off at high frequency (e.g., duty-cycle PWM control at 1-5Hz) to adjust the blend ratio.</li>
   <li><strong>Stock Tank Separation</strong>:</li>
@@ -549,7 +549,7 @@ END_FUNCTION_BLOCK
   <li><strong>C Tank</strong>: Contains Nitric/Phosphoric Acid for pH correction.</li>
   <li>*Critical Safety Warning*: Calcium and Sulfates/Phosphates must never be mixed in concentrated form. Doing so causes an instant chemical reaction, forming insoluble Gypsum (Calcium Sulfate) precipitate that will permanently clog inline filters and drip emitters:</li>
 </ul>
-<p>$$\text{Ca}^{2+} + \text{SO}_4^{2-} + 2\text{H}_2\text{O} \longrightarrow \text{CaSO}_4\cdot2\text{H}_2\text{O} \downarrow \text{ (Solid Scale)}$$</p>
+<p>Ca<sup>2+</sup> + SO<sub>4</sub><sup>2-</sup> + 2H<sub>2O</sub> \longrightarrow CaSO<sub>4</sub>·2H<sub>2O</sub> ↓ (Solid Scale)</p>
 <br/>
 <h3>7.2 Safety Interlock Logic for Acid Injection</h3>
 <p>If a pH sensor fails or an acid valve jams open, acidic water will flood the root zones, killing the crop.</p>
@@ -563,7 +563,7 @@ END_FUNCTION_BLOCK
   <li><strong>Personal Protective Equipment (PPE)</strong>: Operators must wear chemical-resistant neoprene gloves, full-face splash shields, chemical-safety goggles, and heavy-duty acid-resistant aprons.</li>
   <li><strong>Emergency Response</strong>: An emergency eye-wash station and safety shower (minimum flow rate 75 L/min for 15 minutes) must be located within 10 seconds of travel distance from the dosing station, completely free of obstructions.</li>
   <li><strong>The "Always Add Acid" (AAA) Dilution Rule</strong>: When preparing diluted acid solutions for the C stock tank, <strong>always add concentrated acid slowly into water; NEVER pour water into concentrated acid.</strong></li>
-  <li>*Thermodynamic Explanation*: The mixing of water and concentrated acid is a highly exothermic process (heat of dilution). Water has a very high specific heat capacity ($4.184\text{ J/g}\cdot\text{K}$). When acid is added to a large volume of water, the water acts as a thermal sink, absorbing the heat safely. However, if water is poured into concentrated acid, the small amount of water immediately contacts a massive excess of acid. The local temperature rises instantly to the boiling point, causing the water to flash into steam, leading to violent splattering of concentrated acid droplets directly onto the operator's face and body.</li>
+  <li>*Thermodynamic Explanation*: The mixing of water and concentrated acid is a highly exothermic process (heat of dilution). Water has a very high specific heat capacity (4.184 J/g·K). When acid is added to a large volume of water, the water acts as a thermal sink, absorbing the heat safely. However, if water is poured into concentrated acid, the small amount of water immediately contacts a massive excess of acid. The local temperature rises instantly to the boiling point, causing the water to flash into steam, leading to violent splattering of concentrated acid droplets directly onto the operator's face and body.</li>
 </ul>
 <br/>
 <p>---</p>
@@ -580,20 +580,20 @@ END_FUNCTION_BLOCK
 <p>1. <strong>Sand Media and Disc Filtration</strong>: Removes cocopeat fibers, root debris, and suspended solids down to 50 microns.</p>
 <p>2. <strong>UV Disinfection (UV-C)</strong>: The filtered drainage water passes through a stainless steel chamber containing high-intensity UV lamps. To destroy fungal spores (*Pythium*, *Phytophthora*) and viruses (*ToBRFV*), the water must receive a minimum UV-C dose of <strong>250 mJ/cm²</strong> at a controlled flow rate.</p>
 <p>The UV dose is defined by:</p>
-<p>$$\text{Dose } (mJ/cm^2) = \text{Intensity } (mW/cm^2) \times \text{Exposure Time } (s)$$</p>
+<p>Dose (mJ/cm<sup>2</sup>) = Intensity (mW/cm<sup>2</sup>) × Exposure Time (s)</p>
 <p>Water UV transmittance (UVT%) must be monitored continuously to adjust flow rate to guarantee the dose.</p>
-<p>3. <strong>Ozonation</strong>: Ozone gas ($O_3$) is bubbled into the water, oxidizing pathogens and organic matter before breaking down safely into oxygen ($O_2$).</p>
+<p>3. <strong>Ozonation</strong>: Ozone gas (O<sub>3</sub>) is bubbled into the water, oxidizing pathogens and organic matter before breaking down safely into oxygen (O<sub>2</sub>).</p>
 <br/>
 <h3>8.2 Sodium Accumulation & Reverse Osmosis Flush Logic</h3>
-<p>Plants selectively absorb nutrients, leaving sodium ($Na^+$) and chloride ($Cl^-$) ions behind in the recycled water. Over time, these ions accumulate, raising the EC without providing nutritional value (causing osmotic stress).</p>
+<p>Plants selectively absorb nutrients, leaving sodium (Na<sup>+</sup>) and chloride (Cl<sup>-</sup>) ions behind in the recycled water. Over time, these ions accumulate, raising the EC without providing nutritional value (causing osmotic stress).</p>
 <ul>
   <li><strong>Control Protocol</strong>: If the recycle loop sodium concentration exceeds 4.0 mmol/L (or the base EC of the drain water exceeds 3.5 mS/cm), the PLC triggers the RO (Reverse Osmosis) blending valve.</li>
   <li><strong>Reverse Osmosis Recovery Rate & Flux Calculations</strong>:</li>
 </ul>
-<p>The performance of the RO system is calculated using recovery rate ($Y$) and membrane water flux ($J_w$):</p>
-<p>$$Y = \frac{Q_p}{Q_f} \times 100\%$$</p>
-<p>$$J_w = A \cdot (\Delta P - \Delta \pi)$$</p>
-<p>where $Q_p$ is permeate flow rate, $Q_f$ is feed flow rate, $A$ is membrane permeability coefficient, $\Delta P$ is hydraulic pressure difference, and $\Delta \pi$ is the osmotic pressure difference across the membrane. When sodium levels exceed limits, a flush cycle is triggered to dump 15% of the accumulated volume.</p>
+<p>The performance of the RO system is calculated using recovery rate (Y) and membrane water flux (J<sub>w</sub>):</p>
+<p>Y = (Q<sub>p</sub>)/(Q<sub>f</sub>) × 100%</p>
+<p>J<sub>w</sub> = A · (Δ P - Δ π)</p>
+<p>where Q<sub>p</sub> is permeate flow rate, Q<sub>f</sub> is feed flow rate, A is membrane permeability coefficient, Δ P is hydraulic pressure difference, and Δ π is the osmotic pressure difference across the membrane. When sodium levels exceed limits, a flush cycle is triggered to dump 15% of the accumulated volume.</p>
 <br/>
 <p>---</p>
 <br/>
@@ -605,7 +605,7 @@ END_FUNCTION_BLOCK
   <li><strong>Modbus TCP/IP (Ethernet)</strong>: Used for high-speed backbone communication connecting the central SCADA system to local greenhouse zone PLCs.</li>
   <li><strong>RS-485 (Modbus RTU)</strong>: Connects daisy-chained sensors (temperature, relative humidity, light level, CO2) back to the local PLC cabinet. It uses differential signaling to reject common-mode electromagnetic noise:</li>
 </ul>
-<p>$$V_{diff} = V_A - V_B$$</p>
+<p>V<sub>diff</sub> = V<sub>A</sub> - V<sub>B</sub></p>
 <ul>
   <li><strong>CAN Bus</strong>: Used for high-speed, real-time motor synchronization, such as matching the speeds of multiple roof vent motors.</li>
 </ul>
@@ -685,18 +685,18 @@ def calculate_modbus_crc16(data: bytes) -&gt; int:
   <li><strong>Background</strong>: The Straelen horticultural cluster in North Rhine-Westphalia (Germany) has highly calcareous groundwater (average hardness > 18° dH).</li>
   <li><strong>Langelier Saturation Index (LSI) Scale Prediction</strong>:</li>
 </ul>
-<p>$$\text{LSI} = \text{pH} - \text{pH}_s$$</p>
-<p>where the saturation pH ($\text{pH}_s$) is calculated as:</p>
-<p>$$\text{pH}_s = (9.3 + A + B) - (C + D)$$</p>
+<p>LSI = pH - pH<sub>s</sub></p>
+<p>where the saturation pH (pH<sub>s</sub>) is calculated as:</p>
+<p>pH<sub>s</sub> = (9.3 + A + B) - (C + D)</p>
 <p>where the empirical scaling factors are defined based on water quality measurements:</p>
 <ul>
-  <li>$A = \frac{\log_{10}[\text{TDS}] - 1}{10}$ (where TDS is Total Dissolved Solids in $mg/L$)</li>
-  <li>$B = -13.12 \cdot \log_{10}(T_{Kelvin}) + 34.55$ (where $T_{Kelvin}$ is temperature in Kelvin)</li>
-  <li>$C = \log_{10}[\text{Ca}^{2+} \text{ as } \text{CaCO}_3] - 0.4$ (where Calcium is in $mg/L$ equivalent)</li>
-  <li>$D = \log_{10}[\text{Alkalinity as } \text{CaCO}_3]$ (where Alkalinity is in $mg/L$ equivalent)</li>
+  <li>A = \fraclog<sub>10</sub>[TDS] - 110 (where TDS is Total Dissolved Solids in $mg/L$)</li>
+  <li>B = -13.12 · log<sub>10</sub>(T<sub>Kelvin</sub>) + 34.55 (where T<sub>Kelvin</sub> is temperature in Kelvin)</li>
+  <li>C = log<sub>10</sub>[Ca<sup>2+</sup> as CaCO<sub>3</sub>] - 0.4 (where Calcium is in $mg/L$ equivalent)</li>
+  <li>D = log<sub>10</sub>[Alkalinity as CaCO<sub>3</sub>] (where Alkalinity is in $mg/L$ equivalent)</li>
 </ul>
-<p>In the Straelen region, groundwater analysis yields LSI values exceeding +1.2, indicating a highly supersaturated state that precipitates severe calcium carbonate ($CaCO_3$) scale:</p>
-<p>$$\text{Ca}^{2+} + 2\text{HCO}_3^- \rightleftharpoons \text{CaCO}_3 \downarrow + \text{H}_2\text{O} + \text{CO}_2$$</p>
+<p>In the Straelen region, groundwater analysis yields LSI values exceeding +1.2, indicating a highly supersaturated state that precipitates severe calcium carbonate (CaCO<sub>3</sub>) scale:</p>
+<p>Ca<sup>2+</sup> + 2HCO<sub>3</sub><sup>-</sup> \rightleftharpoons CaCO<sub>3</sub> ↓ + H<sub>2O</sub> + CO<sub>2</sub></p>
 <ul>
   <li><strong>The Engineering Solution</strong>:</li>
 </ul>
@@ -711,20 +711,20 @@ def calculate_modbus_crc16(data: bytes) -&gt; int:
 <h3>11.1 Energy Balance Equations and Cost Auditing</h3>
 <p>Greenhouses are highly energy-intensive systems. Heating energy represents up to 30-40% of the total operating costs of commercial glasshouses in temperate zones like Germany and the Netherlands.</p>
 <p>To audit energy usage, we use the greenhouse thermal equilibrium equation:</p>
-<p>$$Q_{heating} = Q_{transmission} + Q_{ventilation} + Q_{infiltration} - Q_{solar\_gain} - Q_{biomass}$$</p>
+<p>Q<sub>heating</sub> = Q<sub>transmission</sub> + Q<sub>ventilation</sub> + Q<sub>infiltration</sub> - Q<sub>solar\<sub>gain</sub></sub> - Q<sub>biomass</sub></p>
 <br/>
 <ul>
-  <li><strong>Transmission Loss ($Q_{transmission}$)</strong>:</li>
+  <li><strong>Transmission Loss (Q<sub>transmission</sub>)</strong>:</li>
 </ul>
-<p>$$Q_{transmission} = U \cdot A \cdot (T_{inside} - T_{outside})$$</p>
-<p>where $U$ is the overall heat transfer coefficient of the glass ($W/m^2K$), and $A$ is the glass surface area. Standard double glazing has a $U$-value of approximately 2.8 $W/m^2K$, whereas AR-coated diffuse glass with a closed thermal screen can drop this to 1.4 $W/m^2K$, reducing heat loss by 50%.</p>
+<p>Q<sub>transmission</sub> = U · A · (T<sub>inside</sub> - T<sub>outside</sub>)</p>
+<p>where U is the overall heat transfer coefficient of the glass (W/m<sup>2K</sup>), and A is the glass surface area. Standard double glazing has a U-value of approximately 2.8 W/m<sup>2K</sup>, whereas AR-coated diffuse glass with a closed thermal screen can drop this to 1.4 W/m<sup>2K</sup>, reducing heat loss by 50%.</p>
 <ul>
   <li><strong>Cost Comparison: Natural Gas vs. Industrial Heat Pumps vs. Geothermal</strong></li>
 </ul>
 <p>Historically, natural gas boilers co-generated electricity and heat (CHP). However, high CO2 tax schemes in the EU (e.g., German BEG) have shifted focus toward:</p>
 <p>1. *Industrial Air-to-Water Heat Pumps*: Run on a COP (Coefficient of Performance) of 3.2 to 4.0, transforming 1 kW of electrical energy into 3.5 kW of heat.</p>
 <p>The theoretical maximum COP is limited by the <strong>Carnot Cycle Efficiency</strong>:</p>
-<p>$$\text{COP}_{Carnot} = \frac{T_{hot}}{T_{hot} - T_{cold}}$$</p>
+<p>COP<sub>Carnot</sub> = \fracT<sub>hot</sub>T<sub>hot</sub> - T<sub>cold</sub></p>
 <p>where temperatures are in Kelvin.</p>
 <p>2. *Deep Geothermal*: Extreme upfront CapEx but near-zero OpEx, securing baseload heating at stable long-term prices.</p>
 <br/>
@@ -734,14 +734,14 @@ def calculate_modbus_crc16(data: bytes) -&gt; int:
 <p>#### Case: Installing Automated Modulating 3-Way Mixing Valves</p>
 <ul>
   <li><strong>Old System</strong>: Manual bypass valves or On/Off solenoid valves. Results in ±5°C temperature fluctuations, causing root stress, split fruit, and 12% heat waste due to overheating.</li>
-  <li><strong>Upgrade</strong>: Proportional 3-way mixing valves controlled by a central PLC ($K_p$, $K_i$, $K_d$ tuned).</li>
+  <li><strong>Upgrade</strong>: Proportional 3-way mixing valves controlled by a central PLC (K<sub>p</sub>, K<sub>i</sub>, K<sub>d</sub> tuned).</li>
   <li><strong>CapEx (Capital Expenditure)</strong>: €4,500 (Valve, actuator, controller, labor).</li>
   <li><strong>OpEx Savings (Energy + Yield)</strong>:</li>
   <li>Energy saved: 8% reduction in gas consumption (valued at €2,200/year for a 1,000 m² zone).</li>
   <li>Yield improvement: 4% increase in marketable crop yield due to climate stability (valued at €1,800/year).</li>
-  <li><strong>Payback Period ($PP$)</strong>:</li>
+  <li><strong>Payback Period (PP)</strong>:</li>
 </ul>
-<p>$$PP = \frac{\text{CapEx}}{\text{Annual Savings}} = \frac{€4,500}{€2,200 + €1,800} = 1.125 \text{ years}$$</p>
+<p>PP = (CapEx)/(Annual Savings) = (€4,500)/(€2,200 + €1,800) = 1.125 years</p>
 <p>Any CapEx project with a payback period under 2 years is considered an immediate "GO" in commercial horticulture.</p>
 <br/>
 <h3>11.3 AI-Driven Resource Allocation</h3>
