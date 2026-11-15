@@ -97,4 +97,4 @@
 독일어 독학 리소스인 DW Nicos Weg A1~B1 학습 진도를 한눈에 트래킹하는 하위 섹션입니다.
 
 *   **진도율 게이지**: `(완료 레슨 수 / 총 레슨 수) * 100` 수식을 사용하여 진행도바 시각화.
-*   **단어장 연동**: 오늘의 어휘 추가 버튼을 통해 즉시 [Hauptwörterbuch.csv](file:///g:/My%20Drive/Antigravity/Headquater/Learning_German/Hauptwörterbuch.csv) 구조에 단어가 자동으로 누적 연동되는 위젯 배치.
+*   **단어장 연동**: 오늘의 어휘 추가 버튼을 통해 즉시 `Hauptwörterbuch.csv` 구조에 단어가 자동으로 누적 연동되는 위젯 배치.

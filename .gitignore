@@ -1,6 +1,14 @@
-# Local Trading Frameworks
+# Local Trading & Internal Business Frameworks (Air-Gap)
 TF-Alpha_Lens/
 TF-Epsilon_Echo/
+Strategy/
+Marketing/
+Development/
+
+# Python caches
+__pycache__/
+*.pyc
+.venv/
 
 # OS/System files
 .DS_Store

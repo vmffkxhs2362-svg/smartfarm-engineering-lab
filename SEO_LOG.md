@@ -1,6 +1,6 @@
 # 📈 Smart Farm Engineering Lab - SEO & Traffic Optimization Log
 
-이 문서는 스마트팜 엔지니어링 랩 계산기 서비스([index.html](file:///g:/My%20Drive/Antigravity/Headquater/Career/Passive_Income_Hub/index.html))의 검색 엔진 최적화(SEO), 구글 애널리틱스(GA4), 구글 서치 콘솔(GSC) 연동 이력 및 키워드 개선 히스토리를 정량적으로 기록하는 지속성 보존 문서입니다.
+이 문서는 스마트팜 엔지니어링 랩 계산기 서비스([index.html](./index.html))의 검색 엔진 최적화(SEO), 구글 애널리틱스(GA4), 구글 서치 콘솔(GSC) 연동 이력 및 키워드 개선 히스토리를 정량적으로 기록하는 지속성 보존 문서입니다.
 
 ## 1. ⚙️ 연동 및 마케팅 인프라 설정 내역
 
