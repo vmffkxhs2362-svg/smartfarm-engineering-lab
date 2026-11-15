@@ -1,193 +1,35 @@
-<!-- TITLE: Fertigation Stock Tank Calculator | Fertilizer Dilution & Bicarbonate Neutralization -->
-<!-- DESC: Calculate precise raw fertilizer compounding weights and acid neutralization dosages for greenhouse stock tank fertigation. Supports multiple dilution ratios and bicarbonate alkalinity control. -->
-<!-- KEYWORDS: fertigation calculator, stock tank mixing, fertilizer dilution ratio, bicarbonate neutralization, acid dosage, nutrient solution, PPM calculator, greenhouse nutrition, hydroponic fertilizer -->
-<!-- ACTIVE_TAB: btn-tab-fert -->
-<!-- ACTIVE_CHIP: chip-all -->
-<div class="calc-wrapper active" id="section-fert">
-<div class="form-panel">
-<h1 class="panel-title">Stock Tank Parameter</h1>
-<div class="input-group">
-<div class="input-header">
-<label for="fert-preset" id="lbl-fert-preset">Fertilizer Preset</label>
-<span class="tank-badge tank-ab" id="fert-tank-badge" style="display: none;">Tank A/B</span>
-</div>
-<div class="input-control-wrapper select-arrow-wrapper">
-<select id="fert-preset" onchange="applyFertPreset()">
-<option selected="" value="custom">Custom Input</option>
-<option value="calcium_nitrate">Calcium Nitrate (N 15.5%)</option>
-<option value="potassium_nitrate">Potassium Nitrate (N 13.0%)</option>
-<option value="mkp">Monopotassium Phosphate (MKP - P 22.7%)</option>
-<option value="potassium_sulfate">Potassium Sulfate (K 41.5%)</option>
-<option value="magnesium_sulfate">Magnesium Sulfate (Mg 9.8%)</option>
-<option value="ammonium_sulfate">Ammonium Sulfate (N 21.0%)</option>
-</select>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="fert-target">Target Element Concentration</label>
-</div>
-<div class="input-control-wrapper">
-<input id="fert-target" oninput="calculateFertEngine()" step="5" type="number" value="150"/>
-<span class="suffix">ppm (mg/L)</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="fert-vol">Stock Tank Volume</label>
-</div>
-<div class="input-control-wrapper">
-<input id="fert-vol" oninput="calculateFertEngine()" step="50" type="number" value="1000"/>
-<span class="suffix" id="fert-vol-suffix">Liters</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="fert-ratio">Dilution Injection Ratio (1:X)</label>
-</div>
-<div class="input-control-wrapper">
-<input id="fert-ratio" oninput="calculateFertEngine()" step="10" type="number" value="100"/>
-<span class="suffix">Ratio</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="fert-purity">Element Purity in Fertilizer</label>
-</div>
-<div class="input-control-wrapper">
-<input id="fert-purity" oninput="calculateFertEngine()" step="0.1" type="number" value="15.5"/>
-<span class="suffix">% Purity</span>
-</div>
-</div>
-<!-- Bicarbonate Neutralizer Accordion -->
-<div class="accordion" id="acid-estimator-accordion">
-<div class="accordion-header" onclick="toggleAccordion('acid-estimator-accordion')">
-<span id="lbl-acid-title">Raw Bicarbonate (pH) Neutralizer</span>
-<span class="icon">▼</span>
-</div>
-<div class="accordion-body">
-<div class="estimator-grid">
-<div class="input-group">
-<div class="input-header">
-<label for="acid-raw" id="lbl-acid-raw">Raw Bicarbonate (HCO₃⁻)</label>
-</div>
-<div class="input-control-wrapper">
-<input id="acid-raw" oninput="runAcidEngine()" step="5" type="number" value="120"/>
-<span class="suffix">ppm</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="acid-target" id="lbl-acid-target">Target Bicarbonate</label>
-</div>
-<div class="input-control-wrapper">
-<input id="acid-target" oninput="runAcidEngine()" step="5" type="number" value="50"/>
-<span class="suffix">ppm</span>
-</div>
-</div>
-<div class="input-group" style="grid-column: span 2;">
-<div class="input-header">
-<label for="acid-select" id="lbl-acid-select">Acid Type to Use</label>
-</div>
-<div class="input-control-wrapper select-arrow-wrapper">
-<select id="acid-select" onchange="runAcidEngine()">
-<option id="opt-acid-nitric" selected="" value="nitric">Nitric Acid 60% (HNO₃ 13.0 M)</option>
-<option id="opt-acid-phosphoric" value="phosphoric">Phosphoric Acid 85% (H₃PO₄ 14.6 M)</option>
-</select>
-</div>
-</div>
-</div>
-<div class="input-group" style="margin-top: 1rem; margin-bottom: 0;">
-<div class="input-header">
-<span id="lbl-acid-result">Acid Vol Required</span>
-<span id="acid-result-value" style="font-weight: 800; color: var(--cyan); font-size: 1.1rem;">0.0 L</span>
-</div>
-</div>
-<p id="acid-explanation" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.8rem; line-height: 1.5; border-top: 1px solid var(--border-card); padding-top: 0.8rem;">This is the volume of strong acid required to neutralize the raw water bicarbonate.</p>
-</div>
-</div>
-<!-- Fertigation Chemical SEO Guide Accordion -->
-<div class="accordion academic-guide" id="fert-academic-accordion">
-<div class="accordion-header" onclick="toggleAccordion('fert-academic-accordion')">
-
-<span class="academic-guide-lang" style="font-weight: 700; color: var(--primary);">📚 Scientific Fertigation Guide (Fertilizer Compounding)</span>
-<span class="icon" style="color: var(--primary);">▼</span>
-</div>
-<div class="accordion-body">
-
-<div class="academic-guide-lang">
-<h3>📚 Fertigation Dilution Solvers and Chemical Compatibility Guidelines for Hydroponics</h3>
-<p>Hydroponics and fertigation require precise dosing of mineral fertilizers to establish the optimal EC and pH environment in the root zone. A deep understanding of ion dynamics, solubility margins, and source water chemistry is vital to prevent systemic plant nutrient locking and physical irrigation failures.</p>
-<h4>1. Volumetric Calculations for Target PPM and Fertilizer Mass</h4>
-<p>PPM (Parts Per Million) equals <code>mg/L</code> in metric units. The mass of fertilizer needed to achieve a target elemental concentration in a specific stock tank volume under a set injector ratio is determined by the element's mass fraction (Purity%):</p>
-<ul>
-<li>Required Fertilizer Mass: <code>Mass = (Target PPM * Tank Volume * Dilution Ratio) / (Purity% * 10,000)</code> (kg)</li>
-<li>This formula derives from mass conservation, correcting for elemental weight fractions and dilution multipliers, where 10,000 is the scaling factor converting percentage purity into ppm equivalent values.</li>
-</ul>
-<h4>2. Solubility Limits and the Chemistry of A/B Tank Separation</h4>
-<p>When compounding high-concentration stock solutions (often 100x to 200x concentration), preventing ionic precipitation is the single most critical task. 
-            Free <strong>Calcium (Ca²⁺)</strong> ions must never meet <strong>Sulfates (SO₄²⁻)</strong> or <strong>Phosphates (H₂PO₄⁻)</strong> at high concentrations. If combined, they react to form highly insoluble compounds like gypsum (calcium sulfate, <code>CaSO_4</code>) or calcium phosphate, resulting in white crystalline precipitates that clog drip emitters. 
-            Hence, calcium sources (e.g., Calcium Nitrate) are isolated in <strong>Tank A</strong>, while phosphates and sulfates (e.g., MKP, Magnesium Sulfate) are stored in <strong>Tank B</strong>. They are only mixed downstream in the fresh water stream where concentrations are dilute enough to remain well below solubility products.</p>
-<h4>3. Alkalinity Control: Bicarbonate (HCO₃⁻) Neutralization</h4>
-<p>Source water alkalinity is primarily governed by bicarbonate (<code>HCO_3^-</code>) ions, which act as a pH buffer. Excessive bicarbonate (&gt;100 ppm) maintains an alkaline root zone, reducing the bioavailability of key trace minerals like iron and manganese. 
-            Dosing mineral acids (nitric or phosphoric acid) decomposes bicarbonates into carbon dioxide and water, stabilizing the pH in the critical absorption window of 5.5 to 6.5:</p>
-<ul>
-<li><code>HCO_3^- + H^+ -&gt; H_2O + CO_2 (gas)</code></li>
-</ul>
-<h4>4. Precision Fertigation & Greenhouse Climate Control Integration</h4>
-<p>Modern commercial greenhouses integrate the <strong>hydroponic dosing automation</strong> system with a central <strong>greenhouse climate control sensor</strong> network (such as a <strong>Klimacomputer für Gewächshäuser</strong>). 
-To optimize yields and reduce operational overhead, growers deploy a dedicated <strong>precision fertigation system</strong> that dynamically manages EC and pH dosing. 
-Additionally, synchronizing irrigation intervals with solar radiation levels and managing <strong>greenhouse HVAC energy conservation</strong> parameters ensures maximum plant transpiration efficiency while minimizing heating utility costs.</p>
-<h4>5. PubChem Chemical Database & Raw Compound Specifications</h4>
-<p>To support high-precision nutrient compounding, our solver cross-references physical compound properties indexed in the National Institutes of Health (NIH) <strong>PubChem Database</strong>:</p>
-<ul>
-<li><strong>Calcium Nitrate [PubChem CID 24963]</strong>: Formula <code>Ca(NO3)2</code>, Anhydrous MW: 164.09 g/mol (Tetrahydrate <code>Ca(NO3)2·4H2O</code> MW: 236.15 g/mol). Dissociates into 1 Ca²⁺ and 2 NO₃⁻ ions (15.5% N, 19.0% Ca).</li>
-<li><strong>Potassium Nitrate [PubChem CID 24434]</strong>: Formula <code>KNO3</code>, MW: 101.10 g/mol. Provides 13.0% Nitrate-N and 38.2% K (46.0% K₂O equivalent).</li>
-<li><strong>Magnesium Sulfate [PubChem CID 24083]</strong>: Formula <code>MgSO4</code>, Anhydrous MW: 120.37 g/mol (Epsom Salt Heptahydrate <code>MgSO4·7H2O</code> MW: 246.47 g/mol). Supplies 9.8% Mg and 12.9% S without altering N-P-K balances.</li>
-<li><strong>Monopotassium Phosphate [PubChem CID 516951]</strong>: Formula <code>KH2PO4</code>, MW: 136.09 g/mol. Key phosphorus stock delivering 22.7% P (52.0% P₂O₅) and 28.7% K (34.5% K₂O).</li>
-<li><strong>Ammonium Nitrate [PubChem CID 22985]</strong>: Formula <code>NH4NO3</code>, MW: 80.04 g/mol. Delivers 35.0% total N (half ammonium NH₄⁺, half nitrate NO₃⁻) for vegetative pH control.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="result-panel">
-<div class="result-header">Fertilizer Mass Required</div>
-<div class="big-number" id="fert-value">96.8</div>
-<div class="status-pill optimal" id="fert-status-pill">Ready to Dissolve</div>
-<p class="result-desc" id="fert-explanation">Dissolve exactly <strong>20.0 kg</strong> of fertilizer into the 1000L stock tank.</p>
-<div class="info-card" id="fert-actions-card" style="border-left: 4px solid var(--primary); margin-top: 1.5rem;">
-<h4 id="lbl-fert-actions-title">Live Agronomic Report</h4>
-<p id="fert-actions-list" style="font-size: 0.9rem; color: var(--text-gray); margin-top: 0.5rem; line-height: 1.6;"></p>
-</div>
-</div>
-<!-- Google AdSense Gaze-Lock Ad Slot (High-CTR) -->
-<div class="adsense-slot" style="margin: 1.2rem 0; display: flex; align-items: center; justify-content: center;">
-    <ins class="adsbygoogle"
-         style="display:block; width:100%;"
-         data-ad-client="ca-pub-8597809158257497"
-         data-ad-slot="9876543210"
-         data-ad-format="horizontal"
-         data-full-width-responsive="false"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
-
-<div class="info-card">
-<h4>Stock Tank Safety Rule</h4>
-<p>Calcium Nitrate and Phosphate/Sulfate-based fertilizers must be separated into tank A and B to prevent chemical precipitation and clogging.</p>
-</div>
-<div id="amazon-fert-widget"></div>
-</div>
-</div>
-
-<!-- SCRIPTS_START -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof renderAmazonEquipmentCards === "function") {
-            renderAmazonEquipmentCards("amazon-fert-widget", "fertigation");
-        }
-    });
-</script>
-<!-- SCRIPTS_END -->
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, follow">
+  <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8">
+  <meta name="google-site-verification" content="xHzmAhcxMgyf-hP2TujQwCGF3-7GrLBkLU9PoHShaps">
+  <title>Redirecting to Inwoovation Lab...</title>
+  <link rel="canonical" href="https://inwoovation.com/smartfarm/fertigation.html">
+  <!-- Google tag (gtag.js) with Antigravity Bot & Self-Traffic Guard -->
+  <script>
+    (function() {
+      var ua = navigator.userAgent || '';
+      var isBot = navigator.webdriver === true || /HeadlessChrome|PhantomJS|Lighthouse|PTST|bot|crawler|spider|slurp|ScrapingBee|AhrefsBot|SemrushBot|MJ12bot|DotBot|Bytespider|GPTBot|ClaudeBot|PerplexityBot|PetalBot|YandexBot|Baiduspider/i.test(ua);
+      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
+      var isBotRes = (window.screen && ((screen.width === 1366 && screen.height === 1366) || (screen.width === 800 && screen.height === 600) || (screen.width === 1024 && screen.height === 1024) || screen.height >= 5000));
+      if (isBot || isLocal || isBotRes) {
+        window['ga-disable-G-V4RYJBMEDE'] = true;
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-V4RYJBMEDE', { 'send_page_view': true, 'anonymize_ip': true });
+  </script>
+  <meta http-equiv="refresh" content="0; url=https://inwoovation.com/smartfarm/fertigation.html">
+  <script>window.location.replace("https://inwoovation.com/smartfarm/fertigation.html" + window.location.search + window.location.hash);</script>
+</head>
+<body style="background:#0b0f19;color:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;">
+  <p>Redirecting to <a href="https://inwoovation.com/smartfarm/fertigation.html" style="color:#38bdf8;">https://inwoovation.com/smartfarm/fertigation.html</a>...</p>
+</body>
+</html>

@@ -1,284 +1,35 @@
-<!-- TITLE: Global Agricultural Market Index | AgTech Precision Suite -->
-<!-- DESC: Real-time tracking of global wholesale prices for agricultural commodities including tomatoes, cucumbers, peppers, and natural gas. -->
-<!-- KEYWORDS: smart farm, market index, agricultural prices, natural gas price, wholesale tomatoes, wholesale cucumber, wholesale pepper -->
-<!-- ACTIVE_TAB: btn-tab-market -->
-<!-- ACTIVE_CHIP: chip-market -->
-<div class="calc-wrapper active" id="section-market" style="grid-template-columns: 1fr;">
-<div class="market-dashboard-embedded" style="margin-bottom: 3rem;">
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--primary);">🌍 Global Agri-Market Index</h2>
-            <p style="color: var(--text-secondary);">Real-time tracking of wholesale prices across major global markets.</p>
-            <div class="last-updated" id="update-timestamp" style="display: inline-block; background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 500; margin-top: 1rem;">Loading latest data...</div>
-        </div>
-
-        <div class="controls-container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--surface-light); padding: 1rem; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
-            <div class="toggle-group" id="region-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
-                <button class="toggle-btn active" data-region="EU" onclick="setRegion('EU')" style="background: var(--primary); border: none; color: var(--bg-dark); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇪🇺 EU (DE)</button>
-                <button class="toggle-btn" data-region="US" onclick="setRegion('US')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇺🇸 US</button>
-                <button class="toggle-btn" data-region="MX" onclick="setRegion('MX')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">🇲🇽 Mexico</button>
-            </div>
-            
-            <div class="toggle-group" id="time-toggles" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.25rem;">
-                <button class="toggle-btn active" data-interval="day" onclick="setTimeframe('day')" style="background: var(--primary); border: none; color: var(--bg-dark); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1D</button>
-                <button class="toggle-btn" data-interval="week" onclick="setTimeframe('week')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1W</button>
-                <button class="toggle-btn" data-interval="month" onclick="setTimeframe('month')" style="background: transparent; border: none; color: var(--text-secondary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">1M</button>
-            </div>
-        </div>
-
-        <div class="metrics-grid" id="metrics-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;"></div>
-
-        <div class="chart-container" style="position: relative; height: 400px; width: 100%; box-sizing: border-box; background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-            <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;" id="agri-chart-title">🍅 Agricultural Commodities</div>
-            <canvas id="agriChart"></canvas>
-        </div>
-
-        <div class="chart-container" id="energy-chart-wrapper" style="position: relative; height: 300px; width: 100%; box-sizing: border-box; background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-            <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">⚡ Energy Impact (Natural Gas TTF)</div>
-            <canvas id="energyChart"></canvas>
-        </div>
-        
-        <div style="text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 2rem; padding-right: 0.5rem;">
-            <em>Data Sources: US/MX (USDA AMS Real-time API) &nbsp;|&nbsp; EU (German Wholesale Proxy / Simulated)</em>
-        </div>
-</div>
-</div>
-
-<!-- SCRIPTS_START -->
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
-<script src="common.js?v=2.2"></script><script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
-    </script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
-    
-    <!-- Global Market Dashboard Logic -->
-    <script>
-        Chart.defaults.color = '#9ca3af';
-        Chart.defaults.borderColor = '#374151';
-        Chart.defaults.font.family = 'Inter, sans-serif';
-
-        let globalData = null;
-        let currentRegion = 'EU';
-        let currentInterval = 'day';
-        let agriChartInstance = null;
-        let energyChartInstance = null;
-
-        async function initMarketDashboard() {
-            try {
-                const isHttp = window.location.protocol.startsWith('http');
-                const jsonPath = isHttp ? '/data/global_prices.json' : 'data/global_prices.json';
-                const response = await fetch(jsonPath + '?t=' + new Date().getTime());
-                globalData = await response.json();
-                document.getElementById('update-timestamp').innerText = `Last Checked: ${globalData.last_updated}`;
-                
-                if (!globalData.markets && globalData.datasets) {
-                    globalData = { markets: { "EU": { name: "EU", datasets: globalData.datasets } } };
-                }
-                
-                // Override backend legacy name directly in frontend
-                if (globalData.markets && globalData.markets['EU']) {
-                    if (globalData.markets['EU'].name.includes("NL/ES")) {
-                        globalData.markets['EU'].name = "European Union (DE)";
-                    }
-                }
-                
-                updateDashboard();
-            } catch (e) {
-                console.error(e);
-                const ts = document.getElementById('update-timestamp');
-                if(ts) {
-                    ts.innerText = "Data feed currently unavailable.";
-                    ts.style.color = "#ef4444";
-                    ts.style.background = "rgba(239, 68, 68, 0.1)";
-                }
-            }
-        }
-
-        function setRegion(region) {
-            currentRegion = region;
-            document.querySelectorAll('#region-toggles .toggle-btn').forEach(btn => {
-                if(btn.dataset.region === region) {
-                    btn.classList.add('active');
-                    btn.style.background = '#3b82f6';
-                    btn.style.color = 'white';
-                } else {
-                    btn.classList.remove('active');
-                    btn.style.background = 'transparent';
-                    btn.style.color = 'var(--text-secondary)';
-                }
-            });
-            updateDashboard();
-        }
-
-        function setTimeframe(interval) {
-            currentInterval = interval;
-            document.querySelectorAll('#time-toggles .toggle-btn').forEach(btn => {
-                if(btn.dataset.interval === interval) {
-                    btn.classList.add('active');
-                    btn.style.background = 'var(--primary)';
-                    btn.style.color = 'var(--bg-dark)';
-                } else {
-                    btn.classList.remove('active');
-                    btn.style.background = 'transparent';
-                    btn.style.color = 'var(--text-secondary)';
-                }
-            });
-            updateDashboard();
-        }
-
-        function aggregateData(dataArray, interval) {
-            let result;
-            if (interval === 'day') {
-                result = dataArray;
-            } else {
-                const grouped = {};
-                dataArray.forEach(d => {
-                    let key;
-                    const m = moment(d.date);
-                    if (interval === 'week') key = m.clone().startOf('isoWeek').format('YYYY-MM-DD');
-                    else if (interval === 'month') key = m.clone().startOf('month').format('YYYY-MM-DD');
-                    
-                    if (!grouped[key]) grouped[key] = [];
-                    grouped[key].push(d.price);
-                });
-                
-                result = Object.keys(grouped).sort().map(dateStr => {
-                    const prices = grouped[dateStr];
-                    const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
-                    return { date: dateStr, price: avg };
-                });
-            }
-
-            return result.slice(-30);
-        }
-
-        function updateDashboard() {
-            if (!globalData || !globalData.markets[currentRegion]) return;
-            
-            const marketData = globalData.markets[currentRegion];
-            document.getElementById('agri-chart-title').innerText = `🍅 Agricultural Commodities (${marketData.name})`;
-            
-            const filteredDatasets = {};
-            for (const [key, item] of Object.entries(marketData.datasets)) {
-                filteredDatasets[key] = { ...item, data: aggregateData(item.data, currentInterval) };
-            }
-
-            renderMetrics(filteredDatasets);
-            renderCharts(filteredDatasets);
-            
-            document.getElementById('energy-chart-wrapper').style.display = 
-                filteredDatasets.natural_gas ? 'block' : 'none';
-        }
-
-        function renderMetrics(datasets) {
-            const container = document.getElementById('metrics-container');
-            container.innerHTML = '';
-            
-            for (const [key, item] of Object.entries(datasets)) {
-                if (item.data.length < 1) continue;
-                
-                const latest = item.data[item.data.length - 1].price;
-                let prev = latest;
-                if (item.data.length > 1) {
-                    prev = item.data[item.data.length - 2].price;
-                }
-                
-                let change = 0;
-                if (prev > 0) {
-                    change = ((latest - prev) / prev * 100).toFixed(2);
-                }
-                
-                const color = change >= 0 ? '#10b981' : '#ef4444';
-                const arrow = change >= 0 ? '▲' : '▼';
-
-                const timeframeLabels = { 'day': '1D', 'week': '1W', 'month': '1M' };
-                const timeframeText = timeframeLabels[currentInterval] || currentInterval;
-
-                container.innerHTML += `
-                    <div style="background: var(--surface-light); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">${item.name}</div>
-                        <div style="font-size: 1.4rem; font-weight: 700; color: var(--text-primary);">${latest.toFixed(2)} <span style="font-size: 0.8rem; color: var(--text-secondary);">${item.unit}</span></div>
-                        <div style="font-size: 0.85rem; margin-top: 0.25rem; font-weight: 500; color: ${color};">
-                            ${arrow} ${Math.abs(change)}% <span style="color: var(--text-secondary); font-weight: normal; font-size: 0.75rem;">(vs prev ${timeframeText})</span>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function renderCharts(datasets) {
-            const agriDatasets = [];
-            let energyDataset = null;
-            let labels = [];
-
-            for (const [key, item] of Object.entries(datasets)) {
-                if (labels.length === 0) labels = item.data.map(d => d.date);
-                
-                const dSet = {
-                    label: item.name,
-                    data: item.data.map(d => ({x: d.date, y: d.price})),
-                    borderColor: item.color,
-                    borderWidth: 2,
-                    tension: 0.4,
-                    pointRadius: currentInterval === 'day' ? 0 : 3
-                };
-
-                if (key === 'natural_gas') {
-                    dSet.backgroundColor = 'rgba(59, 130, 246, 0.1)';
-                    dSet.fill = true;
-                    energyDataset = dSet;
-                } else {
-                    if (key === 'tomato') {
-                        dSet.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                        dSet.fill = true;
-                    }
-                    agriDatasets.push(dSet);
-                }
-            }
-
-            const chartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                layout: {
-                    padding: {
-                        bottom: 15
-                    }
-                },
-                scales: {
-                    x: { 
-                        type: 'time', 
-                        time: { 
-                            unit: currentInterval 
-                        } 
-                    },
-                    y: { beginAtZero: false }
-                }
-            };
-
-            if (agriChartInstance) agriChartInstance.destroy();
-            agriChartInstance = new Chart(document.getElementById('agriChart'), {
-                type: 'line',
-                data: { datasets: agriDatasets },
-                options: chartOptions
-            });
-
-            if (energyDataset) {
-                if (energyChartInstance) energyChartInstance.destroy();
-                energyChartInstance = new Chart(document.getElementById('energyChart'), {
-                    type: 'line',
-                    data: { datasets: [energyDataset] },
-                    options: { ...chartOptions, plugins: { legend: { display: false } } }
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', initMarketDashboard);
-    </script>
-<!-- SCRIPTS_END -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, follow">
+  <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8">
+  <meta name="google-site-verification" content="xHzmAhcxMgyf-hP2TujQwCGF3-7GrLBkLU9PoHShaps">
+  <title>Redirecting to Inwoovation Lab...</title>
+  <link rel="canonical" href="https://inwoovation.com/smartfarm/market.html">
+  <!-- Google tag (gtag.js) with Antigravity Bot & Self-Traffic Guard -->
+  <script>
+    (function() {
+      var ua = navigator.userAgent || '';
+      var isBot = navigator.webdriver === true || /HeadlessChrome|PhantomJS|Lighthouse|PTST|bot|crawler|spider|slurp|ScrapingBee|AhrefsBot|SemrushBot|MJ12bot|DotBot|Bytespider|GPTBot|ClaudeBot|PerplexityBot|PetalBot|YandexBot|Baiduspider/i.test(ua);
+      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
+      var isBotRes = (window.screen && ((screen.width === 1366 && screen.height === 1366) || (screen.width === 800 && screen.height === 600) || (screen.width === 1024 && screen.height === 1024) || screen.height >= 5000));
+      if (isBot || isLocal || isBotRes) {
+        window['ga-disable-G-V4RYJBMEDE'] = true;
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-V4RYJBMEDE', { 'send_page_view': true, 'anonymize_ip': true });
+  </script>
+  <meta http-equiv="refresh" content="0; url=https://inwoovation.com/smartfarm/market.html">
+  <script>window.location.replace("https://inwoovation.com/smartfarm/market.html" + window.location.search + window.location.hash);</script>
+</head>
+<body style="background:#0b0f19;color:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;">
+  <p>Redirecting to <a href="https://inwoovation.com/smartfarm/market.html" style="color:#38bdf8;">https://inwoovation.com/smartfarm/market.html</a>...</p>
+</body>
+</html>

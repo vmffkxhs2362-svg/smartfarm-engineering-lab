@@ -1,202 +1,35 @@
-<!-- TITLE: Vertical Farming DLI Calculator | LED PPFD & Thermal Output Analyzer -->
-<!-- DESC: Calculate Daily Light Integral (DLI), LED PPFD requirements, photoperiod optimization, and thermal heat dissipation for vertical farming and indoor growing systems. Supports leafy greens, strawberries, and herbs. -->
-<!-- KEYWORDS: DLI calculator, vertical farming, LED PPFD, daily light integral, photoperiod, indoor growing, LED thermal output, vertical farm lighting, grow light calculator, plant factory -->
-<!-- ACTIVE_TAB: btn-tab-vertical -->
-<!-- ACTIVE_CHIP: chip-all -->
-<div class="calc-wrapper active" id="section-vertical">
-<div class="segmented-control" style="grid-column: span 2; margin-bottom: 2rem;">
-<button class="segment-btn active" id="btn-subtab-light" onclick="switchVerticalTab('light')">PPFD &amp; DLI Optimizer</button>
-<button class="segment-btn" id="btn-subtab-thermal" onclick="switchVerticalTab('thermal')">LED Thermal &amp; OPEX</button>
-</div>
-<!-- Subtab 0: PPFD & DLI Optimization -->
-<div class="tab-content active" id="subtab-light">
-<div class="form-panel">
-<h1 class="panel-title" id="lbl-light-title">Photosynthetic Photon Flux &amp; DLI Optimizer</h1>
-<div class="input-group">
-<label for="crop-select" id="lbl-crop-select">Target Plant Profile</label>
-<div class="input-control-wrapper select-arrow-wrapper">
-<select id="crop-select" onchange="applyCropPreset(); calculateLight();">
-<option id="opt-greens" selected="" value="greens">Leafy Greens (Target DLI: 16 mol)</option>
-<option id="opt-strawberry" value="strawberry">Strawberries (Target DLI: 22 mol)</option>
-<option id="opt-herbs" value="herbs">Medicinal Herbs &amp; Basil (Target DLI: 12 mol)</option>
-<option id="opt-custom" value="custom">Custom (User-Defined DLI)</option>
-</select>
-</div>
-</div>
-<div class="input-group">
-<label for="target-dli" id="lbl-target-dli">Target DLI (mol/m²/day)</label>
-<div class="input-control-wrapper">
-<input id="target-dli" min="1" oninput="calculateLight()" step="0.5" type="number" value="16.0"/>
-<span class="suffix">mol/m²/d</span>
-</div>
-</div>
-<div class="input-group">
-<label for="measured-ppfd" id="lbl-measured-ppfd">Measured PPFD (μmol/m²/s)</label>
-<div class="input-control-wrapper">
-<input id="measured-ppfd" min="10" oninput="calculateLight()" step="10" type="number" value="250"/>
-<span class="suffix">μmol/m²/s</span>
-</div>
-</div>
-<div class="slider-group">
-<div class="slider-header">
-<label for="slide-red" id="lbl-slider-red">Deep Red (660 nm)</label>
-<span class="slider-val" id="slide-red-val">70%</span>
-</div>
-<input id="slide-red" max="100" min="0" oninput="updateSpectrum(); calculateLight();" type="range" value="70"/>
-</div>
-<div class="slider-group">
-<div class="slider-header">
-<label for="slide-blue" id="lbl-slider-blue">Deep Blue (450 nm)</label>
-<span class="slider-val" id="slide-blue-val">15%</span>
-</div>
-<input id="slide-blue" max="100" min="0" oninput="updateSpectrum(); calculateLight();" type="range" value="15"/>
-</div>
-<div class="slider-group">
-<div class="slider-header">
-<label for="slide-green" id="lbl-slider-green">Green/White (550 nm)</label>
-<span class="slider-val" id="slide-green-val">10%</span>
-</div>
-<input id="slide-green" max="100" min="0" oninput="updateSpectrum(); calculateLight();" type="range" value="10"/>
-</div>
-<div class="slider-group">
-<div class="slider-header">
-<label for="slide-far" id="lbl-slider-far">Far-Red (730 nm)</label>
-<span class="slider-val" id="slide-far-val">5%</span>
-</div>
-<input id="slide-far" max="100" min="0" oninput="updateSpectrum(); calculateLight();" type="range" value="5"/>
-</div>
-</div>
-<div class="result-panel">
-<div style="width: 100%;">
-<div class="result-header text-emerald" id="lbl-dli-output-title">Calculated DLI Output</div>
-<div class="big-number" id="light-dli-val" style="font-size: 3.5rem;">16.2</div>
-<p class="result-desc" id="light-dli-desc">DLI output based on PPFD and active operational photoperiod.</p>
-</div>
-<div style="border-top: 1px solid var(--border-card); padding-top: 1.25rem; width: 100%; margin-top: 1rem;">
-<div class="result-header text-blue" id="lbl-opt-photoperiod-title">Optimal Photoperiod</div>
-<div class="big-number" id="light-hours-val" style="font-size: 3.5rem; color: var(--cyan);">17.8</div>
-<p class="result-desc" id="light-hours-desc">Daily run-time required to reach target crop DLI thresholds.</p>
-</div>
-<div style="border-top: 1px solid var(--border-card); padding-top: 1.25rem; width: 100%; margin-top: 1rem; text-align: left;">
-<div class="result-header text-orange" id="lbl-spectral-energy-title">Spectral Energy Distribution</div>
-<div class="spectrum-bar-display">
-<div class="spectrum-segment" id="seg-red" style="background-color: #ef4444; width: 70%;"></div>
-<div class="spectrum-segment" id="seg-blue" style="background-color: #3b82f6; width: 15%;"></div>
-<div class="spectrum-segment" id="seg-green" style="background-color: #10b981; width: 10%;"></div>
-<div class="spectrum-segment" id="seg-far" style="background-color: #a855f7; width: 5%;"></div>
-</div>
-<table style="margin-top: 1rem;">
-<thead>
-<tr>
-<th id="lbl-th-color">Color Band</th>
-<th id="lbl-th-pct" style="text-align: right;">Percentage (%)</th>
-<th id="lbl-th-flux" style="text-align: right;">Estimated Flux (PPFD)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td id="lbl-tbl-red">● Red (660nm)</td>
-<td id="pct-red-txt" style="text-align: right;">70.0%</td>
-<td id="flux-red-txt" style="text-align: right;">175.0 μmol</td>
-</tr>
-<tr>
-<td id="lbl-tbl-blue">● Blue (450nm)</td>
-<td id="pct-blue-txt" style="text-align: right;">15.0%</td>
-<td id="flux-blue-txt" style="text-align: right;">37.5 μmol</td>
-</tr>
-<tr>
-<td id="lbl-tbl-green">● Green (550nm)</td>
-<td id="pct-green-txt" style="text-align: right;">10.0%</td>
-<td id="flux-green-txt" style="text-align: right;">25.0 μmol</td>
-</tr>
-<tr>
-<td id="lbl-tbl-far">● Far-Red (730nm)</td>
-<td id="pct-far-txt" style="text-align: right;">5.0%</td>
-<td id="flux-far-txt" style="text-align: right;">12.5 μmol</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- Subtab 1: LED Thermal & OPEX -->
-<div class="tab-content" id="subtab-thermal">
-<div class="form-panel">
-<h1 class="panel-title" id="lbl-thermal-title">LED Module Thermal &amp; Operational Cost Modeler</h1>
-<div class="input-group">
-<label for="led-power" id="lbl-led-power-label">LED Bar Power P_elec (W)</label>
-<div class="input-control-wrapper">
-<input id="led-power" min="10" oninput="calculateThermal()" step="5" type="number" value="45"/>
-<span class="suffix">W</span>
-</div>
-</div>
-<div class="input-group">
-<label for="led-bars" id="lbl-led-bars-label">Quantity of LED Bars (N)</label>
-<div class="input-control-wrapper">
-<input id="led-bars" min="1" oninput="calculateThermal()" step="10" type="number" value="120"/>
-<span class="suffix">Bars</span>
-</div>
-</div>
-<div class="input-group">
-<label for="opt-efficiency" id="lbl-opt-efficiency-label">Optical Efficiency (η_opt)</label>
-<div class="input-control-wrapper">
-<input id="opt-efficiency" max="0.80" min="0.10" oninput="calculateThermal()" step="0.05" type="number" value="0.40"/>
-<span class="suffix">ratio</span>
-</div>
-</div>
-<div class="input-group">
-<label for="heatsink-area" id="lbl-heatsink-area-label">Heatsink Surface Area per bar (cm²)</label>
-<div class="input-control-wrapper">
-<input id="heatsink-area" min="100" oninput="calculateThermal()" step="100" type="number" value="2500"/>
-<span class="suffix">cm²</span>
-</div>
-</div>
-<div class="input-group">
-<label for="convective-h" id="lbl-convective-h-label">Heat Transfer Coeff (h, W/m²K)</label>
-<div class="input-control-wrapper">
-<input id="convective-h" max="30" min="2" oninput="calculateThermal()" step="0.5" type="number" value="10.0"/>
-<span class="suffix">W/m²K</span>
-</div>
-</div>
-<div class="input-group">
-<label for="elec-rate" id="lbl-elec-rate-label">Electricity Rate</label>
-<div class="input-control-wrapper">
-<input id="elec-rate" min="0.01" oninput="calculateThermal()" step="0.01" type="number" value="0.25"/>
-<span class="suffix" id="lbl-elec-rate-suffix">€/kWh</span>
-</div>
-</div>
-</div>
-<div class="result-panel">
-<div style="width: 100%;">
-<div class="result-header text-danger" id="lbl-thermal-tj-title">LED Junction Temperature (T_j)</div>
-<div class="big-number" id="thermal-tj-val" style="color: var(--danger);">68.2</div>
-<p class="result-desc" id="tj-desc">Estimated junction point hotspot temperature.</p>
-</div>
-<div style="border-top: 1px solid var(--border-card); padding-top: 1.25rem; width: 100%; margin-top: 1rem;">
-<div class="result-header text-emerald" id="lbl-thermal-cost-title">Monthly Racking OPEX</div>
-<div class="big-number" id="thermal-cost-val" style="color: var(--primary);">€729</div>
-<p class="result-desc" id="opex-desc">Operational lighting energy expenditure forecast.</p>
-</div>
-<div style="border-top: 1px solid var(--border-card); padding-top: 1.25rem; width: 100%; margin-top: 1rem; text-align: left;">
-<div class="result-header text-blue" id="lbl-thermal-chart-title">Energy Cost Split by Operating Photoperiod</div>
-<div class="chart-container" id="thermal-chart-wrapper" style="position: relative; height: 250px; width: 100%; margin-top: 0.8rem;">
-<canvas id="thermalChart"></canvas>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="amazon-vertical-widget"></div>
-</div>
-
-<!-- SCRIPTS_START -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof renderAmazonEquipmentCards === "function") {
-            renderAmazonEquipmentCards("amazon-vertical-widget", "vertical");
-        }
-    });
-</script>
-<!-- SCRIPTS_END -->
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, follow">
+  <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8">
+  <meta name="google-site-verification" content="xHzmAhcxMgyf-hP2TujQwCGF3-7GrLBkLU9PoHShaps">
+  <title>Redirecting to Inwoovation Lab...</title>
+  <link rel="canonical" href="https://inwoovation.com/smartfarm/vertical_dli.html">
+  <!-- Google tag (gtag.js) with Antigravity Bot & Self-Traffic Guard -->
+  <script>
+    (function() {
+      var ua = navigator.userAgent || '';
+      var isBot = navigator.webdriver === true || /HeadlessChrome|PhantomJS|Lighthouse|PTST|bot|crawler|spider|slurp|ScrapingBee|AhrefsBot|SemrushBot|MJ12bot|DotBot|Bytespider|GPTBot|ClaudeBot|PerplexityBot|PetalBot|YandexBot|Baiduspider/i.test(ua);
+      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
+      var isBotRes = (window.screen && ((screen.width === 1366 && screen.height === 1366) || (screen.width === 800 && screen.height === 600) || (screen.width === 1024 && screen.height === 1024) || screen.height >= 5000));
+      if (isBot || isLocal || isBotRes) {
+        window['ga-disable-G-V4RYJBMEDE'] = true;
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-V4RYJBMEDE', { 'send_page_view': true, 'anonymize_ip': true });
+  </script>
+  <meta http-equiv="refresh" content="0; url=https://inwoovation.com/smartfarm/vertical_dli.html">
+  <script>window.location.replace("https://inwoovation.com/smartfarm/vertical_dli.html" + window.location.search + window.location.hash);</script>
+</head>
+<body style="background:#0b0f19;color:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;">
+  <p>Redirecting to <a href="https://inwoovation.com/smartfarm/vertical_dli.html" style="color:#38bdf8;">https://inwoovation.com/smartfarm/vertical_dli.html</a>...</p>
+</body>
+</html>

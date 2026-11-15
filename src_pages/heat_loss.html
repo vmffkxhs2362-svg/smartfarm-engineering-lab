@@ -1,198 +1,35 @@
-<!-- TITLE: Greenhouse Heat Loss Calculator | Heating Load & Cover U-Value Estimator -->
-<!-- DESC: Calculate maximum greenhouse heating load in kW and BTU/h using Q=UAΔT heat transfer formulas, wind friction velocity modifiers, and cover U-values for single poly, glass, and polycarbonate structures. -->
-<!-- KEYWORDS: greenhouse heat loss calculator, heating load calculator BTU, Q=UAΔT heat transfer formula, glazing U-value table, greenhouse insulation, boiler capacity sizing kW, wind infiltration heat loss, commercial greenhouse thermal design -->
-<!-- ACTIVE_TAB: btn-tab-heat-loss -->
-<!-- ACTIVE_CHIP: chip-all -->
-<div class="calc-wrapper active" id="section-heat-loss">
-<div class="form-panel">
-<h1 class="panel-title" id="lbl-heat-loss-title-ui">Structure &amp; Climate Data</h1>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-preset" id="lbl-hl-preset">Cover Material U-Value Preset</label>
-</div>
-<div class="input-control-wrapper select-arrow-wrapper">
-<select id="hl-preset" onchange="applyHlPreset()">
-<option selected="" value="custom">Custom Input</option>
-<option value="single_poly">Single Poly (U=6.0 W/m²·K)</option>
-<option value="double_poly">Double Poly (U=3.5 W/m²·K)</option>
-<option value="glass">Single Glass (U=5.5 W/m²·K)</option>
-<option value="double_glass">Double Glass (U=3.0 W/m²·K)</option>
-<option value="pc_8">PC Sheet 8mm (U=3.3 W/m²·K)</option>
-<option value="pc_16">PC Sheet 16mm (U=2.3 W/m²·K)</option>
-</select>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-climate-preset">🌍 Regional Climate Preset (1-Click Sizing)</label>
-</div>
-<div class="input-control-wrapper select-arrow-wrapper">
-<select id="hl-climate-preset" onchange="applyClimatePreset()">
-<option selected="" value="custom">Custom Regional Temperature</option>
-<option value="denver">🇺🇸 Denver, CO (Extreme Winter: -15°C / 5°F, Wind: 4.5 m/s)</option>
-<option value="moses_lake">🇺🇸 Moses Lake, WA (Ag-Belt: -12°C / 10°F, Wind: 4.0 m/s)</option>
-<option value="london">🇬🇧 London / Southern UK (Maritime: -2°C / 28°F, Wind: 3.5 m/s)</option>
-<option value="straelen">🇳🇱 Straelen / Westland (Venlo Cluster: -6°C / 21°F, Wind: 3.8 m/s)</option>
-<option value="jinju">🇰🇷 Jinju / Gimje / Buyeo (Korea: -10°C / 14°F, Wind: 3.0 m/s)</option>
-<option value="ontario">🇨🇦 Leamington, Ontario (Great Lakes: -18°C / 0°F, Wind: 5.0 m/s)</option>
-</select>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-area" id="lbl-hl-area">Cover Surface Area (A)</label>
-</div>
-<div class="input-control-wrapper">
-<input id="hl-area" oninput="calculateHeatLossEngine()" step="50" type="number" value="1500"/>
-<span class="suffix" id="hl-area-suffix">m²</span>
-</div>
-<div class="pyeong-helper" id="hl-area-pyeong" style="font-size: 0.8rem; color: var(--text-gray); margin-top: 0.25rem; font-weight: 600;"></div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-uvalue" id="lbl-hl-uvalue">Heat Transfer Coeff (U-value)</label>
-</div>
-<div class="input-control-wrapper">
-<input id="hl-uvalue" oninput="calculateHeatLossEngine()" step="0.1" type="number" value="5.5"/>
-<span class="suffix" id="hl-uvalue-suffix">W/m²·K</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-temp-in" id="lbl-hl-temp-in">Target Indoor Temp (Ti)</label>
-</div>
-<div class="input-control-wrapper">
-<input id="hl-temp-in" oninput="calculateHeatLossEngine()" step="1" type="number" value="18"/>
-<span class="suffix" id="hl-temp-in-suffix">°C</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-temp-out" id="lbl-hl-temp-out">Design Outdoor Temp (To)</label>
-</div>
-<div class="input-control-wrapper">
-<input id="hl-temp-out" oninput="calculateHeatLossEngine()" step="1" type="number" value="-5"/>
-<span class="suffix" id="hl-temp-out-suffix">°C</span>
-</div>
-</div>
-<div class="input-group">
-<div class="input-header">
-<label for="hl-wind" id="lbl-hl-wind">Outdoor Wind Speed</label>
-</div>
-<div class="input-control-wrapper">
-<input id="hl-wind" oninput="calculateHeatLossEngine()" step="0.5" type="number" value="3.0"/>
-<span class="suffix" id="hl-wind-suffix">m/s</span>
-</div>
-</div>
-<!-- Heat Loss Engineering SEO Guide Accordion -->
-<div class="accordion academic-guide" id="hl-academic-accordion">
-<div class="accordion-header" onclick="toggleAccordion('hl-academic-accordion')">
-<span class="academic-guide-lang" style="font-weight: 700; color: var(--primary);">📚 Heat Loss Formula &amp; Glazing U-Value Guide</span>
-<span class="icon" style="color: var(--primary);">▼</span>
-</div>
-<div class="accordion-body">
-<div class="academic-guide-lang">
-<h3>📚 Thermodynamic Principles of Greenhouse Heat Load Calculations</h3>
-<p>Estimating peak heating capacity for agricultural greenhouses relies on steady-state conductive and convective heat transfer principles. The peak thermal demand determines the sizing of hot water boilers, heat pumps, and pipe rail distribution loops.</p>
-<h4>1. Fundamental Heat Loss Equation (Q = A * U * ΔT)</h4>
-<p>The total heat flux transmitted through the greenhouse envelope is calculated using the classical Fourier conduction equation modified for overall heat transfer coefficients:</p>
-<ul>
-<li><code>Q = A * U * (Ti - To) * F_wind</code> (Watts or kW)</li>
-<li>Where <code>A</code> is total exposed surface area of roof and side walls (m²).</li>
-<li><code>U</code> is the thermal transmittance (W/m²·K) of the glazing material.</li>
-<li><code>ΔT = Ti - To</code> is the temperature differential between target indoor setpoint and lowest design outdoor temperature.</li>
-<li><code>F_wind</code> is the wind speed infiltration multiplier (1.0 at < 1 m/s up to 1.35 at > 7 m/s).</li>
-</ul>
-<h4>2. Typical Glazing Material U-Values</h4>
-<ul>
-<li><strong>Single PE Film</strong>: 6.0 W/m²·K (High transmission, high thermal loss)</li>
-<li><strong>Double Inflated PE Film</strong>: 3.5 W/m²·K (~40% thermal energy savings)</li>
-<li><strong>Single Float Glass (4mm)</strong>: 5.5 W/m²·K</li>
-<li><strong>Twin-Wall Polycarbonate (8mm)</strong>: 3.3 W/m²·K</li>
-<li><strong>Triple-Wall Polycarbonate (16mm)</strong>: 2.3 W/m²·K (Superior insulation)</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="result-panel">
-<div class="result-header" id="lbl-hl-result-hdr">Required Heating Capacity</div>
-<div class="big-number" id="hl-value">0.0 kW</div>
-<div class="status-pill optimal" id="hl-status-pill">Heat Loss Calculated</div>
-<p class="result-desc" id="hl-explanation">Ready...</p>
-
-<!-- Quick Action Buttons: PDF Export & Share Link -->
-<div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
-    <button type="button" class="estimator-btn" onclick="printHeatLossReport()" style="flex: 1; background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border: none; border-radius: 8px; padding: 0.65rem 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3); font-size: 0.85rem;">
-        📄 Print / Export PDF Spec
-    </button>
-    <button type="button" class="estimator-btn" onclick="copyShareCalculationLink()" id="btn-share-link" style="flex: 1; background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); color: #f8fafc; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 8px; padding: 0.65rem 1rem; cursor: pointer; font-size: 0.85rem;">
-        🔗 Share Calculation Link
-    </button>
-</div>
-
-<!-- Chained Workflow: Auto-Forward Calculated Heat Load -->
-<div class="info-card" id="hl-chain-card" style="border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.06); margin-top: 1.2rem;">
-    <h4 style="color: #34d399; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
-        ⚡ Next Engineering Steps (Auto-Forward Calculated Load)
-    </h4>
-    <p style="font-size: 0.85rem; color: var(--text-gray); line-height: 1.5; margin-bottom: 0.8rem;">
-        Calculated Peak Load: <strong id="hl-chain-kw" style="color: #f8fafc;">0.0 kW</strong>. Transfer this load directly to sizing tools:
-    </p>
-    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-        <a id="link-chain-roi" href="roi_simulator.html" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; font-size: 0.82rem; font-weight: 700; padding: 0.5rem 0.8rem; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
-            🔥 Calculate Heat Pump ROI ➔
-        </a>
-        <a id="link-chain-valve" href="mixing_valve.html" style="background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.4); color: #38bdf8; font-size: 0.82rem; font-weight: 700; padding: 0.5rem 0.8rem; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
-            🚰 Size 3-Way Mixing Valve ➔
-        </a>
-    </div>
-</div>
-
-<!-- Open Source Banner: OpenCEA on GitHub -->
-<div class="info-card" style="border: 1px solid rgba(6, 182, 212, 0.4); background: linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(16, 185, 129, 0.12) 100%); margin-top: 1.2rem; border-radius: 10px; padding: 1.1rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
-        <div>
-            <span style="background: rgba(6, 182, 212, 0.25); color: #38bdf8; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 100px; text-transform: uppercase;">
-                100% Free &amp; Open Source
-            </span>
-            <h4 style="color: #f8fafc; font-size: 1rem; margin: 0.4rem 0 0.2rem 0; font-weight: 800;">
-                Looking for 8,760-Hour Full-Year Dynamic Simulation?
-            </h4>
-            <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4; margin: 0; max-width: 460px;">
-                Access <strong>OpenCEA GitHub</strong>: Multi-zone thermal screens, solar heat deduction, hourly local weather, and 24/7 offline python scripts — 100% free and open-source.
-            </p>
-        </div>
-        <a href="https://github.com/vmffkxhs2362-svg/inwoovation-portal" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #06b6d4, #10b981); color: #030712; font-weight: 800; font-size: 0.85rem; padding: 0.6rem 1.1rem; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35); white-space: nowrap;">
-            ⭐ Star on GitHub (Free)
-        </a>
-    </div>
-</div>
-
-<div class="info-card" id="hl-actions-card" style="border-left: 4px solid var(--primary); margin-top: 1.2rem;">
-<h4 id="lbl-hl-actions-title">Live Diagnostic Report</h4>
-<p id="hl-actions-list" style="font-size: 0.9rem; color: var(--text-gray); margin-top: 0.5rem; line-height: 1.6;"></p>
-</div>
-<div class="info-card">
-<h3 id="lbl-hl-tip-title">Wind Friction Effects</h4>
-<p id="hl-tip-desc">High wind speed increases convective heat loss from the cover. This calculator applies up to a 1.4x modifier based on wind speed.</p>
-</div>
-<div class="info-card" style="border-left: 4px solid var(--cyan); background: rgba(6, 182, 212, 0.05);">
-<h4>🔗 Related Tools</h4>
-<p style="font-size: 0.85rem; color: var(--text-gray); line-height: 1.6; margin-top: 0.3rem;">Is your calculated heating load too high? Use the <a href="roi_simulator.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Boiler vs Heat Pump ROI Simulator</a> to evaluate whether a heat pump transition can reduce your annual heating costs. Or, size the correct <a href="mixing_valve.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">3-Way Mixing Valve (Kv)</a> for your hot water piping loop.</p>
-</div>
-<div id="amazon-heatloss-widget"></div>
-</div>
-</div>
-
-<!-- SCRIPTS_START -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof renderAmazonEquipmentCards === "function") {
-            renderAmazonEquipmentCards("amazon-heatloss-widget", "heat_loss");
-        }
-    });
-</script>
-<!-- SCRIPTS_END -->
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, follow">
+  <meta name="google-site-verification" content="Y7d3dVoTQHBbG1GoKc4E_LUZb6YBmv491pv7G01mOk8">
+  <meta name="google-site-verification" content="xHzmAhcxMgyf-hP2TujQwCGF3-7GrLBkLU9PoHShaps">
+  <title>Redirecting to Inwoovation Lab...</title>
+  <link rel="canonical" href="https://inwoovation.com/smartfarm/heat_loss.html">
+  <!-- Google tag (gtag.js) with Antigravity Bot & Self-Traffic Guard -->
+  <script>
+    (function() {
+      var ua = navigator.userAgent || '';
+      var isBot = navigator.webdriver === true || /HeadlessChrome|PhantomJS|Lighthouse|PTST|bot|crawler|spider|slurp|ScrapingBee|AhrefsBot|SemrushBot|MJ12bot|DotBot|Bytespider|GPTBot|ClaudeBot|PerplexityBot|PetalBot|YandexBot|Baiduspider/i.test(ua);
+      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
+      var isBotRes = (window.screen && ((screen.width === 1366 && screen.height === 1366) || (screen.width === 800 && screen.height === 600) || (screen.width === 1024 && screen.height === 1024) || screen.height >= 5000));
+      if (isBot || isLocal || isBotRes) {
+        window['ga-disable-G-V4RYJBMEDE'] = true;
+      }
+    })();
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V4RYJBMEDE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-V4RYJBMEDE', { 'send_page_view': true, 'anonymize_ip': true });
+  </script>
+  <meta http-equiv="refresh" content="0; url=https://inwoovation.com/smartfarm/heat_loss.html">
+  <script>window.location.replace("https://inwoovation.com/smartfarm/heat_loss.html" + window.location.search + window.location.hash);</script>
+</head>
+<body style="background:#0b0f19;color:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;">
+  <p>Redirecting to <a href="https://inwoovation.com/smartfarm/heat_loss.html" style="color:#38bdf8;">https://inwoovation.com/smartfarm/heat_loss.html</a>...</p>
+</body>
+</html>
